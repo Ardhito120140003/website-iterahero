@@ -3,7 +3,7 @@ import "./navigation.css";
 import { Flex, Image, Box, Center } from "@chakra-ui/react";
 import { FiHome, FiMonitor } from "react-icons/fi";
 import { GiGreenhouse } from "react-icons/gi";
-import { AiOutlineControl, AiOutlineHistory } from "react-icons/ai";
+import { AiOutlineControl, AiOutlineHistory,AiOutlineHourglass } from "react-icons/ai";
 import NavItem from "../navitem/navitem";
 import { useSelector, useDispatch } from "react-redux";
 import { routePageName } from "../../redux/action";
@@ -115,6 +115,30 @@ const SideNav = () => {
               active={routeName === "History Notification"}
             />
           </Link>
+          <Link
+						to={"/unit/Peracikan"}
+						onClick={() => {
+							patchRoute("Peracikan");
+						}}>
+						<NavItem
+							navSize={navSize}
+							icon={AiOutlineHourglass}
+							title="Peracikan"
+							active={routeName === "Peracikan"}
+						/>
+					</Link>
+					<Link
+						to={"/unit/Penjadwalan"}
+						onClick={() => {
+							patchRoute("Penjadwalan");
+						}}>
+						<NavItem
+							navSize={navSize}
+							icon={AiOutlineHourglass}
+							title="Penjadwalan"
+							active={routeName === "Penjadwalan"}
+						/>
+					</Link>
         </Flex>
       </Flex>
     </>

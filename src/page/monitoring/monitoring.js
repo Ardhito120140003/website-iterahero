@@ -52,20 +52,12 @@ const Monitoring = () => {
         <Flex gap={"30px"} width={"100%"} flexDir={"column"}>
           <Flex justifyContent={"space-between"} width="100%">
             <Link>
-              <Text
-                fontWeight={"semibold"}
-                fontSize={"var(--header-3)"}
-                color={"var(--color-primer)"}
-              >
+              <Text fontWeight={"semibold"} fontSize={"var(--header-3)"} color={"var(--color-primer)"}>
                 List Sensor pada Greenhouse
               </Text>
             </Link>
           </Flex>
-          <Flex
-            alignContent={"center"}
-            alignItems={"center"}
-            justifyContent={"space-between"}
-          >
+          <Flex alignContent={"center"} alignItems={"center"} justifyContent={"space-between"}>
             <Flex width={"30%"}>
               <Formik
                 initialValues={{
@@ -83,11 +75,7 @@ const Monitoring = () => {
                   setFieldValue,
                 }) => (
                   <form onSubmit={handleSubmit}>
-                    <Flex
-                      alignContent={"center"}
-                      alignItems={"center"}
-                      justify={"space-between"}
-                    >
+                    <Flex alignContent={"center"} alignItems={"center"} justify={"space-between"}>
                       <Flex width={"100%"}>
                         <Select
                           onChange={(e) => {

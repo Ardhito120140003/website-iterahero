@@ -26,6 +26,9 @@ import AutomationEdit from "./page/automation/automation_edit";
 import ScheduleEdit from "./page/automation/scheduling_edit";
 import MonitoringDetail from "./page/monitoring/monitoring_detail";
 import ControllingDetail from "./page/controlling/Controlling_detail";
+import Peracikan from "./page/peracikan/peracikan";
+import Penjadwalan from "./page/penjadwalan/penjadwalan";
+
 function App() {
   return (
     <Routes>
@@ -37,6 +40,9 @@ function App() {
         <Route path="monitoring" element={<Monitoring />} />
         <Route path="controlling" element={<Controlling />} />
         <Route path="historynotifikasi" element={<Notification />} />
+        <Route path="peracikan" element={<Peracikan />} />
+        <Route path="penjadwalan" element={<Penjadwalan />} />
+
         <Route
           path="historynotifikasi/more-notifcation"
           element={<MoreNotification />}
