@@ -6,6 +6,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useNavigate
 } from "react-router-dom";
 import Dashboard from "./page/dashboard/dashboard";
 import GreenHouse from "./page/greenhouse/greenhouse";
@@ -26,50 +27,50 @@ import AutomationEdit from "./page/automation/automation_edit";
 import ScheduleEdit from "./page/automation/scheduling_edit";
 import MonitoringDetail from "./page/monitoring/monitoring_detail";
 import ControllingDetail from "./page/controlling/Controlling_detail";
+import GuardRoute from "./component/guard_route/GuardRoute";
+import { useEffect, useState } from "react";
+import NotFound from "./component/not_found/NotFound";
+
+
 function App() {
+  const [role, setRole] = useState('user')
+  const [isAuth, setIsAuth] = useState(false)
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      setIsAuth(true)
+      setRole('admin')
+      navigate("/unit/dashboard/1")
+    }
+  }, [])
+
+  function onLoginHandle(userRole) {
+    setIsAuth(true);
+    setRole('user')
+    navigate('/unit/dashboard/1');
+  }  
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/unit" element={<Board />}>
-        <Route path="dashboard/:id" element={<Dashboard />} />
-        <Route path="greenhouse" element={<GreenHouse />} />
-        <Route path="monitoring" element={<Monitoring />} />
-        <Route path="controlling" element={<Controlling />} />
-        <Route path="historynotifikasi" element={<Notification />} />
-        <Route
-          path="historynotifikasi/more-notifcation"
-          element={<MoreNotification />}
-        />
-        <Route path="dashboard/sensor/:id" element={<Grafik />} />
-        <Route path="greenhouse/add" element={<GreenhouseAdd />} />
-        <Route path="greenhouse/:slug" element={<GreenhouseEdit />} />
-        <Route path="monitoring/add/:id" element={<Monitoring_Add />} />
-        <Route path="controlling/add/:id" element={<Controlling_Add />} />
-        <Route path="monitoring/edit/:id" element={<Monitoring_Edit />} />
-        <Route path="controlling/edit/:id" element={<Controlling_Edit />} />
-        <Route path="controlling/edit/:id" element={<Controlling_Edit />} />
-        <Route path="dashboard/aktuator/:id" element={<Automation />} />
-        <Route
-          path="dashboard/aktuator/automation/add/:id"
-          element={<AutomationAdd />}
-        />
-        <Route
-          path="dashboard/aktuator/schedule/edit/:id"
-          element={<ScheduleEdit />}
-        />
-        <Route
-          path="dashboard/aktuator/automation/edit/:id"
-          element={<AutomationEdit />}
-        />
-
-        <Route path="monitoring/detail/:id" element={<MonitoringDetail />} />
-        <Route path="controlling/detail/:id" element={<ControllingDetail />} />
-        <Route
-          path="dashboard/aktuator/automation/edit/:id"
-          element={<AutomationEdit />}
-        />
-      </Route>
+      <Route path="/login" element={<Login setUser={onLoginHandle}/>} />
+      { isAuth && (
+        <Route path="/unit" element={<Board />}>
+            <Route path="dashboard/:id" element={<Dashboard />} />
+            <Route path="greenhouse" element={<GreenHouse />} />
+         { role === 'admin' ? ( 
+            <>
+              <Route path="monitoring" element={<Monitoring />} />
+              <Route path="controlling" element={<Controlling />} />
+              <Route path="historynotifikasi" element={<Notification />} />
+            </>
+            ) : (
+              <Route path="*" element={<Dashboard />} />
+            )
+         }
+         </Route>
+        )}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

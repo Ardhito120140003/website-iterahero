@@ -19,7 +19,7 @@ const schema = yup.object({
     .required("Password harus diisi"),
 });
 
-const Login = () => {
+const Login = ({ setUser }) => {
   const navigate = useNavigate();
 
   const handleSubmitComplate = (emailValue, passwordValue) => {
@@ -29,10 +29,12 @@ const Login = () => {
         password: passwordValue,
       })
       .then((response) => {
+        console.log(response);
         if (response.data == "" || response.data == " ") {
           alert("Login gagal");
         } else {
           localStorage.setItem("token", response.data.data.accessToken);
+          setUser(response.data.data.role);
           navigate("/unit/dashboard/1");
         }
       })
@@ -44,10 +46,6 @@ const Login = () => {
       navigate("/unit/dashboard/1");
     }
   };
-
-  useEffect(() => {
-    checkToken();
-  }, []);
 
   TabTitle("Login - ITERA Hero");
   return (
