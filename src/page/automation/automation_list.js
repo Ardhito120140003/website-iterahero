@@ -20,6 +20,10 @@ import {
 } from "../../Utility/api_link";
 import CardAutomation from "../../component/card Automation/card_automation";
 import CardScheduling from "../../component/card Automation/card_scheduling";
+import { logout } from "../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
+
+
 
 const AutomationList = (props) => {
   const idApi = props.data.id;
@@ -29,7 +33,7 @@ const AutomationList = (props) => {
   const [dataSchedule, setDataSchedule] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState(0);
-
+  const dispatch = useDispatch();
   const getAutomation = async () => {
     await axios
       .get(`${getAutomationByActuator}${idApi}`, {
@@ -41,7 +45,8 @@ const AutomationList = (props) => {
         setDataApi(response.data.data);
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+        dispatch(logout());
         navigate("/login");
       });
   };
@@ -56,7 +61,8 @@ const AutomationList = (props) => {
         setStatus(response.data.data.automation);
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+dispatch(logout());
         navigate("/login");
       });
   };
@@ -71,7 +77,8 @@ const AutomationList = (props) => {
         setDataSchedule(response.data.data);
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+dispatch(logout());
         navigate("/login");
       });
   };

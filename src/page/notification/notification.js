@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Flex, Text, Button } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
-import { routePageName } from "../../redux/action";
+import { routePageName } from "../../features/auth/authSlice";
 import CardNotification from "../../component/card_notification/card_notification";
 import { TabTitle } from "../../Utility/utility";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { getNotificationByUserId } from "../../Utility/api_link";
 import Loading from "../../component/loading/loading";
+import { logout } from "../../features/auth/authSlice";
+
 
 const Notification = () => {
 	TabTitle("Notifikasi - ITERA Hero");
 	const navigate = useNavigate();
-
 	const [dataNotification, setDataNotification] = useState(null);
 	const header = localStorage.getItem("token");
 	const dispatch = useDispatch();
@@ -28,7 +29,8 @@ const Notification = () => {
 				setDataNotification(response.data.data);
 			})
 			.catch((error) => {
-				localStorage.clear();
+				localStorage.clear()
+				dispatch(logout());
 				navigate("/login");
 			});
 	};

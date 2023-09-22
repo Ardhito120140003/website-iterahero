@@ -11,7 +11,8 @@ import CardLogActuator from "../../component/card_log_actuator/card_log_act";
 import CardAutomation from "../../component/card Automation/card_automation";
 import AutomationList from "./automation_list";
 import { useDispatch } from "react-redux";
-import { routePageName } from "../../redux/action";
+import { routePageName } from "../../features/auth/authSlice";
+import { logout } from "../../features/auth/authSlice";
 
 const Automation = () => {
   TabTitle("Detail Actuator - ITERA Hero");
@@ -21,7 +22,7 @@ const Automation = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
-
+const dispatch = useDispatch();
   const getActuator = async () => {
     setIsLoading(true);
     const header = localStorage.getItem("token");
@@ -36,11 +37,11 @@ const Automation = () => {
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+dispatch(logout());
         navigate("/login");
       });
   };
-  const dispatch = useDispatch();
 
   useEffect(() => {
     getActuator();

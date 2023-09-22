@@ -28,6 +28,10 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../../component/loading/loading";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import "./monitoring_table.css";
+import { logout } from "../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
+
+
 
 const TableControlling = (props) => {
   const idApi = props.data.id;
@@ -55,7 +59,8 @@ const TableControlling = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = useState(1);
-
+  const dispatch = useDispatch();
+  
   const getApiControlling = async () => {
     setIsLoading(true);
 
@@ -72,7 +77,8 @@ const TableControlling = (props) => {
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+        dispatch(logout());
         navigate("/login");
       });
   };
@@ -91,7 +97,8 @@ const TableControlling = (props) => {
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+        dispatch(logout());
         navigate("/login");
       });
   };

@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/form-control";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
-import { routePageName } from "../../redux/action";
+import { routePageName } from "../../features/auth/authSlice";
 import axios from "axios";
 import {
   getActuatorDetail,

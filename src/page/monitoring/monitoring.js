@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { routePageName } from "../../redux/action";
+import { logout, routePageName } from "../../features/auth/authSlice";
 import { TabTitle } from "../../Utility/utility";
 import TableMonitoring from "../../component/table/monitoring_table";
 import { greenhouseByUserId } from "../../Utility/api_link";
@@ -18,7 +18,7 @@ const Monitoring = () => {
   const [data, setData] = useState("");
   const [dataApi, setDataApi] = useState(null);
   const header = localStorage.getItem("token");
-
+  const dispatch = useDispatch();
   const getApiGreenhouse = async () => {
     await axios
       .get(greenhouseByUserId, {
@@ -35,11 +35,11 @@ const Monitoring = () => {
         }
       });
     console.log(dataApi).catch((error) => {
-      localStorage.clear();
+      localStorage.clear()
+      dispatch(logout());
       navigate("/login");
     });
   };
-  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(routePageName("Monitoring"));
     getApiGreenhouse();

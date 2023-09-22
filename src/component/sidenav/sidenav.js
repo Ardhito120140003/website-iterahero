@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./navigation.css";
 import { Flex, Image, Box, Center } from "@chakra-ui/react";
 import { FiHome, FiMonitor } from "react-icons/fi";
@@ -6,18 +6,20 @@ import { GiGreenhouse } from "react-icons/gi";
 import { AiOutlineControl, AiOutlineHistory } from "react-icons/ai";
 import NavItem from "../navitem/navitem";
 import { useSelector, useDispatch } from "react-redux";
-import { routePageName } from "../../redux/action";
+import { routePageName, selectUser } from "../../features/auth/authSlice";
 import { Link } from "react-router-dom";
+import { selectRoute } from "../../features/auth/authSlice";
 
 const SideNav = () => {
   const navSize = "large";
 
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   const patchRoute = (data) => {
     dispatch(routePageName(data));
   };
-  const { routeName } = useSelector((state) => state.userReducer);
+  const routeName = useSelector(selectRoute);;
 
   return (
     <>
@@ -89,32 +91,36 @@ const SideNav = () => {
               }
             />
           </Link>
-          <Link
-            to={"/unit/controlling"}
-            onClick={() => {
-              patchRoute("Controlling");
-            }}
-          >
-            <NavItem
-              navSize={navSize}
-              icon={AiOutlineControl}
-              title="Controlling"
-              active={routeName === "Controlling"}
-            />
-          </Link>
-          <Link
-            to={"/unit/historynotifikasi"}
-            onClick={() => {
-              patchRoute("History Notification");
-            }}
-          >
-            <NavItem
-              navSize={navSize}
-              icon={AiOutlineHistory}
-              title="Notification"
-              active={routeName === "History Notification"}
-            />
-          </Link>
+          { user === 'admin' ? (
+            <>
+              <Link
+              to={"/unit/controlling"}
+              onClick={() => {
+                patchRoute("Controlling");
+              }}
+            >
+              <NavItem
+                navSize={navSize}
+                icon={AiOutlineControl}
+                title="Controlling"
+                active={routeName === "Controlling"}
+              />
+            </Link>
+            <Link
+              to={"/unit/historynotifikasi"}
+              onClick={() => {
+                patchRoute("History Notification");
+              }}
+            >
+              <NavItem
+                navSize={navSize}
+                icon={AiOutlineHistory}
+                title="Notification"
+                active={routeName === "History Notification"}
+              />
+            </Link>
+          </>
+          ) : ( null )}
         </Flex>
       </Flex>
     </>

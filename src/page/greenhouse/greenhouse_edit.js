@@ -10,7 +10,7 @@ import {
 import * as yup from "yup";
 import { useParams } from "react-router";
 import { useDispatch } from "react-redux";
-import { routePageName } from "../../redux/action";
+import { routePageName } from "../../features/auth/authSlice";
 import { TabTitle } from "../../Utility/utility";
 import axios from "axios";
 import { updateGreenhouse } from "../../Utility/api_link";

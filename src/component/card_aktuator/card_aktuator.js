@@ -6,16 +6,20 @@ import Loading from "../../component/loading/loading";
 import { useNavigate } from "react-router-dom";
 import "./card_aktuator.css";
 import ValueAktuator from "../value_aktuator/value_aktuator";
+import { logout } from "../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const CardAktuator = (props) => {
   const idApi = props.data.id;
   const navigate = useNavigate();
   const [dataTable, setDataTable] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+
   const getPagination = async () => {
     setIsLoading(true);
 
-    const header = localStorage.getItem("token");
+  const header = localStorage.getItem("token");
     await axios
       .get(`${paginationAktuator}${idApi}&&size=100`, {
         headers: {
@@ -27,7 +31,8 @@ const CardAktuator = (props) => {
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+        dispatch(logout());
         navigate("/login");
       });
   };

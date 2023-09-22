@@ -14,7 +14,7 @@ import { GiGreenhouse } from "react-icons/gi";
 import { MdMonitor } from "react-icons/md";
 import { AiOutlineControl } from "react-icons/ai";
 import { useDispatch } from "react-redux";
-import { routePageName } from "../../redux/action";
+import { routePageName } from "../../features/auth/authSlice";
 import { TabTitle } from "../../Utility/utility";
 import axios from "axios";
 import Loading from "../../component/loading/loading";
@@ -24,6 +24,9 @@ import { Formik } from "formik";
 import dashboardMenu from "../../Utility/dashboard_menu";
 import CardSensor from "../../component/card_sensor/card_sensor";
 import CardAktuator from "../../component/card_aktuator/card_aktuator";
+import { logout } from "../../features/auth/authSlice";
+
+
 const Dashboard = () => {
   let id = parseInt(useParams().id);
   TabTitle("Dashboard - ITERA Hero");
@@ -46,7 +49,8 @@ const Dashboard = () => {
       })
       .then((response) => setDataApi(response.data.data))
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+        dispatch(logout());
         navigate("/login");
       });
   };
@@ -68,7 +72,8 @@ const Dashboard = () => {
         }
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+dispatch(logout());
         navigate("/login");
       });
   };

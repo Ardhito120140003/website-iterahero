@@ -7,12 +7,17 @@ import Loading from "../../component/loading/loading";
 import { useNavigate } from "react-router-dom";
 import "./card_sensor.css";
 import ValueSensor from "../value_sensor/value_sensor";
+import { logout } from "../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
+
+
 
 const CardSensor = (props) => {
   const idApi = props.data.id;
   const navigate = useNavigate();
   const [dataTable, setDataTable] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
   const getPagination = async () => {
     setIsLoading(true);
 
@@ -28,7 +33,8 @@ const CardSensor = (props) => {
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+        dispatch(logout());
         navigate("/login");
       });
   };

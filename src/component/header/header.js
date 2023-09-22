@@ -4,10 +4,13 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import Draw from "../draw/draw";
 import { Link } from "react-router-dom";
+import { selectRoute } from "../../features/auth/authSlice";
+import { logout } from "../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const Header = () => {
-  const { routeName } = useSelector((state) => state.userReducer);
-
+  const routeName = useSelector(selectRoute);
+  const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -49,7 +52,8 @@ const Header = () => {
         <Link
           to={"/login"}
           onClick={() => {
-            localStorage.clear();
+            localStorage.clear()
+            dispatch(logout());
           }}
         >
           <div>
