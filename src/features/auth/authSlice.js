@@ -6,7 +6,7 @@ const token = localStorage.getItem('token');
 const currentRole = token ? jwtDecode(token).role : null
 
 const userSlice = createSlice({
-    name: 'auth',
+    name: 'iterahero',
     initialState: {
         accessToken: token,
         role: currentRole,
@@ -30,8 +30,8 @@ const userSlice = createSlice({
 
 export const { login, logout, routePageName } = userSlice.actions;
 
-export const selectUser = (state) => state.auth.role;
-export const selectToken = (state) => state.auth.accessToken;
-export const selectRoute = (state) => state.auth.routeName;
+export const selectUser = (state) => state.iterahero.role;
+export const selectToken = (state) => state.iterahero.accessToken;
+export const selectRoute = (state) => state.iterahero.routeName;
 
 export default userSlice.reducer;

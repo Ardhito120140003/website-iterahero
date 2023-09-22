@@ -56,9 +56,9 @@ function App() {
               <Route path="*" element={<Dashboard />} />
             )
          }
+            <Route path="*" element={<Dashboard />} />
          </Route>
         )}
-      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

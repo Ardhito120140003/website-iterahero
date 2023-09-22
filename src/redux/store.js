@@ -18,7 +18,7 @@ import authReducer from "../features/auth/authSlice";
 
 const store = configureStore({
   reducer: {
-    auth: authReducer
+    iterahero: authReducer
   }
 })
 

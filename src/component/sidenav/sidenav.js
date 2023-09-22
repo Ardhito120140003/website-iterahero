@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./navigation.css";
 import { Flex, Image, Box, Center } from "@chakra-ui/react";
 import { FiHome, FiMonitor } from "react-icons/fi";
