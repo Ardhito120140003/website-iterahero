@@ -4,7 +4,7 @@ import { Text, Button, Select, Flex, Form } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { TabTitle } from "../../Utility/utility";
 import { useDispatch } from "react-redux";
-import { routePageName } from "../../features/auth/authSlice";
+import { logout, routePageName } from "../../features/auth/authSlice";
 import axios from "axios";
 import { greenhouseByUserId } from "../../Utility/api_link";
 import Loading from "../../component/loading/loading";
@@ -35,7 +35,7 @@ const Controlling = () => {
       })
       .catch((error) => {
         localStorage.clear()
-dispatch(logout());
+        dispatch(logout());
         navigate("/login");
       });
   };

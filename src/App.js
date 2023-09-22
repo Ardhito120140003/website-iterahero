@@ -6,7 +6,7 @@ import {
   Routes,
   Route,
   Navigate,
-  useNavigate
+  useNavigate,
 } from "react-router-dom";
 import Dashboard from "./page/dashboard/dashboard";
 import GreenHouse from "./page/greenhouse/greenhouse";
@@ -42,23 +42,66 @@ function App() {
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
-      { token && (
+      {token && (
         <Route path="/unit" element={<Board />}>
-            <Route path="dashboard/:id" element={<Dashboard />} />
-            <Route path="greenhouse" element={<GreenHouse />} />
-         { user === 'admin' ? ( 
+          <Route path="dashboard/:id" element={<Dashboard />} />
+          <Route path="greenhouse" element={<GreenHouse />} />
+          {user === "admin" ? (
             <>
               <Route path="monitoring" element={<Monitoring />} />
               <Route path="controlling" element={<Controlling />} />
               <Route path="historynotifikasi" element={<Notification />} />
+              <Route
+                path="historynotifikasi/more-notifcation"
+                element={<MoreNotification />}
+              />
+              <Route path="dashboard/sensor/:id" element={<Grafik />} />
+              <Route path="greenhouse/add" element={<GreenhouseAdd />} />
+              <Route path="greenhouse/:slug" element={<GreenhouseEdit />} />
+              <Route path="monitoring/add/:id" element={<Monitoring_Add />} />
+              <Route path="controlling/add/:id" element={<Controlling_Add />} />
+              <Route path="monitoring/edit/:id" element={<Monitoring_Edit />} />
+              <Route
+                path="controlling/edit/:id"
+                element={<Controlling_Edit />}
+              />
+              <Route
+                path="controlling/edit/:id"
+                element={<Controlling_Edit />}
+              />
+              <Route path="dashboard/aktuator/:id" element={<Automation />} />
+              <Route
+                path="dashboard/aktuator/automation/add/:id"
+                element={<AutomationAdd />}
+              />
+              <Route
+                path="dashboard/aktuator/schedule/edit/:id"
+                element={<ScheduleEdit />}
+              />
+              <Route
+                path="dashboard/aktuator/automation/edit/:id"
+                element={<AutomationEdit />}
+              />
+
+              <Route
+                path="monitoring/detail/:id"
+                element={<MonitoringDetail />}
+              />
+              <Route
+                path="controlling/detail/:id"
+                element={<ControllingDetail />}
+              />
+              <Route
+                path="dashboard/aktuator/automation/edit/:id"
+                element={<AutomationEdit />}
+              />
             </>
-            ) : (
-              <Route path="*" element={<Dashboard />} />
-            )
-         }
+          ) : (
             <Route path="*" element={<Dashboard />} />
-         </Route>
-        )}
+          )}
+          <Route path="*" element={<Dashboard />} />
+        </Route>
+      )}
     </Routes>
   );
 }
