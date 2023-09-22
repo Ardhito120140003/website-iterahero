@@ -18,7 +18,8 @@ import moment from 'moment';
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 
 import CardLogActuatorToday from './today_card_log_act'
-
+import { logout } from "../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const CardLogActuator = (props) => {
 		const eleminateZ = (date) => {
@@ -34,6 +35,8 @@ const CardLogActuator = (props) => {
     const [totalPage, setTotalPage] = useState(1);
 	  const [totalData, setTotalData] = useState("");
     const [page, setPage] = useState(1);
+    const dispatch = useDispatch();
+
 
     const getPagination = async () => {
       setIsLoading(true)
@@ -52,6 +55,7 @@ const CardLogActuator = (props) => {
         })
         .catch((error) => {
             localStorage.clear()
+            dispatch(logout())
             navigate('/login')
         })
     }

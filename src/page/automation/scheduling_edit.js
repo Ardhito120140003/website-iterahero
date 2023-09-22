@@ -10,18 +10,19 @@ import {
 } from "@chakra-ui/form-control";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
-import { routePageName } from "../../redux/action";
+import { routePageName } from "../../features/auth/authSlice";
 import axios from "axios";
 import { scheduling } from "../../Utility/api_link";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../component/loading/loading";
 import { useParams } from "react-router";
+import { logout } from "../../features/auth/authSlice";
 
 const ScheduleEdit = () => {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [dataSchedule, setDataSchedule] = useState("");
-
+  const dispatch = useDispatch();
   let data = {
     id_actuator: "",
     start: "",
@@ -113,11 +114,10 @@ const ScheduleEdit = () => {
         setDataSchedule(response.data.data);
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+        dispatch(logout());
       });
   };
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     getSchedule();

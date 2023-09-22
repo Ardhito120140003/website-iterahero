@@ -19,7 +19,7 @@ import * as yup from "yup";
 import { Link } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { useDispatch } from "react-redux";
-import { routePageName } from "../../redux/action";
+import { routePageName } from "../../features/auth/authSlice";
 import { TabTitle } from "../../Utility/utility";
 import {
   getApiGreenhouse,

@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/form-control";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
-import { routePageName } from "../../redux/action";
+import { routePageName } from "../../features/auth/authSlice";
 import axios from "axios";
 import {
   getActuatorDetail,
@@ -23,6 +23,7 @@ import Loading from "../../component/loading/loading";
 import { useParams } from "react-router";
 import kondisiAutomatis from "../../Utility/dropdown_kondisi";
 import dropLifeCycle from "../../Utility/lifeCycleDropDown";
+import { logout } from "../../features/auth/authSlice";
 
 const AutomationEdit = () => {
   const { id } = useParams();
@@ -31,7 +32,7 @@ const AutomationEdit = () => {
   const [dataAutomation, setDataAutomation] = useState("");
   const [dataSensor, setDataSensor] = useState(null);
   const [dataKondisi, setDataKondisi] = useState(kondisiAutomatis);
-
+  const dispatch = useDispatch();
   let data = {
     id_actuator: "",
     id_sensor: "",
@@ -128,7 +129,8 @@ const AutomationEdit = () => {
         getActuator(response.data.data.actuator.id);
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+dispatch(logout());
       });
   };
 
@@ -145,7 +147,8 @@ const AutomationEdit = () => {
         getSensor(response.data.data.id_greenhouse);
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+        dispatch(logout());
         navigate("/login");
       });
   };
@@ -163,12 +166,11 @@ const AutomationEdit = () => {
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+        dispatch(logout());
         navigate("/login");
       });
   };
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     getAutomation();

@@ -11,6 +11,9 @@ import { useNavigate } from "react-router-dom";
 import { TabTitle } from "../../Utility/utility";
 import axios from "axios";
 import { loginApi } from "../../Utility/api_link";
+import { useDispatch, useSelector } from "react-redux";
+import { login, logout, selectUser } from "../../features/auth/authSlice";
+
 const schema = yup.object({
   email: yup.string().required("Email harus diisi"),
   password: yup
@@ -19,8 +22,10 @@ const schema = yup.object({
     .required("Password harus diisi"),
 });
 
-const Login = ({ setUser }) => {
+const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser)
 
   const handleSubmitComplate = (emailValue, passwordValue) => {
     axios
@@ -30,11 +35,11 @@ const Login = ({ setUser }) => {
       })
       .then((response) => {
         console.log(response);
+        dispatch(login(response.data.data))
         if (response.data == "" || response.data == " ") {
           alert("Login gagal");
         } else {
           localStorage.setItem("token", response.data.data.accessToken);
-          setUser(response.data.data.role);
           navigate("/unit/dashboard/1");
         }
       })
@@ -42,10 +47,14 @@ const Login = ({ setUser }) => {
   };
 
   const checkToken = () => {
-    if (localStorage.getItem("token") != null) {
+    if (user) {
       navigate("/unit/dashboard/1");
     }
   };
+
+  useEffect(() => {
+    checkToken()
+  }, []);
 
   TabTitle("Login - ITERA Hero");
   return (

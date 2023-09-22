@@ -30,6 +30,9 @@ import Loading from "../../component/loading/loading";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import "./monitoring_table.css";
 import moment from "moment";
+import { logout } from "../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
+
 
 const TableNotification = () => {
   const eleminateZ = (date) => {
@@ -37,6 +40,7 @@ const TableNotification = () => {
     return result;
   };
 
+  const dispatch = useDispatch();
   var idLocale = require("moment/locale/id");
   moment.locale("id", idLocale);
 
@@ -79,7 +83,8 @@ const TableNotification = () => {
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+        dispatch(logout());
         navigate("/login");
       });
   };
@@ -98,7 +103,8 @@ const TableNotification = () => {
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+        dispatch(logout());
         navigate("/login");
       });
   };

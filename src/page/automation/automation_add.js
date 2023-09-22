@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Flex, Text, Button, Input, Wrap, Select } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { routePageName } from "../../redux/action";
+import { routePageName } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../component/loading/loading";
 import { useParams } from "react-router";

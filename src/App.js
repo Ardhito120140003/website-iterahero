@@ -30,35 +30,23 @@ import ControllingDetail from "./page/controlling/Controlling_detail";
 import GuardRoute from "./component/guard_route/GuardRoute";
 import { useEffect, useState } from "react";
 import NotFound from "./component/not_found/NotFound";
-
+import { useSelector } from "react-redux";
+import { selectToken, selectUser } from "./features/auth/authSlice";
 
 function App() {
-  const [role, setRole] = useState('user')
-  const [isAuth, setIsAuth] = useState(false)
   const navigate = useNavigate();
+  const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
 
-  useEffect(() => {
-    if (localStorage.getItem('token')) {
-      setIsAuth(true)
-      setRole('admin')
-      navigate("/unit/dashboard/1")
-    }
-  }, [])
-
-  function onLoginHandle(userRole) {
-    setIsAuth(true);
-    setRole('user')
-    navigate('/unit/dashboard/1');
-  }  
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="/login" element={<Login setUser={onLoginHandle}/>} />
-      { isAuth && (
+      <Route path="/login" element={<Login />} />
+      { token && (
         <Route path="/unit" element={<Board />}>
             <Route path="dashboard/:id" element={<Dashboard />} />
             <Route path="greenhouse" element={<GreenHouse />} />
-         { role === 'admin' ? ( 
+         { user === 'admin' ? ( 
             <>
               <Route path="monitoring" element={<Monitoring />} />
               <Route path="controlling" element={<Controlling />} />

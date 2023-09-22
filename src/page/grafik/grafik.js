@@ -12,11 +12,15 @@ import { idSensor, getGrafikSensor } from "../../Utility/api_link";
 import infoGrafik from "../../Utility/grafikDropDown";
 import GrafikComponent from "../../component/grafik_component/grafik_component";
 import SummaryComponent from "../../component/summary_component/summary_component";
+import { logout } from "../../features/auth/authSlice";
+import { useDispatch } from "react-redux";
+
 
 const Grafik = () => {
   TabTitle("Grafik - ITERA Hero");
   const [data, setData] = useState("Day");
   const [dataApi, setDataApi] = useState(null);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
@@ -34,7 +38,8 @@ const Grafik = () => {
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+dispatch(logout());
         navigate("/login");
       });
   };

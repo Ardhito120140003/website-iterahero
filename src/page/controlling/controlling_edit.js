@@ -17,10 +17,13 @@ import * as yup from "yup";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { useDispatch } from "react-redux";
-import { routePageName } from "../../redux/action";
+import { routePageName } from "../../features/auth/authSlice";
 import { TabTitle } from "../../Utility/utility";
 import { updateActuatorDetail, icons } from "../../Utility/api_link";
 import axios from "axios";
+import { logout } from "../../features/auth/authSlice";
+
+
 
 const Controlling_Edit = () => {
   TabTitle("Edit Aktuator - ITERA Hero");
@@ -32,7 +35,7 @@ const Controlling_Edit = () => {
   console.log(data);
   const header = localStorage.getItem("token");
   const [iconSelected, setIconSelected] = useState("");
-
+  const dispatch = useDispatch();
   const [isloading, checkLoading] = useState(true);
 
   const schema = yup.object({
@@ -40,8 +43,6 @@ const Controlling_Edit = () => {
     icon: yup.string().required("Ikon harus diisi"),
     color: yup.string().required("Warna harus diisi"),
   });
-
-  const dispatch = useDispatch();
 
   const putActuator = async (
     valueName,
@@ -76,7 +77,8 @@ const Controlling_Edit = () => {
         navigate("/unit/controlling");
       })
       .catch((error) => {
-        localStorage.clear();
+        localStorage.clear()
+dispatch(logout());
         navigate("/login");
       });
   };

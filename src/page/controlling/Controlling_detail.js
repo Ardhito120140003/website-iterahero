@@ -4,11 +4,12 @@ import { Link } from "react-router-dom";
 import { Formik } from "formik";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { routePageName } from "../../redux/action";
+import { routePageName } from "../../features/auth/authSlice";
 import { TabTitle } from "../../Utility/utility";
 import { greenhouseByUserId } from "../../Utility/api_link";
 import axios from "axios";
 import Loading from "../../component/loading/loading";
+import { logout } from "../../features/auth/authSlice";
 
 const ControllingDetail = () => {
   TabTitle("controlling - ITERA Hero");
@@ -30,7 +31,8 @@ const ControllingDetail = () => {
   //       setData(response.data.data[0].id);
   //     });
   //   console.log(dataApi).catch((error) => {
-  //     localStorage.clear();
+  //     localStorage.clear()
+  //     dispatch(logout());
   //     navigate("/login");
   //   });
   // };

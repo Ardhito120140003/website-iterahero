@@ -3,12 +3,14 @@ import { Flex, Text, Button, Wrap } from "@chakra-ui/react";
 import CardGreenhouse from "../../component/card_greenhouse/card_green";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { routePageName } from "../../redux/action";
+import { routePageName } from "../../features/auth/authSlice";
 import { TabTitle } from "../../Utility/utility";
 import axios from "axios";
 import { listGreenhouse } from "../../Utility/api_link";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../component/loading/loading";
+import { logout } from "../../features/auth/authSlice";
+
 
 const GreenHouse = () => {
 	TabTitle("Greenhouse - ITERA Hero")
@@ -32,6 +34,7 @@ const GreenHouse = () => {
 		})
 			.catch((error) => {
 				localStorage.clear()
+dispatch(logout())
 				navigate('/login')
 			})
 	}

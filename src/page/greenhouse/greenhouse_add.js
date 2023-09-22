@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/form-control";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
-import { routePageName } from "../../redux/action";
+import { routePageName } from "../../features/auth/authSlice";
 import { TabTitle } from "../../Utility/utility";
 import axios from "axios";
 import { addGreenhouse } from "../../Utility/api_link";

@@ -3,7 +3,7 @@ import { Text,Flex } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { TabTitle } from "../../Utility/utility";
 import { useDispatch } from "react-redux";
-import { routePageName } from "../../redux/action";
+import { routePageName } from "../../features/auth/authSlice";
 import TableNotification from "../../component/table/notification_table";
 
 const MoreNotification = () => {
