@@ -21,7 +21,7 @@ const CardStatusPeracikan = () => {
 
     const getStatusPeracikan = async () => {
     	await axios
-    		.get(`${base_url}////`, {
+    		.get(`${base_url}`, {
     			headers: {
     				Authorization: "Bearer " + header,
     			},
@@ -32,8 +32,8 @@ const CardStatusPeracikan = () => {
                 setSuhuValue()
     		})
     		.catch((error) => {
-    			localStorage.clear();
-    			navigate("/login");
+    			// localStorage.clear();
+    			// navigate("/login");
     		});
     };
 

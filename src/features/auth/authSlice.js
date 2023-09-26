@@ -33,6 +33,7 @@ const userSlice = createSlice({
       state.routeName = "Dashboard";
     },
     routePageName: (state, action) => {
+      console.log(action.payload);
       state.routeName = action.payload;
     },
   },

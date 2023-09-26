@@ -28,18 +28,17 @@ const CardFormPeracikan = () => {
     const [formulaData, setFormulaData] = useState([]); // Store formula data from the server
     const [newFormulaName, setNewFormulaName] = useState('')
     const base_url = useSelector(selectUrl);
+    const header = localStorage.getItem("token");
 
     // Fetch formula data from the server when the component mounts
     useEffect(() => {
         axios.get(base_url + 'api/v1/resep', {
             headers: {
-                Authorization: "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Iml0ZXJhaGVybzIwMjJAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiYXVkIjoiaXRlcmFoZXJvIiwiaXNzIjoia2VkYWlyZWthIiwic3ViIjoic21hcnQtZmFybWluZyIsImlhdCI6MTY5NTYxNzc0OCwiZXhwIjoxNjk1NjYwOTQ4fQ.ztAxKKEcvG9y8VTHWZU421Bmg61ZjdLnzdyiUDw29Bs"
+                Authorization: "Bearer " + header
             }
         })
             .then(response => {
-                console.log(response.data.data)
                 setFormulaData(response.data.data);
-                console.log(formulaData)
             })
             .catch(error => {
                 console.error("Error fetching formula data:", error);
@@ -47,24 +46,10 @@ const CardFormPeracikan = () => {
     }, []);
 
 
-    const fetchFormulaData = (selectedFormula) => {
-        // Find the formula data for the selected formula
-        const selectedFormulaData = formulaData.find(data => data.formula === selectedFormula);
-        if (selectedFormulaData) {
-            // setPhValue(selectedFormulaData.ph);
-            // setPpmValue(selectedFormulaData.ppm);
-        } else {
-            // Handle the case where no data is found for the selected formula
-            setPhValue("");
-            setPpmValue("");
-        }
-    };
-
     // Function to handle formula selection change
     const handleFormulaChange = (e) => {
         const selectedFormula = e.target.value;
         setFormula(selectedFormula);
-        fetchFormulaData(selectedFormula);
     };
 
     const [isOpen, setIsOpen] = useState(false);
@@ -73,15 +58,12 @@ const CardFormPeracikan = () => {
     const onClose = () => setIsOpen(false);
 
     const handleSubmit = async () => {
-        // You can send the pH and ppm values to the server here
         console.log("pH Value:", phValue);
         console.log("ppm Value:", ppmValue);
-        // console.log("nama formula:", formula);
     };
 
     const addFormula = async () => {
         try {
-            // Create a data object containing the ppm, ph, and nama values
             const data = {
                 nama: newFormulaName, // Tambahkan nama formula baru
                 ppm: ppmValue,
@@ -89,25 +71,22 @@ const CardFormPeracikan = () => {
             };
 
             // Make an HTTP POST request to your API endpoint
-            const response = await axios.post('YOUR_API_ENDPOINT', data, {
+            axios.post(base_url + "/api/v1/resep", data, {
                 headers: {
-                    'Authorization': 'Bearer YOUR_ACCESS_TOKEN' // Add your authorization token here
+                    'Authorization': `Bearer ${header}` // Add your authorization token here
                 }
+            })
+            .then(response => {
+                console.log("API Response:", response.data);
+                setNewFormulaName(""); // Reset nama formula baru
+                setPpmValue("");
+                setPhValue("");
             });
-
-            // Handle the response from the API
-            console.log("API Response:", response.data);
-
-            // Clear the input values after successful submission
-            setNewFormulaName(""); // Reset nama formula baru
-            setPpmValue("");
-            setPhValue("");
         } catch (error) {
             // Handle any errors that occur during the request
             console.error("Error sending data to API:", error);
         }
     };
-
 
     return (
         <>

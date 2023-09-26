@@ -4,18 +4,17 @@ import { TabTitle } from "../../Utility/utility";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { greenhouseByUserId } from "../../Utility/api_link";
-import { routePageName } from "../../redux/action";
 import axios from "axios";
 import ValueTandon from "../../component/value_tandon/value_tandon";
 import CardFormPeracikan from "../../component/card_form_peracikan/card_form_peracikan";
 import CardStatusPeracikan from "../../component/card_tandon_peracikan/card_tandon_peracikan";
 import { useSelector } from "react-redux";
-import { selectUrl } from "../../features/auth/authSlice";
+import { selectUrl, routePageName } from "../../features/auth/authSlice";
 
 const Peracikan = () => {
-	const base_url = useSelector(selectUrl);
 	TabTitle("Peracikan - ITERA Hero")
-	const navigate = useNavigate();
+	const base_url = useSelector(selectUrl);
+	const dispatch = useDispatch();
 	const [data, setData] = useState("");
 	const [dataApi, setDataApi] = useState(null);
 	const header = localStorage.getItem("token");
@@ -28,19 +27,15 @@ const Peracikan = () => {
 				},
 			})
 			.then((response) => setDataApi(response.data.data))
-		// console.log(dataApi)
 			.catch((error) => {
-				localStorage.clear();
-				navigate("/login");
+				// localStorage.clear();
+				// navigate("/login");
 			});
 	};
 	
-	const dispatch = useDispatch();
 	useEffect(() => {
 		getApiGreenhouse();
-		return () => {
-			dispatch(routePageName("Peracikan"));
-		};
+		dispatch(routePageName("Peracikan"));
 	}, []);
 
 	return (

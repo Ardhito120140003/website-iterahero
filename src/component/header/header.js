@@ -4,14 +4,15 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import Draw from "../draw/draw";
 import { Link } from "react-router-dom";
-import { selectUrl } from "../../features/auth/authSlice";
+import { selectRoute } from "../../features/auth/authSlice";
 import { logout } from "../../features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 const Header = () => {
-  const routeName = useSelector(selectUrl);
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const routeName = useSelector(selectRoute);
 
   return (
     <Flex

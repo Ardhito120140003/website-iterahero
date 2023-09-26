@@ -49,12 +49,12 @@ function App() {
         <Route path="/unit" element={<Board />}>
           <Route path="dashboard/:id" element={ user === 'admin' ? <Dashboard /> : <DashboardOperator />} />
           <Route path="greenhouse" element={<GreenHouse />} />
+          <Route path="peracikan" element={<Peracikan />} />
+          <Route path="penjadwalan" element={<Penjadwalan />} />
           {user === "admin" ? (
             <>
               <Route path="monitoring" element={<Monitoring />} />
               <Route path="controlling" element={<Controlling />} />
-              <Route path="peracikan" element={<Peracikan />} />
-              <Route path="penjadwalan" element={<Penjadwalan />} />
               <Route path="historynotifikasi" element={<Notification />} />
               <Route
                 path="historynotifikasi/more-notifcation"
