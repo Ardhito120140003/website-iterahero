@@ -17,10 +17,10 @@ import { updateGreenhouse } from "../../Utility/api_link";
 import Loading from "../../component/loading/loading";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const GreenhouseEdit = () => {
-	const base_url = useSelector(selectRoute);
+	const base_url = useSelector(selectUrl);
 	TabTitle("Edit Greenhouse - ITERA Hero");
 
 	const { slug } = useParams();

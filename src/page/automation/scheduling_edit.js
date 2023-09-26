@@ -18,10 +18,10 @@ import Loading from "../../component/loading/loading";
 import { useParams } from "react-router";
 import { logout } from "../../features/auth/authSlice";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const ScheduleEdit = () => {
-  const base_url = useSelector(selectRoute);
+  const base_url = useSelector(selectUrl);
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [dataSchedule, setDataSchedule] = useState("");
@@ -107,7 +107,7 @@ const ScheduleEdit = () => {
   const getSchedule = async () => {
     setIsLoading(true);
     await axios
-      .get(base_url + `${scheduling}/${id}`, {
+      .get(`${base_url}${scheduling}/${id}`, {
         headers: {
           Authorization: "Bearer " + header,
         },

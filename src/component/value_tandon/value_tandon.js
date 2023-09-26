@@ -2,17 +2,17 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Box, CircularProgressLabel, CircularProgress, Text, Flex, Center } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const ValueTandon = () => {
-    const base_url = useSelector(selectRoute);
+    const base_url = useSelector(selectUrl);
     const min = 20;
     const [ValueSensor,setValueSensor]=useState[' ']
     const header = localStorage.getItem("token");
 
     const getValueTandon = async () => {
         await axios
-            .get(base_url + `////`, {
+            .get(`${base_url}////`, {
                 headers: {
                     Authorization: "Bearer " + header,
                 },

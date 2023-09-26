@@ -23,10 +23,10 @@ import { updateSensorDetail, icons, categoryApi } from "../../Utility/api_link";
 import axios from "axios";
 import "./monitoring.css";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const Monitoring_Edit = () => {
-  const base_url = useSelector(selectRoute);
+  const base_url = useSelector(selectUrl);
   TabTitle("Edit Sensor - ITERA Hero");
   const navigate = useNavigate();
   const location = useLocation();

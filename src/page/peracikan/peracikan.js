@@ -10,10 +10,10 @@ import ValueTandon from "../../component/value_tandon/value_tandon";
 import CardFormPeracikan from "../../component/card_form_peracikan/card_form_peracikan";
 import CardStatusPeracikan from "../../component/card_tandon_peracikan/card_tandon_peracikan";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const Peracikan = () => {
-	const base_url = useSelector(selectRoute);
+	const base_url = useSelector(selectUrl);
 	TabTitle("Peracikan - ITERA Hero")
 	const navigate = useNavigate();
 	const [data, setData] = useState("");

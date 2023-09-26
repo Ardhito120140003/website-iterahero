@@ -11,12 +11,12 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../../component/loading/loading";
 import { logout } from "../../features/auth/authSlice";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const GreenHouse = () => {
 	TabTitle("Greenhouse - ITERA Hero")
 	
-	const base_url = useSelector(selectRoute);
+	const base_url = useSelector(selectUrl);
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 
@@ -34,9 +34,9 @@ const GreenHouse = () => {
 			console.log(response.data.data)
 		})
 			.catch((error) => {
-				localStorage.clear()
-dispatch(logout())
-				navigate('/login')
+				// localStorage.clear()
+				// dispatch(logout())
+				// navigate('/login')
 			})
 	}
 

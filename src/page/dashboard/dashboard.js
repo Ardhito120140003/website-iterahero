@@ -26,10 +26,10 @@ import CardSensor from "../../component/card_sensor/card_sensor";
 import CardAktuator from "../../component/card_aktuator/card_aktuator";
 import { logout } from "../../features/auth/authSlice";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const Dashboard = () => {
-  const base_url = useSelector(selectRoute);
+  const base_url = useSelector(selectUrl);
   let id = parseInt(useParams().id);
   TabTitle("Dashboard - ITERA Hero");
   const dispatch = useDispatch();
@@ -75,7 +75,7 @@ const Dashboard = () => {
       })
       .catch((error) => {
         localStorage.clear()
-dispatch(logout());
+        dispatch(logout());
         navigate("/login");
       });
   };

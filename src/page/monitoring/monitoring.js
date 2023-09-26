@@ -12,10 +12,10 @@ import { greenhouseByUserId } from "../../Utility/api_link";
 import axios from "axios";
 import Loading from "../../component/loading/loading";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const Monitoring = () => {
-  const base_url = useSelector(selectRoute);
+  const base_url = useSelector(selectUrl);
   TabTitle("Monitoring - ITERA Hero");
   const navigate = useNavigate();
   const [data, setData] = useState("");
@@ -38,9 +38,9 @@ const Monitoring = () => {
         }
       });
     console.log(dataApi).catch((error) => {
-      localStorage.clear()
-      dispatch(logout());
-      navigate("/login");
+      // localStorage.clear()
+      // dispatch(logout());
+      // navigate("/login");
     });
   };
   useEffect(() => {

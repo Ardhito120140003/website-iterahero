@@ -23,11 +23,11 @@ import CardScheduling from "../../component/card Automation/card_scheduling";
 import { logout } from "../../features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 
 const AutomationList = (props) => {
-  const base_url = useSelector(selectRoute);
+  const base_url = useSelector(selectUrl);
   const idApi = props.data.id;
   const header = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const AutomationList = (props) => {
   const dispatch = useDispatch();
   const getAutomation = async () => {
     await axios
-      .get(base_url + `${getAutomationByActuator}${idApi}`, {
+      .get(`${base_url}${getAutomationByActuator}${idApi}`, {
         headers: {
           Authorization: "Bearer " + header,
         },
@@ -54,7 +54,7 @@ const AutomationList = (props) => {
   };
   const getActuatorAutomation = async () => {
     await axios
-      .get(base_url + `${getActuatorDetail}${idApi}`, {
+      .get(`${base_url}${getActuatorDetail}${idApi}`, {
         headers: {
           Authorization: "Bearer " + header,
         },
@@ -70,7 +70,7 @@ dispatch(logout());
   };
   const getSchedule = async () => {
     await axios
-      .get(base_url + `${scheduling}?actuatorid=${idApi}`, {
+      .get(`${base_url}${scheduling}?actuatorid=${idApi}`, {
         headers: {
           Authorization: "Bearer " + header,
         },

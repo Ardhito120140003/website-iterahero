@@ -12,11 +12,11 @@ import axios from "axios";
 import Loading from "../../component/loading/loading";
 import { logout } from "../../features/auth/authSlice";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 
 const MonitoringDetail = () => {
-  const base_url = useSelector(selectRoute);
+  const base_url = useSelector(selectUrl);
   TabTitle("Monitoring - ITERA Hero");
   const navigate = useNavigate();
   const location = useLocation();

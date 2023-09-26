@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 
 const CardLogActuatorToday = (props) => {
@@ -26,12 +26,12 @@ const CardLogActuatorToday = (props) => {
   const [dataTable, setDataTable] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   
-  const base_url = useSelector(selectRoute);
+  const base_url = useSelector(selectUrl);
     const getPagination = async () => {
       setIsLoading(true)
 
       const header = localStorage.getItem('token')
-      await axios.get(base_url + `${actuatorLogToday}${idApi}`, {
+      await axios.get(`${base_url}${actuatorLogToday}${idApi}`, {
         headers: {
             'Authorization': 'Bearer ' + header
           }

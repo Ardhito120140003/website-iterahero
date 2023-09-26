@@ -4,10 +4,10 @@ import { GiWaterGallon, GiWaterTower, GiWaterTank, GiWaterBottle, GiWatermelon }
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const CardStatusPeracikan = () => {    
-    const base_url = useSelector(selectRoute);
+    const base_url = useSelector(selectUrl);
     const navigate = useNavigate();
     const [dataApi, setDataApi] = useState(null);
     const [status, setStatus] = useState(null)
@@ -21,7 +21,7 @@ const CardStatusPeracikan = () => {
 
     const getStatusPeracikan = async () => {
     	await axios
-    		.get(base_url + `////`, {
+    		.get(`${base_url}////`, {
     			headers: {
     				Authorization: "Bearer " + header,
     			},

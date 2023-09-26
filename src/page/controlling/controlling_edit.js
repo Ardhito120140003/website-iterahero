@@ -23,11 +23,11 @@ import { updateActuatorDetail, icons } from "../../Utility/api_link";
 import axios from "axios";
 import { logout } from "../../features/auth/authSlice";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 
 const Controlling_Edit = () => {
-  const base_url = useSelector(selectRoute);
+  const base_url = useSelector(selectUrl);
   TabTitle("Edit Aktuator - ITERA Hero");
   const location = useLocation();
   const navigate = useNavigate();

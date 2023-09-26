@@ -24,10 +24,10 @@ import kondisiAutomatis from "../../Utility/dropdown_kondisi";
 import automationMenu from "../../Utility/automation_menu";
 import { logout } from "../../features/auth/authSlice";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const AutomationAddBySensor = (props) => {
-  const base_url = useSelector(selectRoute);
+  const base_url = useSelector(selectUrl);
   const id = props.data.id;
   TabTitle("Edit Automation - ITERA Hero");
   const [isLoading, setIsLoading] = useState(true);
@@ -130,7 +130,7 @@ const AutomationAddBySensor = (props) => {
   const getActuator = async () => {
     setIsLoading(true);
     await axios
-      .get(base_url + `${getActuatorDetail}${id}`, {
+      .get(`${base_url}${getActuatorDetail}${id}`, {
         headers: {
           Authorization: "Bearer " + header,
         },
@@ -149,7 +149,7 @@ dispatch(logout());
   const getSensor = async (id_greenhouse) => {
     setIsLoading(true);
     await axios
-      .get(base_url + `${monitoringApi}${id_greenhouse}&&size=100`, {
+      .get(`${base_url}${monitoringApi}${id_greenhouse}&&size=100`, {
         headers: {
           Authorization: "Bearer " + header,
         },

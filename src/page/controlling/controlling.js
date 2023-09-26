@@ -11,10 +11,10 @@ import Loading from "../../component/loading/loading";
 import TableControlling from "../../component/table/controlling_table";
 import { Formik } from "formik";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const Controlling = () => {
-  const base_url = useSelector(selectRoute);
+  const base_url = useSelector(selectUrl);
   TabTitle("Controlling - ITERA Hero");
   const navigate = useNavigate();
   const [dataApi, setDataApi] = useState(null);

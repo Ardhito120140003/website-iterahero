@@ -10,12 +10,12 @@ import ValueSensor from "../value_sensor/value_sensor";
 import { logout } from "../../features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 
 const CardSensor = (props) => {
   const idApi = props.data.id;
-  const base_url = useSelector(selectRoute);
+  const base_url = useSelector(selectUrl);
   const navigate = useNavigate();
   const [dataTable, setDataTable] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +25,7 @@ const CardSensor = (props) => {
 
     const header = localStorage.getItem("token");
     await axios
-      .get(base_url + `${paginationMonitoring}${idApi}&&size=100`, {
+      .get(`${base_url}${paginationMonitoring}${idApi}&&size=100`, {
         headers: {
           Authorization: "Bearer " + header,
         },

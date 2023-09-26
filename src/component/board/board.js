@@ -4,10 +4,10 @@ import SideNav from "../sidenav/sidenav";
 import Header from "../header/header";
 import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const Board = () => {
-  const routeName = useSelector(selectRoute);
+  const routeName = useSelector(selectUrl);
   return (
     <Flex color="white" width="100%">
       <Box bg="tomato" h={"100vh"} overflow={"hidden"}>

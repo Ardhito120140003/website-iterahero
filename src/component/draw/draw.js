@@ -13,14 +13,14 @@ import { FiHome, FiMonitor } from "react-icons/fi";
 import { GiGreenhouse } from "react-icons/gi";
 import { AiOutlineControl, AiOutlineHistory } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 import { routePageName } from "../../features/auth/authSlice";
 
 const Draw = (props) => {
   const data = props.data;
   const navSize = "large";
 
-  const routeName = useSelector(selectRoute);;
+  const routeName = useSelector(selectUrl);;
 
   const dispatch = useDispatch();
 

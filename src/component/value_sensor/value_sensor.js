@@ -25,12 +25,12 @@ import { buildStyles } from 'react-circular-progressbar';
 import moment from 'moment/moment';
 import './value_sensor.css';
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const ValueSensor = (props) => {
   const idSensor = props.data.id
   const color = props.data.color
-  const base_url = useSelector(selectRoute);
+  const base_url = useSelector(selectUrl);
   const kategori = props.data.category
   const satuan =props.data.unit
   const max = props.data.max
@@ -48,7 +48,7 @@ const ValueSensor = (props) => {
 
   const getValueRefreshFirst = async () => {
      setTimeout(() => {
-      axios.get(base_url + `${brokerSensor}${idSensor}`)
+      axios.get(`${base_url}${brokerSensor}${idSensor}`)
       .then(response => { 
         setValueSensor(response.data.data[0].value)
         setStatus(response.data.data[0].status)
@@ -60,7 +60,7 @@ const ValueSensor = (props) => {
   }
   const getValueRefreshSecond = async () => {
      setTimeout(() => {
-      axios.get(base_url + `${brokerSensor}${idSensor}`)
+      axios.get(`${base_url}${brokerSensor}${idSensor}`)
       .then(response => { 
         setValueSensor(response.data.data[0].value)
         setStatus(response.data.data[0].status)
@@ -79,7 +79,7 @@ const ValueSensor = (props) => {
     }
   }
   const getValue = async () => {
-    axios.get(base_url + `${brokerSensor}${idSensor}`)
+    axios.get(`${base_url}${brokerSensor}${idSensor}`)
     .then(response => { 
       setValueSensor(response.data.data[0].value)
       setStatus(response.data.data[0].status)

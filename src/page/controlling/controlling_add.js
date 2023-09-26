@@ -29,10 +29,10 @@ import {
 import axios from "axios";
 import Loading from "../../component/loading/loading";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const Controlling_Add = () => {
-  const base_url = useSelector(selectRoute);
+  const base_url = useSelector(selectUrl);
   TabTitle("Tambah Aktuator - ITERA Hero");
   const { id } = useParams();
   const navigate = useNavigate();

@@ -9,7 +9,7 @@ import NavItem from "../navitem/navitem";
 import { useSelector, useDispatch } from "react-redux";
 import { routePageName, selectUser } from "../../features/auth/authSlice";
 import { Link } from "react-router-dom";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const SideNav = () => {
   const navSize = "large";
@@ -20,7 +20,7 @@ const SideNav = () => {
   const patchRoute = (data) => {
     dispatch(routePageName(data));
   };
-  const routeName = useSelector(selectRoute);;
+  const routeName = useSelector(selectUrl);;
 
   return (
     <>

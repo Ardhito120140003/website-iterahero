@@ -9,12 +9,12 @@ import axios from "axios";
 import CardFormPenjadwalan from "../../component/card_form_penjadwalan/card_form_penjadwalan";
 import CardJadwal from "../../component/card_jadwal/card_jadwal";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const Penjadwalan = () => {
   TabTitle("Penjadwalan - ITERA Hero");
   
-  const base_url = useSelector(selectRoute);
+  const base_url = useSelector(selectUrl);
   const navigate = useNavigate();
   const [dataApi, setDataApi] = useState(null);
   const header = localStorage.getItem("token");

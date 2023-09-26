@@ -5,7 +5,7 @@ import GrafikValue from "./grafik_value";
 import "./grafik_component";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -29,7 +29,7 @@ ChartJS.register(
 );
 
 const GrafikComponent = (props) => {
-  const base_url = useSelector(selectRoute);
+  const base_url = useSelector(selectUrl);
   const [isLoading, setIsLoading] = useState(false);
   const id = props.data.id;
   const value = props.data.value;
@@ -37,7 +37,7 @@ const GrafikComponent = (props) => {
   const getGrafik = async () => {
     const header = localStorage.getItem("token");
     await axios
-      .get(base_url + `${getGrafikSensor}${id}?getDateQuery=${value}`, {
+      .get(`${base_url}${getGrafikSensor}${id}?getDateQuery=${value}`, {
         headers: {
           Authorization: "Bearer " + header,
         },

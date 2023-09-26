@@ -18,7 +18,7 @@ import {
 import axios from "axios";
 import Loading from "../loading/loading";
 import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 
 const CardFormPeracikan = () => {
     const [namaFormula, setNamaFormula] = useState("")
@@ -27,7 +27,7 @@ const CardFormPeracikan = () => {
     const [formula, setFormula] = useState('');
     const [formulaData, setFormulaData] = useState([]); // Store formula data from the server
     const [newFormulaName, setNewFormulaName] = useState('')
-    const base_url = useSelector(selectRoute);
+    const base_url = useSelector(selectUrl);
 
     // Fetch formula data from the server when the component mounts
     useEffect(() => {
