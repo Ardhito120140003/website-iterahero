@@ -17,8 +17,11 @@ import Loading from "../../component/loading/loading";
 import { Switch } from "@chakra-ui/react";
 import "./value_aktuator.css";
 import { RiArrowRightSLine } from "react-icons/ri";
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 const ValueAktuator = (props) => {
+  const base_url = useSelector(selectRoute);
   const idApi = props.data.id;
   const life_cycle = props.data.life_cycle;
   const automation = props.data.automation;
@@ -38,7 +41,7 @@ const ValueAktuator = (props) => {
   };
   const onlineStatus = () => {
     axios
-      .get(`${Status}${idApi}`, {
+      .get(base_url + `${Status}${idApi}`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },

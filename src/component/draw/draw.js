@@ -107,6 +107,32 @@ const Draw = (props) => {
               active={routeName === "History Notification"}
             />
           </Link>
+          <Link
+            to={"/unit/peracikan"}
+            onClick={() => {
+              patchRoute("Peracikan");
+            }}
+          >
+            <NavItem
+              navSize={navSize}
+              icon={AiOutlineHistory}
+              title="Peracikan"
+              active={routeName === "Peracikan"}
+            />
+          </Link>
+          <Link
+            to={"/unit/penjadwalan"}
+            onClick={() => {
+              patchRoute("Penjadwalan");
+            }}
+          >
+            <NavItem
+              navSize={navSize}
+              icon={AiOutlineHistory}
+              title="Penjadwalan"
+              active={routeName === "Penjadwalan"}
+            />
+          </Link>
         </DrawerBody>
       </DrawerContent>
     </Drawer>

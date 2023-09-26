@@ -38,6 +38,7 @@ const CardAutomation = (props) => {
   };
 
   useEffect(() => {}, [item]);
+  console.log([item])
 
   return (
     <>

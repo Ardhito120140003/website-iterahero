@@ -1,35 +1,17 @@
-import React, { useState, useEffect } from "react";
 import {
-  Flex,
-  Image,
-  Text,
-  Select,
-  Wrap,
-  Button,
-  Menu,
-  Box,
+    Flex
 } from "@chakra-ui/react";
-import CardDashboard from "../../component/card_dashboard/card_dashboard";
-import { GiGreenhouse } from "react-icons/gi";
-import { MdMonitor } from "react-icons/md";
-import { AiOutlineControl } from "react-icons/ai";
-import { useDispatch } from "react-redux";
-import { routePageName } from "../../features/auth/authSlice";
-import { TabTitle } from "../../Utility/utility";
 import axios from "axios";
-import Loading from "../../component/loading/loading";
-import { dashboardApi, greenhouseByUserId } from "../../Utility/api_link";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { Formik } from "formik";
-import dashboardMenu from "../../Utility/dashboard_menu";
-import CardSensor from "../../component/card_sensor/card_sensor";
-import CardAktuator from "../../component/card_aktuator/card_aktuator";
-import { logout } from "../../features/auth/authSlice";
-import { useSelector } from "react-redux";
-import { selectRoute } from "../../features/auth/authSlice";
+import { dashboardApi, greenhouseByUserId } from "../../Utility/api_link";
+import { TabTitle } from "../../Utility/utility";
+import Loading from "../../component/loading/loading";
+import { routePageName, selectUrl } from "../../features/auth/authSlice";
 
-const Dashboard = () => {
-  const base_url = useSelector(selectRoute);
+
+const DashboardOperator = () => {
   let id = parseInt(useParams().id);
   TabTitle("Dashboard - ITERA Hero");
   const dispatch = useDispatch();
@@ -40,6 +22,7 @@ const Dashboard = () => {
   const [selected, setSelected] = useState(id);
   const [dataGreenhouse, setDataGreenhouse] = useState(null);
   const [dataSensor, setDataSensor] = useState(null);
+  const base_url = useSelector(selectUrl);
 
   const getApiDashboard = async () => {
     const header = localStorage.getItem("token");
@@ -51,9 +34,9 @@ const Dashboard = () => {
       })
       .then((response) => setDataApi(response.data.data))
       .catch((error) => {
-        localStorage.clear()
-        dispatch(logout());
-        navigate("/login");
+        // localStorage.clear()
+        // dispatch(logout());
+        // navigate("/login");
       });
   };
   const getApiGreenhouse = async () => {
@@ -65,6 +48,7 @@ const Dashboard = () => {
         },
       })
       .then((response) => {
+        console.log(response);
         if (response.data.data.length > 0) {
           console.log(response.data.data);
           setDataGreenhouse(response.data.data);
@@ -74,9 +58,9 @@ const Dashboard = () => {
         }
       })
       .catch((error) => {
-        localStorage.clear()
-dispatch(logout());
-        navigate("/login");
+        // localStorage.clear()
+        // dispatch(logout());
+        // navigate("/login");
       });
   };
 
@@ -91,7 +75,11 @@ dispatch(logout());
       {dataApi == null || dataGreenhouse == null ? (
         <Loading />
       ) : (
-        <Flex w="100%" flexDir={"column"}>
+        <Flex>
+            {"WKWKWK"}
+        </Flex>
+      )}
+        {/* <Flex w="100%" flexDir={"column"}>
           <Flex
             w="100%"
             flexDir={"row"}
@@ -260,9 +248,8 @@ dispatch(logout());
               <></>
             )}
           </Wrap>
-        </Flex>
-      )}
+        </Flex> )}*/ }
     </>
   );
 };
-export default Dashboard;
+export default DashboardOperator;

@@ -13,8 +13,11 @@ import AutomationList from "./automation_list";
 import { useDispatch } from "react-redux";
 import { routePageName } from "../../features/auth/authSlice";
 import { logout } from "../../features/auth/authSlice";
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 const Automation = () => {
+  const base_url = useSelector(selectRoute);
   TabTitle("Detail Actuator - ITERA Hero");
   const [data, setData] = useState("");
   const [dataApi, setDataApi] = useState(null);
@@ -27,7 +30,7 @@ const dispatch = useDispatch();
     setIsLoading(true);
     const header = localStorage.getItem("token");
     await axios
-      .get(`${getActuatorDetail}${id}`, {
+      .get(base_url + `${getActuatorDetail}${id}`, {
         headers: {
           Authorization: "Bearer " + header,
         },

@@ -22,10 +22,12 @@ import { TabTitle } from "../../Utility/utility";
 import { updateActuatorDetail, icons } from "../../Utility/api_link";
 import axios from "axios";
 import { logout } from "../../features/auth/authSlice";
-
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 
 const Controlling_Edit = () => {
+  const base_url = useSelector(selectRoute);
   TabTitle("Edit Aktuator - ITERA Hero");
   const location = useLocation();
   const navigate = useNavigate();
@@ -86,7 +88,7 @@ dispatch(logout());
   const [iconsList, setIconsList] = useState(null);
   const getIcon = async () => {
     axios
-      .get(icons)
+      .get(base_url + icons)
       .then((response) => {
         // console.log("isi response", response);
         setIconsList(response.data.data);

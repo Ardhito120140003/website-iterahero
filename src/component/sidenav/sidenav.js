@@ -3,7 +3,8 @@ import "./navigation.css";
 import { Flex, Image, Box, Center } from "@chakra-ui/react";
 import { FiHome, FiMonitor } from "react-icons/fi";
 import { GiGreenhouse } from "react-icons/gi";
-import { AiOutlineControl, AiOutlineHistory } from "react-icons/ai";
+import { AiOutlineControl, AiOutlineHistory,AiOutlineHourglass } from "react-icons/ai";
+import { MdOutlineMoreTime} from  "react-icons/md";
 import NavItem from "../navitem/navitem";
 import { useSelector, useDispatch } from "react-redux";
 import { routePageName, selectUser } from "../../features/auth/authSlice";
@@ -33,11 +34,11 @@ const SideNav = () => {
         h="150vh"
         boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
         w={{
-          base: "230px",
-          xl: "370px",
+          base: "250px",
+          xl: "250px",
         }}
         flexDir="column"
-        justifyContent="space-between"
+        justifyContent="flex-start"
       >
         <Flex flexDir="column" w="100%" as="nav" className="navbar">
           <Box paddingRight="5%">

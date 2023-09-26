@@ -16,8 +16,11 @@ import axios from "axios";
 import { updateGreenhouse } from "../../Utility/api_link";
 import Loading from "../../component/loading/loading";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 const GreenhouseEdit = () => {
+	const base_url = useSelector(selectRoute);
 	TabTitle("Edit Greenhouse - ITERA Hero");
 
 	const { slug } = useParams();
@@ -29,7 +32,7 @@ const GreenhouseEdit = () => {
 
 	const getApibyID = async () => {
 		await axios
-			.get(updateGreenhouse + slug, {
+			.get(base_url + updateGreenhouse + slug, {
 				headers: {
 					Authorization: "Bearer " + header,
 				},

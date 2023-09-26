@@ -11,9 +11,12 @@ import { greenhouseByUserId } from "../../Utility/api_link";
 import axios from "axios";
 import Loading from "../../component/loading/loading";
 import { logout } from "../../features/auth/authSlice";
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 
 const MonitoringDetail = () => {
+  const base_url = useSelector(selectRoute);
   TabTitle("Monitoring - ITERA Hero");
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,7 +27,7 @@ const MonitoringDetail = () => {
 
   // const getSensorDetail = async () => {
   //   await axios
-  //     .get(greenhouseByUserId, {
+  //     .get(base_url + greenhouseByUserId, {
   //       headers: {
   //         Authorization: "Bearer " + header,
   //       },

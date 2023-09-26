@@ -14,10 +14,13 @@ import GrafikComponent from "../../component/grafik_component/grafik_component";
 import SummaryComponent from "../../component/summary_component/summary_component";
 import { logout } from "../../features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 
 const Grafik = () => {
   TabTitle("Grafik - ITERA Hero");
+  const base_url = useSelector(selectRoute);
   const [data, setData] = useState("Day");
   const [dataApi, setDataApi] = useState(null);
   const dispatch = useDispatch();
@@ -28,7 +31,7 @@ const Grafik = () => {
     setIsLoading(true);
     const header = localStorage.getItem("token");
     await axios
-      .get(`${idSensor}${id}`, {
+      .get(base_url + `${idSensor}${id}`, {
         headers: {
           Authorization: "Bearer " + header,
         },

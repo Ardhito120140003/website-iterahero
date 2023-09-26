@@ -28,8 +28,11 @@ import {
 } from "../../Utility/api_link";
 import axios from "axios";
 import Loading from "../../component/loading/loading";
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 const Controlling_Add = () => {
+  const base_url = useSelector(selectRoute);
   TabTitle("Tambah Aktuator - ITERA Hero");
   const { id } = useParams();
   const navigate = useNavigate();
@@ -48,7 +51,7 @@ const Controlling_Add = () => {
 
   const getIcon = async () => {
     axios
-      .get(icons)
+      .get(base_url + icons)
       .then((response) => {
         setIconsList(response.data.data);
         checkLoading(false);
@@ -59,7 +62,7 @@ const Controlling_Add = () => {
   };
   const getDataApi = async () => {
     axios
-      .get(getApiGreenhouse + id, {
+      .get(base_url + getApiGreenhouse + id, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },

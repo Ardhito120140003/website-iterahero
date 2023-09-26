@@ -29,8 +29,11 @@ import {
 } from "../../Utility/api_link";
 import axios from "axios";
 import Loading from "../../component/loading/loading";
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 const Monitoring_Add = () => {
+  const base_url = useSelector(selectRoute);
   const navigate = useNavigate();
   TabTitle("Tambah Sensor - ITERA Hero");
   const { id } = useParams();
@@ -41,7 +44,7 @@ const Monitoring_Add = () => {
   const [dataApi, setDataApi] = useState(null);
   const getDataApi = async () => {
     await axios
-      .get(getApiGreenhouse + id, {
+      .get(base_url + getApiGreenhouse + id, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -70,7 +73,7 @@ const Monitoring_Add = () => {
   const [iconsList, setIconsList] = useState(null);
   const getIcon = async () => {
     axios
-      .get(icons)
+      .get(base_url + icons)
       .then((response) => {
         // console.log("isi response", response);
         setIconsList(response.data.data);
@@ -84,7 +87,7 @@ const Monitoring_Add = () => {
   const header = localStorage.getItem("token");
   const getDataCategory = async () => {
     axios
-      .get(categoryApi, {
+      .get(base_url + categoryApi, {
         headers: {
           Authorization: "Bearer " + header,
         },

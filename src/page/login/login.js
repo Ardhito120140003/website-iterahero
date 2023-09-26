@@ -25,23 +25,19 @@ const schema = yup.object({
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector(selectUser)
+  const user = useSelector(selectUser);
 
   const handleSubmitComplate = (emailValue, passwordValue) => {
     axios
-      .post(loginApi, {
+      .post("https://iterahero-e1a0e90da51e.herokuapp.com/api/v1/login", {
         email: emailValue,
         password: passwordValue,
       })
       .then((response) => {
+        dispatch(login(response.data));
         console.log(response);
-        dispatch(login(response.data.data))
-        if (response.data == "" || response.data == " ") {
-          alert("Login gagal");
-        } else {
-          localStorage.setItem("token", response.data.data.accessToken);
-          navigate("/unit/dashboard/1");
-        }
+        localStorage.setItem("token", response.data.accessToken);
+        navigate("/unit/dashboard/1");
       })
       .catch((error) => console.log(error));
   };
@@ -52,8 +48,14 @@ const Login = () => {
     }
   };
 
+  const validateInput = (value) => {
+    if (value.length < 6) {
+      return "Password harus lebih dari 6 karakter";
+    }
+  };
+
   useEffect(() => {
-    checkToken()
+    checkToken();
   }, []);
 
   TabTitle("Login - ITERA Hero");
@@ -194,11 +196,6 @@ const Login = () => {
                     value={values.password}
                     placeholder="Masukkan password"
                     required="password harus diisi"
-                    validate={(value) =>
-                      value.length < 6
-                        ? "Password harus lebih dari 6 karakter"
-                        : null
-                    }
                   />
                   <FormErrorMessage>{errors.password}</FormErrorMessage>
                 </FormControl>

@@ -4,8 +4,11 @@ import { Text, Flex, Button } from "@chakra-ui/react";
 import axios from "axios";
 import Papa from "papaparse";
 import Loading from "../../component/loading/loading";
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 const SummaryComponent = (props) => {
+  const base_url = useSelector(selectRoute);
   const id = props.data.id;
   const value = props.data.value;
   const name = props.data.name;
@@ -26,7 +29,7 @@ const SummaryComponent = (props) => {
   const getSummary = async () => {
     const header = localStorage.getItem("token");
     await axios
-      .get(`${summary}/${id}?getDateQuery=${value}`, {
+      .get(base_url + `${summary}/${id}?getDateQuery=${value}`, {
         headers: {
           Authorization: "Bearer " + header,
         },
@@ -40,7 +43,7 @@ const SummaryComponent = (props) => {
     setIsLoading(true);
     const header = localStorage.getItem("token");
     await axios
-      .get(`${downloadSummary}/${id}?getDateQuery=${value}`, {
+      .get(base_url + `${downloadSummary}/${id}?getDateQuery=${value}`, {
         headers: {
           Authorization: "Bearer " + header,
         },

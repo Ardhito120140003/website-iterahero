@@ -22,8 +22,11 @@ import { TabTitle } from "../../Utility/utility";
 import { updateSensorDetail, icons, categoryApi } from "../../Utility/api_link";
 import axios from "axios";
 import "./monitoring.css";
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 const Monitoring_Edit = () => {
+  const base_url = useSelector(selectRoute);
   TabTitle("Edit Sensor - ITERA Hero");
   const navigate = useNavigate();
   const location = useLocation();
@@ -53,7 +56,7 @@ const Monitoring_Edit = () => {
   const [dataCategory, setDataCategory] = useState(null);
   const getDataCategory = async () => {
     axios
-      .get(categoryApi, {
+      .get(base_url + categoryApi, {
         headers: {
           Authorization: "Bearer " + header,
         },
@@ -117,7 +120,7 @@ const Monitoring_Edit = () => {
   const [iconsList, setIconsList] = useState("");
   const getIcon = async () => {
     axios
-      .get(icons)
+      .get(base_url + icons)
       .then((response) => {
         setIconsList(response.data.data);
         checkLoading(false);

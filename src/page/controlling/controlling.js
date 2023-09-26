@@ -10,8 +10,11 @@ import { greenhouseByUserId } from "../../Utility/api_link";
 import Loading from "../../component/loading/loading";
 import TableControlling from "../../component/table/controlling_table";
 import { Formik } from "formik";
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 const Controlling = () => {
+  const base_url = useSelector(selectRoute);
   TabTitle("Controlling - ITERA Hero");
   const navigate = useNavigate();
   const [dataApi, setDataApi] = useState(null);
@@ -20,7 +23,7 @@ const Controlling = () => {
 
   const getApiGreenhouse = async () => {
     await axios
-      .get(greenhouseByUserId, {
+      .get(base_url + greenhouseByUserId, {
         headers: {
           Authorization: "Bearer " + header,
         },

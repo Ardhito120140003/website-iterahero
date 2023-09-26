@@ -10,11 +10,13 @@ import { listGreenhouse } from "../../Utility/api_link";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../component/loading/loading";
 import { logout } from "../../features/auth/authSlice";
-
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 const GreenHouse = () => {
 	TabTitle("Greenhouse - ITERA Hero")
-
+	
+	const base_url = useSelector(selectRoute);
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 
@@ -22,9 +24,8 @@ const GreenHouse = () => {
 
 	const header = localStorage.getItem('token')
 
-
 	const getListGreenhouse = async () => {
-		await axios.get(listGreenhouse, {
+		await axios.get(base_url + listGreenhouse, {
 			headers: {
 				'Authorization': 'Bearer ' + header
 			}
@@ -48,9 +49,6 @@ dispatch(logout())
 		<>
 			{dataApi == null ? <Loading />
 				:
-
-
-
 				<Flex w="100%" flexDir={"column"}>
 					<Flex
 						w="100%"

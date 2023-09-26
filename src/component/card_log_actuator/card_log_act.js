@@ -20,14 +20,17 @@ import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import CardLogActuatorToday from './today_card_log_act'
 import { logout } from "../../features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 const CardLogActuator = (props) => {
-		const eleminateZ = (date) => {
-			let result = date.replace("T", " ").replace("Z", " +0700");
-			return result;
-		};
-    const idApi = props.data.id
-		var idLocale = require("moment/locale/id");
+  const eleminateZ = (date) => {
+    let result = date.replace("T", " ").replace("Z", " +0700");
+    return result;
+  };
+  const base_url = useSelector(selectRoute);
+  const idApi = props.data.id
+  var idLocale = require("moment/locale/id");
 		moment.locale("id", idLocale);
     const navigate = useNavigate();
     const [dataTable, setDataTable] = useState([])
@@ -42,7 +45,7 @@ const CardLogActuator = (props) => {
       setIsLoading(true)
 
       const header = localStorage.getItem('token')
-      await axios.get(`${getLogAktuator}${idApi}&&page=${page}`, {
+      await axios.get(base_url + `${getLogAktuator}${idApi}&&page=${page}`, {
         headers: {
             'Authorization': 'Bearer ' + header
           }

@@ -24,8 +24,11 @@ import { useParams } from "react-router";
 import kondisiAutomatis from "../../Utility/dropdown_kondisi";
 import dropLifeCycle from "../../Utility/lifeCycleDropDown";
 import { logout } from "../../features/auth/authSlice";
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 const AutomationEdit = () => {
+  const base_url = useSelector(selectRoute);
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [dataActuator, setDataActuator] = useState("");
@@ -119,7 +122,7 @@ const AutomationEdit = () => {
   const getAutomation = async () => {
     setIsLoading(true);
     await axios
-      .get(`${apiGetAutomation}${id}`, {
+      .get(base_url + `${apiGetAutomation}${id}`, {
         headers: {
           Authorization: "Bearer " + header,
         },
@@ -137,7 +140,7 @@ dispatch(logout());
   const getActuator = async (data) => {
     setIsLoading(true);
     await axios
-      .get(`${getActuatorDetail}${data}`, {
+      .get(base_url + `${getActuatorDetail}${data}`, {
         headers: {
           Authorization: "Bearer " + header,
         },
@@ -156,7 +159,7 @@ dispatch(logout());
   const getSensor = async (id_greenhouse) => {
     setIsLoading(true);
     await axios
-      .get(`${monitoringApi}${id_greenhouse}`, {
+      .get(base_url + `${monitoringApi}${id_greenhouse}`, {
         headers: {
           Authorization: "Bearer " + header,
         },

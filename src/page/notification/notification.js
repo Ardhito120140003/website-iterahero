@@ -9,9 +9,12 @@ import { useNavigate, Link } from "react-router-dom";
 import { getNotificationByUserId } from "../../Utility/api_link";
 import Loading from "../../component/loading/loading";
 import { logout } from "../../features/auth/authSlice";
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 
 const Notification = () => {
+	const base_url = useSelector(selectRoute);
 	TabTitle("Notifikasi - ITERA Hero");
 	const navigate = useNavigate();
 	const [dataNotification, setDataNotification] = useState(null);
@@ -20,7 +23,7 @@ const Notification = () => {
 
 	const getNotificationData = async () => {
 		await axios
-			.get(`${getNotificationByUserId}&&size=6`, {
+			.get(base_url + `${getNotificationByUserId}&&size=6`, {
 				headers: {
 					Authorization: "Bearer " + header,
 				},

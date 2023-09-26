@@ -30,11 +30,13 @@ import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import "./monitoring_table.css";
 import { logout } from "../../features/auth/authSlice";
 import { useDispatch } from "react-redux";
-
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 
 const TableControlling = (props) => {
   const idApi = props.data.id;
+  const base_url = useSelector(selectRoute);
   const deleteItem = (e, id) => {
     e.preventDefault();
     axios
@@ -66,7 +68,7 @@ const TableControlling = (props) => {
 
     const header = localStorage.getItem("token");
     await axios
-      .get(`${controllingApi}${idApi}&&page=${page}`, {
+      .get(base_url + `${controllingApi}${idApi}&&page=${page}`, {
         headers: {
           Authorization: "Bearer " + header,
         },
@@ -87,7 +89,7 @@ const TableControlling = (props) => {
 
     const header = localStorage.getItem("token");
     await axios
-      .get(`${controllingApi}${idApi}&&size=100`, {
+      .get(base_url + `${controllingApi}${idApi}&&size=100`, {
         headers: {
           Authorization: "Bearer " + header,
         },

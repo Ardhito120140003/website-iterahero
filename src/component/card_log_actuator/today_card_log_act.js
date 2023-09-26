@@ -15,21 +15,23 @@ import Loading from "../../component/loading/loading";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../features/auth/authSlice";
 import { useDispatch } from "react-redux";
-
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 
 const CardLogActuatorToday = (props) => {
-    const idApi = props.data.id
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const [dataTable, setDataTable] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
-
+  const idApi = props.data.id
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [dataTable, setDataTable] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  
+  const base_url = useSelector(selectRoute);
     const getPagination = async () => {
       setIsLoading(true)
 
       const header = localStorage.getItem('token')
-      await axios.get(`${actuatorLogToday}${idApi}`, {
+      await axios.get(base_url + `${actuatorLogToday}${idApi}`, {
         headers: {
             'Authorization': 'Bearer ' + header
           }

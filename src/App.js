@@ -32,6 +32,9 @@ import { useEffect, useState } from "react";
 import NotFound from "./component/not_found/NotFound";
 import { useSelector } from "react-redux";
 import { selectToken, selectUser } from "./features/auth/authSlice";
+import Peracikan from "./page/peracikan/peracikan";
+import Penjadwalan from "./page/penjadwalan/penjadwalan";
+import DashboardOperator from "./page/dashboard_operator/dashboard_operator";
 
 function App() {
   const navigate = useNavigate();
@@ -44,12 +47,14 @@ function App() {
       <Route path="/login" element={<Login />} />
       {token && (
         <Route path="/unit" element={<Board />}>
-          <Route path="dashboard/:id" element={<Dashboard />} />
+          <Route path="dashboard/:id" element={ user === 'admin' ? <Dashboard /> : <DashboardOperator />} />
           <Route path="greenhouse" element={<GreenHouse />} />
           {user === "admin" ? (
             <>
               <Route path="monitoring" element={<Monitoring />} />
               <Route path="controlling" element={<Controlling />} />
+              <Route path="peracikan" element={<Peracikan />} />
+              <Route path="penjadwalan" element={<Penjadwalan />} />
               <Route path="historynotifikasi" element={<Notification />} />
               <Route
                 path="historynotifikasi/more-notifcation"
@@ -77,19 +82,6 @@ function App() {
               <Route
                 path="dashboard/aktuator/schedule/edit/:id"
                 element={<ScheduleEdit />}
-              />
-              <Route
-                path="dashboard/aktuator/automation/edit/:id"
-                element={<AutomationEdit />}
-              />
-
-              <Route
-                path="monitoring/detail/:id"
-                element={<MonitoringDetail />}
-              />
-              <Route
-                path="controlling/detail/:id"
-                element={<ControllingDetail />}
               />
               <Route
                 path="dashboard/aktuator/automation/edit/:id"

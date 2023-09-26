@@ -32,9 +32,11 @@ import "./monitoring_table.css";
 import moment from "moment";
 import { logout } from "../../features/auth/authSlice";
 import { useDispatch } from "react-redux";
-
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 const TableNotification = () => {
+  const base_url = useSelector(selectRoute);
   const eleminateZ = (date) => {
     let result = date.replace("T", " ").replace("Z", " +0700");
     return result;
@@ -72,7 +74,7 @@ const TableNotification = () => {
 
     const header = localStorage.getItem("token");
     await axios
-      .get(`${getNotificationByUserId}&&page=${page}`, {
+      .get(base_url + `${getNotificationByUserId}&&page=${page}`, {
         headers: {
           Authorization: "Bearer " + header,
         },
@@ -93,7 +95,7 @@ const TableNotification = () => {
 
     const header = localStorage.getItem("token");
     await axios
-      .get(`${getNotificationByUserId}&&size=1000`, {
+      .get(base_url + `${getNotificationByUserId}&&size=1000`, {
         headers: {
           Authorization: "Bearer " + header,
         },

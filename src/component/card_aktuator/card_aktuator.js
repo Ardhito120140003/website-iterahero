@@ -8,8 +8,11 @@ import "./card_aktuator.css";
 import ValueAktuator from "../value_aktuator/value_aktuator";
 import { logout } from "../../features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { selectRoute } from "../../features/auth/authSlice";
 
 const CardAktuator = (props) => {
+  const base_url = useSelector(selectRoute);
   const idApi = props.data.id;
   const navigate = useNavigate();
   const [dataTable, setDataTable] = useState([]);
@@ -21,7 +24,7 @@ const CardAktuator = (props) => {
 
   const header = localStorage.getItem("token");
     await axios
-      .get(`${paginationAktuator}${idApi}&&size=100`, {
+      .get(base_url + `${paginationAktuator}${idApi}&&size=100`, {
         headers: {
           Authorization: "Bearer " + header,
         },
