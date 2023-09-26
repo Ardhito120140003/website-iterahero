@@ -1,0 +1,12 @@
+.switch-css-1kxonj{
+  justify-content:center !important ; 
+}
+.Image{
+  width: 120px !important;
+  height: auto!important;
+  object-fit: contain !important;
+}
+.touchable {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
