@@ -20,7 +20,6 @@ const GreenHouse = () => {
 
 	const header = localStorage.getItem('token')
 
-
 	const getListGreenhouse = async () => {
 		await axios.get(listGreenhouse, {
 			headers: {
@@ -45,9 +44,6 @@ const GreenHouse = () => {
 		<>
 			{dataApi == null ? <Loading />
 				:
-
-
-
 				<Flex w="100%" flexDir={"column"}>
 					<Flex
 						w="100%"

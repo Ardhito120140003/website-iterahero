@@ -1,10 +1,27 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Box, CircularProgressLabel, CircularProgress, Text, Flex, Center } from "@chakra-ui/react";
 
 const ValueTandon = () => {
-    const max = 10;
-    const min = 0;
-    const valueSensor = 10;
+    const min = 20;
+    const [ValueSensor,setValueSensor]=useState[' ']
+    const header = localStorage.getItem("token");
+
+    const getValueTandon = async () => {
+        await axios
+            .get(`////`, {
+                headers: {
+                    Authorization: "Bearer " + header,
+                },
+            })
+            .then((response) => {
+                setValueSensor(response.data.data)
+            })
+            .catch((error) => {
+                console.log('data gaada')
+            });
+    };
+
     return (
         <>
             <Flex bg={'#ffff'}
@@ -21,40 +38,40 @@ const ValueTandon = () => {
                 <Flex fontSize={12} alignItems={"center"} justifyContent={"space-evenly"} marginY={'5px'} paddingX={'10px'} paddingY={'10px'}>
 
                     <Flex flexDirection={"column"} marginX={'20px'}>
-                        <CircularProgress value={valueSensor} color={valueSensor > max || valueSensor < min ? 'var(--color-error)' : `#41BF06`} size='70px'>
-                            <CircularProgressLabel color={'black'}>{valueSensor}%</CircularProgressLabel>
+                        <CircularProgress value={ValueSensor.nutrisiA} color={ValueSensor.nutrisiA <= min ? 'var(--color-error)' : `#41BF06`} size='70px'>
+                            <CircularProgressLabel color={'black'}>{ValueSensor.nutrisiA}%</CircularProgressLabel>
                         </CircularProgress>
                         <Text>
                             Nutrisi A
                         </Text>
                     </Flex>
                     <Flex flexDirection={"column"} marginX={'20px'}>
-                        <CircularProgress value={valueSensor} color={valueSensor > max || valueSensor < min ? 'var(--color-error)' : `#41BF06`} size='70px'>
-                            <CircularProgressLabel color={'black'}>{valueSensor}%</CircularProgressLabel>
+                        <CircularProgress value={ValueSensor.nutrisiB} color={ValueSensor <= min ? 'var(--color-error)' : `#41BF06`} size='70px'>
+                            <CircularProgressLabel color={'black'}>{ValueSensor}%</CircularProgressLabel>
                         </CircularProgress>
                         <Text>
                             Nutrisi B
                         </Text>
                     </Flex>
                     <Flex flexDirection={"column"} marginX={'20px'}>
-                        <CircularProgress value={valueSensor} color={valueSensor > max || valueSensor < min ? 'var(--color-error)' : `#41BF06`} size='70px'>
-                            <CircularProgressLabel color={'black'}>{valueSensor}%</CircularProgressLabel>
+                        <CircularProgress value={ValueSensor.asam} color={ValueSensor < min ? 'var(--color-error)' : `#41BF06`} size='70px'>
+                            <CircularProgressLabel color={'black'}>{ValueSensor}%</CircularProgressLabel>
                         </CircularProgress>
                         <Text>
                             Asam
                         </Text>
                     </Flex>
                     <Flex flexDirection={"column"} marginX={'20px'}>
-                        <CircularProgress value={valueSensor} color={valueSensor > max || valueSensor < min ? 'var(--color-error)' : `#41BF06`} size='70px'>
-                            <CircularProgressLabel color={'black'}>{valueSensor}%</CircularProgressLabel>
+                        <CircularProgress value={ValueSensor} color={ValueSensor < min ? 'var(--color-error)' : `#41BF06`} size='70px'>
+                            <CircularProgressLabel color={'black'}>{ValueSensor}%</CircularProgressLabel>
                         </CircularProgress>
                         <Text>
                             Basa
                         </Text>
                     </Flex>
                     <Flex flexDirection={"column"} marginX={'20px'}>
-                        <CircularProgress value={valueSensor} color={valueSensor > max || valueSensor < min ? 'var(--color-error)' : `#41BF06`} size='70px'>
-                            <CircularProgressLabel color={'black'}>{valueSensor}%</CircularProgressLabel>
+                        <CircularProgress value={ValueSensor} color={ValueSensor < min ? 'var(--color-error)' : `#41BF06`} size='70px'>
+                            <CircularProgressLabel color={'black'}>{ValueSensor}%</CircularProgressLabel>
                         </CircularProgress>
                         <Text>
                             Air

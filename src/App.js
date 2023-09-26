@@ -47,6 +47,7 @@ function App() {
           path="historynotifikasi/more-notifcation"
           element={<MoreNotification />}
         />
+
         <Route path="dashboard/sensor/:id" element={<Grafik />} />
         <Route path="greenhouse/add" element={<GreenhouseAdd />} />
         <Route path="greenhouse/:slug" element={<GreenhouseEdit />} />

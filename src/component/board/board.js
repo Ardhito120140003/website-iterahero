@@ -12,7 +12,7 @@ const Board = () => {
       <Box bg="tomato" h={"100vh"} overflow={"hidden"}>
         <SideNav />
       </Box>
-      <Box flex="1">
+      <Box flex="1" w={"100vh"}>
         <Header />
         <Flex
           padding={"20px"}
@@ -21,7 +21,7 @@ const Board = () => {
           overflowY={"scroll"}
           flexDir="column"
         >
-          <Outlet />
+          <Outlet/>
         </Flex>
       </Box>
     </Flex>

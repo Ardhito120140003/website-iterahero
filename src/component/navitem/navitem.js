@@ -16,6 +16,7 @@ export default function NavItem({ icon, title, description, active, navSize }) {
 			w="100%"
 			alignContent={"center"}
 			justifyContent={"center"}
+	
 			alignItems={navSize == "small" ? "center" : "flex-start"}>
 			<Menu placement="right">
 				<Flex
@@ -39,7 +40,7 @@ export default function NavItem({ icon, title, description, active, navSize }) {
 								ml={5}
 								display={navSize == "small" ? "none" : "flex"}
 								fontWeight={"semibold"}
-								fontSize={"var(--header-3)"}
+								fontSize={"15"}
 								color={active ? "var(--color-primer)" : "var(--color-grey)"}>
 								{title}
 							</Text>
