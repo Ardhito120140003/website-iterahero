@@ -74,10 +74,10 @@ const CardFormPenjadwalan = ({ addSchedule }) => {
                 </FormControl>
 
                 <FormControl my={'10px'} color={'black'}>
-                    <Text>Lama waktu antar peracikan</Text>
+                    <Text>Durasi per penyiraman (menit)</Text>
                     <Input
                         type="string"
-                        placeholder="--:--"
+                        placeholder="60 (untuk satu jam)"
                         value={interval}
                         onChange={(e) => setInterval(e.target.value)}
                     />
