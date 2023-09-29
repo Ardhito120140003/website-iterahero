@@ -5,17 +5,17 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { greenhouseByUserId } from "../../Utility/api_link";
 import { routePageName } from "../../redux/action";
-import axios from "axios";
 import CardFormPenjadwalan from "../../component/card_form_penjadwalan/card_form_penjadwalan";
 import CardJadwal from "../../component/card_jadwal/card_jadwal";
-import { useSelector } from "react-redux";
 import { selectUrl } from "../../features/auth/authSlice";
+import { useSelector } from "react-redux";
+import axios from "axios";
+
 
 const Penjadwalan = () => {
   TabTitle("Penjadwalan - ITERA Hero");
-  
-  const base_url = useSelector(selectUrl);
   const navigate = useNavigate();
+  const base_url = useSelector(selectUrl);
   const [dataApi, setDataApi] = useState(null);
   const header = localStorage.getItem("token");
 
@@ -42,31 +42,11 @@ const Penjadwalan = () => {
     };
   }, []);
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [schedules, setSchedules] = useState([]);
-
-  const onOpen = () => setIsOpen(true);
-  const onClose = () => setIsOpen(false);
-
-  // Fungsi untuk menambahkan jadwal baru
-  const addSchedule = (newSchedule) => {
-    // Menambahkan jadwal baru ke state
-    setSchedules([...schedules, newSchedule]);
-  };
-
-  // Fungsi untuk menghapus jadwal berdasarkan indeks
-  const deleteSchedule = (index) => {
-    const updatedSchedules = [...schedules];
-    updatedSchedules.splice(index, 1); // Menghapus jadwal dari array
-    setSchedules(updatedSchedules); // Memperbarui state
-    onClose(); // Menutup modal setelah menghapus
-  };
-
   return (
     <>
       <Flex flexDirection={'row'} width={"100%"} height={'100%'} gap={"20px"}>
-        <CardFormPenjadwalan addSchedule={addSchedule} />
-        <CardJadwal schedules={schedules} deleteSchedule={deleteSchedule} />
+        <CardFormPenjadwalan/>
+        <CardJadwal/>
       </Flex>
     </>
   );

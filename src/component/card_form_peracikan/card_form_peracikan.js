@@ -20,7 +20,7 @@ import Loading from "../loading/loading";
 import { useSelector } from "react-redux";
 import { selectUrl } from "../../features/auth/authSlice";
 
-const CardFormPeracikan = () => {
+const CardFormPeracikan = (prop) => {
     const [namaFormula, setNamaFormula] = useState("")
     const [phValue, setPhValue] = useState("");
     const [ppmValue, setPpmValue] = useState("");
@@ -29,6 +29,8 @@ const CardFormPeracikan = () => {
     const [newFormulaName, setNewFormulaName] = useState('')
     const base_url = useSelector(selectUrl);
     const header = localStorage.getItem("token");
+
+    const [statusPeracikan,setStatusPeracikan] = useState(null)
 
     // Fetch formula data from the server when the component mounts
     useEffect(() => {
@@ -209,20 +211,6 @@ const CardFormPeracikan = () => {
                                         >
                                             Ok
                                         </Button>
-                                        {/* <Button
-                                            onClick={
-                                                () => {
-                                                    onClose();
-                                                    addFormula();
-                                                }
-                                            }
-                                            backgroundColor='#09322D'
-                                            color={'white'}
-                                            mr={'3'}
-                                            paddingX={'30px'}
-                                        >
-                                            Simpan Formula
-                                        </Button> */}
                                         <Button onClick={onClose}>Cancel</Button>
                                     </ModalFooter>
                                 </ModalContent>

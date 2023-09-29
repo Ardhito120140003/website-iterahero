@@ -6,7 +6,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectUrl } from "../../features/auth/authSlice";
 
-const CardStatusPeracikan = () => {    
+const CardStatusPeracikan = (prop) => {    
     const base_url = useSelector(selectUrl);
     const navigate = useNavigate();
     const [dataApi, setDataApi] = useState(null);
@@ -27,7 +27,8 @@ const CardStatusPeracikan = () => {
     			},
     		})
     		.then((response) => {
-                setPhValue()
+                setPhValue(response.data)
+                console.log("mana ini",response.data)
                 setPpmValue()
                 setSuhuValue()
     		})
@@ -48,14 +49,17 @@ const CardStatusPeracikan = () => {
                     <Text>Tandon Peracikan</Text>
                 </Flex >
                 <Flex justifyContent={'center'} marginY={'30px'}>
-                    <Icon as={GiWaterTower} w={'300px'} h={'200px'} color='#14453E' />
-                    {/* <CircularProgress value={30} size='150px' isIndeterminate color='green.300' /> */}
+                    {
+                        statusPeracikan == null ?
+                        (<Icon as={GiWaterTower} w={'300px'} h={'200px'} color='#14453E' />):
+                        (<CircularProgress value={30} size='150px' isIndeterminate color='green.300' />)
+                    }
                 </Flex>
                 <Flex justifyContent={'center'} marginY={'30px'}>
                     {
                         statusPeracikan == null ?
                         (<Text color={'grey'} fontSize={'12px'}>Tandon Kosong</Text>) :
-                                (<Text color={'grey'} fontSize={'12px'}>Sedang Melakukan Peracikan...</Text>)
+                        (<Text color={'grey'} fontSize={'12px'}>Sedang Melakukan Peracikan...</Text>)
                                 
                     }
                 </Flex>

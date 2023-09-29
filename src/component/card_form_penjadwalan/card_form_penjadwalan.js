@@ -1,31 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-    Flex, Text, Select, Button, Input, FormControl,
+    Flex, 
+    Text, 
+    Select, 
+    Button, 
+    Input, 
+    FormControl,
 } from '@chakra-ui/react';
+import axios from "axios";
+import { useSelector } from 'react-redux';
+import { selectUrl } from "../../features/auth/authSlice";
 
-const CardFormPenjadwalan = ({ addSchedule }) => {
-    const [formula, setFormula] = useState('');
-    const [startTime, setStartTime] = useState('');
-    const [repetition, setRepetition] = useState('');
+const CardFormPenjadwalan = () => {
+    const [dataApi, setDataApi] = useState([]);
+    const [waktuMulai, setWaktuMulai] = useState('');
+    const [perulangan, setPerulangan] = useState('');
     const [interval, setInterval] = useState('');
+    const [formula, setFormula] = useState('');
+    const base_url = useSelector(selectUrl);
+    const header = localStorage.getItem("token");
+
+    useEffect(() => {
+        axios.get(base_url + 'api/v1/resep', {
+            headers: {
+                Authorization: "Bearer " + header
+            }
+        })
+            .then(response => {
+                setDataApi(response.data.data);
+            })
+            .catch(error => {
+                console.error("Error fetching formula data:", error);
+            });
+    }, []);
+
 
     const handleSubmit = () => {
-        // Membuat objek jadwal baru
         const newSchedule = {
-            formula,
-            date: startTime,
-            repetition,
-            interval,
+            resep : formula,
+            id_tandon : 1,
+            waktu : waktuMulai,
+            iterasi : parseInt(perulangan),
+            interval : parseInt(interval)
         };
+    
+        axios.post(base_url + 'api/v1/penjadwalan', newSchedule, {
+            headers: {
+                Authorization: "Bearer " + header
+            }
+        })
+            .then(response => {
+                console.log("Jadwal berhasil ditambahkan:", response.data);
+                setFormula('');
+                setWaktuMulai('');
+                setPerulangan('');
+                setInterval('');
+            })
+            .catch(error => {
+                console.error("Error menambahkan jadwal:", error);
+            });
+    };
 
-        // Memanggil fungsi untuk menambahkan jadwal baru
-        addSchedule(newSchedule);
-
-        // Mengosongkan input setelah menambahkan jadwal
-        setFormula('');
-        setStartTime('');
-        setRepetition('');
-        setInterval('');
+    const handleFormulaChange = (e) => {
+        const selectedFormula = e.target.value;
+        setFormula(selectedFormula);
     };
 
     return (
@@ -41,16 +79,17 @@ const CardFormPenjadwalan = ({ addSchedule }) => {
             <Flex flexDir={'column'} justifyContent={'space-around'}>
                 <FormControl my={'10px'} color={'black'}>
                     <Text>Formula</Text>
-                    <Select
-                        value={formula}
-                        onChange={(e) => setFormula(e.target.value)}
-                    >
-                        <option value="">--Pilih Formula--</option>
-                        <option value="Melon">Melon</option>
-                        <option value="Lemon">Lemon</option>
-                        <option value="Labu">Labu</option>
-                        <option value="Cabai">Cabai</option>
-                    </Select>
+                    <Select value={formula} name="formula" onChange={(e) => {
+                           
+                               handleFormulaChange(e)
+                        }}>
+                            <option value="">--Pilih Formula--</option>
+                            {dataApi.map((data, index) => (
+                                <option key={index} value={data.nama} style={{ color: 'black' }}>
+                                    {data.nama.toUpperCase()}
+                                </option>
+                            ))}
+                        </Select>
                 </FormControl>
 
                 <FormControl my={'10px'} color={'black'}>
@@ -58,8 +97,8 @@ const CardFormPenjadwalan = ({ addSchedule }) => {
                     <Input
                         type="time"
                         placeholder="--:--"
-                        value={startTime}
-                        onChange={(e) => setStartTime(e.target.value)}
+                        value={waktuMulai}
+                        onChange={(e) => setWaktuMulai(e.target.value)}
                     />
                 </FormControl>
 
@@ -68,18 +107,18 @@ const CardFormPenjadwalan = ({ addSchedule }) => {
                     <Input
                         type="number"
                         placeholder="Masukkan perulangan.."
-                        value={repetition}
-                        onChange={(e) => setRepetition(e.target.value)}
+                        value={perulangan}
+                        onChange={(e) => setPerulangan(e.target.value)}
                     />
                 </FormControl>
 
                 <FormControl my={'10px'} color={'black'}>
                     <Text>Durasi per penyiraman (menit)</Text>
                     <Input
-                        type="string"
+                        type="number"
                         placeholder="60 (untuk satu jam)"
                         value={interval}
-                        onChange={(e) => setInterval(e.target.value)}
+                        onInput={(e) => setInterval(e.target.value)}
                     />
                 </FormControl>
 
