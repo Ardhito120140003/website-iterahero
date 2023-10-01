@@ -11,7 +11,7 @@ import axios from "axios";
 import { useSelector } from 'react-redux';
 import { selectUrl } from "../../features/auth/authSlice";
 
-const CardFormPenjadwalan = () => {
+const CardFormPenjadwalan = ({ updateAction }) => {
     const [dataApi, setDataApi] = useState([]);
     const [waktuMulai, setWaktuMulai] = useState('');
     const [perulangan, setPerulangan] = useState('');
@@ -55,6 +55,7 @@ const CardFormPenjadwalan = () => {
                 setWaktuMulai('');
                 setPerulangan('');
                 setInterval('');
+                updateAction();
             })
             .catch(error => {
                 console.error("Error menambahkan jadwal:", error);

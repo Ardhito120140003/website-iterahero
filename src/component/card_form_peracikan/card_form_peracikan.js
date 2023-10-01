@@ -20,7 +20,7 @@ import Loading from "../loading/loading";
 import { useSelector } from "react-redux";
 import { selectUrl } from "../../features/auth/authSlice";
 
-const CardFormPeracikan = (prop) => {
+const CardFormPeracikan = ({ handleDelete }) => {
     const [namaFormula, setNamaFormula] = useState("")
     const [phValue, setPhValue] = useState("");
     const [ppmValue, setPpmValue] = useState("");
@@ -29,8 +29,6 @@ const CardFormPeracikan = (prop) => {
     const [newFormulaName, setNewFormulaName] = useState('')
     const base_url = useSelector(selectUrl);
     const header = localStorage.getItem("token");
-
-    const [statusPeracikan,setStatusPeracikan] = useState(null)
 
     // Fetch formula data from the server when the component mounts
     useEffect(() => {
@@ -64,32 +62,6 @@ const CardFormPeracikan = (prop) => {
         console.log("ppm Value:", ppmValue);
     };
 
-    const addFormula = async () => {
-        try {
-            const data = {
-                nama: newFormulaName, // Tambahkan nama formula baru
-                ppm: ppmValue,
-                ph: phValue
-            };
-
-            // Make an HTTP POST request to your API endpoint
-            axios.post(base_url + "/api/v1/resep", data, {
-                headers: {
-                    'Authorization': `Bearer ${header}` // Add your authorization token here
-                }
-            })
-            .then(response => {
-                console.log("API Response:", response.data);
-                setNewFormulaName(""); // Reset nama formula baru
-                setPpmValue("");
-                setPhValue("");
-            });
-        } catch (error) {
-            // Handle any errors that occur during the request
-            console.error("Error sending data to API:", error);
-        }
-    };
-
     return (
         <>
             {formulaData.length < 1 ? (
@@ -108,7 +80,7 @@ const CardFormPeracikan = (prop) => {
                                 setPhValue(formulaData[idx].ph);
                                 setPpmValue(formulaData[idx].ppm)
                             }
-                        }}>
+                        }} > 
                             <option value="">--Pilih Formula--</option>
                             {formulaData.map((data, index) => (
                                 <option key={index} value={index} style={{ color: 'black' }}>
@@ -122,6 +94,7 @@ const CardFormPeracikan = (prop) => {
                         borderRadius={'10px'}
                         border={'1px solid #E2E8F0'}
                         p={8}
+                        pb={20}
                     >
                         <form
                             onSubmit={(e) => {

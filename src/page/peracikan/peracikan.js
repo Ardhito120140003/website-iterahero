@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Flex, Box} from "@chakra-ui/react";
+import { Flex, Box } from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
 import { useDispatch } from "react-redux";
 import { greenhouseByUserId } from "../../Utility/api_link";
@@ -10,6 +10,8 @@ import CardStatusPeracikan from "../../component/card_tandon_peracikan/card_tand
 import { useSelector } from "react-redux";
 import { selectUrl, routePageName } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import "./peracikan.css"
+import Loading from "../../component/loading/loading";
 
 const Peracikan = () => {
 	TabTitle("Peracikan - ITERA Hero")
@@ -17,37 +19,49 @@ const Peracikan = () => {
 	const dispatch = useDispatch();
 	const [dataApi, setDataApi] = useState(null);
 	const header = localStorage.getItem("token");
+	const [action, setAction] = useState(false);
 
 	const navigate = useNavigate();
 
-	const getApiGreenhouse = async () => {
+	const getApi = async () => {
 		await axios
-			.get(base_url + greenhouseByUserId, {
+			.get(base_url + "api/v1/tandonUtama", {
 				headers: {
 					Authorization: "Bearer " + header,
 				},
+				params: {
+					id: 1,
+				}
 			})
-			.then((response) => setDataApi(response.data.data))
+			.then(response => {
+				setDataApi(response.data.data)
+			})
 			.catch((error) => {
-				localStorage.clear();
-				navigate("/login");
+				console.log("error : ",error)
 			});
 	};
-	
+
 	useEffect(() => {
-		getApiGreenhouse();
+		getApi();
 		dispatch(routePageName("Peracikan"));
-	}, []);
+	}, [action]);
 
 	return (
 		<>
-			<Flex gap={'20px'}>
-				<CardStatusPeracikan />
-				<Box flexDirection={'column'} display={'flex'}>
-					<ValueTandon />
-					<CardFormPeracikan />
-				</Box>
-			</Flex>
+			{dataApi === null ? (
+				<Loading /> 
+			) : (
+				<Flex gap={'20px'} className="flex-container">
+					<Flex flex={1}>
+						<CardStatusPeracikan id={dataApi.id} isOnline={dataApi.isOnline} sensor={dataApi.sensor}  status={dataApi.status}s />
+					</Flex>
+					<Flex flex={1} flexDirection={'column'}>
+						<ValueTandon tandonBahan={dataApi.tandonBahan}/>
+						<CardFormPeracikan/>
+					</Flex>
+				</Flex>
+			)}
+
 		</>
 	);
 };
