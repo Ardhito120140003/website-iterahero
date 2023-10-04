@@ -10,22 +10,22 @@ const userSlice = createSlice({
     accessToken: token,
     role: currentRole,
     routeName: "Dashboard",
-    fetchUrl:
-      currentRole === "admin"
-        ? "https://iterahero.fly.dev/"
-        : currentRole === "operator"
-        ? "https://iterahero-e1a0e90da51e.herokuapp.com/"
-        : "",
+    fetchUrl: "http://localhost:8000/"
+      // currentRole === "admin"
+      //   ? "https://iterahero.fly.dev/"
+      //   : currentRole === "operator"
+      //   ? "https://iterahero-e1a0e90da51e.herokuapp.com/"
+      //   : "",
   },
   reducers: {
     login: (state, action) => {
       state.role = jwtDecode(action.payload.accessToken).role;
       state.accessToken = action.payload.accessToken;
-      if (state.role === "operator") {
-        state.fetchUrl = "https://iterahero-e1a0e90da51e.herokuapp.com/";
-      } else if (state.role === "admin" ) {
-        state.fetchUrl = "https://iterahero.fly.dev/";
-      }
+      // if (state.role === "operator") {
+      //   state.fetchUrl = "https://iterahero-e1a0e90da51e.herokuapp.com/";
+      // } else if (state.role === "admin" ) {
+      //   state.fetchUrl = "https://iterahero.fly.dev/";
+      // }
     },
     logout: (state) => {
       state.role = null;

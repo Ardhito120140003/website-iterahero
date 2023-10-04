@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Flex, Box } from "@chakra-ui/react";
+import { Flex, Box, Grid, GridItem } from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
 import { useDispatch } from "react-redux";
 import { greenhouseByUserId } from "../../Utility/api_link";
@@ -34,6 +34,7 @@ const Peracikan = () => {
 				}
 			})
 			.then(response => {
+				console.log(response.data.data)
 				setDataApi(response.data.data)
 			})
 			.catch((error) => {
@@ -51,17 +52,16 @@ const Peracikan = () => {
 			{dataApi === null ? (
 				<Loading /> 
 			) : (
-				<Flex gap={'20px'} className="flex-container">
-					<Flex flex={1}>
-						<CardStatusPeracikan id={dataApi.id} isOnline={dataApi.isOnline} sensor={dataApi.sensor}  status={dataApi.status}s />
-					</Flex>
-					<Flex flex={1} flexDirection={'column'}>
+				<Grid templateColumns='repeat(2, 1fr)' gap={5} >
+					<GridItem>
+						<CardStatusPeracikan id={dataApi.id} isOnline={dataApi.isOnline} sensor={dataApi.sensor}  status={dataApi.status} />
+					</GridItem>
+					<Flex flexDirection={"column"}>
 						<ValueTandon tandonBahan={dataApi.tandonBahan}/>
 						<CardFormPeracikan/>
 					</Flex>
-				</Flex>
+				</Grid>
 			)}
-
 		</>
 	);
 };

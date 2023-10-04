@@ -14,6 +14,7 @@ const CardStatusPeracikan = ({ id, isOnline, sensor, status }) => {
                 width={'100%'}
                 border={'1px solid #E2E8F0'}
                 paddingX={'30px'}
+                height={"100%"}
             >
                 <Flex justifyContent={'center'} paddingTop={"30px"}>
                     <Text>Tandon Peracikan</Text>

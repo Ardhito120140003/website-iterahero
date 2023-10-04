@@ -29,14 +29,14 @@ const Login = () => {
 
   const handleSubmitComplate = (emailValue, passwordValue) => {
     axios
-      .post("https://iterahero-e1a0e90da51e.herokuapp.com/api/v1/login", {
+      .post("http://localhost:8000/api/v1/login", {
         email: emailValue,
         password: passwordValue,
       })
       .then((response) => {
-        dispatch(login(response.data));
+        dispatch(login(response.data.data));
         console.log(response);
-        localStorage.setItem("token", response.data.accessToken);
+        localStorage.setItem("token", response.data.data.accessToken);
         navigate("/unit/dashboard/1");
       })
       .catch((error) => console.log(error));
