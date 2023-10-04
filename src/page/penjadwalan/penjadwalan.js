@@ -7,6 +7,7 @@ import { selectUrl } from "../../features/auth/authSlice";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import Loading from "../../component/loading/loading";
+import "./penjadwalan.css"
 
 const Penjadwalan = () => {
   TabTitle("Penjadwalan - ITERA Hero");
@@ -46,19 +47,35 @@ const Penjadwalan = () => {
       })
   }
 
+  const containerStyle = {
+    flexDirection: 'row',
+    gap: '20px'
+  };
+  
+  const cardStyle = {
+    flex: '1', // Masing-masing komponen akan mengambil setengah lebar parent
+    marginLeft: '20px', // Jarak antar komponen (20px dalam contoh ini)
+  };
+  
+  
   return (
     <>
       {data === null ? (
         <Loading />
       ) : (
-        <Flex flexDirection={'row'} width={"100%"} height={'100%'} gap={"20px"}>
-          <CardFormPenjadwalan updateAction={() => setAction(!action)} />
-          <CardJadwal jadwal={data} deleteHandler={handleDelete} />
+        <Flex
+          style={containerStyle}
+        >
+          <CardFormPenjadwalan
+            updateAction={() => setAction(!action)}
+            style={cardStyle} 
+          />
+          <CardJadwal jadwal={data} deleteHandler={handleDelete} style={cardStyle} /> 
         </Flex>
       )}
-
     </>
   );
+  
 };
 
 export default Penjadwalan;

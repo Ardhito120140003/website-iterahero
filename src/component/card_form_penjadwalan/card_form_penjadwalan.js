@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Flex, 
-    Text, 
-    Select, 
-    Button, 
-    Input, 
+    Flex,
+    Text,
+    Select,
+    Button,
+    Input,
     FormControl,
+    Stack,
 } from '@chakra-ui/react';
 import axios from "axios";
 import { useSelector } from 'react-redux';
 import { selectUrl } from "../../features/auth/authSlice";
+import CustomCheckbox from './checkbox';
 
 const CardFormPenjadwalan = ({ updateAction }) => {
     const [dataApi, setDataApi] = useState([]);
@@ -37,13 +39,13 @@ const CardFormPenjadwalan = ({ updateAction }) => {
 
     const handleSubmit = () => {
         const newSchedule = {
-            resep : formula,
-            id_tandon : 1,
-            waktu : waktuMulai,
-            iterasi : parseInt(perulangan),
-            interval : parseInt(interval)
+            resep: formula,
+            id_tandon: 1,
+            waktu: waktuMulai,
+            iterasi: parseInt(perulangan),
+            interval: parseInt(interval)
         };
-    
+
         axios.post(base_url + 'api/v1/penjadwalan', newSchedule, {
             headers: {
                 Authorization: "Bearer " + header
@@ -58,7 +60,7 @@ const CardFormPenjadwalan = ({ updateAction }) => {
                 updateAction();
             })
             .catch(error => {
-                console.error("Error menambahkan jadwal:", error);
+                console.error("Error menambahkan jadwal :", error);
             });
     };
 
@@ -66,6 +68,7 @@ const CardFormPenjadwalan = ({ updateAction }) => {
         const selectedFormula = e.target.value;
         setFormula(selectedFormula);
     };
+
 
     return (
         <Flex
@@ -81,16 +84,16 @@ const CardFormPenjadwalan = ({ updateAction }) => {
                 <FormControl my={'10px'} color={'black'}>
                     <Text>Formula</Text>
                     <Select value={formula} name="formula" onChange={(e) => {
-                           
-                               handleFormulaChange(e)
-                        }}>
-                            <option value="">--Pilih Formula--</option>
-                            {dataApi.map((data, index) => (
-                                <option key={index} value={data.nama} style={{ color: 'black' }}>
-                                    {data.nama.toUpperCase()}
-                                </option>
-                            ))}
-                        </Select>
+
+                        handleFormulaChange(e)
+                    }}>
+                        <option value="">--Pilih Formula--</option>
+                        {dataApi.map((data, index) => (
+                            <option key={index} value={data.nama} style={{ color: 'black' }}>
+                                {data.nama.toUpperCase()}
+                            </option>
+                        ))}
+                    </Select>
                 </FormControl>
 
                 <FormControl my={'10px'} color={'black'}>
@@ -123,7 +126,20 @@ const CardFormPenjadwalan = ({ updateAction }) => {
                     />
                 </FormControl>
 
-                <Button onClick={handleSubmit} my="30px" backgroundColor="#09322D">
+                <FormControl my={'10px'} color={'black'}>
+                    <Text>Ulangi</Text>
+                    <Flex marginLeft={'10px'} marginTop={'20px'} direction={'row'} justifyContent={'space-between'}>
+                        <CustomCheckbox label="Senin" />
+                        <CustomCheckbox label="Selasa" />
+                        <CustomCheckbox label="Rabu" />
+                        <CustomCheckbox label="Kamis" />
+                        <CustomCheckbox label="Jumat" />
+                        <CustomCheckbox label="Sabtu" />
+                        <CustomCheckbox label="Minggu" />
+                    </Flex>
+                </FormControl>
+
+                <Button onClick={handleSubmit} my="20px" backgroundColor="#09322D">
                     Tambah
                 </Button>
             </Flex>

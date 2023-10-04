@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Flex, Box } from "@chakra-ui/react";
+import { Flex} from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
 import { useDispatch } from "react-redux";
-import { greenhouseByUserId } from "../../Utility/api_link";
 import axios from "axios";
 import ValueTandon from "../../component/value_tandon/value_tandon";
 import CardFormPeracikan from "../../component/card_form_peracikan/card_form_peracikan";
@@ -19,9 +18,6 @@ const Peracikan = () => {
 	const dispatch = useDispatch();
 	const [dataApi, setDataApi] = useState(null);
 	const header = localStorage.getItem("token");
-	const [action, setAction] = useState(false);
-
-	const navigate = useNavigate();
 
 	const getApi = async () => {
 		await axios
@@ -37,27 +33,32 @@ const Peracikan = () => {
 				setDataApi(response.data.data)
 			})
 			.catch((error) => {
-				console.log("error : ",error)
+				console.log("error : ", error)
 			});
 	};
 
 	useEffect(() => {
 		getApi();
 		dispatch(routePageName("Peracikan"));
-	}, [action]);
+	}, []);
 
 	return (
 		<>
 			{dataApi === null ? (
-				<Loading /> 
+				<Loading />
 			) : (
 				<Flex gap={'20px'} className="flex-container">
 					<Flex flex={1}>
-						<CardStatusPeracikan id={dataApi.id} isOnline={dataApi.isOnline} sensor={dataApi.sensor}  status={dataApi.status}s />
+						<CardStatusPeracikan
+							id={dataApi.id}
+							isOnline={dataApi.isOnline}
+							sensor={dataApi.sensor}
+							status={dataApi.status} s
+						/>
 					</Flex>
 					<Flex flex={1} flexDirection={'column'}>
-						<ValueTandon tandonBahan={dataApi.tandonBahan}/>
-						<CardFormPeracikan/>
+						<ValueTandon tandonBahan={dataApi.tandonBahan} />
+						<CardFormPeracikan /> 
 					</Flex>
 				</Flex>
 			)}

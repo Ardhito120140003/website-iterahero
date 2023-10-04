@@ -34,7 +34,7 @@ import { useSelector } from "react-redux";
 import { selectToken, selectUser } from "./features/auth/authSlice";
 import Peracikan from "./page/peracikan/peracikan";
 import Penjadwalan from "./page/penjadwalan/penjadwalan";
-import DashboardOperator from "./page/dashboard_operator/dashboard_operator";
+import DashboardOperator from "./page/dashboard/dashboard_operator";
 
 function App() {
   const navigate = useNavigate();
