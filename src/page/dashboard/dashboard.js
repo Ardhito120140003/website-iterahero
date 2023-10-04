@@ -51,9 +51,9 @@ const Dashboard = () => {
       })
       .then((response) => setDataApi(response.data.data))
       .catch((error) => {
-        localStorage.clear()
-        dispatch(logout());
-        navigate("/login");
+        // localStorage.clear()
+        // dispatch(logout());
+        // navigate("/login");
       });
   };
   const getApiGreenhouse = async () => {

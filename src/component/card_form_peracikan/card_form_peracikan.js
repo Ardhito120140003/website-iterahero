@@ -19,18 +19,20 @@ import axios from "axios";
 import Loading from "../loading/loading";
 import { useSelector } from "react-redux";
 import { selectUrl } from "../../features/auth/authSlice";
+import { useDisclosure } from "@chakra-ui/react";
 
-const CardFormPeracikan = ({ handleDelete }) => {
-    const [namaFormula, setNamaFormula] = useState("")
+const CardFormPeracikan  = () => {
+    const { isOpen: isRacikModalOpen, onOpen: onRacikModalOpen, onClose: onRacikModalClose } = useDisclosure();
+    const { isOpen: isSaveModalOpen, onOpen: onOpenSaveModal, onClose: onCloseSaveModal } = useDisclosure();
+
     const [phValue, setPhValue] = useState("");
     const [ppmValue, setPpmValue] = useState("");
     const [formula, setFormula] = useState('');
-    const [formulaData, setFormulaData] = useState([]); // Store formula data from the server
-    const [newFormulaName, setNewFormulaName] = useState('')
+    const [dataApi, setDataApi] = useState([]);
+    const [newFormulaName, setNewFormulaName] = useState('');
     const base_url = useSelector(selectUrl);
     const header = localStorage.getItem("token");
 
-    // Fetch formula data from the server when the component mounts
     useEffect(() => {
         axios.get(base_url + 'api/v1/resep', {
             headers: {
@@ -38,33 +40,56 @@ const CardFormPeracikan = ({ handleDelete }) => {
             }
         })
             .then(response => {
-                setFormulaData(response.data.data);
+                setDataApi(response.data.data);
             })
             .catch(error => {
                 console.error("Error fetching formula data:", error);
             });
-    }, []);
+    }, [onOpenSaveModal]);
 
 
-    // Function to handle formula selection change
     const handleFormulaChange = (e) => {
         const selectedFormula = e.target.value;
         setFormula(selectedFormula);
     };
 
-    const [isOpen, setIsOpen] = useState(false);
-
-    const onOpen = () => setIsOpen(true);
-    const onClose = () => setIsOpen(false);
-
-    const handleSubmit = async () => {
+    const handleRacikSubmit = async () => {
         console.log("pH Value:", phValue);
         console.log("ppm Value:", ppmValue);
+
+    };
+
+    const handleSaveSubmit = async () => {
+        console.log("Nama Formula:",newFormulaName );
+        console.log("pH Value:", phValue);
+        console.log("ppm Value:", ppmValue);
+
+        const newformula = {
+            nama : newFormulaName,
+            ppm : ppmValue,
+            ph : phValue,
+            interval : 0,
+        };
+    
+        axios.post(base_url + 'api/v1/resep', newformula, {
+            headers: {
+                Authorization: "Bearer " + header
+            }
+        })
+            .then(response => {
+                console.log("Formula berhasil disimpan :", response.data);
+                setNewFormulaName('');
+                setPpmValue('');
+                setPhValue('');
+            })
+            .catch(error => {
+                console.error("Error menyimpan formula :", error);
+            });
     };
 
     return (
         <>
-            {formulaData.length < 1 ? (
+            {dataApi.length < 1 ? (
                 <Loading />
             ) : (
                 <Flex flexDirection={'column'} width={"100%"} height={'100%'} >
@@ -77,12 +102,12 @@ const CardFormPeracikan = ({ handleDelete }) => {
                                 handleFormulaChange(e)
                             } else {
                                 handleFormulaChange(e);
-                                setPhValue(formulaData[idx].ph);
-                                setPpmValue(formulaData[idx].ppm)
+                                setPhValue(dataApi[idx].ph);
+                                setPpmValue(dataApi[idx].ppm)
                             }
                         }} > 
                             <option value="">--Pilih Formula--</option>
-                            {formulaData.map((data, index) => (
+                            {dataApi.map((data, index) => (
                                 <option key={index} value={index} style={{ color: 'black' }}>
                                     {data.nama.toUpperCase()}
                                 </option>
@@ -142,11 +167,24 @@ const CardFormPeracikan = ({ handleDelete }) => {
                                 </FormControl>
                             </Box>
 
+                            <Box marginBottom="16px">
+                                <FormControl>
+                                    <Text>Durasi Penyiraman</Text>
+                                    <Input
+                                        type="number"
+                                        value={ppmValue}
+                                        onChange={(e) => setPpmValue(e.target.value)}
+                                        style={{ color: 'black' }}
+                                        placeholder="masukkan ppm value"
+                                    />
+                                </FormControl>
+                            </Box>
+
                             <Box marginTop="16px" display="flex" flexDirection="row">
                                 <Button
                                     type="Submit"
                                     backgroundColor={'#09322D'}
-                                    onClick={onOpen}
+                                    onClick={onRacikModalOpen}
                                 >
                                     Racik
                                 </Button>
@@ -154,7 +192,7 @@ const CardFormPeracikan = ({ handleDelete }) => {
                                 <Button
                                     type="Submit"
                                     backgroundColor={'#09322D'}
-                                    onClick={onOpen}
+                                    onClick={onOpenSaveModal}
                                     ml="20px"
                                 >
                                     Save 
@@ -164,7 +202,8 @@ const CardFormPeracikan = ({ handleDelete }) => {
                             }
                             </Box>
 
-                            <Modal isOpen={isOpen} onClose={onClose}>
+                            {/* Modal Racik */}
+                            <Modal isOpen={isRacikModalOpen} onClose={onRacikModalClose}>
                                 <ModalOverlay />
                                 <ModalContent>
                                     <ModalHeader alignSelf={'center'}>Proses Peracikan</ModalHeader>
@@ -175,7 +214,7 @@ const CardFormPeracikan = ({ handleDelete }) => {
 
                                     <ModalFooter>
                                         <Button
-                                            onClick={() => { onClose(); handleSubmit(); }}
+                                            onClick={() => { onRacikModalClose(); handleRacikSubmit(); }}
 
                                             backgroundColor='#09322D'
                                             color={'white'}
@@ -184,10 +223,36 @@ const CardFormPeracikan = ({ handleDelete }) => {
                                         >
                                             Ok
                                         </Button>
-                                        <Button onClick={onClose}>Cancel</Button>
+                                        <Button onClick={onRacikModalClose}>Cancel</Button>
                                     </ModalFooter>
                                 </ModalContent>
                             </Modal>
+
+                            {/* Modal Save */}
+                            <Modal isOpen={isSaveModalOpen} onClose={onCloseSaveModal}>
+                                <ModalOverlay />
+                                <ModalContent>
+                                    <ModalHeader alignSelf={'center'}>Simpan Formula</ModalHeader>
+                                    <ModalCloseButton />
+                                    <ModalBody pb={6}>
+                                        <Text>Apakah anda yakin untuk menyimpan formula ini ?</Text>
+                                    </ModalBody>
+
+                                    <ModalFooter>
+                                        <Button
+                                            onClick={() => { onCloseSaveModal(); handleSaveSubmit(); }}
+                                            backgroundColor='#09322D'
+                                            color={'white'}
+                                            mr={'3'}
+                                            paddingX={'30px'}
+                                        >
+                                            Simpan Formula
+                                        </Button>
+                                        <Button onClick={onOpenSaveModal}>Cancel</Button>
+                                    </ModalFooter>
+                                </ModalContent>
+                            </Modal>
+
                         </form>
                     </Box>
                 </Flex>
@@ -196,4 +261,4 @@ const CardFormPeracikan = ({ handleDelete }) => {
     );
 };
 
-export default CardFormPeracikan;
+export default CardFormPeracikan ;

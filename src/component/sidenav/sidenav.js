@@ -69,7 +69,7 @@ const SideNav = () => {
               }
             />
           </Link>
-          {/* <Link
+          <Link
             to={"/unit/greenhouse"}
             onClick={() => {
               patchRoute("Greenhouse");
@@ -81,7 +81,7 @@ const SideNav = () => {
               title="Greenhouse"
               active={routeName === "Greenhouse"}
             />
-          </Link> */}
+          </Link>
           {user === "admin" ? (
             <>
               <Link

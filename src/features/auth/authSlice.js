@@ -19,6 +19,7 @@ const userSlice = createSlice({
   },
   reducers: {
     login: (state, action) => {
+      console.log(jwtDecode(action.payload.accessToken))
       state.role = jwtDecode(action.payload.accessToken).role;
       state.accessToken = action.payload.accessToken;
       // if (state.role === "operator") {

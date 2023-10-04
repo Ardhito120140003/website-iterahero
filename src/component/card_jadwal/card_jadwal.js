@@ -32,7 +32,7 @@ const CardJadwal = ({ jadwal, deleteHandler }) => {
         }}
         flexDirection="column"
         width="100%"
-        height="100%"
+        height="500px"
       >
         {jadwal.map((item, index) => (
           <Flex

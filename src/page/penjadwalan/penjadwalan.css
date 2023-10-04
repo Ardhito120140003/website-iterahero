@@ -1,0 +1,11 @@
+/* Default style for larger screens (row direction) */
+.flex-container {
+    flex-direction: row;
+  }
+  
+  /* Media query for screens with a maximum width of 768px (column direction) */
+  @media (max-width: 768px) {
+    .flex-container {
+      flex-direction: column;
+    }
+  }
