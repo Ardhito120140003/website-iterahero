@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text, Box, CircularProgress, Grid, GridItem, Center } from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
 import CardJadwal from "../../component/card_jadwal/card_jadwal";
 import { selectUrl } from "../../features/auth/authSlice";
@@ -77,6 +77,23 @@ const DashboardOperator = () => {
 
   return (
     <>
+      {/* <Grid
+        h='100%'
+        templateRows='repeat(10, 1fr)'
+        templateColumns='repeat(13, 1fr)'
+        gap={4}
+      >
+        <GridItem rowSpan={10} colSpan={4} bg='tomato' />
+        <GridItem rowSpan={4} colSpan={9} bg='tomato' />
+        <GridItem rowSpan={2} colSpan={3} bg='tomato' />
+        <GridItem rowSpan={2} colSpan={3} bg='tomato' />
+        <GridItem rowSpan={2} colSpan={3} bg='tomato' />
+        <GridItem rowSpan={2} colSpan={3} bg='tomato' />
+        <GridItem rowSpan={2} colSpan={3} bg='tomato' />
+        <GridItem rowSpan={2} colSpan={3} bg='tomato' />
+        <GridItem rowSpan={2} colSpan={9} bg='tomato' />
+      </Grid> */}
+
       {dataApiPeracikan === null ? (
         <Loading />
       ) : (

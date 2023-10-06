@@ -33,14 +33,14 @@ const ValueTandon = ({ tandonBahan }) => {
         {tandonBahan.filter(item => item.sensor.length > 0).map((item, index) => (
             <Flex flexDirection={"column"} marginX={"20px"} key={index}>
               <CircularProgress
-                value={item.sensor[0].range_max * 2}
+                value={item.sensor[0].nilai * 2}
                 color={
-                  item.sensor[0].range_max <= 10 ? "var(--color-error)" : `#41BF06`
+                  item.sensor[0].nilai <= 10 ? "var(--color-error)" : `#41BF06`
                 }
                 size="70px"
               >
                 <CircularProgressLabel color={"black"}>
-                  {item.sensor[0].range_max + " " + item.sensor[0].unit_measurement}
+                  {item.sensor[0].nilai + " " + item.sensor[0].satuan}
                 </CircularProgressLabel>
               </CircularProgress>
               <Text>{item.nama}</Text>

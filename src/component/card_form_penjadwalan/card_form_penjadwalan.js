@@ -43,7 +43,8 @@ const CardFormPenjadwalan = ({ updateAction }) => {
             id_tandon: 1,
             waktu: waktuMulai,
             iterasi: parseInt(perulangan),
-            interval: parseInt(interval)
+            interval: parseInt(interval),
+            hari: [],
         };
 
         axios.post(base_url + 'api/v1/penjadwalan', newSchedule, {

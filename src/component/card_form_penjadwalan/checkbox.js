@@ -18,9 +18,9 @@ const CustomCheckbox = ({ label, onChange }) => {
         fontSize: '13px',
         cursor: 'pointer',
         backgroundColor: isChecked ? '#09322D' : 'transparent',
-        color: isChecked ? 'white' : 'black',
+        color: isChecked ? 'white' : 'gray',
         borderRadius: '10px',
-        border: '1px solid #09322D',
+        border: isChecked ?'1px solid #09322D' : '1px solid gray',
       }}
       onClick={handleCheckboxChange}
     >
