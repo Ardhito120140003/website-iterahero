@@ -10,7 +10,7 @@ const userSlice = createSlice({
     accessToken: token,
     role: currentRole,
     routeName: "Dashboard",
-    fetchUrl: "https://iterahero-e1a0e90da51e.herokuapp.com/"
+    fetchUrl: "http://localhost:3000/"
       // currentRole === "admin"
       //   ? "https://iterahero.fly.dev/"
       //   : currentRole === "operator"

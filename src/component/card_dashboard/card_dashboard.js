@@ -6,11 +6,11 @@ const CardDashboard = (props) => {
   let data = props.data;
 
   return (
-    <WrapItem className="dont-touch" w={{ base: "100%", md: "fit-content" }}>
+    // <WrapItem className="dont-touch" w={"fit-content"}>
       <Flex
         mt={50}
-        h={"245px"}
-        w={{ base: "100%", md: "sm" }}
+        // w={{ base: "100%", md: "sm" }}
+        flex={1}
         bg={"#ffff"}
         borderRadius="30"
         borderWidth="3px"
@@ -20,7 +20,7 @@ const CardDashboard = (props) => {
         boxShadow={"0px 0.1px 2px rgba(0, 0, 0, 0.25)"}
         flexDir={"column"}
         alignItems="center"
-        padding={35}
+        padding={10}
       >
         <Flex
           w={"100px"}
@@ -49,7 +49,7 @@ const CardDashboard = (props) => {
           {data.name}
         </Text>
       </Flex>
-    </WrapItem>
+    // {/* </WrapItem> */}
   );
 };
 export default CardDashboard;

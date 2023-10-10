@@ -22,7 +22,7 @@ const CardStatusPeracikanDasboard = ({ id, isOnline, sensor, status }) => {
 
                 <Flex justifyContent={'center'} paddingTop={"30px"}>
                     <Text>Tandon Peracikan</Text>
-                </Flex >
+                </Flex>
 
                 <Flex justifyContent={'space-evenly'}>
 

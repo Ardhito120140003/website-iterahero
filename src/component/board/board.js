@@ -20,7 +20,7 @@ const Board = () => {
           pb={0}
           w="100%"
           h={{ base: "100%", lg: "calc(100vh - 100px)" }}
-          overflowY={{base: 'hidden', lg: 'scroll'}}
+          overflowY={"auto"}
           flexDir="column"
         >
           <Outlet/>

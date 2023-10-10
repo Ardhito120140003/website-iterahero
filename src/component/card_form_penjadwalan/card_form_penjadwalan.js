@@ -44,7 +44,7 @@ const CardFormPenjadwalan = ({ updateAction }) => {
             waktu: waktuMulai,
             iterasi: parseInt(perulangan),
             interval: parseInt(interval),
-            hari: [],
+            hari: [1],
         };
 
         axios.post(base_url + 'api/v1/penjadwalan', newSchedule, {
@@ -65,12 +65,6 @@ const CardFormPenjadwalan = ({ updateAction }) => {
             });
     };
 
-    const handleFormulaChange = (e) => {
-        const selectedFormula = e.target.value;
-        setFormula(selectedFormula);
-    };
-
-
     return (
         <Flex
             flexDirection="column"
@@ -84,10 +78,7 @@ const CardFormPenjadwalan = ({ updateAction }) => {
             <Flex flexDir={'column'} justifyContent={'space-around'}>
                 <FormControl my={'10px'} color={'black'}>
                     <Text>Formula</Text>
-                    <Select value={formula} name="formula" onChange={(e) => {
-
-                        handleFormulaChange(e)
-                    }}>
+                    <Select value={formula} name="formula" onChange={(e) => setFormula(e.target.value)}>
                         <option value="">--Pilih Formula--</option>
                         {dataApi.map((data, index) => (
                             <option key={index} value={data.nama} style={{ color: 'black' }}>

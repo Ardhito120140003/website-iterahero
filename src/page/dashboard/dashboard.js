@@ -74,9 +74,9 @@ const Dashboard = () => {
         }
       })
       .catch((error) => {
-        localStorage.clear()
-        dispatch(logout());
-        navigate("/login");
+        // localStorage.clear()
+        // dispatch(logout());
+        // navigate("/login");
       });
   };
 
@@ -105,27 +105,34 @@ const Dashboard = () => {
               src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
             />
           </Flex>
-          <Flex justify="center" mt={"-30px"}>
-            <Wrap spacing={{ base: "5px", md: "50px" }} justify="center">
+          <Flex justify="center">
+            <Wrap spacing={{ base: "5px", md: "50px" }} mt={8} justify="center">
               <CardDashboard
                 data={{
                   value: dataApi.greenhouse,
                   icon: GiGreenhouse,
-                  name: "Jumlah GreenHouse",
+                  name: "GreenHouse",
+                }}
+              />
+              <CardDashboard
+                data={{
+                  value: dataApi.tandonPeracikan,
+                  icon: AiOutlineControl,
+                  name: "Tandon Peracikan",
                 }}
               />
               <CardDashboard
                 data={{
                   value: dataApi.sensor,
                   icon: MdMonitor,
-                  name: "Jumlah Sensor",
+                  name: "Sensor",
                 }}
               />
               <CardDashboard
                 data={{
                   value: dataApi.actuator,
                   icon: AiOutlineControl,
-                  name: "Jumlah Actuator",
+                  name: "Actuator",
                 }}
               />
             </Wrap>

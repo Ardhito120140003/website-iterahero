@@ -29,7 +29,7 @@ const Login = () => {
 
   const handleSubmitComplate = (emailValue, passwordValue) => {
     axios
-      .post("https://iterahero-e1a0e90da51e.herokuapp.com/api/v1/login", {
+      .post("http://localhost:3000/api/v1/login", {
         email: emailValue,
         password: passwordValue,
       })
@@ -43,6 +43,7 @@ const Login = () => {
   };
 
   const checkToken = () => {
+    console.log(user);
     if (user) {
       navigate("/unit/dashboard/1");
     }
