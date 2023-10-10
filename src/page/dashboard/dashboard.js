@@ -105,8 +105,8 @@ const Dashboard = () => {
               src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
             />
           </Flex>
-          <Flex justify="center">
-            <Wrap spacing={{ base: "5px", md: "50px" }} mt={8} justify="center">
+          <Flex justify="center" mt={"-30px"}>
+            <Wrap spacing={{ base: "5px", md: "50px" }} justify="center">
               <CardDashboard
                 data={{
                   value: dataApi.greenhouse,

@@ -25,7 +25,7 @@ const GreenHouse = () => {
 	const header = localStorage.getItem('token')
 
 	const getListGreenhouse = async () => {
-		await axios.get(base_url + 'api/v1/greenhouse', {
+		await axios.get(base_url + listGreenhouse, {
 			headers: {
 				'Authorization': 'Bearer ' + header
 			}
@@ -72,12 +72,11 @@ const GreenHouse = () => {
 					<Wrap>
 						{dataApi.map((placement) => (
 							<CardGreenhouse
-							key={placement.id}
 								data={{
 									created_at: placement.created_at,
 									id: placement.id,
-									image: placement.thumbnail,
-									title: placement.nama,
+									image: placement.image,
+									title: placement.name,
 									location: placement.location,
 									user_id: placement.user_id,
 									user_name: placement.user_name,
