@@ -136,6 +136,7 @@ const CardFormPeracikan  = () => {
                                         onChange={(e) => setNewFormulaName(e.target.value)}
                                         style={{ color: 'black' }}
                                         placeholder="masukkan nama formula"
+                                        required="Nama formula harus diisi"
                                     />
                                 </FormControl>
                             </Box>
@@ -150,6 +151,7 @@ const CardFormPeracikan  = () => {
                                         onChange={(e) => setPhValue(e.target.value)}
                                         style={{ color: 'black' }}
                                         placeholder="masukkan ph value"
+                                        required="PH harus diisi"
                                     />
                                 </FormControl>
                             </Box>
@@ -163,19 +165,21 @@ const CardFormPeracikan  = () => {
                                         onChange={(e) => setPpmValue(e.target.value)}
                                         style={{ color: 'black' }}
                                         placeholder="masukkan ppm value"
+                                        required="PPM harus diisi"
                                     />
                                 </FormControl>
                             </Box>
 
                             <Box marginBottom="16px">
                                 <FormControl>
-                                    <Text>Durasi Penyiraman</Text>
+                                    <Text>Lama Antar Penyiraman</Text>
                                     <Input
                                         type="number"
                                         value={ppmValue}
                                         onChange={(e) => setPpmValue(e.target.value)}
                                         style={{ color: 'black' }}
-                                        placeholder="masukkan ppm value"
+                                        placeholder="masukkan lama antar penyiraman"
+                                        required="interval harus diisi"
                                     />
                                 </FormControl>
                             </Box>
@@ -195,7 +199,7 @@ const CardFormPeracikan  = () => {
                                     onClick={onOpenSaveModal}
                                     ml="20px"
                                 >
-                                    Save 
+                                    Simpan
                                 </Button>
                      
 

@@ -13,6 +13,16 @@ import { useSelector } from 'react-redux';
 import { selectUrl } from "../../features/auth/authSlice";
 import CustomCheckbox from './checkbox';
 
+const weekdays = [
+    { label: "minggu", value: 0 },
+    { label: "senin", value: 1 },
+    { label: "selasa", value: 2 },
+    { label: "rabu", value: 3 },
+    { label: "kamis", value: 4 },
+    { label: "jumat", value: 5 },
+    { label: "sabtu", value: 6 },
+]
+
 const CardFormPenjadwalan = ({ updateAction }) => {
     const [dataApi, setDataApi] = useState([]);
     const [waktuMulai, setWaktuMulai] = useState('');
@@ -21,6 +31,7 @@ const CardFormPenjadwalan = ({ updateAction }) => {
     const [formula, setFormula] = useState('');
     const base_url = useSelector(selectUrl);
     const header = localStorage.getItem("token");
+    const [hari,setHari] = useState([]);
 
     useEffect(() => {
         axios.get(base_url + 'api/v1/resep', {
@@ -44,7 +55,7 @@ const CardFormPenjadwalan = ({ updateAction }) => {
             waktu: waktuMulai,
             iterasi: parseInt(perulangan),
             interval: parseInt(interval),
-            hari: [],
+            hari,
         };
 
         axios.post(base_url + 'api/v1/penjadwalan', newSchedule, {
@@ -70,6 +81,13 @@ const CardFormPenjadwalan = ({ updateAction }) => {
         setFormula(selectedFormula);
     };
 
+    const handleDay = (val) => {
+        if (hari.includes(val)) {
+            setHari([...hari.filter(item => item !== val)])
+        } else {
+            setHari([...hari, val]);
+        }
+    }
 
     return (
         <Flex
@@ -130,17 +148,16 @@ const CardFormPenjadwalan = ({ updateAction }) => {
                 <FormControl my={'10px'} color={'black'}>
                     <Text>Ulangi</Text>
                     <Flex marginLeft={'10px'} marginTop={'20px'} direction={'row'} justifyContent={'space-between'}>
-                        <CustomCheckbox label="Senin" />
-                        <CustomCheckbox label="Selasa" />
-                        <CustomCheckbox label="Rabu" />
-                        <CustomCheckbox label="Kamis" />
-                        <CustomCheckbox label="Jumat" />
-                        <CustomCheckbox label="Sabtu" />
-                        <CustomCheckbox label="Minggu" />
+                        {weekdays.map((item, index) => (
+                            <CustomCheckbox label={item.label} value={item.value} onSelect={handleDay} key={index}/>
+                        ))}
                     </Flex>
                 </FormControl>
 
-                <Button onClick={handleSubmit} my="20px" backgroundColor="#09322D">
+                <Button
+                // onClick={() => alert(hari)}
+                 onClick={handleSubmit}
+                 my="20px" backgroundColor="#09322D">
                     Tambah
                 </Button>
             </Flex>

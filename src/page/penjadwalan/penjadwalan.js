@@ -3,14 +3,16 @@ import { Flex } from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
 import CardFormPenjadwalan from "../../component/card_form_penjadwalan/card_form_penjadwalan";
 import CardJadwal from "../../component/card_jadwal/card_jadwal";
-import { selectUrl } from "../../features/auth/authSlice";
-import { useSelector } from "react-redux";
+import { selectUrl , routePageName} from "../../features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Loading from "../../component/loading/loading";
 import "./penjadwalan.css"
 
+
 const Penjadwalan = () => {
   TabTitle("Penjadwalan - ITERA Hero");
+  const dispatch = useDispatch();
   const base_url = useSelector(selectUrl);
   const [data, setData] = useState(null);
   const [action, setAction] = useState(false);
@@ -29,6 +31,8 @@ const Penjadwalan = () => {
       .catch(err => {
         console.error(err)
       })
+
+    dispatch(routePageName("Penjadwalan"));
   }, [action])
 
   const handleDelete = (id) => {

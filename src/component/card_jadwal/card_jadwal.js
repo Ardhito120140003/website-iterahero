@@ -63,7 +63,7 @@ const CardJadwal = ({ jadwal, deleteHandler }) => {
             <Flex flexDir="column" marginRight={'50px'} marginY="20px">
               <Text align="left">Formula : {item.resep.nama} </Text>
               <Text align="left">Jam : {item.waktu} </Text>
-              <Text align="Left">Durasi Penyiraman : </Text>
+              <Text align="Left">Durasi Penyiraman : {item.resep.interval} </Text>
             </Flex>
 
             <Switch alignSelf="center" />
@@ -74,39 +74,40 @@ const CardJadwal = ({ jadwal, deleteHandler }) => {
               w="30px"
               h="30px"
               alignSelf="center"
-              onClick={() => { deleteHandler(item.id); onOpen() }}
+              onClick={onOpen}
+              
             />
+
+            <AlertDialog
+              isOpen={isOpen}
+              leastDestructiveRef={cancelRef}
+              onClose={onClose}
+            >
+              <AlertDialogOverlay>
+                <AlertDialogContent>
+                  <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                    Hapus Penjadwalan
+                  </AlertDialogHeader>
+
+                  <AlertDialogBody>
+                    Are you sure? You can't undo this action afterwards.
+                  </AlertDialogBody>
+
+                  <AlertDialogFooter>
+                    <Button ref={cancelRef} onClick={onClose}>
+                      Cancel
+                    </Button>
+                    <Button colorScheme='red' ml={3}  onClick={() => { deleteHandler(item.id); onClose() }}>
+                      Delete
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialogOverlay>
+            </AlertDialog>
           </Flex>
+
         ))}
       </Flex>
-
-      <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-              Hapus Penjadwalan
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              Are you sure? You can't undo this action afterwards.
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                Cancel
-              </Button>
-              <Button colorScheme='red' onClick={onClose} ml={3}>
-                Delete
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-
     </Flex>
   );
 };
