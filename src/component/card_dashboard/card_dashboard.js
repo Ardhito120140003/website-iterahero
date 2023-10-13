@@ -13,21 +13,24 @@ const CardDashboard = (props) => {
       borderColor={"#D9D9D9"}
       boxShadow={"0px 0.1px 2px rgba(0, 0, 0, 0.25)"}
       p={10}
-      w={"30%"}
-      h={{ base: "100px", md: "120px" }}
+      w={{ base:"90%", sm:"80%", md:"30%" }}
+      h={{ base: "130px", md: "150px" }}
       align={"center"}
       justifyContent={"center"}
     >
+      <Flex flex={1} justifyContent={"center"}>
       <Flex
-        padding={5}
+        padding={[4,5]}
         borderRadius={"10px"}
         bg={"#319795"}
         justify="center"
         align={"center"}
       >
-        <Icon as={data.icon} color={"white"} w={6} h={6} />
+        <Icon as={data.icon} color={"white"} w={[6,7,8,9]} h={[6,7,8,9]} />
       </Flex>
-      <Flex direction={"column"}>
+      </Flex>
+      
+      <Flex direction={"column"} flex={1}>
         <Text
           color={"black"}
           fontWeight={"semibold"}

@@ -29,16 +29,18 @@ import { GiGreenhouse } from "react-icons/gi";
 import { MdMonitor } from "react-icons/md";
 import CardDashboard from "../../component/card_dashboard/card_dashboard";
 import dashboardMenu from "../../Utility/dashboard_menu";
-import { useParams } from "react-router-dom";
+import { json, useParams } from "react-router-dom";
 import { Field, Form, Formik } from "formik";
 
 const DashboardOperator = () => {
   TabTitle("Dashboard - ITERA Hero");
   const base_url = useSelector(selectUrl);
   const [dataApiDashboard, setDataApiDashboard] = useState(null);
+  const [dataApiSensor, setDataApiSensor] = useState(null);
   const [dataApiPenjadwalan, setDataApiPenjadwalan] = useState(null);
   const [firstFilter, setFirstFilter] = useState(null)
   const [filterData, setFilterData] = useState([])
+  const [data, setData] = useState([]);
 
   const [action, setAction] = useState(false);
   const headers = localStorage.getItem("token");
@@ -91,9 +93,26 @@ const DashboardOperator = () => {
       });
   };
 
+  const getApiSensor = async () => {
+    axios
+      .get(base_url + "api/v1/sensor", {
+        headers: {
+          Authorization: `Bearer ${headers}`,
+        },
+      })
+      .then((response) => {
+        setDataApiSensor(response.data.data);
+        console.log(response.data.data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
   useEffect(() => {
     getApiDashboard();
     getApiPenjadwalan();
+    // getApiSensor();
   }, [action]);
 
   return (
@@ -108,7 +127,7 @@ const DashboardOperator = () => {
             src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
             alignSelf={"center"}
           />
-          <Wrap mt={8} spacing={8} justify={"space-between"}>
+          <Wrap mt={8} justify={{md:"center", sm:"center"}} spacing={30}>
             <CardDashboard
               data={{
                 value: dataApiDashboard.greenhouse,
@@ -137,6 +156,13 @@ const DashboardOperator = () => {
                 name: "Sensor",
               }}
             />
+            <CardDashboard
+              data={{
+                value: dataApiDashboard.actuator,
+                icon: AiOutlineControl,
+                name: "Aktuator",
+              }}
+            />
           </Wrap>
           <Flex my={8}>
             <Formik
@@ -158,6 +184,7 @@ const DashboardOperator = () => {
                     borderRadius={"10"}
                     placeholder="Pilih Filter"
                     width={"100%"}
+                    height={"5vh"}
                     bg={"white"}
                     _active={{ bg: "white" }}
                     borderColor={"var(--color-border)"}
@@ -166,7 +193,7 @@ const DashboardOperator = () => {
                     color={"var(--color-primer)"}
                     _hover={{ borderColor: "var(--color-border)" }}
                     _focusWithin={{ borderColor: "var(--color-border)" }}
-                    mr={10}
+                    mr={5}
                     onChange={(e) => {
                         setFirstFilter(e.target.value)
                         setFieldValue("filter1", e.target.value)
@@ -181,6 +208,7 @@ const DashboardOperator = () => {
                     borderRadius={"10"}
                     placeholder={values.filter1 ? 'Pilih ' + values.filter1 : '--'}
                     width={"100%"}
+                    height={"5vh"}
                     bg={"white"}
                     _active={{ bg: "white" }}
                     borderColor={"var(--color-border)"}
@@ -189,23 +217,46 @@ const DashboardOperator = () => {
                     color={"var(--color-primer)"}
                     _hover={{ borderColor: "var(--color-border)" }}
                     _focusWithin={{ borderColor: "var(--color-border)" }}
-                    onChange={(e) => setFieldValue("filter2", e.target.value)}
+                    onChange={async (e) => {
+                      setFieldValue("filter2", e.target.value)
+                      axios.get(base_url + "api/v1/" + values.filter1 + "/" + values.filter2 +"/sensor", {
+                        headers: {
+                          Authorization : "Bearer " + headers
+                        }
+                      })
+                      .then(response => {
+                        console.log(base_url + "api/v1/" + values.filter1 + "/" + values.filter2 +"/sensor")
+                        console.log(response.data)
+                        setData(response.data.data)
+                      })
+                      .catch(err => console.error(err))
+                    }}
                   >
                     {filterData.map((item, index) => (
-                      <option key={index} value={item}>
-                        {item.nama}
+                      <option key={index} value={item.id}>
+                        {item.id}
                       </option>
                     ))}
                   </Select>
                 </Flex>
-                <Button type="submit" colorScheme="teal" disabled={ !values.filter1 || !values.filter2 } mt={4}>
-                  Submit
-                </Button>
               </Form>
             )}
               
             </Formik>
           </Flex>
+          
+          {/* <Wrap>
+            {selected === 1 && data !== "" ? (
+              <CardSensor data={{ id: data }} />
+            ) : (
+              <></>
+            )}
+            {selected === 2 && data !== "" ? (
+              <CardAktuator data={{ id: data }} />
+            ) : (
+              <></>
+            )}
+          </Wrap> */}
         </Flex>
       )}
     </>

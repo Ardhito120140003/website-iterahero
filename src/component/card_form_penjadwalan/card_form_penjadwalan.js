@@ -47,7 +47,7 @@ const CardFormPenjadwalan = ({ updateAction }) => {
             });
     }, []);
 
-
+    
     const handleSubmit = () => {
         const newSchedule = {
             resep: formula,
