@@ -32,6 +32,7 @@ import dashboardMenu from "../../Utility/dashboard_menu";
 import { json, useParams } from "react-router-dom";
 import { Field, Form, Formik } from "formik";
 import CardSensor from "../../component/card_sensor/card_sensor";
+import CardSensorOperator from "../../component/card_sensor/card_sensor_operator";
 
 const DashboardOperator = () => {
   TabTitle("Dashboard - ITERA Hero");
@@ -187,6 +188,7 @@ const DashboardOperator = () => {
                       onChange={(e) => {
                         resetForm({ filter1: e.target.value, filter2: ""})
                         setFieldValue("filter1", e.target.value);
+                        setFirstFilter(e.target.value)
                       }}
                     >
                       <option value="greenhouse">Greenhouse</option>
@@ -239,15 +241,13 @@ const DashboardOperator = () => {
                       ))}
                     </Select>
                   </Flex>
+                  {values.filter2 !== "" ? (
+                    <CardSensorOperator data={{ alat: values.filter1, id: values.filter2 }} />
+                  ) : null}
                 </Form>
               )}
             </Formik>
           </Flex>
-          <Box>
-            {data.map((item, index) => (
-              <Text key={index}>{JSON.stringify(item)}</Text>
-            ))}
-          </Box>
 
           {/* <Wrap>
             {selected === 1 && data !== "" ? (
