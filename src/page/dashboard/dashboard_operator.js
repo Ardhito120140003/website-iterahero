@@ -174,8 +174,8 @@ const DashboardOperator = () => {
                       name="filter2"
                       as={Select}
                       borderRadius={"10"}
-                      width={"100%"}
-                      height={"5vh"}
+                      // width={"100%"}
+                      // height={"5vh"}
                       placeholder={
                         values.filter1 ? "Pilih " + values.filter1 : "--"
                       }

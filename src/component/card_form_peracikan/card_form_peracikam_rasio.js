@@ -21,7 +21,7 @@ import { useSelector } from 'react-redux';
 import Loading from '../loading/loading';
 import { selectUrl } from '../../features/auth/authSlice';
 
-function CardFormPeracikan() {
+function CardFormPeracikanRasio() {
   const { isOpen: isRacikModalOpen, onOpen: onRacikModalOpen, onClose: onRacikModalClose } = useDisclosure();
   const { isOpen: isSaveModalOpen, onOpen: onOpenSaveModal, onClose: onCloseSaveModal } = useDisclosure();
 
@@ -147,13 +147,13 @@ function CardFormPeracikan() {
               )}
               <Box marginBottom="16px">
                 <FormControl>
-                      <Text>PH Value</Text>
+                      <Text>Volume Nutrisi A</Text>
                       <Input
                           type="number"
                           value={phValue}
                           onChange={(e) => setPhValue(e.target.value)}
                           style={{ color: 'black' }}
-                          placeholder="masukkan ph value"
+                          placeholder="masukkan volumr nutrisi A (liter)"
                           required="PH harus diisi"
                         />
                     </FormControl>
@@ -161,13 +161,13 @@ function CardFormPeracikan() {
 
               <Box marginBottom="16px">
                 <FormControl>
-                      <Text>PPM Value</Text>
+                      <Text>Volume Nutrisi B</Text>
                       <Input
                           type="number"
                           value={ppmValue}
                           onChange={(e) => setPpmValue(e.target.value)}
                           style={{ color: 'black' }}
-                          placeholder="masukkan ppm value"
+                          placeholder="masukkan volume nutrisi B (liter)"
                           required="PPM harus diisi"
                         />
                     </FormControl>
@@ -175,13 +175,27 @@ function CardFormPeracikan() {
 
               <Box marginBottom="16px">
                 <FormControl>
-                      <Text>Lama Antar Penyiraman</Text>
+                      <Text>Volume Air</Text>
                       <Input
                           type="number"
                           value={ppmValue}
                           onChange={(e) => setPpmValue(e.target.value)}
                           style={{ color: 'black' }}
-                          placeholder="masukkan lama antar penyiraman"
+                          placeholder="masukkan volume air (liter)"
+                          required="interval harus diisi"
+                        />
+                    </FormControl>
+              </Box>
+
+              <Box marginBottom="16px">
+                <FormControl>
+                      <Text>PH Value</Text>
+                      <Input
+                          type="number"
+                          value={ppmValue}
+                          onChange={(e) => setPpmValue(e.target.value)}
+                          style={{ color: 'black' }}
+                          placeholder="masukkan nilai PH"
                           required="interval harus diisi"
                         />
                     </FormControl>
@@ -267,4 +281,4 @@ function CardFormPeracikan() {
   );
 }
 
-export default CardFormPeracikan;
+export default CardFormPeracikanRasio;
