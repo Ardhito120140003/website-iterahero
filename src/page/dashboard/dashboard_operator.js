@@ -13,6 +13,13 @@ import {
   FormLabel,
   Select,
   FormControl,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  useDisclosure,
+  Tabs, TabList, TabPanels, Tab, TabPanel
 } from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
 import { selectUrl } from "../../features/auth/authSlice";
@@ -25,7 +32,9 @@ import { MdMonitor } from "react-icons/md";
 import CardDashboard from "../../component/card_dashboard/card_dashboard";
 import { Field, Form, Formik } from "formik";
 import CardSensorOperator from "../../component/card_sensor/card_sensor_operator";
-import {MdOutlineMoreTime} from "react-icons/md";
+import { MdOutlineMoreTime } from "react-icons/md";
+import dashboardMenu from '../../Utility/dashboard_menu';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const DashboardOperator = () => {
   TabTitle("Dashboard - ITERA Hero");
@@ -38,6 +47,9 @@ const DashboardOperator = () => {
 
   const [action, setAction] = useState(false);
   const headers = localStorage.getItem("token");
+
+  const id = parseInt(useParams().id);
+  const [selected, setSelected] = useState(id);
 
   const getApiPenjadwalan = () => {
     axios
@@ -116,7 +128,7 @@ const DashboardOperator = () => {
             src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
             alignSelf={"center"}
           />
-          <Flex alignItems={"center"}>
+          <Flex alignItems={"center"} my={'20px'}>
             <Wrap mt={8} justify={{ md: "center", sm: "center" }} spacing={30}>
               {dataApiDashboard.map((item, index) => (
                 <CardDashboard
@@ -130,6 +142,7 @@ const DashboardOperator = () => {
               ))}
             </Wrap>
           </Flex>
+
           <Grid templateColumns={{ md: 'repeat(3, 1fr)', base: 'repeat(1, 1fr)' }} gap={6} mt={5}>
             <GridItem colSpan={2} >
               <Formik
@@ -220,52 +233,112 @@ const DashboardOperator = () => {
                         ))}
                       </Select>
                     </Flex>
-                    <Flex border={'3px solid #d9d9d9'} borderRadius={15} alignItems={"center"} justifyContent={"center"} padding={"20px"} mt={'20px'}>
-                    {values.filter2 !== "" ? (
-                      <CardSensorOperator 
-                        data={{ alat: values.filter1, id: values.filter2 }}
-                      />
-                    ) : null}
+
+                    <Flex border={'3px solid #d9d9d9'} borderRadius={15} justifyContent={'center'} px={"10px"} mt={'20px'} minHeight={'350px'}>
+
+                      <Tabs isFitted width={'100%'}>
+                        <TabList colorScheme='#09322D'>
+                          <Tab color={'black'}>Sensor</Tab>
+                          <Tab color={'black'}>Aktuator</Tab>
+                        </TabList>
+                        <TabPanels>
+                          {/* initially mounted */}
+                          <TabPanel>
+                            {values.filter2 !== "" ? (
+                              <CardSensorOperator
+                                data={{ alat: values.filter1, id: values.filter2 }}
+                              />
+                            ) : null}
+                          </TabPanel>
+                          {/* initially not mounted */}
+                          <TabPanel>
+                            {values.filter2 !== "" ? (
+                              <CardSensorOperator
+                                data={{ alat: values.filter1, id: values.filter2 }}
+                              />
+                            ) : null}
+                          </TabPanel>
+                        </TabPanels>
+                      </Tabs>
+
                     </Flex>
                   </Form>
                 )}
               </Formik>
-            </GridItem>
-            <Flex flexDir={'column'} border={'3px solid #d9d9d9'} borderRadius={15} alignItems={"center"} justifyContent={"center"} minH={'100px'}>
-              {dataApiPenjadwalan.length < 1 && isLoading ? (
-                <Loading />
-              ) : dataApiPenjadwalan.length < 1 ? (
-                <Text>Tidak Ada data Penjadwalan</Text>
-              ) : (
-                dataApiPenjadwalan.map((item, index) => (
-                  // <Box color={'black'} key={index}>{JSON.stringify(item)}</Box>
-                  <Flex
-                    key={index}
-                    borderRadius="10px"
-                    border="1px solid #E2E8F0"
-                    marginY="8px"
-                    marginX="20px"
-                    paddingY="0px"
-                    paddingX="20px"
-                    justifyContent="space-around"
-                  >
-                    {/* <Icon as={MdOutlineMoreTime} color="#14453E" w="50px" h="50px" alignSelf="center" /> */}
 
-                    <Flex flexDir="column" marginRight="50px" marginY="20px">
-                      <Text align="left">
-                        Formula :
-                      </Text>
-                      <Text align="left">
-                        Jam :
-                      </Text>
-                      <Text align="Left">
-                        Durasi Penyiraman :
-                      </Text>
+            </GridItem>
+
+
+            {/* ================================ jadwal =====================================*/}
+            <Flex flexDir={'column'} border={'3px solid #d9d9d9'} borderRadius={15} minH={'100px'} >
+
+              <Flex m={'20px'} justifyContent={'center'}>
+                <Text align="center">
+                  Jadwal Pendistribusian
+                </Text>
+              </Flex>
+
+              <Flex css={{
+                overflowY: 'scroll',
+                '&::-webkit-scrollbar': {
+                  width: '0.4em',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                  backgroundColor: 'transparent',
+                },
+              }}
+                flexDirection="column"
+                width="100%"
+                height="300px">
+
+                {dataApiPenjadwalan.length < 1 && isLoading ? (
+                  <Loading />
+                ) : dataApiPenjadwalan.length < 1 ? (
+                  <Text>Tidak Ada data Penjadwalan</Text>
+                ) : (
+                  dataApiPenjadwalan.map((item, index) => (
+                    // <Box color={'black'} key={index}>{JSON.stringify(item)}</Box>
+                    <Flex
+                      key={index}
+                      borderRadius="10px"
+                      border="1px solid #E2E8F0"
+                      marginY="8px"
+                      marginX="20px"
+                      paddingY="0px"
+                      paddingX="20px"
+                      justifyContent="space-around"
+                    >
+                      {/* <Icon as={MdOutlineMoreTime} color="#14453E" w="50px" h="50px" alignSelf="center" /> */}
+                      <Accordion color={'black'} allowToggle width={'40vh'}>
+                        <AccordionItem>
+                          <h2>
+                            <AccordionButton>
+                              <Box as="span" flex='1' textAlign='left'>
+                                10.15
+                              </Box>
+                              <AccordionIcon />
+                            </AccordionButton>
+                          </h2>
+                          <AccordionPanel pb={4}>
+                            <Flex flexDir="column" marginRight="50px" marginY="20px">
+                              <Text align="left">
+                                Formula :
+                              </Text>
+                              <Text align="left">
+                                Jam :
+                              </Text>
+                              <Text align="Left">
+                                Durasi Penyiraman :
+                              </Text>
+                            </Flex>
+                          </AccordionPanel>
+                        </AccordionItem>
+                      </Accordion>
                     </Flex>
-                  </Flex>
-                )
-                ))
-              }
+                  )
+                  ))
+                }
+              </Flex>
             </Flex>
           </Grid>
         </Flex>

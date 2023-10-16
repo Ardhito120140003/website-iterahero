@@ -54,7 +54,7 @@ function CardSensorOperator(props) {
       ) : (
         <Wrap
           justify={{ base: 'center', lg: 'start' }}
-          mt="30px"
+          mt="20px"
         >
           {dataTable.map((item, index) => (
             <Link to={`/unit/dashboard/sensor/${item.id}`}>
