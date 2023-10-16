@@ -175,13 +175,27 @@ function CardFormPeracikan() {
 
               <Box marginBottom="16px">
                 <FormControl>
-                      <Text>Lama Antar Penyiraman</Text>
+                      <Text>Volume</Text>
                       <Input
                           type="number"
                           value={ppmValue}
                           onChange={(e) => setPpmValue(e.target.value)}
                           style={{ color: 'black' }}
-                          placeholder="masukkan lama antar penyiraman"
+                          placeholder="masukkan volume pupuk (liter)"
+                          required="interval harus diisi"
+                        />
+                    </FormControl>
+              </Box>
+
+              <Box marginBottom="16px">
+                <FormControl>
+                      <Text>Tandon Penyimpanan</Text>
+                      <Input
+                          type="number"
+                          value={ppmValue}
+                          onChange={(e) => setPpmValue(e.target.value)}
+                          style={{ color: 'black' }}
+                          placeholder="masukkan volume pupuk (liter)"
                           required="interval harus diisi"
                         />
                     </FormControl>

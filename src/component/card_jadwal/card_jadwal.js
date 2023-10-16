@@ -11,8 +11,13 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   Button,
-
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
   useDisclosure,
+  Box
 } from '@chakra-ui/react';
 import { MdOutlineMoreTime } from 'react-icons/md';
 import { BiTrash } from 'react-icons/bi';
@@ -56,7 +61,26 @@ function CardJadwal({ jadwal, deleteHandler }) {
             paddingX="20px"
             justifyContent="space-around"
           >
-            <Icon as={MdOutlineMoreTime} color="#14453E" w="50px" h="50px" alignSelf="center" />
+            <Accordion color={'black'} allowToggle w={'100%'}>
+              <AccordionItem>
+                <h2>
+                  <AccordionButton>
+                    <Box as="span" flex='1' textAlign='left'>
+                      Section 1 title
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                  veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                  commodo consequat.
+                </AccordionPanel>
+              </AccordionItem>
+              </Accordion>
+
+              {/* <Icon as={MdOutlineMoreTime} color="#14453E" w="50px" h="50px" alignSelf="center" />
 
             <Flex flexDir="column" marginRight="50px" marginY="20px">
               <Text align="left">
@@ -83,34 +107,34 @@ function CardJadwal({ jadwal, deleteHandler }) {
               alignSelf="center"
               onClick={onOpen}
 
-            />
+            /> */}
 
-            <AlertDialog
-              isOpen={isOpen}
-              leastDestructiveRef={cancelRef}
-              onClose={onClose}
-            >
-              <AlertDialogOverlay>
-                <AlertDialogContent>
-                  <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                    Hapus Penjadwalan
-                  </AlertDialogHeader>
+              <AlertDialog
+                isOpen={isOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+              >
+                <AlertDialogOverlay>
+                  <AlertDialogContent>
+                    <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                      Hapus Penjadwalan
+                    </AlertDialogHeader>
 
-                  <AlertDialogBody>
-                    Are you sure? You can't undo this action afterwards.
-                  </AlertDialogBody>
+                    <AlertDialogBody>
+                      Are you sure? You can't undo this action afterwards.
+                    </AlertDialogBody>
 
-                  <AlertDialogFooter>
-                    <Button ref={cancelRef} onClick={onClose}>
-                      Cancel
-                    </Button>
-                    <Button colorScheme="red" ml={3} onClick={() => { deleteHandler(item.id); onClose(); }}>
-                      Delete
-                    </Button>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialogOverlay>
-            </AlertDialog>
+                    <AlertDialogFooter>
+                      <Button ref={cancelRef} onClick={onClose}>
+                        Cancel
+                      </Button>
+                      <Button colorScheme="red" ml={3} onClick={() => { deleteHandler(item.id); onClose(); }}>
+                        Delete
+                      </Button>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialogOverlay>
+              </AlertDialog>
           </Flex>
 
         ))}

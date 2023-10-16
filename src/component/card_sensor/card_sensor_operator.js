@@ -53,9 +53,6 @@ function CardSensorOperator(props) {
         <Loading />
       ) : (
         <Wrap
-          className="center-ul"
-          align="center"
-          spacing="30px"
           justify={{ base: 'center', lg: 'start' }}
           mt="30px"
         >
