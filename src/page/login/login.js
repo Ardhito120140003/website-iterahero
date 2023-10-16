@@ -1,94 +1,90 @@
-import React, { useEffect } from "react";
-import { Box, Flex, Button, Image, Text, Input } from "@chakra-ui/react";
-import { Formik, Form } from "formik";
+import React, { useEffect } from 'react';
+import {
+  Box, Flex, Button, Image, Text, Input,
+} from '@chakra-ui/react';
+import { Formik, Form } from 'formik';
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-} from "@chakra-ui/form-control";
-import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
-import { TabTitle } from "../../Utility/utility";
-import axios from "axios";
-import { loginApi } from "../../Utility/api_link";
-import { useDispatch, useSelector } from "react-redux";
-import { login, logout, selectUser } from "../../features/auth/authSlice";
+} from '@chakra-ui/form-control';
+import * as yup from 'yup';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { TabTitle } from '../../Utility/utility';
+import { login, logout, selectToken } from '../../features/auth/authSlice';
 
 const schema = yup.object({
-  email: yup.string().required("Email harus diisi"),
+  email: yup.string().required('Email harus diisi'),
   password: yup
     .string()
-    .min(6, "Password harus lebih dari 6 karakter")
-    .required("Password harus diisi"),
+    .min(6, 'Password harus lebih dari 6 karakter')
+    .required('Password harus diisi'),
 });
 
-const Login = () => {
+function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
 
   const handleSubmitComplate = (emailValue, passwordValue) => {
     axios
-      .post("https://iterahero-e1a0e90da51e.herokuapp.com/api/v1/login", {
+      .post('http://localhost:3000/api/v1/login', {
         email: emailValue,
         password: passwordValue,
       })
       .then((response) => {
         dispatch(login(response.data));
         console.log(response);
-        localStorage.setItem("token", response.data.accessToken);
-        navigate("/unit/dashboard/1");
+        localStorage.setItem('token', response.data.accessToken);
+        navigate('/unit/dashboard/1');
       })
       .catch((error) => console.log(error));
   };
 
   const checkToken = () => {
-    console.log(user);
-    if (user) {
-      navigate("/unit/dashboard/1");
-    }
-  };
-
-  const validateInput = (value) => {
-    if (value.length < 6) {
-      return "Password harus lebih dari 6 karakter";
+    if (token) {
+      navigate('/unit/dashboard/1');
+    } else {
+      dispatch(logout());
     }
   };
 
   useEffect(() => {
     checkToken();
-  }, []);
+  }, [token]);
 
-  TabTitle("Login - ITERA Hero");
+  TabTitle('Login - ITERA Hero');
   return (
     <Flex
-      backgroundColor={"var(--color-on-primary)"}
+      backgroundColor="var(--color-on-primary)"
       width="100%"
       height="100vh"
       alignItems="center"
       justifyContent="center"
     >
       <Flex
-        flexDir={"column"}
-        backgroundColor={"var(--color-on-primary)"}
+        flexDir="column"
+        backgroundColor="var(--color-on-primary)"
         width="100%"
         height="100%"
         alignItems="center"
         justifyContent="center"
-        display={{ base: "none", md: "none", lg: "flex" }}
+        display={{ base: 'none', md: 'none', lg: 'flex' }}
       >
         <Image
-          position={"Relative"}
-          width={"80%"}
-          maxWidth={"400px"}
+          position="Relative"
+          width="80%"
+          maxWidth="400px"
           src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1664911531/itera%20herro%20icon/Frame_245_3_nvtrkl.png"
         />
         <Text
           p={3}
-          fontWeight={"semibold"}
-          fontFamily={"var(--font-family-secondary)"}
-          fontSize={"var(--header-3)"}
-          color={"{var(--color-primer)}"}
+          fontWeight="semibold"
+          fontFamily="var(--font-family-secondary)"
+          fontSize="var(--header-3)"
+          color="{var(--color-primer)}"
         >
           Kerjasama ITERA dan PT. East West Seed Indonesia
         </Text>
@@ -100,40 +96,40 @@ const Login = () => {
         /> */}
       </Flex>
       <Flex
-        backgroundColor={{ lg: "var(--color-primer)" }}
+        backgroundColor={{ lg: 'var(--color-primer)' }}
         width="100%"
         height="100%"
-        alignItems={{ lg: "center" }}
+        alignItems={{ lg: 'center' }}
         justifyContent="center"
       >
         <Box
           max-width="649px"
-          borderRadius={"20px"}
+          borderRadius="20px"
           display="flex"
           gap="40px"
-          flexDirection={"column"}
-          size={"md"}
-          width={{ base: "100%", md: "80%" }}
+          flexDirection="column"
+          size="md"
+          width={{ base: '100%', md: '80%' }}
           padding="90px 50px 90px 50px"
-          backgroundColor={"var(--color-on-primary)"}
-          justifyContent={{ lg: "center" }}
+          backgroundColor="var(--color-on-primary)"
+          justifyContent={{ lg: 'center' }}
           textAlign="center"
           alignItems="center"
         >
           <Image
             sizes="md"
-            display={{ base: "flex", lg: "none" }}
-            position={"Relative"}
-            width={"80%"}
-            maxWidth={"200px"}
+            display={{ base: 'flex', lg: 'none' }}
+            position="Relative"
+            width="80%"
+            maxWidth="200px"
             src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1664911531/itera%20herro%20icon/Frame_245_3_nvtrkl.png"
           />
           <Image
             sizes="md"
-            display={{ base: "flex", lg: "none" }}
-            position={"Relative"}
-            width={"80%"}
-            maxWidth={"200px"}
+            display={{ base: 'flex', lg: 'none' }}
+            position="Relative"
+            width="80%"
+            maxWidth="200px"
             src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
           />
           <Text
@@ -146,7 +142,7 @@ const Login = () => {
             Masuk
           </Text>
           <Formik
-            initialValues={{ email: "", password: "" }}
+            initialValues={{ email: '', password: '' }}
             validationSchema={schema}
             onSubmit={(values, actions) => {
               actions.resetForm();
@@ -162,14 +158,14 @@ const Login = () => {
             }) => (
               <Form onSubmit={handleSubmit}>
                 <FormControl
-                  size={"md"}
-                  marginTop={"20px"}
+                  size="md"
+                  marginTop="20px"
                   isInvalid={errors.email && touched.email}
                 >
                   <FormLabel htmlFor="email">Email</FormLabel>
                   <Input
-                    size={"md"}
-                    marginTop={"0 auto"}
+                    size="md"
+                    marginTop="0 auto"
                     type="text"
                     name="email"
                     value={values.email}
@@ -181,14 +177,14 @@ const Login = () => {
                   <FormErrorMessage>{errors.email}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  size={"md"}
-                  marginTop={"20px"}
+                  size="md"
+                  marginTop="20px"
                   isInvalid={!!errors.password && touched.password}
                 >
                   <FormLabel htmlFor="password">Password</FormLabel>
                   <Input
-                    size={"md"}
-                    margin={"0 auto"}
+                    size="md"
+                    margin="0 auto"
                     variant="outline"
                     type="password"
                     name="password"
@@ -202,7 +198,7 @@ const Login = () => {
                 </FormControl>
                 {/* <Link to={"/unit/dashboard"}> */}
                 <Button
-                  marginTop={"44px"}
+                  marginTop="44px"
                   width="100%"
                   height="50px"
                   borderRadius="10px"
@@ -231,5 +227,5 @@ const Login = () => {
       </Flex>
     </Flex>
   );
-};
+}
 export default Login;

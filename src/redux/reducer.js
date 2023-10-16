@@ -1,18 +1,18 @@
 import {
-    ROUTE_PAGE_NAME
-} from "./action";
+  ROUTE_PAGE_NAME,
+} from './action';
 
 const initialState = {
-    routeName: 'Dashboard',
-}
+  routeName: 'Dashboard',
+};
 
 function userReducer(state = initialState, action) {
-    switch (action.type) {
-        case ROUTE_PAGE_NAME:
-            return { ...state, routeName: action.data };
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case ROUTE_PAGE_NAME:
+      return { ...state, routeName: action.data };
+    default:
+      return state;
+  }
 }
 
 export default userReducer;

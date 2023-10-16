@@ -10,18 +10,16 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-  AlertDialogCloseButton,
-  Button
+  Button,
 
+  useDisclosure,
 } from '@chakra-ui/react';
 import { MdOutlineMoreTime } from 'react-icons/md';
 import { BiTrash } from 'react-icons/bi';
-import { useDisclosure } from '@chakra-ui/react';
 
-const CardJadwal = ({ jadwal, deleteHandler }) => {
-
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const cancelRef = React.useRef()
+function CardJadwal({ jadwal, deleteHandler }) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef();
 
   return (
     <Flex
@@ -60,10 +58,19 @@ const CardJadwal = ({ jadwal, deleteHandler }) => {
           >
             <Icon as={MdOutlineMoreTime} color="#14453E" w="50px" h="50px" alignSelf="center" />
 
-            <Flex flexDir="column" marginRight={'50px'} marginY="20px">
-              <Text align="left">Formula : {item.resep.nama} </Text>
-              <Text align="left">Jam : {item.waktu} </Text>
-              <Text align="Left">Durasi Penyiraman : {item.resep.interval} </Text>
+            <Flex flexDir="column" marginRight="50px" marginY="20px">
+              <Text align="left">
+                Formula :
+                {item.resep.nama}
+              </Text>
+              <Text align="left">
+                Jam :
+                {item.waktu}
+              </Text>
+              <Text align="Left">
+                Durasi Penyiraman :
+                {item.resep.interval}
+              </Text>
             </Flex>
 
             <Switch alignSelf="center" />
@@ -75,7 +82,7 @@ const CardJadwal = ({ jadwal, deleteHandler }) => {
               h="30px"
               alignSelf="center"
               onClick={onOpen}
-              
+
             />
 
             <AlertDialog
@@ -85,7 +92,7 @@ const CardJadwal = ({ jadwal, deleteHandler }) => {
             >
               <AlertDialogOverlay>
                 <AlertDialogContent>
-                  <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                  <AlertDialogHeader fontSize="lg" fontWeight="bold">
                     Hapus Penjadwalan
                   </AlertDialogHeader>
 
@@ -97,7 +104,7 @@ const CardJadwal = ({ jadwal, deleteHandler }) => {
                     <Button ref={cancelRef} onClick={onClose}>
                       Cancel
                     </Button>
-                    <Button colorScheme='red' ml={3}  onClick={() => { deleteHandler(item.id); onClose() }}>
+                    <Button colorScheme="red" ml={3} onClick={() => { deleteHandler(item.id); onClose(); }}>
                       Delete
                     </Button>
                   </AlertDialogFooter>
@@ -110,6 +117,6 @@ const CardJadwal = ({ jadwal, deleteHandler }) => {
       </Flex>
     </Flex>
   );
-};
+}
 
 export default CardJadwal;

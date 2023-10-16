@@ -1,11 +1,11 @@
-let automationMenu = [
+const automationMenu = [
   {
     id: 1,
-    name: "By Sensor",
+    name: 'By Sensor',
   },
   {
     id: 2,
-    name: "Penjadwalan",
+    name: 'Penjadwalan',
   },
 ];
 export default automationMenu;

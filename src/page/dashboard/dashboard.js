@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Flex,
   Image,
@@ -6,35 +6,30 @@ import {
   Select,
   Wrap,
   Button,
-  Menu,
-  Box,
-} from "@chakra-ui/react";
-import CardDashboard from "../../component/card_dashboard/card_dashboard";
-import { GiGreenhouse } from "react-icons/gi";
-import { MdMonitor } from "react-icons/md";
-import { AiOutlineControl } from "react-icons/ai";
-import { useDispatch } from "react-redux";
-import { routePageName } from "../../features/auth/authSlice";
-import { TabTitle } from "../../Utility/utility";
-import axios from "axios";
-import Loading from "../../component/loading/loading";
-import { dashboardApi, greenhouseByUserId } from "../../Utility/api_link";
-import { useNavigate, useParams } from "react-router-dom";
-import { Formik } from "formik";
-import dashboardMenu from "../../Utility/dashboard_menu";
-import CardSensor from "../../component/card_sensor/card_sensor";
-import CardAktuator from "../../component/card_aktuator/card_aktuator";
-import { logout } from "../../features/auth/authSlice";
-import { useSelector } from "react-redux";
-import { selectUrl } from "../../features/auth/authSlice";
+} from '@chakra-ui/react';
+import { GiGreenhouse } from 'react-icons/gi';
+import { MdMonitor } from 'react-icons/md';
+import { AiOutlineControl } from 'react-icons/ai';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Formik } from 'formik';
+import { routePageName, selectUrl } from '../../features/auth/authSlice';
+import { TabTitle } from '../../Utility/utility';
+import Loading from '../../component/loading/loading';
+import { dashboardApi, greenhouseByUserId } from '../../Utility/api_link';
+import CardDashboard from '../../component/card_dashboard/card_dashboard';
+import dashboardMenu from '../../Utility/dashboard_menu';
+import CardSensor from '../../component/card_sensor/card_sensor';
+import CardAktuator from '../../component/card_aktuator/card_aktuator';
 
-const Dashboard = () => {
+function Dashboard() {
   const base_url = useSelector(selectUrl);
-  let id = parseInt(useParams().id);
-  TabTitle("Dashboard - ITERA Hero");
+  const id = parseInt(useParams().id);
+  TabTitle('Dashboard - ITERA Hero');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [data, setData] = useState("");
+  const [data, setData] = useState('');
 
   const [dataApi, setDataApi] = useState(null);
   const [selected, setSelected] = useState(id);
@@ -42,11 +37,11 @@ const Dashboard = () => {
   const [dataSensor, setDataSensor] = useState(null);
 
   const getApiDashboard = async () => {
-    const header = localStorage.getItem("token");
+    const header = localStorage.getItem('token');
     await axios
       .get(base_url + dashboardApi, {
         headers: {
-          Authorization: "Bearer " + header,
+          Authorization: `Bearer ${header}`,
         },
       })
       .then((response) => setDataApi(response.data.data))
@@ -57,11 +52,11 @@ const Dashboard = () => {
       });
   };
   const getApiGreenhouse = async () => {
-    const header = localStorage.getItem("token");
+    const header = localStorage.getItem('token');
     await axios
       .get(base_url + greenhouseByUserId, {
         headers: {
-          Authorization: "Bearer " + header,
+          Authorization: `Bearer ${header}`,
         },
       })
       .then((response) => {
@@ -81,7 +76,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    dispatch(routePageName("Dashboard"));
+    dispatch(routePageName('Dashboard'));
     getApiGreenhouse();
     getApiDashboard();
   }, []);
@@ -91,100 +86,98 @@ const Dashboard = () => {
       {dataApi == null || dataGreenhouse == null ? (
         <Loading />
       ) : (
-        <Flex w="100%" flexDir={"column"}>
+        <Flex w="100%" flexDir="column">
           <Flex
             w="100%"
-            flexDir={"row"}
-            alignContent={"center"}
-            justifyContent={"center"}
-            alignItems={"center"}
+            flexDir="row"
+            alignContent="center"
+            justifyContent="center"
+            alignItems="center"
           >
             <Image
-              width={"20%"}
-              height={"auto"}
+              width="20%"
+              height="auto"
               src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
             />
           </Flex>
-          <Flex justify="center" mt={"-30px"}>
-            <Wrap spacing={{ base: "5px", md: "50px" }} justify="center">
+          <Flex justify="center" mt="-30px">
+            <Wrap spacing={{ base: '5px', md: '50px' }} justify="center">
               <CardDashboard
                 data={{
                   value: dataApi.greenhouse,
                   icon: GiGreenhouse,
-                  name: "GreenHouse",
+                  name: 'GreenHouse',
                 }}
               />
               <CardDashboard
                 data={{
                   value: dataApi.tandonPeracikan,
                   icon: AiOutlineControl,
-                  name: "Tandon Peracikan",
+                  name: 'Tandon Peracikan',
                 }}
               />
               <CardDashboard
                 data={{
                   value: dataApi.sensor,
                   icon: MdMonitor,
-                  name: "Sensor",
+                  name: 'Sensor',
                 }}
               />
               <CardDashboard
                 data={{
                   value: dataApi.actuator,
                   icon: AiOutlineControl,
-                  name: "Actuator",
+                  name: 'Actuator',
                 }}
               />
             </Wrap>
           </Flex>
-          <Flex justifyContent={"flex-start"} width="100%"></Flex>
-          <Wrap mt={"30px"} flexDir={"row"}>
-            {dashboardMenu.map((item, index) => {
-              return (
-                <Flex key={index} mr={"3"} width={"169px"} height={"44px"}>
-                  <Button
-                    onClick={() => setSelected(item.id)}
-                    w="100%"
-                    height={"100%"}
-                    borderRadius={"16"}
-                    border={
+          <Flex justifyContent="flex-start" width="100%" />
+          <Wrap mt="30px" flexDir="row">
+            {dashboardMenu.map((item, index) => (
+              <Flex key={index} mr="3" width="169px" height="44px">
+                <Button
+                  onClick={() => setSelected(item.id)}
+                  w="100%"
+                  height="100%"
+                  borderRadius="16"
+                  border={
                       selected == item.id
                         ? null
-                        : "1px solid var(--color-primer)"
+                        : '1px solid var(--color-primer)'
                     }
-                    bg={
+                  bg={
                       selected == item.id
-                        ? "var(--color-primer)"
-                        : "var(--color-on-primary)"
+                        ? 'var(--color-primer)'
+                        : 'var(--color-on-primary)'
                     }
-                    flexDir={"row"}
-                    alignContent={"center"}
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                  >
-                    <Text
-                      fontWeight={"semibold"}
-                      color={
+                  flexDir="row"
+                  alignContent="center"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Text
+                    fontWeight="semibold"
+                    color={
                         selected == item.id
-                          ? "var(--color-surface)"
-                          : "var(--color-on-background"
+                          ? 'var(--color-surface)'
+                          : 'var(--color-on-background'
                       }
-                      size={"var(--header-3)"}
-                    >
-                      {item.name}
-                    </Text>
-                  </Button>
-                </Flex>
-              );
-            })}
+                    size="var(--header-3)"
+                  >
+                    {item.name}
+                  </Text>
+                </Button>
+              </Flex>
+            ))}
           </Wrap>
           <Flex
-            mt={"30px"}
-            alignContent={"center"}
-            alignItems={"center"}
-            justifyContent={"flex-start"}
+            mt="30px"
+            alignContent="center"
+            alignItems="center"
+            justifyContent="flex-start"
           >
-            <Flex width={"30%"}>
+            <Flex width="30%">
               <Formik
                 initialValues={{
                   greenhouse: data,
@@ -202,51 +195,49 @@ const Dashboard = () => {
                 }) => (
                   <form onSubmit={handleSubmit}>
                     <Flex
-                      alignContent={"center"}
-                      alignItems={"center"}
-                      justify={"space-between"}
+                      alignContent="center"
+                      alignItems="center"
+                      justify="space-between"
                     >
-                      <Flex height={"auto"} width={"100%"}>
+                      <Flex height="auto" width="100%">
                         <Select
                           onChange={(e) => {
-                            setFieldValue("id", e.target.value);
+                            setFieldValue('id', e.target.value);
                             setData(e.target.value);
                           }}
                           size="xs"
-                          borderRadius={"10"}
+                          borderRadius="10"
                           name="greenhouse"
                           value={values.id}
                           placeholder="Pilih Greenhouse"
-                          width={"100%"}
-                          bg={"white"}
-                          _active={{ bg: "white" }}
-                          borderColor={"var(--color-border)"}
-                          fontSize={"var(--header-5)"}
-                          fontWeight={"normal"}
-                          color={"var(--color-primer)"}
-                          _hover={{ borderColor: "var(--color-border)" }}
-                          _focusWithin={{ borderColor: "var(--color-border)" }}
+                          width="100%"
+                          bg="white"
+                          _active={{ bg: 'white' }}
+                          borderColor="var(--color-border)"
+                          fontSize="var(--header-5)"
+                          fontWeight="normal"
+                          color="var(--color-primer)"
+                          _hover={{ borderColor: 'var(--color-border)' }}
+                          _focusWithin={{ borderColor: 'var(--color-border)' }}
                         >
-                          {dataGreenhouse.map((item, index) => {
-                            return item.id == dataGreenhouse[0].id ? (
-                              <option
-                                color={"var(--color-border)"}
-                                key={index}
-                                value={item.id}
-                                selected
-                              >
-                                {item.name}
-                              </option>
-                            ) : (
-                              <option
-                                color={"var(--color-border)"}
-                                key={index}
-                                value={item.id}
-                              >
-                                {item.name}
-                              </option>
-                            );
-                          })}
+                          {dataGreenhouse.map((item, index) => (item.id == dataGreenhouse[0].id ? (
+                            <option
+                              color="var(--color-border)"
+                              key={index}
+                              value={item.id}
+                              selected
+                            >
+                              {item.name}
+                            </option>
+                          ) : (
+                            <option
+                              color="var(--color-border)"
+                              key={index}
+                              value={item.id}
+                            >
+                              {item.name}
+                            </option>
+                          )))}
                         </Select>
                       </Flex>
                     </Flex>
@@ -256,12 +247,12 @@ const Dashboard = () => {
             </Flex>
           </Flex>
           <Wrap>
-            {selected === 1 && data !== "" ? (
+            {selected === 1 && data !== '' ? (
               <CardSensor data={{ id: data }} />
             ) : (
               <></>
             )}
-            {selected === 2 && data !== "" ? (
+            {selected === 2 && data !== '' ? (
               <CardAktuator data={{ id: data }} />
             ) : (
               <></>
@@ -271,5 +262,5 @@ const Dashboard = () => {
       )}
     </>
   );
-};
+}
 export default Dashboard;

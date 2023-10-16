@@ -1,4 +1,4 @@
-let dashboardMenu = [
+const dashboardMenu = [
   {
     id: 1,
     name: 'Sensor',
@@ -7,5 +7,5 @@ let dashboardMenu = [
     id: 2,
     name: 'Aktuator',
   },
-]
+];
 export default dashboardMenu;

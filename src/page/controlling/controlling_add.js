@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Flex,
   Image,
   Text,
   Input,
-  Icon,
-  calc,
   Circle,
   Button,
   FormControl,
@@ -13,40 +11,38 @@ import {
   FormLabel,
   Select,
   Textarea,
-} from "@chakra-ui/react";
-import { useParams, useNavigate } from "react-router";
-import * as yup from "yup";
-import { Link } from "react-router-dom";
-import { Formik, Form } from "formik";
-import { useDispatch } from "react-redux";
-import { routePageName } from "../../features/auth/authSlice";
-import { TabTitle } from "../../Utility/utility";
+} from '@chakra-ui/react';
+import { useParams, useNavigate } from 'react-router';
+import * as yup from 'yup';
+import { Link } from 'react-router-dom';
+import { Formik, Form } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { routePageName, selectUrl } from '../../features/auth/authSlice';
+import { TabTitle } from '../../Utility/utility';
 import {
   getApiGreenhouse,
   addActuatorApi,
   icons,
-} from "../../Utility/api_link";
-import axios from "axios";
-import Loading from "../../component/loading/loading";
-import { useSelector } from "react-redux";
-import { selectUrl } from "../../features/auth/authSlice";
+} from '../../Utility/api_link';
+import Loading from '../../component/loading/loading';
 
-const Controlling_Add = () => {
+function Controlling_Add() {
   const base_url = useSelector(selectUrl);
-  TabTitle("Tambah Aktuator - ITERA Hero");
+  TabTitle('Tambah Aktuator - ITERA Hero');
   const { id } = useParams();
   const navigate = useNavigate();
   const [dataApi, setDataApi] = useState(null);
-  const [icon_selected, setIcon_selected] = useState("");
-  const [iconsList, setIconsList] = useState("");
+  const [icon_selected, setIcon_selected] = useState('');
+  const [iconsList, setIconsList] = useState('');
   const [isloading, checkLoading] = useState(true);
   const [imageActuator, onChangeImageActuator] = useState(null);
   const [imagePos, onChangeImagePos] = useState(null);
 
   const schema = yup.object({
-    name: yup.string().required("Nama harus diisi"),
-    icon: yup.string().required("Ikon harus diisi"),
-    color: yup.string().required("Warna harus diisi"),
+    name: yup.string().required('Nama harus diisi'),
+    icon: yup.string().required('Ikon harus diisi'),
+    color: yup.string().required('Warna harus diisi'),
   });
 
   const getIcon = async () => {
@@ -64,7 +60,7 @@ const Controlling_Add = () => {
     axios
       .get(base_url + getApiGreenhouse + id, {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       })
       .then((response) => {
@@ -77,7 +73,7 @@ const Controlling_Add = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(routePageName("Controlling"));
+    dispatch(routePageName('Controlling'));
     getDataApi();
     getIcon();
     checkLoading(true);
@@ -88,48 +84,51 @@ const Controlling_Add = () => {
       {dataApi == null || iconsList == null || isloading ? (
         <Loading />
       ) : (
-        <Flex w="100%" flexDir={"column"}>
+        <Flex w="100%" flexDir="column">
           <Flex width="100%">
-            <Link to={"/unit/controlling"}>
-              <Flex marginRight={"2"}>
+            <Link to="/unit/controlling">
+              <Flex marginRight="2">
                 <Text
-                  fontWeight={"semibold"}
-                  fontSize={"var(--header-3)"}
-                  color={"var(--color-primer)"}
+                  fontWeight="semibold"
+                  fontSize="var(--header-3)"
+                  color="var(--color-primer)"
                 >
                   List Controlling pada Greenhouse
                 </Text>
               </Flex>
             </Link>
-            <Flex marginRight={"2"}>
+            <Flex marginRight="2">
               <Text
-                fontWeight={"semibold"}
-                fontSize={"var(--header-3)"}
-                color={"var(--color-primer)"}
+                fontWeight="semibold"
+                fontSize="var(--header-3)"
+                color="var(--color-primer)"
               >
-                {" "}
-                {">"}{" "}
+                {' '}
+                {'>'}
+                {' '}
               </Text>
             </Flex>
             <Link>
               <Flex>
                 {dataApi.id == id ? (
                   <Text
-                    fontWeight={"semibold"}
-                    fontSize={"var(--header-3)"}
-                    color={"var(--color-primer)"}
+                    fontWeight="semibold"
+                    fontSize="var(--header-3)"
+                    color="var(--color-primer)"
                   >
-                    {" "}
-                    {dataApi.name}{" "}
+                    {' '}
+                    {dataApi.name}
+                    {' '}
                   </Text>
                 ) : (
                   <Text
-                    fontWeight={"semibold"}
-                    fontSize={"var(--header-3)"}
-                    color={"var(--color-primer)"}
+                    fontWeight="semibold"
+                    fontSize="var(--header-3)"
+                    color="var(--color-primer)"
                   >
-                    {" "}
-                    {dataApi.name}{" "}
+                    {' '}
+                    {dataApi.name}
+                    {' '}
                   </Text>
                 )}
               </Flex>
@@ -140,35 +139,35 @@ const Controlling_Add = () => {
             validateOnChange={false}
             validateOnBlur={false}
             initialValues={{
-              name: "",
-              icon: "",
-              color: "",
+              name: '',
+              icon: '',
+              color: '',
               id_greenhouse: id,
-              detailact: "",
+              detailact: '',
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
                 const submitedData = new FormData();
-                submitedData.append("name", values.name);
-                submitedData.append("icon", values.icon);
-                submitedData.append("color", values.color);
-                submitedData.append("id_greenhouse", values.id_greenhouse);
-                submitedData.append("detailact", values.detailact);
-                submitedData.append("actuator_image", imageActuator);
-                submitedData.append("posisitionact", imagePos);
+                submitedData.append('name', values.name);
+                submitedData.append('icon', values.icon);
+                submitedData.append('color', values.color);
+                submitedData.append('id_greenhouse', values.id_greenhouse);
+                submitedData.append('detailact', values.detailact);
+                submitedData.append('actuator_image', imageActuator);
+                submitedData.append('posisitionact', imagePos);
                 await axios
                   .post(addActuatorApi, submitedData, {
                     headers: {
-                      Authorization: "Bearer " + localStorage.getItem("token"),
-                      "content-type": "multipart/form-data",
+                      Authorization: `Bearer ${localStorage.getItem('token')}`,
+                      'content-type': 'multipart/form-data',
                     },
                   })
                   .then((response) => {
                     if (response.status === 201) {
-                      alert("Data berhasil ditambahkan");
+                      alert('Data berhasil ditambahkan');
                       navigate(-1);
                     } else {
-                      alert("Data gagal ditambahkan");
+                      alert('Data gagal ditambahkan');
                     }
                   })
                   .catch((error) => {
@@ -190,14 +189,14 @@ const Controlling_Add = () => {
             }) => (
               <Form onSubmit={handleSubmit}>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.name && touched.name}
                 >
-                  <FormLabel color={"var(--color-primer)"}>Name</FormLabel>
+                  <FormLabel color="var(--color-primer)">Name</FormLabel>
                   <Input
-                    color={"var(--color-primer)"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    color="var(--color-primer)"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     type="text"
                     name="name"
                     value={values.name}
@@ -209,14 +208,14 @@ const Controlling_Add = () => {
                   <FormErrorMessage>{errors.name}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.icon && touched.icon}
                 >
-                  <FormLabel color={"var(--color-primer)"}>Icon</FormLabel>
+                  <FormLabel color="var(--color-primer)">Icon</FormLabel>
                   <Select
-                    color={"var(--color-primer)"}
+                    color="var(--color-primer)"
                     onChange={(e) => {
-                      setFieldValue("icon", e.target.value);
+                      setFieldValue('icon', e.target.value);
                       setIcon_selected(e.target.value);
                     }}
                     onBlur={handleBlur}
@@ -227,28 +226,26 @@ const Controlling_Add = () => {
                     <option value="" selected>
                       Pilih Icon
                     </option>
-                    {iconsList.map((item) =>
-                      item.type == "actuator" ? (
-                        <option value={item.icon} color={"var(--color-primer)"}>
-                          {item.name}
-                        </option>
-                      ) : null
-                    )}
+                    {iconsList.map((item) => (item.type == 'actuator' ? (
+                      <option value={item.icon} color="var(--color-primer)">
+                        {item.name}
+                      </option>
+                    ) : null))}
                   </Select>
-                  <Flex m={"15px"}>
+                  <Flex m="15px">
                     <Image src={icon_selected} />
                   </Flex>
                   <FormErrorMessage>{errors.icon}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.color && touched.color}
                 >
-                  <FormLabel color={"var(--color-primer)"}>Warna</FormLabel>
+                  <FormLabel color="var(--color-primer)">Warna</FormLabel>
                   <Select
-                    color={"var(--color-primer)"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    color="var(--color-primer)"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     type="hidden"
                     name="color"
                     value={values.color}
@@ -257,34 +254,32 @@ const Controlling_Add = () => {
                     variant="outline"
                   >
                     <option value="">Pilih Warna</option>
-                    {iconsList.map((item) =>
-                      item.type == "actuator" && item.icon == icon_selected ? (
-                        <option
-                          value={item.color}
-                          color={"var(--color-primer)"}
-                          selected
-                        >
-                          {item.name}
-                        </option>
-                      ) : null
-                    )}
+                    {iconsList.map((item) => (item.type == 'actuator' && item.icon == icon_selected ? (
+                      <option
+                        value={item.color}
+                        color="var(--color-primer)"
+                        selected
+                      >
+                        {item.name}
+                      </option>
+                    ) : null))}
                   </Select>
-                  <Flex m={"15px"}>
+                  <Flex m="15px">
                     <Circle bg={values.color} size="30px" />
                   </Flex>
                   <FormErrorMessage>{errors.color}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.detailact && touched.detailact}
                 >
-                  <FormLabel color={"var(--color-primer)"}>
+                  <FormLabel color="var(--color-primer)">
                     Detail dari actuator
                   </FormLabel>
                   <Textarea
-                    color={"var(--color-primer)"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    color="var(--color-primer)"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     type="text"
                     name="detailact"
                     defaultValue={values.detailact}
@@ -296,25 +291,25 @@ const Controlling_Add = () => {
                   <FormErrorMessage>{errors.detailact}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.actuator_image && touched.actuator_image}
                 >
-                  <FormLabel htmlFor="actuator_image" color={"black"}>
+                  <FormLabel htmlFor="actuator_image" color="black">
                     Gambar actuator
                   </FormLabel>
                   <Flex
-                    width={"100%"}
+                    width="100%"
                     h="100px"
-                    borderRadius={"5px"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    borderRadius="5px"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     variant="outline"
                     placeholder="Masukkan Gambar"
-                    color={"black"}
+                    color="black"
                     alignItems="center"
                     borderWidth="1px"
-                    borderColor={"#D9D9D9"}
-                    padding={"20px"}
+                    borderColor="#D9D9D9"
+                    padding="20px"
                   >
                     <input
                       type="file"
@@ -327,25 +322,25 @@ const Controlling_Add = () => {
                   <FormErrorMessage>{errors.actuator_image}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.posisitionact && touched.posisitionact}
                 >
-                  <FormLabel htmlFor="posisitionact" color={"black"}>
+                  <FormLabel htmlFor="posisitionact" color="black">
                     Denah Posisi actuator
                   </FormLabel>
                   <Flex
-                    width={"100%"}
+                    width="100%"
                     h="100px"
-                    borderRadius={"5px"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    borderRadius="5px"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     variant="outline"
                     placeholder="Masukkan Posisi actuator"
-                    color={"black"}
+                    color="black"
                     alignItems="center"
                     borderWidth="1px"
-                    borderColor={"#D9D9D9"}
-                    padding={"20px"}
+                    borderColor="#D9D9D9"
+                    padding="20px"
                   >
                     <input
                       type="file"
@@ -368,9 +363,9 @@ const Controlling_Add = () => {
                     placeholder="id..."
                   />
                 </FormControl>
-                <Link to={"/unit/controlling"}>
+                <Link to="/unit/controlling">
                   <Button
-                    marginTop={"44px"}
+                    marginTop="44px"
                     width="100%"
                     height="50px"
                     borderRadius="10px"
@@ -397,5 +392,5 @@ const Controlling_Add = () => {
       )}
     </>
   );
-};
+}
 export default Controlling_Add;

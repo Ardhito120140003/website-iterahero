@@ -1,6 +1,4 @@
-import {
-    Flex
-} from "@chakra-ui/react";
+import { Flex, Image, Text, Box } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,248 +6,121 @@ import { useNavigate, useParams } from "react-router-dom";
 import { dashboardApi, greenhouseByUserId } from "../../Utility/api_link";
 import { TabTitle } from "../../Utility/utility";
 import Loading from "../../component/loading/loading";
-import { routePageName, selectUrl } from "../../features/auth/authSlice";
+import { GiGreenhouse } from "react-icons/gi";
+import "./dashboard_operator.css";
+import {
+  routePageName,
+  selectToken,
+  selectUrl,
+  selectUser,
+} from "../../features/auth/authSlice";
+import CardDashboard from "../../component/card_dashboard/card_dashboard";
 
-
-const DashboardOperator = () => {
-  let id = parseInt(useParams().id);
+function DashboardOperator() {
+  const id = parseInt(useParams().id);
   TabTitle("Dashboard - ITERA Hero");
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [data, setData] = useState("");
-
-  const [dataApi, setDataApi] = useState(null);
-  const [selected, setSelected] = useState(id);
-  const [dataGreenhouse, setDataGreenhouse] = useState(null);
-  const [dataSensor, setDataSensor] = useState(null);
   const base_url = useSelector(selectUrl);
+  const role = useSelector(selectUser);
+  const token = useSelector(selectToken);
+  const [dataDashboard, setDataDashboard] = useState([]);
+  const [dataPenjadwalan, setDataPenjadwalan] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const getApiDashboard = async () => {
-    const header = localStorage.getItem("token");
+    setLoading(true);
     await axios
-      .get(base_url + dashboardApi, {
+      .get(base_url + "api/v1/dashboard", {
         headers: {
-          Authorization: "Bearer " + header,
-        },
-      })
-      .then((response) => setDataApi(response.data.data))
-      .catch((error) => {
-        // localStorage.clear()
-        // dispatch(logout());
-        // navigate("/login");
-      });
-  };
-  const getApiGreenhouse = async () => {
-    const header = localStorage.getItem("token");
-    await axios
-      .get(base_url + greenhouseByUserId, {
-        headers: {
-          Authorization: "Bearer " + header,
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
-        console.log(response);
-        if (response.data.data.length > 0) {
-          console.log(response.data.data);
-          setDataGreenhouse(response.data.data);
-          setData(response.data.data[0].id);
-        } else {
-          setDataGreenhouse(response.data.data);
+        const data = [];
+        for (const item in response.data.data) {
+          const obj = {};
+          obj[item] = response.data.data[item];
+          data.push(obj);
         }
+        setDataDashboard(data);
+        setLoading(false);
       })
       .catch((error) => {
-        // localStorage.clear()
-        // dispatch(logout());
-        // navigate("/login");
+        console.error(error);
+      });
+  };
+
+  const fetchPenjadwalan = async () => {
+    setLoading(true);
+    axios
+      .get(base_url + "api/v1/penjadwalan", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setDataPenjadwalan(response.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
       });
   };
 
   useEffect(() => {
     dispatch(routePageName("Dashboard"));
-    getApiGreenhouse();
     getApiDashboard();
+    fetchPenjadwalan();
   }, []);
 
   return (
     <>
-      {dataApi == null || dataGreenhouse == null ? (
-        <Loading />
-      ) : (
-        <Flex>
-            {"WKWKWK"}
-        </Flex>
-      )}
-        {/* <Flex w="100%" flexDir={"column"}>
-          <Flex
-            w="100%"
-            flexDir={"row"}
-            alignContent={"center"}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-            <Image
-              width={"20%"}
-              height={"auto"}
-              src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
-            />
-          </Flex>
-          <Flex justify="center" mt={"-30px"}>
-            <Wrap spacing={{ base: "5px", md: "50px" }} justify="center">
-              <CardDashboard
-                data={{
-                  value: dataApi.greenhouse,
-                  icon: GiGreenhouse,
-                  name: "Jumlah GreenHouse",
-                }}
-              />
-              <CardDashboard
-                data={{
-                  value: dataApi.sensor,
-                  icon: MdMonitor,
-                  name: "Jumlah Sensor",
-                }}
-              />
-              <CardDashboard
-                data={{
-                  value: dataApi.actuator,
-                  icon: AiOutlineControl,
-                  name: "Jumlah Actuator",
-                }}
-              />
-            </Wrap>
-          </Flex>
-          <Flex justifyContent={"flex-start"} width="100%"></Flex>
-          <Wrap mt={"30px"} flexDir={"row"}>
-            {dashboardMenu.map((item, index) => {
-              return (
-                <Flex key={index} mr={"3"} width={"169px"} height={"44px"}>
-                  <Button
-                    onClick={() => setSelected(item.id)}
-                    w="100%"
-                    height={"100%"}
-                    borderRadius={"16"}
-                    border={
-                      selected == item.id
-                        ? null
-                        : "1px solid var(--color-primer)"
-                    }
-                    bg={
-                      selected == item.id
-                        ? "var(--color-primer)"
-                        : "var(--color-on-primary)"
-                    }
-                    flexDir={"row"}
-                    alignContent={"center"}
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                  >
-                    <Text
-                      fontWeight={"semibold"}
-                      color={
-                        selected == item.id
-                          ? "var(--color-surface)"
-                          : "var(--color-on-background"
-                      }
-                      size={"var(--header-3)"}
-                    >
-                      {item.name}
-                    </Text>
-                  </Button>
-                </Flex>
-              );
-            })}
-          </Wrap>
-          <Flex
-            mt={"30px"}
-            alignContent={"center"}
-            alignItems={"center"}
-            justifyContent={"flex-start"}
-          >
-            <Flex width={"30%"}>
-              <Formik
-                initialValues={{
-                  greenhouse: data,
-                }}
-                onSubmit={(values) => {
-                  setData(values.greenhouse);
-                }}
-              >
-                {({
-                  values,
-                  handleChange,
-                  handleSubmit,
-                  isSubmitting,
-                  setFieldValue,
-                }) => (
-                  <form onSubmit={handleSubmit}>
-                    <Flex
-                      alignContent={"center"}
-                      alignItems={"center"}
-                      justify={"space-between"}
-                    >
-                      <Flex height={"auto"} width={"100%"}>
-                        <Select
-                          onChange={(e) => {
-                            setFieldValue("id", e.target.value);
-                            setData(e.target.value);
-                          }}
-                          size="xs"
-                          borderRadius={"10"}
-                          name="greenhouse"
-                          value={values.id}
-                          placeholder="Pilih Greenhouse"
-                          width={"100%"}
-                          bg={"white"}
-                          _active={{ bg: "white" }}
-                          borderColor={"var(--color-border)"}
-                          fontSize={"var(--header-5)"}
-                          fontWeight={"normal"}
-                          color={"var(--color-primer)"}
-                          _hover={{ borderColor: "var(--color-border)" }}
-                          _focusWithin={{ borderColor: "var(--color-border)" }}
-                        >
-                          {dataGreenhouse.map((item, index) => {
-                            return item.id == dataGreenhouse[0].id ? (
-                              <option
-                                color={"var(--color-border)"}
-                                key={index}
-                                value={item.id}
-                                selected
-                              >
-                                {item.name}
-                              </option>
-                            ) : (
-                              <option
-                                color={"var(--color-border)"}
-                                key={index}
-                                value={item.id}
-                              >
-                                {item.name}
-                              </option>
-                            );
-                          })}
-                        </Select>
-                      </Flex>
-                    </Flex>
-                  </form>
-                )}
-              </Formik>
+      <Flex flexDirection={"column"}>
+        <Image
+          width={"20%"}
+          height={"auto"}
+          src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
+          alignSelf={"center"}
+        />
+        <Box id="header">
+          <Flex h={"200px"} py={8}>
+            <Flex
+              flexDir={"column"}
+              borderRadius={20}
+              border={"3px solid #D9D9D9"}
+              flex={1}
+              justifyContent={"center"}
+              alignItems={"flex-end"}
+            >
+              <Text>Hello, {role}</Text>
+              <Text>Selamat datang di website ITERAHERO2023</Text>
+            </Flex>
+            <Flex flex={2}>
+              {dataPenjadwalan.length < 1 && loading ? (
+                <Loading />
+              ) : (
+                dataPenjadwalan.map((item, index) => (
+                  <Text key={index}>{JSON.stringify(item)}</Text>
+                ))
+              )}
             </Flex>
           </Flex>
-          <Wrap>
-            {selected === 1 && data !== "" ? (
-              <CardSensor data={{ id: data }} />
-            ) : (
-              <></>
-            )}
-            {selected === 2 && data !== "" ? (
-              <CardAktuator data={{ id: data }} />
-            ) : (
-              <></>
-            )}
-          </Wrap>
-        </Flex> )}*/ }
+        </Box>
+        <Flex overflowX={"auto"}>
+          {dataDashboard.map((item, index) => (
+            <CardDashboard
+              data={{
+                value: Object.values(item),
+                icon: GiGreenhouse,
+                name: Object.keys(item),
+              }}
+              key={index}
+            />
+          ))}
+        </Flex>
+      </Flex>
+      {/* )} */}
     </>
   );
-};
+}
 export default DashboardOperator;

@@ -1,51 +1,46 @@
-import { TabTitle } from "../../Utility/utility";
-import React, { useState, useEffect } from "react";
-import { Flex, Text, Button, Input, Wrap, Select } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { Formik, Form } from "formik";
+import React, { useState, useEffect } from 'react';
+import {
+  Flex, Text, Button, Input, Select,
+} from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import { Formik, Form } from 'formik';
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-} from "@chakra-ui/form-control";
-import * as yup from "yup";
-import { useDispatch } from "react-redux";
-import { routePageName } from "../../features/auth/authSlice";
-import axios from "axios";
+} from '@chakra-ui/form-control';
+import * as yup from 'yup';
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { routePageName } from '../../features/auth/authSlice';
 import {
-  getActuatorDetail,
-  addAutomation,
-  monitoringApi,
   scheduling,
-} from "../../Utility/api_link";
-import { useNavigate } from "react-router-dom";
-import Loading from "../../component/loading/loading";
-import { useParams } from "react-router";
-import kondisiAutomatis from "../../Utility/dropdown_kondisi";
-import automationMenu from "../../Utility/automation_menu";
-import startItem from "../../Utility/start_time";
+} from '../../Utility/api_link';
 
-const SchedulingAdd = (props) => {
-  const id = props.data.id;
-  TabTitle("Edit Automation - ITERA Hero");
+import Loading from '../../component/loading/loading';
+import { TabTitle } from '../../Utility/utility';
+
+function SchedulingAdd(props) {
+  const { id } = props.data;
+  TabTitle('Edit Automation - ITERA Hero');
   const [isLoading, setIsLoading] = useState(false);
 
-  let data = {
-    id_actuator: "",
-    start: "",
-    duration: "",
-    repeat: "",
-    interval: "",
+  const data = {
+    id_actuator: '',
+    start: '',
+    duration: '',
+    repeat: '',
+    interval: '',
   };
 
   const navigate = useNavigate();
 
   const schema = yup.object({
-    id_actuator: yup.number().required("data harus diisi"),
-    start: yup.string().required("data harus diisi"),
-    duration: yup.number().required("data harus diisi"),
-    repeat: yup.number().required("data harus diisi"),
-    interval: yup.number().required("data harus diisi"),
+    id_actuator: yup.number().required('data harus diisi'),
+    start: yup.string().required('data harus diisi'),
+    duration: yup.number().required('data harus diisi'),
+    repeat: yup.number().required('data harus diisi'),
+    interval: yup.number().required('data harus diisi'),
   });
 
   const submit = (id_actuator, start, duration, repeat, interval) => {
@@ -56,33 +51,32 @@ const SchedulingAdd = (props) => {
     data.interval = interval;
 
     if (
-      data.id_actuator == "" ||
-      data.start == "" ||
-      data.duration == "" ||
-      data.repeat == "" ||
-      data.interval == ""
+      data.id_actuator == ''
+      || data.start == ''
+      || data.duration == ''
+      || data.repeat == ''
+      || data.interval == ''
     ) {
-      return alert("Masih ada yang belum di isi");
-    } else {
-      setIsLoading(true);
-      updateAutomation(id_actuator, start, duration, repeat, interval);
+      return alert('Masih ada yang belum di isi');
     }
+    setIsLoading(true);
+    updateAutomation(id_actuator, start, duration, repeat, interval);
   };
-  const header = localStorage.getItem("token");
+  const header = localStorage.getItem('token');
 
   const updateAutomation = (
     valueActuator,
     valueStart,
     valueDuration,
     valueRepeat,
-    valuInterval
+    valuInterval,
   ) => {
     console.log(
       valueActuator,
       valueStart,
       valueDuration,
       valueRepeat,
-      valuInterval
+      valuInterval,
     );
     axios
       .post(
@@ -96,9 +90,9 @@ const SchedulingAdd = (props) => {
         },
         {
           headers: {
-            Authorization: "Bearer " + header,
+            Authorization: `Bearer ${header}`,
           },
-        }
+        },
       )
       .then((response) => {
         setIsLoading(false);
@@ -112,7 +106,7 @@ const SchedulingAdd = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(routePageName("add automation"));
+    dispatch(routePageName('add automation'));
   }, []);
 
   return (
@@ -120,14 +114,14 @@ const SchedulingAdd = (props) => {
       {isLoading ? (
         <Loading />
       ) : (
-        <Flex w="100%" h={["100%"]} flexDir={"column"}>
+        <Flex w="100%" h={['100%']} flexDir="column">
           <Formik
             initialValues={{
               id_actuator: id,
-              start: "",
-              duration: "",
-              repeat: "",
-              interval: "",
+              start: '',
+              duration: '',
+              repeat: '',
+              interval: '',
             }}
             validationSchema={schema}
           >
@@ -141,100 +135,100 @@ const SchedulingAdd = (props) => {
             }) => (
               <Form>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.id_actuator && touched.id_actuator}
-                  visibility={"hidden"}
-                  position={"absolute"}
+                  visibility="hidden"
+                  position="absolute"
                 >
-                  <FormLabel color={"var(--color-primer)"}>Actuator</FormLabel>
+                  <FormLabel color="var(--color-primer)">Actuator</FormLabel>
                   <Select
-                    color={"var(--color-primer)"}
+                    color="var(--color-primer)"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.id_actuator}
                     name="id_actuator"
                     id="id_actuator"
                   >
-                    <option value={id} color={"var(--color-primer)"}>
+                    <option value={id} color="var(--color-primer)">
                       {id}
                     </option>
                   </Select>
                   <FormErrorMessage>{errors.id_actuator}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.start && touched.start}
                 >
-                  <FormLabel color={"var(--color-primer)"}>Jam Mulai</FormLabel>
+                  <FormLabel color="var(--color-primer)">Jam Mulai</FormLabel>
                   <Input
-                    width={"100%"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    width="100%"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     type="time"
                     name="start"
                     value={values.start}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     variant="outline"
-                    color={"black"}
+                    color="black"
                   />
                   <FormErrorMessage>{errors.start}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.duration && touched.duration}
                 >
-                  <FormLabel color={"var(--color-primer)"}>
+                  <FormLabel color="var(--color-primer)">
                     Durasi Menyala (menit)
                   </FormLabel>
                   <Input
-                    width={"100%"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    width="100%"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     type="number"
                     name="duration"
                     value={values.duration}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     variant="outline"
-                    color={"black"}
+                    color="black"
                     placeholder="Masukkan durasi"
                   />
                   <FormErrorMessage>{errors.duration}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.repeat && touched.repeat}
                 >
-                  <FormLabel color={"var(--color-primer)"}>
+                  <FormLabel color="var(--color-primer)">
                     Perulangan (loop)
                   </FormLabel>
                   <Input
-                    width={"100%"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    width="100%"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     type="number"
                     name="repeat"
                     value={values.repeat}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     variant="outline"
-                    color={"black"}
+                    color="black"
                     placeholder="Masukkan perulangan .."
                   />
                   <FormErrorMessage>{errors.repeat}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.interval && touched.interval}
                 >
-                  <FormLabel color={"var(--color-primer)"}>
+                  <FormLabel color="var(--color-primer)">
                     Lama waktu antar alat menyala
                   </FormLabel>
                   <Input
-                    color={"var(--color-primer)"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    color="var(--color-primer)"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     type="number"
                     name="interval"
                     defaultValue={values.interval}
@@ -246,28 +240,26 @@ const SchedulingAdd = (props) => {
                   <FormErrorMessage>{errors.interval}</FormErrorMessage>
                 </FormControl>
                 <Button
-                  marginTop={"44px"}
+                  marginTop="44px"
                   width="100%"
                   height="50px"
                   borderRadius="10px"
                   backgroundColor="var(--color-primer)"
                   type="submit"
-                  onClick={() =>
-                    submit(
-                      values.id_actuator,
-                      values.start,
-                      values.duration,
-                      values.repeat,
-                      values.interval
-                    )
-                  }
+                  onClick={() => submit(
+                    values.id_actuator,
+                    values.start,
+                    values.duration,
+                    values.repeat,
+                    values.interval,
+                  )}
                 >
                   <Text
                     fontWeight="bold"
                     fontFamily="var(--font-family-secondary)"
                     fontSize="var(--header-3)"
                     color="var(--color-on-primary)"
-                    colorScheme={"var(--color-on-primary)"}
+                    colorScheme="var(--color-on-primary)"
                   >
                     Tambah
                   </Text>
@@ -279,6 +271,6 @@ const SchedulingAdd = (props) => {
       )}
     </>
   );
-};
+}
 
 export default SchedulingAdd;

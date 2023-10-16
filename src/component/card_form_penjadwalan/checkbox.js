@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-const CustomCheckbox = ({ label, onSelect, value}) => {
+function CustomCheckbox({ label, onSelect, value }) {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
-    onSelect(value)
+    onSelect(value);
   };
 
   return (
@@ -18,13 +18,13 @@ const CustomCheckbox = ({ label, onSelect, value}) => {
         backgroundColor: isChecked ? '#09322D' : 'transparent',
         color: isChecked ? 'white' : 'gray',
         borderRadius: '10px',
-        border: isChecked ?'1px solid #09322D' : '1px solid gray',
+        border: isChecked ? '1px solid #09322D' : '1px solid gray',
       }}
       onClick={handleCheckboxChange}
     >
       {label}
     </label>
   );
-};
+}
 
 export default CustomCheckbox;

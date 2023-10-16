@@ -1,11 +1,11 @@
-let kondisiAutomatis = [
+const kondisiAutomatis = [
   {
-    name: "> (lebih dari)",
-    value: ">",
+    name: '> (lebih dari)',
+    value: '>',
   },
   {
-    name: "< (kurang dari)",
-    value: "<",
+    name: '< (kurang dari)',
+    value: '<',
   },
 ];
 export default kondisiAutomatis;

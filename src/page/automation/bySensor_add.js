@@ -1,57 +1,54 @@
-import { TabTitle } from "../../Utility/utility";
-import React, { useState, useEffect } from "react";
-import { Flex, Text, Button, Input, Wrap, Select } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { Formik, Form } from "formik";
+import React, { useState, useEffect } from 'react';
+import {
+  Flex, Text, Button, Input, Select,
+} from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import { Formik, Form } from 'formik';
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-} from "@chakra-ui/form-control";
-import * as yup from "yup";
-import { useDispatch } from "react-redux";
-import { routePageName } from "../../features/auth/authSlice";
-import axios from "axios";
+} from '@chakra-ui/form-control';
+import * as yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { routePageName, logout, selectUrl } from '../../features/auth/authSlice';
 import {
   getActuatorDetail,
   addAutomation,
   monitoringApi,
-} from "../../Utility/api_link";
-import { useNavigate } from "react-router-dom";
-import Loading from "../../component/loading/loading";
-import { useParams } from "react-router";
-import kondisiAutomatis from "../../Utility/dropdown_kondisi";
-import automationMenu from "../../Utility/automation_menu";
-import { logout } from "../../features/auth/authSlice";
-import { useSelector } from "react-redux";
-import { selectUrl } from "../../features/auth/authSlice";
+} from '../../Utility/api_link';
 
-const AutomationAddBySensor = (props) => {
+import Loading from '../../component/loading/loading';
+import kondisiAutomatis from '../../Utility/dropdown_kondisi';
+import { TabTitle } from '../../Utility/utility';
+
+function AutomationAddBySensor(props) {
   const base_url = useSelector(selectUrl);
-  const id = props.data.id;
-  TabTitle("Edit Automation - ITERA Hero");
+  const { id } = props.data;
+  TabTitle('Edit Automation - ITERA Hero');
   const [isLoading, setIsLoading] = useState(true);
-  const [dataActuator, setDataActuator] = useState("");
+  const [dataActuator, setDataActuator] = useState('');
   const [dataSensor, setDataSensor] = useState(null);
   const [dataKondisi, setDataKondisi] = useState(kondisiAutomatis);
   const [selected, setSelected] = useState(1);
   const dispatch = useDispatch();
-  let data = {
-    id_actuator: "",
-    id_sensor: "",
-    condition: "",
-    status_lifecycle: "",
-    constanta: "",
+  const data = {
+    id_actuator: '',
+    id_sensor: '',
+    condition: '',
+    status_lifecycle: '',
+    constanta: '',
   };
 
   const navigate = useNavigate();
 
   const schema = yup.object({
-    id_actuator: yup.number().required("data harus diisi"),
-    id_sensor: yup.number().required("data harus diisi"),
-    condition: yup.string().required("data harus diisi"),
-    status_lifecycle: yup.number().required("data harus diisi"),
-    constanta: yup.number().required("data harus diisi"),
+    id_actuator: yup.number().required('data harus diisi'),
+    id_sensor: yup.number().required('data harus diisi'),
+    condition: yup.string().required('data harus diisi'),
+    status_lifecycle: yup.number().required('data harus diisi'),
+    constanta: yup.number().required('data harus diisi'),
   });
 
   const submit = (
@@ -59,7 +56,7 @@ const AutomationAddBySensor = (props) => {
     id_sensor,
     condition,
     status_lifecycle,
-    constanta
+    constanta,
   ) => {
     data.id_actuator = id_actuator;
     data.id_sensor = id_sensor;
@@ -68,32 +65,31 @@ const AutomationAddBySensor = (props) => {
     data.constanta = constanta;
 
     if (
-      data.id_actuator == "" ||
-      data.id_sensor == "" ||
-      data.condition == "" ||
-      data.status_lifecycle == "" ||
-      data.constanta == ""
+      data.id_actuator == ''
+      || data.id_sensor == ''
+      || data.condition == ''
+      || data.status_lifecycle == ''
+      || data.constanta == ''
     ) {
-      return alert("Masih ada yang belum di isi");
-    } else {
-      setIsLoading(true);
-      updateAutomation(
-        id_actuator,
-        id_sensor,
-        condition,
-        status_lifecycle,
-        constanta
-      );
+      return alert('Masih ada yang belum di isi');
     }
+    setIsLoading(true);
+    updateAutomation(
+      id_actuator,
+      id_sensor,
+      condition,
+      status_lifecycle,
+      constanta,
+    );
   };
-  const header = localStorage.getItem("token");
+  const header = localStorage.getItem('token');
 
   const updateAutomation = (
     valueActuator,
     valueSensor,
     valueCondition,
     valueStatus_lifecycle,
-    valueConstanta
+    valueConstanta,
   ) => {
     axios
       .post(
@@ -107,9 +103,9 @@ const AutomationAddBySensor = (props) => {
         },
         {
           headers: {
-            Authorization: "Bearer " + header,
+            Authorization: `Bearer ${header}`,
           },
-        }
+        },
       )
       .then((response) => {
         setIsLoading(false);
@@ -121,7 +117,7 @@ const AutomationAddBySensor = (props) => {
           parseInt(valueSensor),
           valueCondition,
           valueStatus_lifecycle,
-          valueConstanta
+          valueConstanta,
         );
         console.log(error);
       });
@@ -132,7 +128,7 @@ const AutomationAddBySensor = (props) => {
     await axios
       .get(`${base_url}${getActuatorDetail}${id}`, {
         headers: {
-          Authorization: "Bearer " + header,
+          Authorization: `Bearer ${header}`,
         },
       })
       .then(async (response) => {
@@ -140,9 +136,9 @@ const AutomationAddBySensor = (props) => {
         await getSensor(response.data.data.id_greenhouse);
       })
       .catch((error) => {
-        localStorage.clear()
-dispatch(logout());
-        navigate("/login");
+        localStorage.clear();
+        dispatch(logout());
+        navigate('/login');
       });
   };
 
@@ -151,7 +147,7 @@ dispatch(logout());
     await axios
       .get(`${base_url}${monitoringApi}${id_greenhouse}&&size=100`, {
         headers: {
-          Authorization: "Bearer " + header,
+          Authorization: `Bearer ${header}`,
         },
       })
       .then((response) => {
@@ -159,15 +155,15 @@ dispatch(logout());
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear()
-dispatch(logout());
-        navigate("/login");
+        localStorage.clear();
+        dispatch(logout());
+        navigate('/login');
       });
   };
 
   useEffect(() => {
     getActuator();
-    dispatch(routePageName("add automation"));
+    dispatch(routePageName('add automation'));
   }, []);
 
   return (
@@ -175,14 +171,14 @@ dispatch(logout());
       {isLoading ? (
         <Loading />
       ) : (
-        <Flex w="100%" h={["100%"]} flexDir={"column"}>
+        <Flex w="100%" h={['100%']} flexDir="column">
           <Formik
             initialValues={{
               id_actuator: dataActuator.id,
-              id_sensor: "",
-              condition: "",
-              status_lifecycle: "",
-              constanta: "",
+              id_sensor: '',
+              condition: '',
+              status_lifecycle: '',
+              constanta: '',
             }}
             validationSchema={schema}
           >
@@ -196,12 +192,12 @@ dispatch(logout());
             }) => (
               <Form>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.id_actuator && touched.id_actuator}
                 >
-                  <FormLabel color={"var(--color-primer)"}>Actuator</FormLabel>
+                  <FormLabel color="var(--color-primer)">Actuator</FormLabel>
                   <Select
-                    color={"var(--color-primer)"}
+                    color="var(--color-primer)"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.id_actuator}
@@ -210,7 +206,7 @@ dispatch(logout());
                   >
                     <option
                       value={dataActuator.id}
-                      color={"var(--color-primer)"}
+                      color="var(--color-primer)"
                     >
                       {dataActuator.name}
                     </option>
@@ -218,12 +214,12 @@ dispatch(logout());
                   <FormErrorMessage>{errors.id_actuator}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.id_sensor && touched.id_sensor}
                 >
-                  <FormLabel color={"var(--color-primer)"}>Sensor</FormLabel>
+                  <FormLabel color="var(--color-primer)">Sensor</FormLabel>
                   <Select
-                    color={"var(--color-primer)"}
+                    color="var(--color-primer)"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.id_sensor}
@@ -240,14 +236,14 @@ dispatch(logout());
                   <FormErrorMessage>{errors.id_sensor}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.condition && touched.condition}
                 >
-                  <FormLabel color={"var(--color-primer)"}>
+                  <FormLabel color="var(--color-primer)">
                     Kondisi Automatis
                   </FormLabel>
                   <Select
-                    color={"var(--color-primer)"}
+                    color="var(--color-primer)"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.condition}
@@ -264,14 +260,14 @@ dispatch(logout());
                   <FormErrorMessage>{errors.condition}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.lifecycle && touched.lifecycle}
                 >
-                  <FormLabel color={"var(--color-primer)"}>
+                  <FormLabel color="var(--color-primer)">
                     Status Lifecycle
                   </FormLabel>
                   <Select
-                    color={"var(--color-primer)"}
+                    color="var(--color-primer)"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.lifecycle}
@@ -287,14 +283,14 @@ dispatch(logout());
                   <FormErrorMessage>{errors.lifecycle}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.constanta && touched.constanta}
                 >
-                  <FormLabel color={"var(--color-primer)"}>Konstanta</FormLabel>
+                  <FormLabel color="var(--color-primer)">Konstanta</FormLabel>
                   <Input
-                    color={"var(--color-primer)"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    color="var(--color-primer)"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     type="number"
                     name="constanta"
                     defaultValue={values.constanta}
@@ -306,28 +302,26 @@ dispatch(logout());
                   <FormErrorMessage>{errors.constanta}</FormErrorMessage>
                 </FormControl>
                 <Button
-                  marginTop={"44px"}
+                  marginTop="44px"
                   width="100%"
                   height="50px"
                   borderRadius="10px"
                   backgroundColor="var(--color-primer)"
                   type="submit"
-                  onClick={() =>
-                    submit(
-                      values.id_actuator,
-                      values.id_sensor,
-                      values.condition,
-                      values.lifecycle,
-                      values.constanta
-                    )
-                  }
+                  onClick={() => submit(
+                    values.id_actuator,
+                    values.id_sensor,
+                    values.condition,
+                    values.lifecycle,
+                    values.constanta,
+                  )}
                 >
                   <Text
                     fontWeight="bold"
                     fontFamily="var(--font-family-secondary)"
                     fontSize="var(--header-3)"
                     color="var(--color-on-primary)"
-                    colorScheme={"var(--color-on-primary)"}
+                    colorScheme="var(--color-on-primary)"
                   >
                     Tambah
                   </Text>
@@ -339,6 +333,6 @@ dispatch(logout());
       )}
     </>
   );
-};
+}
 
 export default AutomationAddBySensor;

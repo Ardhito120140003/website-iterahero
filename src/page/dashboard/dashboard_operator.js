@@ -15,33 +15,25 @@ import {
   FormControl,
 } from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
-import CardJadwal from "../../component/card_jadwal/card_jadwal";
 import { selectUrl } from "../../features/auth/authSlice";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import Loading from "../../component/loading/loading";
-import CardFormPenjadwalan from "../../component/card_form_penjadwalan/card_form_penjadwalan";
-import CardStatusPeracikan from "../../component/card_tandon_peracikan/card_tandon_peracikan";
-import ValueTandon from "../../component/value_tandon/value_tandon";
-import CardStatusPeracikanDasboard from "../../component/card_tandon_peracikan/card_tandon_peracikan_dashboard";
 import { AiOutlineControl } from "react-icons/ai";
 import { GiGreenhouse } from "react-icons/gi";
 import { MdMonitor } from "react-icons/md";
 import CardDashboard from "../../component/card_dashboard/card_dashboard";
-import dashboardMenu from "../../Utility/dashboard_menu";
-import { json, useParams } from "react-router-dom";
 import { Field, Form, Formik } from "formik";
-import CardSensor from "../../component/card_sensor/card_sensor";
 import CardSensorOperator from "../../component/card_sensor/card_sensor_operator";
 
 const DashboardOperator = () => {
   TabTitle("Dashboard - ITERA Hero");
   const base_url = useSelector(selectUrl);
-  const [dataApiDashboard, setDataApiDashboard] = useState(null);
-  const [dataApiPenjadwalan, setDataApiPenjadwalan] = useState(null);
-  const [firstFilter, setFirstFilter] = useState(null);
+  const [dataApiDashboard, setDataApiDashboard] = useState([]);
+  const [dataApiPenjadwalan, setDataApiPenjadwalan] = useState([]);
+  const [firstFilter, setFirstFilter] = useState("");
   const [filterData, setFilterData] = useState([]);
-  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false)
 
   const [action, setAction] = useState(false);
   const headers = localStorage.getItem("token");
@@ -70,8 +62,15 @@ const DashboardOperator = () => {
         },
       })
       .then((response) => {
-        setDataApiDashboard(response.data.data);
-        console.log(response.data.data);
+        const data = [];
+        for (const item in response.data.data) {
+          const obj = {};
+          let key = item.replace(/([A-Z])/g, ' $1');
+          key = key.charAt(0).toUpperCase() + key.slice(1);
+          obj[key] = response.data.data[item];
+          data.push(obj);
+        }
+        setDataApiDashboard(data);
       })
       .catch((error) => {
         console.log("error", error);
@@ -97,17 +96,16 @@ const DashboardOperator = () => {
   }, [firstFilter]);
 
   useEffect(() => {
-    getApiDashboard();
-    getApiPenjadwalan();
-
-    // setTimeout(() => {
-    //   setAction(!action)
-    // }, 1500)
+    getApiDashboard()
+    .then(() => {
+      getApiPenjadwalan().then(() =>
+        setIsLoading(false))
+    });
   }, [action]);
 
   return (
     <>
-      {dataApiDashboard === null ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <Flex flexDirection={"column"}>
@@ -117,44 +115,22 @@ const DashboardOperator = () => {
             src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
             alignSelf={"center"}
           />
-          <Wrap mt={8} justify={{ md: "center", sm: "center" }} spacing={30}>
-            <CardDashboard
-              data={{
-                value: dataApiDashboard.greenhouse,
-                icon: GiGreenhouse,
-                name: "GreenHouse",
-              }}
-            />
-            <CardDashboard
-              data={{
-                value: dataApiDashboard.tandonBahan,
-                icon: MdMonitor,
-                name: "Tandon Bahan",
-              }}
-            />
-            <CardDashboard
-              data={{
-                value: dataApiDashboard.tandonPeracikan,
-                icon: AiOutlineControl,
-                name: "Tandon Peracikan",
-              }}
-            />
-            <CardDashboard
-              data={{
-                value: dataApiDashboard.sensor,
-                icon: AiOutlineControl,
-                name: "Sensor",
-              }}
-            />
-            <CardDashboard
-              data={{
-                value: dataApiDashboard.actuator,
-                icon: AiOutlineControl,
-                name: "Aktuator",
-              }}
-            />
-          </Wrap>
-          <Flex my={8}>
+          <Flex alignItems={"center"}>
+            <Wrap mt={8} justify={{ md: "center", sm: "center" }} spacing={30}>
+              {dataApiDashboard.map((item, index) => (
+                <CardDashboard
+                  data={{
+                    value: Object.values(item),
+                    icon: GiGreenhouse,
+                    name: Object.keys(item),
+                  }}
+                  key={index}
+                />
+              ))}
+            </Wrap>
+          </Flex>
+          <Grid templateColumns={{md: 'repeat(3, 1fr)', base: 'repeat(1, 1fr)'}} gap={6} mt={5}>
+          <GridItem colSpan={2}>
             <Formik
               initialValues={{
                 filter1: "",
@@ -186,9 +162,9 @@ const DashboardOperator = () => {
                       mr={5}
                       value={values.filter1}
                       onChange={(e) => {
-                        resetForm({ filter1: e.target.value, filter2: ""})
+                        resetForm({ filter1: e.target.value, filter2: "" });
                         setFieldValue("filter1", e.target.value);
-                        setFirstFilter(e.target.value)
+                        setFirstFilter(e.target.value);
                       }}
                     >
                       <option value="greenhouse">Greenhouse</option>
@@ -200,7 +176,9 @@ const DashboardOperator = () => {
                       borderRadius={"10"}
                       width={"100%"}
                       height={"5vh"}
-                      placeholder={values.filter1 ? "Pilih " + values.filter1 : "--"}
+                      placeholder={
+                        values.filter1 ? "Pilih " + values.filter1 : "--"
+                      }
                       bg={"white"}
                       _active={{ bg: "white" }}
                       borderColor={"var(--color-border)"}
@@ -212,7 +190,7 @@ const DashboardOperator = () => {
                       value={values.filter2}
                       disabled={values.filter1 === ""}
                       onChange={async (e) => {
-                        setFieldValue("filter2", e.target.value)
+                        setFieldValue("filter2", e.target.value);
                         axios
                           .get(
                             base_url +
@@ -228,7 +206,7 @@ const DashboardOperator = () => {
                             }
                           )
                           .then((response) => {
-                            console.log(response.data)
+                            console.log(response.data);
                             setData(response.data.data);
                           })
                           .catch((err) => console.error(err));
@@ -242,28 +220,31 @@ const DashboardOperator = () => {
                     </Select>
                   </Flex>
                   {values.filter2 !== "" ? (
-                    <CardSensorOperator data={{ alat: values.filter1, id: values.filter2 }} />
+                    <CardSensorOperator
+                      data={{ alat: values.filter1, id: values.filter2 }}
+                    />
                   ) : null}
                 </Form>
               )}
             </Formik>
-          </Flex>
-
-          {/* <Wrap>
-            {selected === 1 && data !== "" ? (
-              <CardSensor data={{ id: data }} />
-            ) : (
-              <></>
-            )}
-            {selected === 2 && data !== "" ? (
-              <CardAktuator data={{ id: data }} />
-            ) : (
-              <></>
-            )}
-          </Wrap> */}
+            </GridItem>
+            <Flex border={'3px solid #d9d9d9'} borderRadius={15} alignItems={"center"} justifyContent={"center"} minH={'100px'}>
+              {dataApiPenjadwalan.length < 1 && isLoading ? (
+                <Loading />
+              ) : dataApiPenjadwalan.length < 1 ? (
+                  <Text>Tidak Ada data Penjadwalan</Text>
+              ) : (
+                dataApiPenjadwalan.map((item, index) => (
+                <Box key={index}>{JSON.stringify(item)}</Box>
+               )  
+              ))
+              }
+            </Flex>
+          </Grid>
         </Flex>
       )}
     </>
   );
 };
+
 export default DashboardOperator;

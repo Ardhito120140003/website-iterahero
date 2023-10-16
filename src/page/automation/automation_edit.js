@@ -1,57 +1,55 @@
-import { TabTitle } from "../../Utility/utility";
-import React, { useState, useEffect } from "react";
-import { Flex, Text, Button, Input, Wrap, Select } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { Formik, Form } from "formik";
+import React, { useState, useEffect } from 'react';
+import {
+  Flex, Text, Button, Input, Wrap, Select,
+} from '@chakra-ui/react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Formik, Form } from 'formik';
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-} from "@chakra-ui/form-control";
-import * as yup from "yup";
-import { useDispatch } from "react-redux";
-import { routePageName } from "../../features/auth/authSlice";
-import axios from "axios";
+} from '@chakra-ui/form-control';
+import * as yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { useParams } from 'react-router';
+import { routePageName, logout, selectUrl } from '../../features/auth/authSlice';
 import {
   getActuatorDetail,
-  addAutomation,
   monitoringApi,
   apiGetAutomation,
-} from "../../Utility/api_link";
-import { useNavigate } from "react-router-dom";
-import Loading from "../../component/loading/loading";
-import { useParams } from "react-router";
-import kondisiAutomatis from "../../Utility/dropdown_kondisi";
-import dropLifeCycle from "../../Utility/lifeCycleDropDown";
-import { logout } from "../../features/auth/authSlice";
-import { useSelector } from "react-redux";
-import { selectUrl } from "../../features/auth/authSlice";
+} from '../../Utility/api_link';
 
-const AutomationEdit = () => {
+import Loading from '../../component/loading/loading';
+import kondisiAutomatis from '../../Utility/dropdown_kondisi';
+import dropLifeCycle from '../../Utility/lifeCycleDropDown';
+import { TabTitle } from '../../Utility/utility';
+
+function AutomationEdit() {
   const base_url = useSelector(selectUrl);
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  const [dataActuator, setDataActuator] = useState("");
-  const [dataAutomation, setDataAutomation] = useState("");
+  const [dataActuator, setDataActuator] = useState('');
+  const [dataAutomation, setDataAutomation] = useState('');
   const [dataSensor, setDataSensor] = useState(null);
   const [dataKondisi, setDataKondisi] = useState(kondisiAutomatis);
   const dispatch = useDispatch();
-  let data = {
-    id_actuator: "",
-    id_sensor: "",
-    condition: "",
-    status_lifecycle: "",
-    constanta: "",
+  const data = {
+    id_actuator: '',
+    id_sensor: '',
+    condition: '',
+    status_lifecycle: '',
+    constanta: '',
   };
 
   const navigate = useNavigate();
 
   const schema = yup.object({
-    id_actuator: yup.number().required("data harus diisi"),
-    id_sensor: yup.number().required("data harus diisi"),
-    condition: yup.string().required("data harus diisi"),
-    status_lifecycle: yup.number().required("data harus diisi"),
-    constanta: yup.number().required("data harus diisi"),
+    id_actuator: yup.number().required('data harus diisi'),
+    id_sensor: yup.number().required('data harus diisi'),
+    condition: yup.string().required('data harus diisi'),
+    status_lifecycle: yup.number().required('data harus diisi'),
+    constanta: yup.number().required('data harus diisi'),
   });
 
   const submit = (
@@ -59,7 +57,7 @@ const AutomationEdit = () => {
     id_sensor,
     condition,
     status_lifecycle,
-    constanta
+    constanta,
   ) => {
     data.id_actuator = id_actuator;
     data.id_sensor = id_sensor;
@@ -68,32 +66,31 @@ const AutomationEdit = () => {
     data.constanta = constanta;
 
     if (
-      data.id_actuator == "" ||
-      data.id_sensor == "" ||
-      data.condition == "" ||
-      data.status_lifecycle == "" ||
-      data.constanta == ""
+      data.id_actuator == ''
+      || data.id_sensor == ''
+      || data.condition == ''
+      || data.status_lifecycle == ''
+      || data.constanta == ''
     ) {
-      return alert("Masih ada yang belum di isi");
-    } else {
-      setIsLoading(false);
-      updateAutomation(
-        id_actuator,
-        id_sensor,
-        condition,
-        status_lifecycle,
-        constanta
-      );
+      return alert('Masih ada yang belum di isi');
     }
+    setIsLoading(false);
+    updateAutomation(
+      id_actuator,
+      id_sensor,
+      condition,
+      status_lifecycle,
+      constanta,
+    );
   };
-  const header = localStorage.getItem("token");
+  const header = localStorage.getItem('token');
 
   const updateAutomation = (
     valueActuator,
     valueSensor,
     valueCondition,
     valueStatus_lifecycle,
-    valueConstanta
+    valueConstanta,
   ) => {
     axios
       .put(
@@ -107,9 +104,9 @@ const AutomationEdit = () => {
         },
         {
           headers: {
-            Authorization: "Bearer " + header,
+            Authorization: `Bearer ${header}`,
           },
-        }
+        },
       )
       .then((response) => {
         setIsLoading(false);
@@ -124,7 +121,7 @@ const AutomationEdit = () => {
     await axios
       .get(`${base_url}${apiGetAutomation}${id}`, {
         headers: {
-          Authorization: "Bearer " + header,
+          Authorization: `Bearer ${header}`,
         },
       })
       .then((response) => {
@@ -132,8 +129,8 @@ const AutomationEdit = () => {
         getActuator(response.data.data.actuator.id);
       })
       .catch((error) => {
-        localStorage.clear()
-dispatch(logout());
+        localStorage.clear();
+        dispatch(logout());
       });
   };
 
@@ -142,7 +139,7 @@ dispatch(logout());
     await axios
       .get(`${base_url}${getActuatorDetail}${data}`, {
         headers: {
-          Authorization: "Bearer " + header,
+          Authorization: `Bearer ${header}`,
         },
       })
       .then((response) => {
@@ -150,9 +147,9 @@ dispatch(logout());
         getSensor(response.data.data.id_greenhouse);
       })
       .catch((error) => {
-        localStorage.clear()
+        localStorage.clear();
         dispatch(logout());
-        navigate("/login");
+        navigate('/login');
       });
   };
 
@@ -161,7 +158,7 @@ dispatch(logout());
     await axios
       .get(`${base_url}${monitoringApi}${id_greenhouse}`, {
         headers: {
-          Authorization: "Bearer " + header,
+          Authorization: `Bearer ${header}`,
         },
       })
       .then((response) => {
@@ -169,9 +166,9 @@ dispatch(logout());
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear()
+        localStorage.clear();
         dispatch(logout());
-        navigate("/login");
+        navigate('/login');
       });
   };
 
@@ -180,7 +177,7 @@ dispatch(logout());
     dispatch(routePageName(`Edit Automation ${id}`));
   }, []);
 
-  TabTitle("Tambah Automation - ITERA Hero");
+  TabTitle('Tambah Automation - ITERA Hero');
   return (
     <>
       {isLoading ? (
@@ -197,7 +194,7 @@ dispatch(logout());
             </Flex>
             <Flex>
               <Text fontSize="20px" fontWeight="bold" mr="10px">
-                {">"}
+                {'>'}
               </Text>
             </Flex>
             <Flex>
@@ -211,14 +208,14 @@ dispatch(logout());
             </Flex>
             <Flex>
               <Text fontSize="20px" fontWeight="bold" mr="10px">
-                {">"}
+                {'>'}
               </Text>
             </Flex>
             <Text fontSize="20px" fontWeight="bold" mb="10px">
               {`Edit Automation ${id}`}
             </Text>
           </Flex>
-          <Flex w="100%" flexDir={"column"}>
+          <Flex w="100%" flexDir="column">
             <Formik
               initialValues={{
                 actuator: dataAutomation.actuator.id,
@@ -239,14 +236,14 @@ dispatch(logout());
               }) => (
                 <Form>
                   <FormControl
-                    marginTop={"20px"}
+                    marginTop="20px"
                     isInvalid={errors.actuator && touched.actuator}
                   >
-                    <FormLabel color={"var(--color-primer)"}>
+                    <FormLabel color="var(--color-primer)">
                       Actuator
                     </FormLabel>
                     <Select
-                      color={"var(--color-primer)"}
+                      color="var(--color-primer)"
                       onBlur={handleBlur}
                       onChange={handleChange}
                       value={values.actuator}
@@ -255,7 +252,7 @@ dispatch(logout());
                     >
                       <option
                         value={dataAutomation.actuator.id}
-                        color={"var(--color-primer)"}
+                        color="var(--color-primer)"
                       >
                         {dataAutomation.actuator.name}
                       </option>
@@ -263,12 +260,12 @@ dispatch(logout());
                     <FormErrorMessage>{errors.actuator}</FormErrorMessage>
                   </FormControl>
                   <FormControl
-                    marginTop={"20px"}
+                    marginTop="20px"
                     isInvalid={errors.sensor && touched.sensor}
                   >
-                    <FormLabel color={"var(--color-primer)"}>Sensor</FormLabel>
+                    <FormLabel color="var(--color-primer)">Sensor</FormLabel>
                     <Select
-                      color={"var(--color-primer)"}
+                      color="var(--color-primer)"
                       onBlur={handleBlur}
                       onChange={handleChange}
                       value={values.sensor}
@@ -276,27 +273,25 @@ dispatch(logout());
                       id="sensor"
                     >
                       <option value="">Pilih Sensor</option>
-                      {dataSensor.map((item) =>
-                        item.id === dataAutomation.sensor.id ? (
-                          <option value={item.id} selected>
-                            {item.name}
-                          </option>
-                        ) : (
-                          <option value={item.id}>{item.name}</option>
-                        )
-                      )}
+                      {dataSensor.map((item) => (item.id === dataAutomation.sensor.id ? (
+                        <option value={item.id} selected>
+                          {item.name}
+                        </option>
+                      ) : (
+                        <option value={item.id}>{item.name}</option>
+                      )))}
                     </Select>
                     <FormErrorMessage>{errors.sensor}</FormErrorMessage>
                   </FormControl>
                   <FormControl
-                    marginTop={"20px"}
+                    marginTop="20px"
                     isInvalid={errors.condition && touched.condition}
                   >
-                    <FormLabel color={"var(--color-primer)"}>
+                    <FormLabel color="var(--color-primer)">
                       Kondisi Automatis
                     </FormLabel>
                     <Select
-                      color={"var(--color-primer)"}
+                      color="var(--color-primer)"
                       onBlur={handleBlur}
                       onChange={handleChange}
                       value={values.condition}
@@ -304,27 +299,25 @@ dispatch(logout());
                       id="condition"
                     >
                       <option value="">Pilih Kondisi</option>
-                      {dataKondisi.map((data) =>
-                        data.value === dataAutomation.condition ? (
-                          <option value={data.value} selected>
-                            {data.name}
-                          </option>
-                        ) : (
-                          <option value={data.value}>{data.name}</option>
-                        )
-                      )}
+                      {dataKondisi.map((data) => (data.value === dataAutomation.condition ? (
+                        <option value={data.value} selected>
+                          {data.name}
+                        </option>
+                      ) : (
+                        <option value={data.value}>{data.name}</option>
+                      )))}
                     </Select>
                     <FormErrorMessage>{errors.condition}</FormErrorMessage>
                   </FormControl>
                   <FormControl
-                    marginTop={"20px"}
+                    marginTop="20px"
                     isInvalid={errors.lifecycle && touched.lifecycle}
                   >
-                    <FormLabel color={"var(--color-primer)"}>
+                    <FormLabel color="var(--color-primer)">
                       Status Lifecycle
                     </FormLabel>
                     <Select
-                      color={"var(--color-primer)"}
+                      color="var(--color-primer)"
                       onBlur={handleBlur}
                       onChange={handleChange}
                       value={values.lifecycle}
@@ -332,29 +325,27 @@ dispatch(logout());
                       id="lifecycle"
                     >
                       <option value="">Pilih Status Lifecycle</option>
-                      {dropLifeCycle.map((data) =>
-                        data.value === dataAutomation.status_lifecycle ? (
-                          <option value={data.value} selected>
-                            {data.name}
-                          </option>
-                        ) : (
-                          <option value={data.value}>{data.name}</option>
-                        )
-                      )}
+                      {dropLifeCycle.map((data) => (data.value === dataAutomation.status_lifecycle ? (
+                        <option value={data.value} selected>
+                          {data.name}
+                        </option>
+                      ) : (
+                        <option value={data.value}>{data.name}</option>
+                      )))}
                     </Select>
                     <FormErrorMessage>{errors.lifecycle}</FormErrorMessage>
                   </FormControl>
                   <FormControl
-                    marginTop={"20px"}
+                    marginTop="20px"
                     isInvalid={errors.constanta && touched.constanta}
                   >
-                    <FormLabel color={"var(--color-primer)"}>
+                    <FormLabel color="var(--color-primer)">
                       Konstanta
                     </FormLabel>
                     <Input
-                      color={"var(--color-primer)"}
-                      maxWidth={"100%"}
-                      marginTop={"0 auto"}
+                      color="var(--color-primer)"
+                      maxWidth="100%"
+                      marginTop="0 auto"
                       type="number"
                       name="constanta"
                       defaultValue={values.constanta}
@@ -366,28 +357,26 @@ dispatch(logout());
                     <FormErrorMessage>{errors.constanta}</FormErrorMessage>
                   </FormControl>
                   <Button
-                    marginTop={"44px"}
+                    marginTop="44px"
                     width="100%"
                     height="50px"
                     borderRadius="10px"
                     backgroundColor="var(--color-primer)"
                     type="submit"
-                    onClick={() =>
-                      submit(
-                        values.actuator,
-                        values.sensor,
-                        values.condition,
-                        values.lifecycle,
-                        values.constanta
-                      )
-                    }
+                    onClick={() => submit(
+                      values.actuator,
+                      values.sensor,
+                      values.condition,
+                      values.lifecycle,
+                      values.constanta,
+                    )}
                   >
                     <Text
                       fontWeight="bold"
                       fontFamily="var(--font-family-secondary)"
                       fontSize="var(--header-3)"
                       color="var(--color-on-primary)"
-                      colorScheme={"var(--color-on-primary)"}
+                      colorScheme="var(--color-on-primary)"
                     >
                       Update
                     </Text>
@@ -400,6 +389,6 @@ dispatch(logout());
       )}
     </>
   );
-};
+}
 
 export default AutomationEdit;

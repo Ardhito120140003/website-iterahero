@@ -1,93 +1,93 @@
-import React, { useState, useEffect } from "react";
-import { Flex, Text, Button, Wrap } from "@chakra-ui/react";
-import CardGreenhouse from "../../component/card_greenhouse/card_green";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { routePageName } from "../../features/auth/authSlice";
-import { TabTitle } from "../../Utility/utility";
-import axios from "axios";
-import { listGreenhouse } from "../../Utility/api_link";
-import { useNavigate } from "react-router-dom";
-import Loading from "../../component/loading/loading";
-import { logout } from "../../features/auth/authSlice";
-import { useSelector } from "react-redux";
-import { selectUrl } from "../../features/auth/authSlice";
+import React, { useState, useEffect } from 'react';
+import {
+  Flex, Text, Button, Wrap,
+} from '@chakra-ui/react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import CardGreenhouse from '../../component/card_greenhouse/card_green';
+import { routePageName, selectUrl } from '../../features/auth/authSlice';
+import { TabTitle } from '../../Utility/utility';
 
-const GreenHouse = () => {
-	TabTitle("Greenhouse - ITERA Hero")
-	
-	const base_url = useSelector(selectUrl);
-	const dispatch = useDispatch()
-	const navigate = useNavigate()
+import Loading from '../../component/loading/loading';
 
-	const [dataApi, setDataApi] = useState(null)
+function GreenHouse() {
+  TabTitle('Greenhouse - ITERA Hero');
 
-	const header = localStorage.getItem('token')
+  const base_url = useSelector(selectUrl);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-	const getListGreenhouse = async () => {
-		await axios.get(base_url + 'api/v1/greenhouse', {
-			headers: {
-				'Authorization': 'Bearer ' + header
-			}
-		}).then(response => {
-			setDataApi(response.data.data)
-			console.log(response.data.data)
-		})
-			.catch((error) => {
-				// localStorage.clear()
-				// dispatch(logout())
-				// navigate('/login')
-			})
-	}
+  const [dataApi, setDataApi] = useState(null);
 
-	useEffect(() => {
-		dispatch(routePageName("Greenhouse"));
-		getListGreenhouse()
-	}, []);
+  const header = localStorage.getItem('token');
 
-	return (
-		<>
-			{dataApi == null ? <Loading />
-				:
-				<Flex w="100%" flexDir={"column"}>
-					<Flex
-						w="100%"
-						flexDir={"row"}
-						justifyContent="space-between"
-						alignItems={"center"}
-						marginBottom="40px">
-						<Text
-							fontWeight={"semibold"}
-							fontSize={"var(--header-3)"}
-							color={"var(--color-primer)"}>
-							List Greenhouse
-						</Text>
+  const getListGreenhouse = async () => {
+    await axios.get(`${base_url}api/v1/greenhouse`, {
+      headers: {
+        Authorization: `Bearer ${header}`,
+      },
+    }).then((response) => {
+      setDataApi(response.data.data);
+      console.log(response.data.data);
+    })
+      .catch((error) => {
+        // localStorage.clear()
+        // dispatch(logout())
+        // navigate('/login')
+      });
+  };
 
-						<Link to={"/unit/greenhouse/add"}>
-							<Button bg="#14453E" size="sm" colorScheme={"teal"}>
-								Tambah
-							</Button>
-						</Link>
-					</Flex>
-					<Wrap>
-						{dataApi.map((placement) => (
-							<CardGreenhouse
-							key={placement.id}
-								data={{
-									created_at: placement.created_at,
-									id: placement.id,
-									image: placement.thumbnail,
-									title: placement.nama,
-									location: placement.location,
-									user_id: placement.user_id,
-									user_name: placement.user_name,
-								}}
-							/>
-						))}
-					</Wrap>
-				</Flex>
-			}
-		</>
-	);
-};
+  useEffect(() => {
+    dispatch(routePageName('Greenhouse'));
+    getListGreenhouse();
+  }, []);
+
+  return (
+    <>
+      {dataApi == null ? <Loading />
+			  : (
+  <Flex w="100%" flexDir="column">
+    <Flex
+      w="100%"
+      flexDir="row"
+      justifyContent="space-between"
+      alignItems="center"
+      marginBottom="40px"
+    >
+      <Text
+        fontWeight="semibold"
+        fontSize="var(--header-3)"
+        color="var(--color-primer)"
+      >
+        List Greenhouse
+      </Text>
+
+      <Link to="/unit/greenhouse/add">
+        <Button bg="#14453E" size="sm" colorScheme="teal">
+          Tambah
+        </Button>
+      </Link>
+    </Flex>
+    <Wrap>
+      {dataApi.map((placement) => (
+        <CardGreenhouse
+          key={placement.id}
+          data={{
+								  created_at: placement.created_at,
+								  id: placement.id,
+								  image: placement.thumbnail,
+								  title: placement.nama,
+								  location: placement.location,
+								  user_id: placement.user_id,
+								  user_name: placement.user_name,
+          }}
+        />
+      ))}
+    </Wrap>
+  </Flex>
+			  )}
+    </>
+  );
+}
 export default GreenHouse;

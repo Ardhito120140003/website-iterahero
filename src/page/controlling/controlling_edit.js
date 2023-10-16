@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Flex,
   Image,
@@ -11,39 +11,35 @@ import {
   FormLabel,
   Select,
   Textarea,
-} from "@chakra-ui/react";
-import Loading from "../../component/loading/loading";
-import * as yup from "yup";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Formik, Form } from "formik";
-import { useDispatch } from "react-redux";
-import { routePageName } from "../../features/auth/authSlice";
-import { TabTitle } from "../../Utility/utility";
-import { updateActuatorDetail, icons } from "../../Utility/api_link";
-import axios from "axios";
-import { logout } from "../../features/auth/authSlice";
-import { useSelector } from "react-redux";
-import { selectUrl } from "../../features/auth/authSlice";
+} from '@chakra-ui/react';
+import * as yup from 'yup';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Formik, Form } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { routePageName, logout, selectUrl } from '../../features/auth/authSlice';
+import { TabTitle } from '../../Utility/utility';
+import { updateActuatorDetail, icons } from '../../Utility/api_link';
+import Loading from '../../component/loading/loading';
 
-
-const Controlling_Edit = () => {
+function Controlling_Edit() {
   const base_url = useSelector(selectUrl);
-  TabTitle("Edit Aktuator - ITERA Hero");
+  TabTitle('Edit Aktuator - ITERA Hero');
   const location = useLocation();
   const navigate = useNavigate();
   const data = location.state?.data;
   const [imageActuator, onChangeImageActuator] = useState(null);
   const [imagePos, onChangeImagePos] = useState(null);
   console.log(data);
-  const header = localStorage.getItem("token");
-  const [iconSelected, setIconSelected] = useState("");
+  const header = localStorage.getItem('token');
+  const [iconSelected, setIconSelected] = useState('');
   const dispatch = useDispatch();
   const [isloading, checkLoading] = useState(true);
 
   const schema = yup.object({
-    name: yup.string().required("Nama harus diisi"),
-    icon: yup.string().required("Ikon harus diisi"),
-    color: yup.string().required("Warna harus diisi"),
+    name: yup.string().required('Nama harus diisi'),
+    icon: yup.string().required('Ikon harus diisi'),
+    color: yup.string().required('Warna harus diisi'),
   });
 
   const putActuator = async (
@@ -52,7 +48,7 @@ const Controlling_Edit = () => {
     valueColor,
     detail,
     actuator_image,
-    posisitionact
+    posisitionact,
   ) => {
     await axios
       .put(
@@ -62,26 +58,26 @@ const Controlling_Edit = () => {
           icon: valueIcon,
           color: valueColor,
           detailact: detail,
-          actuator_image: actuator_image,
-          posisitionact: posisitionact,
+          actuator_image,
+          posisitionact,
         },
         {
           headers: {
-            "content-type": "multipart/form-data",
-            Authorization: "Bearer " + header,
+            'content-type': 'multipart/form-data',
+            Authorization: `Bearer ${header}`,
           },
-        }
+        },
       )
       .then((response) => {
         console.log(response);
         checkLoading(false);
-        alert("Data Aktuator Berhasil Diperbaharui");
-        navigate("/unit/controlling");
+        alert('Data Aktuator Berhasil Diperbaharui');
+        navigate('/unit/controlling');
       })
       .catch((error) => {
-        localStorage.clear()
-dispatch(logout());
-        navigate("/login");
+        localStorage.clear();
+        dispatch(logout());
+        navigate('/login');
       });
   };
 
@@ -99,11 +95,11 @@ dispatch(logout());
       });
   };
 
-  let dataSend = {
-    name: "",
-    icon: "",
-    color: "",
-    detailact: "",
+  const dataSend = {
+    name: '',
+    icon: '',
+    color: '',
+    detailact: '',
   };
 
   const submit = async (name, color, icon, detailact) => {
@@ -112,18 +108,17 @@ dispatch(logout());
     dataSend.icon = icon;
     dataSend.detailact = detailact;
 
-    if (dataSend.name == "" || dataSend.icon == "" || dataSend.color == "") {
-      return alert("Masih ada yang belum di isi");
-    } else {
-      checkLoading(true);
-      putActuator(name, icon, color, detailact, imageActuator, imagePos);
+    if (dataSend.name == '' || dataSend.icon == '' || dataSend.color == '') {
+      return alert('Masih ada yang belum di isi');
     }
+    checkLoading(true);
+    putActuator(name, icon, color, detailact, imageActuator, imagePos);
   };
 
-  console.log("hallo", iconsList);
+  console.log('hallo', iconsList);
 
   useEffect(() => {
-    dispatch(routePageName("Controlling"));
+    dispatch(routePageName('Controlling'));
     getIcon();
     checkLoading(true);
   }, []);
@@ -133,39 +128,43 @@ dispatch(logout());
       {iconsList == null || isloading ? (
         <Loading />
       ) : (
-        <Flex w="100%" flexDir={"column"}>
+        <Flex w="100%" flexDir="column">
           <Flex width="100%">
-            <Link to={"/unit/controlling"}>
-              <Flex marginRight={"2"}>
+            <Link to="/unit/controlling">
+              <Flex marginRight="2">
                 <Text
-                  fontWeight={"semibold"}
-                  fontSize={"var(--header-3)"}
-                  color={"var(--color-primer)"}
+                  fontWeight="semibold"
+                  fontSize="var(--header-3)"
+                  color="var(--color-primer)"
                 >
                   List Controlling pada Greenhouse
                 </Text>
               </Flex>
             </Link>
 
-            <Flex marginRight={"2"}>
+            <Flex marginRight="2">
               <Text
-                fontWeight={"semibold"}
-                fontSize={"var(--header-3)"}
-                color={"var(--color-primer)"}
+                fontWeight="semibold"
+                fontSize="var(--header-3)"
+                color="var(--color-primer)"
               >
-                {" "}
-                {">"}{" "}
+                {' '}
+                {'>'}
+                {' '}
               </Text>
             </Flex>
 
             <Flex>
               <Text
-                fontWeight={"semibold"}
-                fontSize={"var(--header-3)"}
-                color={"var(--color-primer)"}
+                fontWeight="semibold"
+                fontSize="var(--header-3)"
+                color="var(--color-primer)"
               >
-                {" "}
-                Edit {data.name}{" "}
+                {' '}
+                Edit
+                {' '}
+                {data.name}
+                {' '}
               </Text>
             </Flex>
           </Flex>
@@ -188,14 +187,14 @@ dispatch(logout());
             }) => (
               <Form>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.name && touched.name}
                 >
-                  <FormLabel color={"var(--color-primer)"}>Nama</FormLabel>
+                  <FormLabel color="var(--color-primer)">Nama</FormLabel>
                   <Input
-                    color={"var(--color-primer)"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    color="var(--color-primer)"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     type="text"
                     name="name"
                     value={values.name}
@@ -207,14 +206,14 @@ dispatch(logout());
                   <FormErrorMessage>{errors.name}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.icon && touched.icon}
                 >
-                  <FormLabel color={"var(--color-primer)"}>Ikon</FormLabel>
+                  <FormLabel color="var(--color-primer)">Ikon</FormLabel>
                   <Select
-                    color={"var(--color-primer)"}
+                    color="var(--color-primer)"
                     onChange={(e) => {
-                      setFieldValue("icon", e.target.value);
+                      setFieldValue('icon', e.target.value);
                       setIconSelected(e.target.value);
                     }}
                     onBlur={handleBlur}
@@ -223,16 +222,14 @@ dispatch(logout());
                     id="icon"
                   >
                     <option value="">Pilih Ikon</option>
-                    {iconsList.map((item) =>
-                      item.type == "actuator" ? (
-                        <option value={item.icon} color={"var(--color-primer)"}>
-                          {item.name}
-                        </option>
-                      ) : null
-                    )}
+                    {iconsList.map((item) => (item.type == 'actuator' ? (
+                      <option value={item.icon} color="var(--color-primer)">
+                        {item.name}
+                      </option>
+                    ) : null))}
                   </Select>
-                  <Flex m={"15px"}>
-                    {iconSelected == "" ? (
+                  <Flex m="15px">
+                    {iconSelected == '' ? (
                       <Image src={data.icon} />
                     ) : (
                       <Image src={iconSelected} />
@@ -241,14 +238,14 @@ dispatch(logout());
                   <FormErrorMessage>{errors.icon}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.color && touched.color}
                 >
-                  <FormLabel color={"var(--color-primer)"}>Warna</FormLabel>
+                  <FormLabel color="var(--color-primer)">Warna</FormLabel>
                   <Select
-                    color={"var(--color-primer)"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    color="var(--color-primer)"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     type="text"
                     name="color"
                     value={values.color}
@@ -257,34 +254,32 @@ dispatch(logout());
                     variant="outline"
                   >
                     <option value="">Pilih Warna</option>
-                    {iconsList.map((item) =>
-                      item.type == "actuator" && item.icon == iconSelected ? (
-                        <option
-                          value={item.color}
-                          color={"var(--color-primer)"}
-                          selected
-                        >
-                          {item.name}
-                        </option>
-                      ) : null
-                    )}
+                    {iconsList.map((item) => (item.type == 'actuator' && item.icon == iconSelected ? (
+                      <option
+                        value={item.color}
+                        color="var(--color-primer)"
+                        selected
+                      >
+                        {item.name}
+                      </option>
+                    ) : null))}
                   </Select>
-                  <Flex m={"15px"}>
+                  <Flex m="15px">
                     <Circle bg={values.color} size="30px" />
                   </Flex>
                   <FormErrorMessage>{errors.color}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.detailact && touched.detailact}
                 >
-                  <FormLabel color={"var(--color-primer)"}>
+                  <FormLabel color="var(--color-primer)">
                     Detail dari actuator
                   </FormLabel>
                   <Textarea
-                    color={"var(--color-primer)"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    color="var(--color-primer)"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     type="text"
                     name="detailact"
                     defaultValue={values.detailact}
@@ -296,25 +291,25 @@ dispatch(logout());
                   <FormErrorMessage>{errors.range_min}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.actuator_image && touched.actuator_image}
                 >
-                  <FormLabel htmlFor="actuator_image" color={"black"}>
+                  <FormLabel htmlFor="actuator_image" color="black">
                     Gambar actuator
                   </FormLabel>
                   <Flex
-                    width={"100%"}
+                    width="100%"
                     h="100px"
-                    borderRadius={"5px"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    borderRadius="5px"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     variant="outline"
                     placeholder="Masukkan Gambar"
-                    color={"black"}
+                    color="black"
                     alignItems="center"
                     borderWidth="1px"
-                    borderColor={"#D9D9D9"}
-                    padding={"20px"}
+                    borderColor="#D9D9D9"
+                    padding="20px"
                   >
                     <input
                       type="file"
@@ -327,25 +322,25 @@ dispatch(logout());
                   <FormErrorMessage>{errors.actuator_image}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.posisition && touched.posisition}
                 >
-                  <FormLabel htmlFor="posisition" color={"black"}>
+                  <FormLabel htmlFor="posisition" color="black">
                     Denah Posisi actuator
                   </FormLabel>
                   <Flex
-                    width={"100%"}
+                    width="100%"
                     h="100px"
-                    borderRadius={"5px"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    borderRadius="5px"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     variant="outline"
                     placeholder="Masukkan Posisi actuator"
-                    color={"black"}
+                    color="black"
                     alignItems="center"
                     borderWidth="1px"
-                    borderColor={"#D9D9D9"}
-                    padding={"20px"}
+                    borderColor="#D9D9D9"
+                    padding="20px"
                   >
                     <input
                       type="file"
@@ -357,9 +352,9 @@ dispatch(logout());
                   </Flex>
                   <FormErrorMessage>{errors.posisition}</FormErrorMessage>
                 </FormControl>
-                <Link to={"/unit/controlling"}>
+                <Link to="/unit/controlling">
                   <Button
-                    marginTop={"44px"}
+                    marginTop="44px"
                     width="100%"
                     height="50px"
                     borderRadius="10px"
@@ -367,14 +362,12 @@ dispatch(logout());
                     type="submit"
                     className="btn-login"
                     // disabled={isSubmitting}
-                    onClick={() =>
-                      submit(
-                        values.name,
-                        values.color,
-                        values.icon,
-                        values.detailact
-                      )
-                    }
+                    onClick={() => submit(
+                      values.name,
+                      values.color,
+                      values.icon,
+                      values.detailact,
+                    )}
                   >
                     <Text
                       fontWeight="bold"
@@ -393,5 +386,5 @@ dispatch(logout());
       )}
     </>
   );
-};
+}
 export default Controlling_Edit;

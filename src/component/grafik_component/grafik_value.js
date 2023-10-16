@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
-import { Line } from "react-chartjs-2";
-const GrafikValue = (props) => {
-  const value = props.data.value;
+import React, { useEffect } from 'react';
+import { Line } from 'react-chartjs-2';
+
+function GrafikValue(props) {
+  const { value } = props.data;
   const label2 = props.data.label;
   const datasets = props.data.data;
 
@@ -13,14 +14,14 @@ const GrafikValue = (props) => {
       {
         label: `Rata Rata Data Sensor per (${value})`,
         data: datasets,
-        borderColor: "rgb(53, 162, 235,0.5)",
-        pointBorderColor: "#A4E0FF",
-        backgroundColor: "rgb(53, 162, 235,0.1)",
+        borderColor: 'rgb(53, 162, 235,0.5)',
+        pointBorderColor: '#A4E0FF',
+        backgroundColor: 'rgb(53, 162, 235,0.1)',
         pointBorderWidth: 4,
         // tension: 0.5,
 
         fill: true,
-        pointStyle: "circle",
+        pointStyle: 'circle',
         pointRadius: 7,
         pointHoverRadius: 15,
       },
@@ -30,20 +31,19 @@ const GrafikValue = (props) => {
     responsive: true,
     plugins: {
       legend: {
-        position: "top",
+        position: 'top',
       },
       title: {
         display: true,
-        text: (ctx) =>
-          `${value}` == "Week"
-            ? "Grafik Sensor Perminggu"
-            : `${value}` == "Month"
-            ? "Grafik Sensor Perbulan"
-            : `${value}` == "Year"
-            ? "Grafik Sensor Pertahun"
-            : `${value}` == "Day"
-            ? "Grafik Sensor Perhari"
-            : " ",
+        text: (ctx) => (`${value}` == 'Week'
+          ? 'Grafik Sensor Perminggu'
+          : `${value}` == 'Month'
+            ? 'Grafik Sensor Perbulan'
+            : `${value}` == 'Year'
+              ? 'Grafik Sensor Pertahun'
+              : `${value}` == 'Day'
+                ? 'Grafik Sensor Perhari'
+                : ' '),
       },
     },
     scales: {
@@ -51,23 +51,22 @@ const GrafikValue = (props) => {
         display: true,
         title: {
           display: true,
-          text: "Nilai Sensor",
+          text: 'Nilai Sensor',
         },
       },
       x: {
         display: true,
         title: {
           display: true,
-          text: (ctx) =>
-            `${value}` == "Week"
-              ? "Mingguan"
-              : `${value}` == "Month"
-              ? "Bulanan"
-              : `${value}` == "Year"
-              ? "Tahunan"
-              : `${value}` == "Day"
-              ? "Harian"
-              : "",
+          text: (ctx) => (`${value}` == 'Week'
+            ? 'Mingguan'
+            : `${value}` == 'Month'
+              ? 'Bulanan'
+              : `${value}` == 'Year'
+                ? 'Tahunan'
+                : `${value}` == 'Day'
+                  ? 'Harian'
+                  : ''),
         },
       },
     },
@@ -75,9 +74,9 @@ const GrafikValue = (props) => {
 
   useEffect(() => {}, [value]);
   return (
-    <div widht={"300px"} height={"300px"} margin={"20px"}>
-      <Line size={"lg"} options={options} data={data} />
+    <div widht="300px" height="300px" margin="20px">
+      <Line size="lg" options={options} data={data} />
     </div>
   );
-};
+}
 export default GrafikValue;

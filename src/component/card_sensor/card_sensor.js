@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { Text, Image, Flex, Wrap, WrapItem, Center } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { paginationMonitoring } from "../..//Utility/api_link";
-import Loading from "../../component/loading/loading";
-import { useNavigate } from "react-router-dom";
-import "./card_sensor.css";
-import ValueSensor from "../value_sensor/value_sensor";
-import { logout } from "../../features/auth/authSlice";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { selectUrl } from "../../features/auth/authSlice";
+import React, { useState, useEffect } from 'react';
+import {
+  Text, Image, Flex, Wrap, WrapItem, Center,
+} from '@chakra-ui/react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { paginationMonitoring } from '../../Utility/api_link';
+import Loading from '../loading/loading';
 
+import './card_sensor.css';
+import { logout, selectUrl } from '../../features/auth/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-const CardSensor = (props) => {
+function CardSensor(props) {
   const idApi = props.data.id;
   const base_url = useSelector(selectUrl);
   const navigate = useNavigate();
@@ -23,21 +21,22 @@ const CardSensor = (props) => {
   const getPagination = async () => {
     setIsLoading(true);
 
-    const header = localStorage.getItem("token");
+    const header = localStorage.getItem('token');
     await axios
       .get(`${base_url}${paginationMonitoring}${idApi}&&size=100`, {
         headers: {
-          Authorization: "Bearer " + header,
+          Authorization: `Bearer ${header}`,
         },
       })
       .then((response) => {
         setDataTable(response.data.data);
+        console.log(response.data.data);
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear()
+        localStorage.clear();
         dispatch(logout());
-        navigate("/login");
+        navigate('/login');
       });
   };
   useEffect(() => {
@@ -52,40 +51,40 @@ const CardSensor = (props) => {
       ) : (
         <Wrap
           className="center-ul"
-          align={"center"}
-          spacing={"30px"}
-          justify={{ base: "center", lg: "start" }}
-          mt={"30px"}
+          align="center"
+          spacing="30px"
+          justify={{ base: 'center', lg: 'start' }}
+          mt="30px"
         >
           {dataTable.map((item, index) => (
             <Link to={`/unit/dashboard/sensor/${item.id}`}>
               <WrapItem
                 key={index}
-                w={{ base: "90vw", md: "sm" }}
+                w={{ base: '90vw', md: 'sm' }}
                 className="card-sensor"
-                bg={"#ffff"}
-                borderRadius={"10px"}
-                border={"1px solid #E2E8F0"}
-                paddingTop={"30px"}
-                paddingBottom={"30px"}
+                bg="#ffff"
+                borderRadius="10px"
+                border="1px solid #E2E8F0"
+                paddingTop="30px"
+                paddingBottom="30px"
               >
                 <Center
-                  justifyContent={"center"}
-                  flexDir={"column"}
+                  justifyContent="center"
+                  flexDir="column"
                   data={{ data: idApi }}
                 >
-                  <Flex flexDir={"row"} justify={"space-between"}>
+                  <Flex flexDir="row" justify="space-between">
                     <Image
-                      size={"1px"}
+                      size="1px"
                       src={`${item.icon}`}
                       color={item.color}
                     />
                     <Text color={`${item.color}`}>{item.name}</Text>
                   </Flex>
-                  {item.id === "" ? (
+                  {item.id === '' ? (
                     <></>
                   ) : (
-                    <ValueSensor
+                    {/* <ValueSensor
                       data={{
                         id: item.id,
                         color: item.color,
@@ -94,7 +93,7 @@ const CardSensor = (props) => {
                         max: item.range_max,
                         min: item.range_min,
                       }}
-                    />
+                    /> */}
                   )}
                 </Center>
               </WrapItem>
@@ -104,5 +103,5 @@ const CardSensor = (props) => {
       )}
     </>
   );
-};
+}
 export default CardSensor;

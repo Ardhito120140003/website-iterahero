@@ -1,47 +1,46 @@
-import { TabTitle } from "../../Utility/utility";
-import React, { useState, useEffect } from "react";
-import { Flex, Text, Button, Input, Wrap, Select } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { Formik, Form } from "formik";
+import React, { useState, useEffect } from 'react';
+import {
+  Flex, Text, Button, Input, Select,
+} from '@chakra-ui/react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Formik, Form } from 'formik';
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-} from "@chakra-ui/form-control";
-import * as yup from "yup";
-import { useDispatch } from "react-redux";
-import { routePageName } from "../../features/auth/authSlice";
-import axios from "axios";
-import { scheduling } from "../../Utility/api_link";
-import { useNavigate } from "react-router-dom";
-import Loading from "../../component/loading/loading";
-import { useParams } from "react-router";
-import { logout } from "../../features/auth/authSlice";
-import { useSelector } from "react-redux";
-import { selectUrl } from "../../features/auth/authSlice";
+} from '@chakra-ui/form-control';
+import * as yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { useParams } from 'react-router';
+import { routePageName, logout, selectUrl } from '../../features/auth/authSlice';
+import { scheduling } from '../../Utility/api_link';
 
-const ScheduleEdit = () => {
+import Loading from '../../component/loading/loading';
+import { TabTitle } from '../../Utility/utility';
+
+function ScheduleEdit() {
   const base_url = useSelector(selectUrl);
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  const [dataSchedule, setDataSchedule] = useState("");
+  const [dataSchedule, setDataSchedule] = useState('');
   const dispatch = useDispatch();
-  let data = {
-    id_actuator: "",
-    start: "",
-    duration: "",
-    repeat: "",
-    interval: "",
+  const data = {
+    id_actuator: '',
+    start: '',
+    duration: '',
+    repeat: '',
+    interval: '',
   };
 
   const navigate = useNavigate();
 
   const schema = yup.object({
-    id_actuator: yup.number().required("data harus diisi"),
-    start: yup.string().required("data harus diisi"),
-    duration: yup.number().required("data harus diisi"),
-    repeat: yup.number().required("data harus diisi"),
-    interval: yup.number().required("data harus diisi"),
+    id_actuator: yup.number().required('data harus diisi'),
+    start: yup.string().required('data harus diisi'),
+    duration: yup.number().required('data harus diisi'),
+    repeat: yup.number().required('data harus diisi'),
+    interval: yup.number().required('data harus diisi'),
   });
 
   const submit = (id_actuator, start, duration, repeat, interval) => {
@@ -52,33 +51,32 @@ const ScheduleEdit = () => {
     data.interval = interval;
 
     if (
-      data.id_actuator == "" ||
-      data.start == "" ||
-      data.duration == "" ||
-      data.repeat == "" ||
-      data.interval == ""
+      data.id_actuator == ''
+      || data.start == ''
+      || data.duration == ''
+      || data.repeat == ''
+      || data.interval == ''
     ) {
-      return alert("Masih ada yang belum di isi");
-    } else {
-      setIsLoading(true);
-      updateAutomation(id_actuator, start, duration, repeat, interval);
+      return alert('Masih ada yang belum di isi');
     }
+    setIsLoading(true);
+    updateAutomation(id_actuator, start, duration, repeat, interval);
   };
-  const header = localStorage.getItem("token");
+  const header = localStorage.getItem('token');
 
   const updateAutomation = (
     valueActuator,
     valueStart,
     valueDuration,
     valueRepeat,
-    valuInterval
+    valuInterval,
   ) => {
     console.log(
       valueActuator,
       valueStart,
       valueDuration,
       valueRepeat,
-      valuInterval
+      valuInterval,
     );
     axios
       .put(
@@ -92,9 +90,9 @@ const ScheduleEdit = () => {
         },
         {
           headers: {
-            Authorization: "Bearer " + header,
+            Authorization: `Bearer ${header}`,
           },
-        }
+        },
       )
       .then((response) => {
         setIsLoading(false);
@@ -109,7 +107,7 @@ const ScheduleEdit = () => {
     await axios
       .get(`${base_url}${scheduling}/${id}`, {
         headers: {
-          Authorization: "Bearer " + header,
+          Authorization: `Bearer ${header}`,
         },
       })
       .then((response) => {
@@ -117,7 +115,7 @@ const ScheduleEdit = () => {
         setDataSchedule(response.data.data);
       })
       .catch((error) => {
-        localStorage.clear()
+        localStorage.clear();
         dispatch(logout());
       });
   };
@@ -127,13 +125,13 @@ const ScheduleEdit = () => {
     dispatch(routePageName(`Edit Automation ${id}`));
   }, []);
 
-  TabTitle("Tambah Automation - ITERA Hero");
+  TabTitle('Tambah Automation - ITERA Hero');
   return (
     <>
       {isLoading ? (
         <Loading />
       ) : (
-        <Flex w="100%" h={["100%"]} flexDir={"column"}>
+        <Flex w="100%" h={['100%']} flexDir="column">
           <Flex bg="white" borderRadius="10px" p="10px">
             <Flex>
               <Link to="/unit/dashboard/2">
@@ -144,7 +142,7 @@ const ScheduleEdit = () => {
             </Flex>
             <Flex>
               <Text fontSize="20px" fontWeight="bold" mr="10px">
-                {">"}
+                {'>'}
               </Text>
             </Flex>
             <Flex>
@@ -156,7 +154,7 @@ const ScheduleEdit = () => {
             </Flex>
             <Flex>
               <Text fontSize="20px" fontWeight="bold" mr="10px">
-                {">"}
+                {'>'}
               </Text>
             </Flex>
             <Text fontSize="20px" fontWeight="bold" mb="10px">
@@ -183,14 +181,14 @@ const ScheduleEdit = () => {
             }) => (
               <Form>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.id_actuator && touched.id_actuator}
-                  visibility={"hidden"}
-                  position={"absolute"}
+                  visibility="hidden"
+                  position="absolute"
                 >
-                  <FormLabel color={"var(--color-primer)"}>Actuator</FormLabel>
+                  <FormLabel color="var(--color-primer)">Actuator</FormLabel>
                   <Select
-                    color={"var(--color-primer)"}
+                    color="var(--color-primer)"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.id_actuator}
@@ -199,7 +197,7 @@ const ScheduleEdit = () => {
                   >
                     <option
                       value={dataSchedule.id_actuator}
-                      color={"var(--color-primer)"}
+                      color="var(--color-primer)"
                     >
                       {dataSchedule.id_actuator}
                     </option>
@@ -207,79 +205,79 @@ const ScheduleEdit = () => {
                   <FormErrorMessage>{errors.id_actuator}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.start && touched.start}
                 >
-                  <FormLabel color={"var(--color-primer)"}>Jam Mulai</FormLabel>
+                  <FormLabel color="var(--color-primer)">Jam Mulai</FormLabel>
                   <Input
-                    width={"100%"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    width="100%"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     type="time"
                     name="start"
                     value={values.start}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     variant="outline"
-                    color={"black"}
+                    color="black"
                   />
                   <FormErrorMessage>{errors.start}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.duration && touched.duration}
                 >
-                  <FormLabel color={"var(--color-primer)"}>
+                  <FormLabel color="var(--color-primer)">
                     Durasi Menyala (menit)
                   </FormLabel>
                   <Input
-                    width={"100%"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    width="100%"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     type="number"
                     name="duration"
                     value={values.duration}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     variant="outline"
-                    color={"black"}
+                    color="black"
                     placeholder="Masukkan durasi"
                   />
                   <FormErrorMessage>{errors.duration}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.repeat && touched.repeat}
                 >
-                  <FormLabel color={"var(--color-primer)"}>
+                  <FormLabel color="var(--color-primer)">
                     Perulangan (loop)
                   </FormLabel>
                   <Input
-                    width={"100%"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    width="100%"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     type="number"
                     name="repeat"
                     value={values.repeat}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     variant="outline"
-                    color={"black"}
+                    color="black"
                     placeholder="Masukkan perulangan .."
                   />
                   <FormErrorMessage>{errors.repeat}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  marginTop={"20px"}
+                  marginTop="20px"
                   isInvalid={errors.interval && touched.interval}
                 >
-                  <FormLabel color={"var(--color-primer)"}>
+                  <FormLabel color="var(--color-primer)">
                     Lama waktu antar alat menyala
                   </FormLabel>
                   <Input
-                    color={"var(--color-primer)"}
-                    maxWidth={"100%"}
-                    marginTop={"0 auto"}
+                    color="var(--color-primer)"
+                    maxWidth="100%"
+                    marginTop="0 auto"
                     type="number"
                     name="interval"
                     defaultValue={values.interval}
@@ -291,28 +289,26 @@ const ScheduleEdit = () => {
                   <FormErrorMessage>{errors.interval}</FormErrorMessage>
                 </FormControl>
                 <Button
-                  marginTop={"44px"}
+                  marginTop="44px"
                   width="100%"
                   height="50px"
                   borderRadius="10px"
                   backgroundColor="var(--color-primer)"
                   type="submit"
-                  onClick={() =>
-                    submit(
-                      values.id_actuator,
-                      values.start,
-                      values.duration,
-                      values.repeat,
-                      values.interval
-                    )
-                  }
+                  onClick={() => submit(
+                    values.id_actuator,
+                    values.start,
+                    values.duration,
+                    values.repeat,
+                    values.interval,
+                  )}
                 >
                   <Text
                     fontWeight="bold"
                     fontFamily="var(--font-family-secondary)"
                     fontSize="var(--header-3)"
                     color="var(--color-on-primary)"
-                    colorScheme={"var(--color-on-primary)"}
+                    colorScheme="var(--color-on-primary)"
                   >
                     Tambah
                   </Text>
@@ -324,6 +320,6 @@ const ScheduleEdit = () => {
       )}
     </>
   );
-};
+}
 
 export default ScheduleEdit;

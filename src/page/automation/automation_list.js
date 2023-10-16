@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   Flex,
@@ -7,29 +7,26 @@ import {
   FormControl,
   FormLabel,
   Switch,
-} from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import Loading from "../../component/loading/loading";
-import { useNavigate } from "react-router-dom";
+} from '@chakra-ui/react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../../component/loading/loading';
+
 import {
   getActuatorDetail,
   getAutomationByActuator,
   scheduling,
   updateActuatorDetail,
-} from "../../Utility/api_link";
-import CardAutomation from "../../component/card Automation/card_automation";
-import CardScheduling from "../../component/card Automation/card_scheduling";
-import { logout } from "../../features/auth/authSlice";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { selectUrl } from "../../features/auth/authSlice";
+} from '../../Utility/api_link';
+import CardAutomation from '../../component/card Automation/card_automation';
+import CardScheduling from '../../component/card Automation/card_scheduling';
+import { logout, selectUrl } from '../../features/auth/authSlice';
 
-
-const AutomationList = (props) => {
+function AutomationList(props) {
   const base_url = useSelector(selectUrl);
   const idApi = props.data.id;
-  const header = localStorage.getItem("token");
+  const header = localStorage.getItem('token');
   const navigate = useNavigate();
   const [dataApi, setDataApi] = useState([]);
   const [dataSchedule, setDataSchedule] = useState([]);
@@ -40,48 +37,48 @@ const AutomationList = (props) => {
     await axios
       .get(`${base_url}${getAutomationByActuator}${idApi}`, {
         headers: {
-          Authorization: "Bearer " + header,
+          Authorization: `Bearer ${header}`,
         },
       })
       .then((response) => {
         setDataApi(response.data.data);
       })
       .catch((error) => {
-        localStorage.clear()
+        localStorage.clear();
         dispatch(logout());
-        navigate("/login");
+        navigate('/login');
       });
   };
   const getActuatorAutomation = async () => {
     await axios
       .get(`${base_url}${getActuatorDetail}${idApi}`, {
         headers: {
-          Authorization: "Bearer " + header,
+          Authorization: `Bearer ${header}`,
         },
       })
       .then((response) => {
         setStatus(response.data.data.automation);
       })
       .catch((error) => {
-        localStorage.clear()
-dispatch(logout());
-        navigate("/login");
+        localStorage.clear();
+        dispatch(logout());
+        navigate('/login');
       });
   };
   const getSchedule = async () => {
     await axios
       .get(`${base_url}${scheduling}?actuatorid=${idApi}`, {
         headers: {
-          Authorization: "Bearer " + header,
+          Authorization: `Bearer ${header}`,
         },
       })
       .then((response) => {
         setDataSchedule(response.data.data);
       })
       .catch((error) => {
-        localStorage.clear()
-dispatch(logout());
-        navigate("/login");
+        localStorage.clear();
+        dispatch(logout());
+        navigate('/login');
       });
   };
 
@@ -96,10 +93,10 @@ dispatch(logout());
             },
             {
               headers: {
-                "content-type": "multipart/form-data",
-                Authorization: "Bearer " + header,
+                'content-type': 'multipart/form-data',
+                Authorization: `Bearer ${header}`,
               },
-            }
+            },
           )
           .then((response) => {
             setIsLoading(false);
@@ -116,10 +113,10 @@ dispatch(logout());
             },
             {
               headers: {
-                "content-type": "multipart/form-data",
-                Authorization: "Bearer " + header,
+                'content-type': 'multipart/form-data',
+                Authorization: `Bearer ${header}`,
               },
-            }
+            },
           )
           .then((response) => {
             setIsLoading(false);
@@ -140,17 +137,17 @@ dispatch(logout());
       {dataApi == null || isLoading ? (
         <Loading />
       ) : (
-        <Flex flexDir={"column"} w={"100%"}>
+        <Flex flexDir="column" w="100%">
           <FormControl
             display="flex"
             alignItems="center"
-            justifyContent={"space-between"}
+            justifyContent="space-between"
           >
             <FormLabel htmlFor="email-alerts" mb="0">
               <Text
-                fontWeight={"semibold"}
-                fontSize={"var(--header-3)"}
-                color={"var(--color-primer)"}
+                fontWeight="semibold"
+                fontSize="var(--header-3)"
+                color="var(--color-primer)"
               >
                 Automation
               </Text>
@@ -165,16 +162,16 @@ dispatch(logout());
               isChecked={status == 1}
             />
           </FormControl>
-          <Flex w="100%" flexDir={"column"}>
+          <Flex w="100%" flexDir="column">
             <Flex
               w="100%"
-              flexDir={"row"}
+              flexDir="row"
               justifyContent="center"
-              alignItems={"center"}
+              alignItems="center"
               marginBottom="20px"
             >
               <Link to={`/unit/dashboard/aktuator/automation/add/${idApi}`}>
-                <Button bg="#14453E" size="md" colorScheme={"teal"}>
+                <Button bg="#14453E" size="md" colorScheme="teal">
                   Tambah
                 </Button>
               </Link>
@@ -214,5 +211,5 @@ dispatch(logout());
       )}
     </>
   );
-};
+}
 export default AutomationList;

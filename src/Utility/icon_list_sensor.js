@@ -1,60 +1,60 @@
 const iconsList = [
-    {
-        nama:'Sensor Kadar Air',
-        icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1663229870/itera%20herro%20icon/Lovepik_com-401124754-water-droplets_1_wwcjby.png',
-        color: '#73D1FA'
-    },
-    {
-        nama:'Ph Media Tanam',
-        icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1663229870/itera%20herro%20icon/Lovepik_com-400222655-test-tube_1_jhq5uo.png',
-        color: '#EE7C8B'
-    },
-    {
-        nama: 'Suhu Air',
-        icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1663229870/itera%20herro%20icon/pngegg_1_aeolob.png',
-        color: '#1775BB'
-    },
-    {
-        nama: 'Kepekatan Larutan Nutrisi',
-        icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1663229870/itera%20herro%20icon/pngkey_1_gegauo.png',
-        color: '#349F4B'
-    },
-    {
-        nama: 'Ph Tandon',
-        icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1663229869/itera%20herro%20icon/lucide_pipette_diqu1b.png',
-        color: '#007BFF'
-    },
-    {
-        nama: 'Temperatur Media Tanam',
-        icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1663229869/itera%20herro%20icon/iwwa_thermometer_britm9.png',
-        color: '#319795'
-    },
-    {
-        nama: 'Suhu Lingkungan',
-        icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1663229869/itera%20herro%20icon/healthicons_thermometer_censrx.png',
-        color: '#F24E1E'
-    },
-    {
-        nama: 'TDS Tandon',
-        icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1664329448/itera%20herro%20icon/akar-icons_water_o8epga.png',
-        color: '#007BFF'
-    },
-    {
-        nama: 'Debit Air 1 Inchi',
-        icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1664327875/itera%20herro%20icon/ic_baseline-water_pb5en2.png',
-        color: '#319795'
-    },
-    {
-        nama: 'Debit Air 3/4 Inchi',
-        icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1664327875/itera%20herro%20icon/ic_baseline-water_pb5en2.png',
-        color: '#319795'
-    },
-    {
+  {
+    nama: 'Sensor Kadar Air',
+    icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1663229870/itera%20herro%20icon/Lovepik_com-401124754-water-droplets_1_wwcjby.png',
+    color: '#73D1FA',
+  },
+  {
+    nama: 'Ph Media Tanam',
+    icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1663229870/itera%20herro%20icon/Lovepik_com-400222655-test-tube_1_jhq5uo.png',
+    color: '#EE7C8B',
+  },
+  {
+    nama: 'Suhu Air',
+    icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1663229870/itera%20herro%20icon/pngegg_1_aeolob.png',
+    color: '#1775BB',
+  },
+  {
+    nama: 'Kepekatan Larutan Nutrisi',
+    icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1663229870/itera%20herro%20icon/pngkey_1_gegauo.png',
+    color: '#349F4B',
+  },
+  {
+    nama: 'Ph Tandon',
+    icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1663229869/itera%20herro%20icon/lucide_pipette_diqu1b.png',
+    color: '#007BFF',
+  },
+  {
+    nama: 'Temperatur Media Tanam',
+    icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1663229869/itera%20herro%20icon/iwwa_thermometer_britm9.png',
+    color: '#319795',
+  },
+  {
+    nama: 'Suhu Lingkungan',
+    icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1663229869/itera%20herro%20icon/healthicons_thermometer_censrx.png',
+    color: '#F24E1E',
+  },
+  {
+    nama: 'TDS Tandon',
+    icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1664329448/itera%20herro%20icon/akar-icons_water_o8epga.png',
+    color: '#007BFF',
+  },
+  {
+    nama: 'Debit Air 1 Inchi',
+    icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1664327875/itera%20herro%20icon/ic_baseline-water_pb5en2.png',
+    color: '#319795',
+  },
+  {
+    nama: 'Debit Air 3/4 Inchi',
+    icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1664327875/itera%20herro%20icon/ic_baseline-water_pb5en2.png',
+    color: '#319795',
+  },
+  {
     nama: 'Intensitas Cahaya',
     icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1664329522/itera%20herro%20icon/sun_slayag.png',
-    color: '#B7A925'
-    },
-]
+    color: '#B7A925',
+  },
+];
 export default iconsList;
 // {
 // icon: 'https://res.cloudinary.com/diyu8lkwy/image/upload/v1664329540/itera%20herro%20icon/material-symbols_water-damage-rounded_twyv5g.png',

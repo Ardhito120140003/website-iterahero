@@ -1,11 +1,11 @@
-let dashboardControlMenu = [
+const dashboardControlMenu = [
   {
     id: 1,
-    name: "Automation",
+    name: 'Automation',
   },
   {
     id: 2,
-    name: "History",
+    name: 'History',
   },
 ];
 export default dashboardControlMenu;

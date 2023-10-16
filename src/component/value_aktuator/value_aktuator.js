@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   FormControl,
@@ -6,44 +6,42 @@ import {
   Flex,
   Stack,
   Icon,
-  Wrap,
-} from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import useSound from "use-sound";
-import clickSound from "../../assets/switch.mp3";
-import { postLogAktuator, Status } from "../..//Utility/api_link";
-import Loading from "../../component/loading/loading";
-import { Switch } from "@chakra-ui/react";
-import "./value_aktuator.css";
-import { RiArrowRightSLine } from "react-icons/ri";
-import { useSelector } from "react-redux";
-import { selectUrl } from "../../features/auth/authSlice";
+  Switch,
+} from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import useSound from 'use-sound';
+import { useSelector } from 'react-redux';
+import { RiArrowRightSLine } from 'react-icons/ri';
+import clickSound from '../../assets/switch.mp3';
+import { postLogAktuator, Status } from '../../Utility/api_link';
+import Loading from '../loading/loading';
+import './value_aktuator.css';
+import { selectUrl } from '../../features/auth/authSlice';
 
-const ValueAktuator = (props) => {
+function ValueAktuator(props) {
   const base_url = useSelector(selectUrl);
   const idApi = props.data.id;
-  const life_cycle = props.data.life_cycle;
-  const automation = props.data.automation;
+  const { life_cycle } = props.data;
+  const { automation } = props.data;
   const [isLoading, setIsLoading] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(0.75);
   const [play] = useSound(clickSound, {
     playbackRate,
     interrupt: true,
   });
-  const [isOn, setIsOn] = useState("offline");
+  const [isOn, setIsOn] = useState('offline');
   const convertValue = () => {
     if (life_cycle == 1) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   };
   const onlineStatus = () => {
     axios
       .get(`${base_url}${Status}${idApi}`, {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       })
       .then((response) => {
@@ -51,7 +49,7 @@ const ValueAktuator = (props) => {
           setIsOn(response.data.data[0].status);
         }
         if (response.data.data.length == 0) {
-          setIsOn("offline");
+          setIsOn('offline');
         }
       });
   };
@@ -95,47 +93,47 @@ const ValueAktuator = (props) => {
         <Loading />
       ) : (
         <>
-          <Flex justify={"center"} mt="30px" mb={"30px"}>
+          <Flex justify="center" mt="30px" mb="30px">
             <Image
               className="Image"
-              w={"180px"}
-              h={"auto"}
+              w="180px"
+              h="auto"
               src={
                 automation == 0
                   ? status == 0
-                    ? "/Off.png"
-                    : "/On.png"
-                  : "/automation.png"
+                    ? '/Off.png'
+                    : '/On.png'
+                  : '/automation.png'
               }
               alt="image"
               boxSize="100px"
             />
           </Flex>
-          <Flex flexDir={"row"}>
-            <Flex flexDir={"row"}>
+          <Flex flexDir="row">
+            <Flex flexDir="row">
               <Flex>
-                <Text fontSize={`var(--header-5)`}>Status :</Text>
+                <Text fontSize="var(--header-5)">Status :</Text>
               </Flex>
               <Flex>
                 <Text
-                  fontSize={`var(--header-5)`}
+                  fontSize="var(--header-5)"
                   color={
-                    isOn == "online"
-                      ? "var(--color-secondary-variant)"
-                      : "var(--color-error)"
+                    isOn == 'online'
+                      ? 'var(--color-secondary-variant)'
+                      : 'var(--color-error)'
                   }
                 >
-                  {isOn == "offline" || isOn == undefined || isOn == ""
-                    ? "Offline"
-                    : "Online"}
+                  {isOn == 'offline' || isOn == undefined || isOn == ''
+                    ? 'Offline'
+                    : 'Online'}
                 </Text>
               </Flex>
             </Flex>
           </Flex>
           <FormControl
-            mt={"10px"}
-            alignContent={"center"}
-            justify={"center"}
+            mt="10px"
+            alignContent="center"
+            justify="center"
             columns={{ base: 2, lg: 4 }}
           >
             <Stack align="center" onClick={play} className="touchable">
@@ -151,36 +149,34 @@ const ValueAktuator = (props) => {
                     value={status}
                     isChecked={status == 1}
                     isDisabled={
-                      isOn == "offline" || isOn == undefined || isOn == ""
-                        ? true
-                        : false
+                      !!(isOn == 'offline' || isOn == undefined || isOn == '')
                     }
                   />
                 ) : (
-                  <Text color={"var(--color-error)"}>Automation</Text>
+                  <Text color="var(--color-error)">Automation</Text>
                 )
               ) : null}
             </Stack>
           </FormControl>
-          <br></br>
+          <br />
           <Link to={`/unit/dashboard/aktuator/${idApi}`} className="touchable">
             <Flex
-              w={"100%"}
-              h={"40px"}
-              alignItems={"center"}
-              justifyContent={"center"}
-              backgroundColor={"#09322D"}
-              borderRadius={"34px"}
-              paddingRight={"10px"}
-              paddingLeft={"10px"}
+              w="100%"
+              h="40px"
+              alignItems="center"
+              justifyContent="center"
+              backgroundColor="#09322D"
+              borderRadius="34px"
+              paddingRight="10px"
+              paddingLeft="10px"
             >
-              <Text color={"white"}>Pengaturan</Text>
+              <Text color="white">Pengaturan</Text>
               <Icon
                 as={RiArrowRightSLine}
-                size={"100%"}
-                color={"#FFFFFF"}
-                marginRight={"5px"}
-                marginLeft={"-10px"}
+                size="100%"
+                color="#FFFFFF"
+                marginRight="5px"
+                marginLeft="-10px"
               />
             </Flex>
           </Link>
@@ -188,5 +184,5 @@ const ValueAktuator = (props) => {
       )}
     </>
   );
-};
+}
 export default ValueAktuator;

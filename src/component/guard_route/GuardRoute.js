@@ -1,17 +1,17 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from 'react-router-dom';
 
-const GuardRoute = ({ children }) => {
-    const navigate = useNavigate();
-    const token = localStorage.getItem('token');
+function GuardRoute({ children }) {
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
 
-    const auth = false;
+  const auth = false;
 
-    if (!auth) {
-        navigate("/");
-        return null;
-    }
+  if (!auth) {
+    navigate('/');
+    return null;
+  }
 
-    return children
+  return children;
 }
 
-export default GuardRoute
+export default GuardRoute;

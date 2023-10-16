@@ -1,26 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { Flex, Text, Button, Input } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { Formik, Form } from "formik";
+import React, { useState, useEffect } from 'react';
+import {
+  Flex, Text, Button, Input,
+} from '@chakra-ui/react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Formik, Form } from 'formik';
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-} from "@chakra-ui/form-control";
-import * as yup from "yup";
-import { useDispatch } from "react-redux";
-import { routePageName } from "../../features/auth/authSlice";
-import { TabTitle } from "../../Utility/utility";
-import axios from "axios";
-import { addGreenhouse } from "../../Utility/api_link";
-import { useNavigate } from "react-router-dom";
-import Loading from "../../component/loading/loading";
+} from '@chakra-ui/form-control';
+import * as yup from 'yup';
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { routePageName } from '../../features/auth/authSlice';
+import { TabTitle } from '../../Utility/utility';
+import { addGreenhouse } from '../../Utility/api_link';
 
-const GreenhouseAdd = () => {
-  TabTitle("Tambah Greenhouse - ITERA Hero");
-  let data = {
-    name: "",
-    location: "",
+import Loading from '../../component/loading/loading';
+
+function GreenhouseAdd() {
+  TabTitle('Tambah Greenhouse - ITERA Hero');
+  const data = {
+    name: '',
+    location: '',
   };
 
   const [image, onChangeImage] = useState(null);
@@ -29,9 +31,9 @@ const GreenhouseAdd = () => {
   const navigate = useNavigate();
 
   const schema = yup.object({
-    name: yup.string().required("data harus diisi"),
-    location: yup.string().required("data harus diisi"),
-    image: yup.object().required("data harus diisi"),
+    name: yup.string().required('data harus diisi'),
+    location: yup.string().required('data harus diisi'),
+    image: yup.object().required('data harus diisi'),
   });
 
   const submit = (name, location) => {
@@ -39,21 +41,20 @@ const GreenhouseAdd = () => {
     data.location = location;
 
     if (
-      data.name == "" ||
-      data.location == "" ||
-      image == {} ||
-      image == "" ||
-      image == null
+      data.name == ''
+      || data.location == ''
+      || image == {}
+      || image == ''
+      || image == null
     ) {
-      return alert("Masih ada yang belum di isi");
-    } else {
-      checkLoading(true);
-      postGreenhouse(name, image, location);
+      return alert('Masih ada yang belum di isi');
     }
+    checkLoading(true);
+    postGreenhouse(name, image, location);
   };
 
   const dispatch = useDispatch();
-  const header = localStorage.getItem("token");
+  const header = localStorage.getItem('token');
 
   const postGreenhouse = (valueName, valueImage, valueLocation) => {
     axios
@@ -66,14 +67,14 @@ const GreenhouseAdd = () => {
         },
         {
           headers: {
-            "content-type": "multipart/form-data",
-            Authorization: "Bearer " + header,
+            'content-type': 'multipart/form-data',
+            Authorization: `Bearer ${header}`,
           },
-        }
+        },
       )
       .then((response) => {
         checkLoading(false);
-        navigate("/unit/greenhouse");
+        navigate('/unit/greenhouse');
       })
       .catch((error) => {
         console.log(error);
@@ -81,7 +82,7 @@ const GreenhouseAdd = () => {
   };
 
   useEffect(() => {
-    dispatch(routePageName("Greenhouse"));
+    dispatch(routePageName('Greenhouse'));
   }, []);
 
   return (
@@ -89,40 +90,40 @@ const GreenhouseAdd = () => {
       {isloading ? (
         <Loading />
       ) : (
-        <Flex w="100%" flexDir={"column"}>
-          <Flex w="100%" flexDir={"row"} alignItems={"center"}>
-            <Link to={"/unit/greenhouse"}>
+        <Flex w="100%" flexDir="column">
+          <Flex w="100%" flexDir="row" alignItems="center">
+            <Link to="/unit/greenhouse">
               <Text
-                fontWeight={"semibold"}
-                fontSize={"var(--header-3)"}
-                mr={"20px"}
-                color={"var(--color-primer)"}
+                fontWeight="semibold"
+                fontSize="var(--header-3)"
+                mr="20px"
+                color="var(--color-primer)"
               >
                 List Greenhouse
               </Text>
             </Link>
             <Text
-              fontWeight={"semibold"}
-              fontSize={"var(--header-3)"}
-              color={"var(--color-primer)"}
-              mr={"20px"}
+              fontWeight="semibold"
+              fontSize="var(--header-3)"
+              color="var(--color-primer)"
+              mr="20px"
             >
-              {">"}
+              {'>'}
             </Text>
             <Text
-              fontWeight={"semibold"}
-              fontSize={"var(--header-3)"}
-              color={"var(--color-primer)"}
+              fontWeight="semibold"
+              fontSize="var(--header-3)"
+              color="var(--color-primer)"
             >
               Add Greenhouse
             </Text>
           </Flex>
 
-          <Flex w="100%" flexDir={"column"}>
+          <Flex w="100%" flexDir="column">
             <Formik
               initialValues={{
-                name: "",
-                location: "",
+                name: '',
+                location: '',
                 image: {},
               }}
               validationSchema={schema}
@@ -137,17 +138,17 @@ const GreenhouseAdd = () => {
               }) => (
                 <Form>
                   <FormControl
-                    marginTop={"20px"}
+                    marginTop="20px"
                     isInvalid={errors.name && touched.name}
                   >
-                    <FormLabel htmlFor="name" color={"black"}>
+                    <FormLabel htmlFor="name" color="black">
                       Nama Greenhouse
                     </FormLabel>
                     <Input
-                      width={"100%"}
+                      width="100%"
                       h="60px"
-                      maxWidth={"100%"}
-                      marginTop={"0 auto"}
+                      maxWidth="100%"
+                      marginTop="0 auto"
                       type="text"
                       name="name"
                       value={values.name}
@@ -155,23 +156,23 @@ const GreenhouseAdd = () => {
                       onBlur={handleBlur}
                       variant="outline"
                       placeholder="Masukkan nama"
-                      color={"black"}
+                      color="black"
                     />
                     <FormErrorMessage>{errors.name}</FormErrorMessage>
                   </FormControl>
 
                   <FormControl
-                    marginTop={"20px"}
+                    marginTop="20px"
                     isInvalid={errors.location && touched.location}
                   >
-                    <FormLabel htmlFor="location" color={"black"}>
+                    <FormLabel htmlFor="location" color="black">
                       Lokasi Greenhouse
                     </FormLabel>
                     <Input
-                      width={"100%"}
+                      width="100%"
                       h="60px"
-                      maxWidth={"100%"}
-                      marginTop={"0 auto"}
+                      maxWidth="100%"
+                      marginTop="0 auto"
                       type="text"
                       name="location"
                       value={values.location}
@@ -179,31 +180,31 @@ const GreenhouseAdd = () => {
                       onBlur={handleBlur}
                       variant="outline"
                       placeholder="Masukkan lokasi"
-                      color={"black"}
+                      color="black"
                     />
                     <FormErrorMessage>{errors.location}</FormErrorMessage>
                   </FormControl>
 
                   <FormControl
-                    marginTop={"20px"}
+                    marginTop="20px"
                     isInvalid={errors.image && touched.image}
                   >
-                    <FormLabel htmlFor="image" color={"black"}>
+                    <FormLabel htmlFor="image" color="black">
                       Gambar Greenhouse
                     </FormLabel>
                     <Flex
-                      width={"100%"}
+                      width="100%"
                       h="100px"
-                      borderRadius={"5px"}
-                      maxWidth={"100%"}
-                      marginTop={"0 auto"}
+                      borderRadius="5px"
+                      maxWidth="100%"
+                      marginTop="0 auto"
                       variant="outline"
                       placeholder="Masukkan email"
-                      color={"black"}
+                      color="black"
                       alignItems="center"
                       borderWidth="1px"
-                      borderColor={"#D9D9D9"}
-                      padding={"20px"}
+                      borderColor="#D9D9D9"
+                      padding="20px"
                     >
                       {/* <FilePicker
                                             onFileChange={(fileList) => onChangeImage(fileList)}
@@ -224,7 +225,7 @@ const GreenhouseAdd = () => {
                     <FormErrorMessage>{errors.image}</FormErrorMessage>
                   </FormControl>
                   <Button
-                    marginTop={"44px"}
+                    marginTop="44px"
                     width="100%"
                     height="50px"
                     borderRadius="10px"
@@ -238,7 +239,7 @@ const GreenhouseAdd = () => {
                       fontFamily="var(--font-family-secondary)"
                       fontSize="var(--header-3)"
                       color="var(--color-on-primary)"
-                      colorScheme={"var(--color-on-primary)"}
+                      colorScheme="var(--color-on-primary)"
                     >
                       Tambah
                     </Text>
@@ -251,6 +252,6 @@ const GreenhouseAdd = () => {
       )}
     </>
   );
-};
+}
 
 export default GreenhouseAdd;
