@@ -1,40 +1,33 @@
-import { createSlice } from "@reduxjs/toolkit";
-import jwtDecode from "jwt-decode";
+import { createSlice } from '@reduxjs/toolkit';
+import jwtDecode from 'jwt-decode';
 
-const token = localStorage.getItem("token");
-const currentRole = token ? jwtDecode(token).role : null;
+const token = localStorage.getItem('token');
+const decoded = token ? jwtDecode(token) : null;
+const isExpired = decoded ? decoded.exp > Date.now() : false;
+if (isExpired) {
+  localStorage.clear('token');
+}
+const role = decoded ? decoded.role : null;
 
 const userSlice = createSlice({
-  name: "iterahero",
+  name: 'iterahero',
   initialState: {
-    accessToken: token,
-    role: currentRole,
-    routeName: "Dashboard",
-    fetchUrl: "https://iterahero-e1a0e90da51e.herokuapp.com/"
-      // currentRole === "admin"
-      //   ? "https://iterahero.fly.dev/"
-      //   : currentRole === "operator"
-      //   ? "https://iterahero-e1a0e90da51e.herokuapp.com/"
-      //   : "",
+    accessToken: !isExpired ? token : null,
+    role,
+    routeName: 'Dashboard',
+    fetchUrl: 'http://localhost:3000/',
   },
   reducers: {
     login: (state, action) => {
-      console.log(jwtDecode(action.payload.accessToken))
       state.role = jwtDecode(action.payload.accessToken).role;
       state.accessToken = action.payload.accessToken;
-      // if (state.role === "operator") {
-      //   state.fetchUrl = "https://iterahero-e1a0e90da51e.herokuapp.com/";
-      // } else if (state.role === "admin" ) {
-      //   state.fetchUrl = "https://iterahero.fly.dev/";
-      // }
     },
     logout: (state) => {
       state.role = null;
       state.accessToken = null;
-      state.routeName = "Dashboard";
+      state.routeName = 'Dashboard';
     },
     routePageName: (state, action) => {
-      console.log(action.payload);
       state.routeName = action.payload;
     },
   },

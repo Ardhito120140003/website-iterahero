@@ -13,6 +13,7 @@ import {
   FormLabel,
   Select,
   FormControl,
+  Checkbox,
 } from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
 import { selectUrl } from "../../features/auth/authSlice";
@@ -23,7 +24,7 @@ import { AiOutlineControl } from "react-icons/ai";
 import { GiGreenhouse } from "react-icons/gi";
 import { MdMonitor } from "react-icons/md";
 import CardDashboard from "../../component/card_dashboard/card_dashboard";
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, setIn } from "formik";
 import CardSensorOperator from "../../component/card_sensor/card_sensor_operator";
 
 const DashboardOperator = () => {
@@ -34,11 +35,12 @@ const DashboardOperator = () => {
   const [firstFilter, setFirstFilter] = useState("");
   const [filterData, setFilterData] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
+  const [info, setInfo] = useState("sensor")
 
   const [action, setAction] = useState(false);
   const headers = localStorage.getItem("token");
 
-  const getApiPenjadwalan = () => {
+  const getApiPenjadwalan = async () => {
     axios
       .get(base_url + "api/v1/penjadwalan", {
         headers: {
@@ -76,6 +78,11 @@ const DashboardOperator = () => {
         console.log("error", error);
       });
   };
+
+  const selectorMonitoring = (filter) => {
+    setInfo(filter);
+
+  }
 
   useEffect(() => {
     if (firstFilter) {
@@ -135,6 +142,7 @@ const DashboardOperator = () => {
               initialValues={{
                 filter1: "",
                 filter2: "",
+                filter3: "sensor"
               }}
               onSubmit={(values) => {
                 alert(JSON.stringify(values.filter2));
@@ -191,25 +199,6 @@ const DashboardOperator = () => {
                       disabled={values.filter1 === ""}
                       onChange={async (e) => {
                         setFieldValue("filter2", e.target.value);
-                        axios
-                          .get(
-                            base_url +
-                              "api/v1/" +
-                              values.filter1 +
-                              "/" +
-                              e.target.value +
-                              "/sensor",
-                            {
-                              headers: {
-                                Authorization: "Bearer " + headers,
-                              },
-                            }
-                          )
-                          .then((response) => {
-                            console.log(response.data);
-                            setData(response.data.data);
-                          })
-                          .catch((err) => console.error(err));
                       }}
                     >
                       {filterData.map((item, index) => (
@@ -219,9 +208,18 @@ const DashboardOperator = () => {
                       ))}
                     </Select>
                   </Flex>
-                  {values.filter2 !== "" ? (
+                  <Flex>
+                    <Button
+                      onClick={() => selectorMonitoring("sensor")}>
+                        <Text fontWeight={"semibold"}>Sensor</Text>
+                    </Button>
+                    <Button onClick={() => selectorMonitoring("actuator")}>
+                        <Text fontWeight={"semibold"}>Aktuator</Text>
+                    </Button>
+                  </Flex>
+                  {values.filter2 !== "" && info ? (
                     <CardSensorOperator
-                      data={{ alat: values.filter1, id: values.filter2 }}
+                      data={{ alat: values.filter1, id: values.filter2, filter: info }}
                     />
                   ) : null}
                 </Form>

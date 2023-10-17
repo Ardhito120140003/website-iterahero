@@ -16,26 +16,28 @@ import ValueSensorOperator from '../value_sensor/value_sensor_operator';
 function CardSensorOperator(props) {
   const idApi = props.data.id;
   const route = props.data.alat;
+  const { filter } = props.data;
   const base_url = useSelector(selectUrl);
   const navigate = useNavigate();
   const [dataTable, setDataTable] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const header = localStorage.getItem('token');
+
   const getPagination = async () => {
     setIsLoading(true);
-
-    const header = localStorage.getItem('token');
     let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
     if (route) {
-      url = `${base_url}api/v1/${route}/${idApi}/sensor`;
+      url = `${base_url}api/v1/${route}/${idApi}/${filter}`;
     }
-    await axios.get(url, {
+    axios.get(url, {
       headers: {
         Authorization: `Bearer ${header}`,
       },
     })
       .then((response) => {
-        setDataTable(response.data.data[0].sensor);
+        console.log(response.data.data)
+        setDataTable(response.data.data[0]?.[filter]);
         setIsLoading(false);
       })
       .catch((error) => {
