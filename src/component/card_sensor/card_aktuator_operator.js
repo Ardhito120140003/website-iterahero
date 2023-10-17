@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Text, Image, Flex, Wrap, WrapItem, Center,
+  Text, Image, Flex, Wrap, WrapItem, Center, Button, Switch
 } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -12,8 +12,9 @@ import { selectUrl } from '../../features/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ValueSensorOperator from '../value_sensor/value_sensor_operator';
+import ValueAktuatorOperator from '../value_aktuator/value_aktuator_operator';
 
-function CardSensorOperator(props) {
+function CardAktuatorOperator(props) {
   const idApi = props.data.id;
   const route = props.data.alat;
   const base_url = useSelector(selectUrl);
@@ -21,13 +22,14 @@ function CardSensorOperator(props) {
   const [dataTable, setDataTable] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const header = localStorage.getItem('token');
+
   const getPagination = async () => {
     setIsLoading(true);
 
-    const header = localStorage.getItem('token');
     let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
     if (route) {
-      url = `${base_url}api/v1/${route}/${idApi}/sensor`;
+      url = `${base_url}api/v1/${route}/${idApi}/actuator`;
     }
     await axios.get(url, {
       headers: {
@@ -35,7 +37,8 @@ function CardSensorOperator(props) {
       },
     })
       .then((response) => {
-        setDataTable(response.data.data[0].sensor);
+        // console.log(response.data.data)
+        setDataTable(response.data.data);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -47,6 +50,24 @@ function CardSensorOperator(props) {
     setIsLoading(true);
   }, [idApi]);
 
+  const handleswitch = async (id) => {
+    console.log({ header, id })
+    axios.post(base_url + "api/v1/kontrol", {}, {
+      params: {
+        id: parseInt(id)
+      },
+      headers: {
+        Authorization: `Bearer ${header}`
+      }
+    })
+    .then(response => {
+      console.log(response.data.data)
+    })
+    .catch(err => {
+      console.error(err);
+    })
+  }
+
   return (
     <>
       {dataTable == null || isLoading ? (
@@ -57,7 +78,7 @@ function CardSensorOperator(props) {
           mt="20px"
         >
           {dataTable.map((item, index) => (
-            <Link to={`/unit/dashboard/sensor/${item.id}`}>
+            // <Link to={`/unit/dashboard/sensor/${item.id}`}>
               <WrapItem
                 key={index}
                 className="card-sensor"
@@ -66,6 +87,7 @@ function CardSensorOperator(props) {
                 border="1px solid #E2E8F0"
                 paddingTop="30px"
                 paddingBottom="30px"
+                px={'30px'}
               >
                 <Center
                   justifyContent="center"
@@ -76,14 +98,15 @@ function CardSensorOperator(props) {
                     <Image
                       size="1px"
                       src={`${item.icon}`}
-                      color={item.color}
+                      // color={item.color}
+                      color={'black'}
                     />
                     <Text color={`${item.color}`}>{item.name}</Text>
                   </Flex>
                   {item.id === '' ? (
                     <></>
                   ) : (
-                    <ValueSensorOperator
+                    <ValueAktuatorOperator
                       data={{
                         id: item.id,
                         color: item.color,
@@ -95,14 +118,15 @@ function CardSensorOperator(props) {
                     />
                   )}
 
-                
+                <Switch mt={'20px'} onChange={() => handleswitch(item.id)}/>
+
                 </Center>
               </WrapItem>
-            </Link>
+            // </Link>
           ))}
         </Wrap>
       )}
     </>
   );
 }
-export default CardSensorOperator;
+export default CardAktuatorOperator;

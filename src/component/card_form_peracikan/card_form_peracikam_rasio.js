@@ -119,11 +119,11 @@ function CardFormPeracikanRasio() {
             </Select>
           </Box>
           <Box
-            bg="#ffff"
-            borderRadius="10px"
-            border="1px solid #E2E8F0"
-            p={8}
-            pb={20}
+            // bg="#ffff"
+            // borderRadius="10px"
+            // border="1px solid #E2E8F0"
+            // p={8}
+            // pb={20}
           >
             <form
               onSubmit={(e) => {
@@ -197,6 +197,20 @@ function CardFormPeracikanRasio() {
                           style={{ color: 'black' }}
                           placeholder="masukkan nilai PH"
                           required="interval harus diisi"
+                        />
+                    </FormControl>
+              </Box>
+
+              <Box marginBottom="16px">
+                <FormControl>
+                      <Text>Tandon Penyimpanan</Text>
+                      <Input
+                          type="number"
+                          value={ppmValue}
+                          onChange={(e) => setPpmValue(e.target.value)}
+                          style={{ color: 'black' }}
+                          placeholder="Tandon Penyimpanan"
+                          required="Tandon Penyimpanan"
                         />
                     </FormControl>
               </Box>
