@@ -124,13 +124,13 @@ const DashboardOperator = () => {
         <Loading />
       ) : (
         <Flex flexDirection={"column"}>
-          <Image
+          {/* <Image
             width={"20%"}
             height={"auto"}
             src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
             alignSelf={"center"}
-          />
-          <Flex alignItems={"center"} my={'20px'}>
+          /> */}
+          <Flex alignItems={"center"} >
             <Wrap mt={8} justify={{ md: "center", sm: "center" }} spacing={30}>
               {dataApiDashboard.map((item, index) => (
                 <CardDashboard
@@ -236,7 +236,7 @@ const DashboardOperator = () => {
                       </Select>
                     </Flex>
 
-                    <Flex border={'3px solid #d9d9d9'} borderRadius={15} justifyContent={'center'} px={"10px"} mt={'20px'} minHeight={'350px'}>
+                    <Flex border={'3px solid #d9d9d9'} borderRadius={15} px={"10px"} mt={'20px'} minHeight={'350px'}>
                       <Tabs isFitted width={'100%'} colorScheme='black'>
                         <TabList>
                           <Tab color={'black'}>Sensor</Tab>
@@ -320,21 +320,21 @@ const DashboardOperator = () => {
                               <AccordionIcon />
                             </AccordionButton>
                           </h2>
-                          <AccordionPanel pb={4}>
+                          <AccordionPanel pb={4} fontSize={'0.8rem'}>
                             <Flex direction={'column'}>
-                              <Flex flexDir={'row'} gap={'20px'}>
-                                <Flex flexDir="row" marginRight="5px" marginY="20px">
-                                  <Flex direction={'column'} alignItems={'start'}>
+                              <Flex flexDir={'row'} >
+                                <Flex flexDir="row">
+                                  <Flex direction={'column'} alignItems={'flex-start'} >
                                     <Text color="black"> Formula </Text>
                                     <Text color="black"> Jam </Text>
-                                    <Text color="black"> Durasi Penyiraman</Text>
+                                    <Text color="black" > Durasi Penyiraman</Text>
                                   </Flex>
                                   <Flex direction={'column'}>
                                     <Text color="black"> : </Text>
                                     <Text color="black"> : </Text>
                                     <Text color="black"> : </Text>
                                   </Flex>
-                                  <Flex direction={'column'} alignItems={'start'}>
+                                  <Flex direction={'column'} alignItems={'flex-start'}>
                                     <Text color="black"> {item.resep.nama} </Text>
                                     <Text color="black"> {item.resep.interval} </Text>
                                     <Text color="black"> {item.waktu} </Text>

@@ -204,8 +204,8 @@ function CardFormPeracikan() {
                           required="interval harus diisi"
                         /> */}
 
-                  <Select>
-                    <option value="">Pilih tandon penyimpanan</option>
+                  <Select color={'black'}>
+                    <option value="">--Pilih tandon penyimpanan--</option>
                     {dataApi.map((data, index) => (
                       <option key={index} value={index} style={{ color: 'black' }}>
                         {data.nama.toUpperCase()}

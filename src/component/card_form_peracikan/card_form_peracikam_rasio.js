@@ -113,7 +113,8 @@ function CardFormPeracikanRasio() {
               {dataApi.map((data, index) => (
                 <option key={index} value={index} style={{ color: 'black' }}>
                       {data.nama.toUpperCase()}
-                    </option>
+                </option>
+                
               ))}
               <option value="Tambah Formula">--Tambah Formula--</option>
             </Select>
@@ -204,14 +205,22 @@ function CardFormPeracikanRasio() {
               <Box marginBottom="16px">
                 <FormControl>
                       <Text>Tandon Penyimpanan</Text>
-                      <Input
+                      {/* <Input
                           type="number"
                           value={ppmValue}
                           onChange={(e) => setPpmValue(e.target.value)}
                           style={{ color: 'black' }}
                           placeholder="Tandon Penyimpanan"
                           required="Tandon Penyimpanan"
-                        />
+                        /> */}
+                        <Select color={'black'}>
+                    <option value="">--Pilih tandon penyimpanan--</option>
+                    {dataApi.map((data, index) => (
+                      <option key={index} value={index} style={{ color: 'black' }}>
+                        {data.nama.toUpperCase()}
+                      </option>
+                    ))}
+                  </Select>
                     </FormControl>
               </Box>
 

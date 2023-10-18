@@ -113,6 +113,7 @@ function CardAktuatorOperator(props) {
                         unit: item.unit_measurement,
                         max: item.range_max,
                         min: item.range_min,
+                        isAvailable: item.status
                       }}
                     />
                   )}

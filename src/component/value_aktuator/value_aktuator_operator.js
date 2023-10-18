@@ -22,15 +22,14 @@ import { selectUrl } from '../../features/auth/authSlice';
 function ValueAktuatorOperator(props) {
   const base_url = useSelector(selectUrl);
   const idApi = props.data.id;
-  const { life_cycle } = props.data;
-  const { automation } = props.data;
+  const { life_cycle , automation, isAvailable } = props.data;
   const [isLoading, setIsLoading] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(0.75);
   const [play] = useSound(clickSound, {
     playbackRate,
     interrupt: true,
   });
-  const [isOn, setIsOn] = useState('offline');
+  const [isOn, setIsOn] = useState('');
   const convertValue = () => {
     if (life_cycle == 1) {
       return true;
@@ -122,14 +121,11 @@ function ValueAktuatorOperator(props) {
                 <Text
                   fontSize="var(--header-5)"
                   color={
-                    isOn == 'online'
-                      ? 'var(--color-secondary-variant)'
+                    isAvailable ? 'var(--color-secondary-variant)'
                       : 'var(--color-error)'
                   }
                 >
-                  {isOn == 'offline' || isOn == undefined || isOn == ''
-                    ? 'Offline'
-                    : 'Online'}
+                  {isAvailable ? 'Online' :  'Offline'}
                 </Text>
               </Flex>
             </Flex>
