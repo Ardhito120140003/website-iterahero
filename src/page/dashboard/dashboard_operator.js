@@ -94,6 +94,7 @@ const DashboardOperator = () => {
 
   useEffect(() => {
     if (firstFilter) {
+      setFilterData([]);
       axios
         .get(base_url + "api/v1/" + firstFilter, {
           headers: {
@@ -230,7 +231,7 @@ const DashboardOperator = () => {
                       >
                         {filterData.map((item, index) => (
                           <option key={index} value={item.id}>
-                            {item.nama}
+                            {item.nama}{item.name}
                           </option>
                         ))}
                       </Select>

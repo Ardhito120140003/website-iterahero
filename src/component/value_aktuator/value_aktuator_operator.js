@@ -50,7 +50,8 @@ function ValueAktuatorOperator(props) {
         if (response.data.data.length == 0) {
           setIsOn('offline');
         }
-      });
+      })
+      .catch(err => console.error(err));
   };
 
   const [status, setStatus] = useState(convertValue);
@@ -84,7 +85,7 @@ function ValueAktuatorOperator(props) {
 
   useEffect(() => {
     setIsLoading(true);
-    onlineStatus();
+    // onlineStatus();
   }, [idApi, status]);
   return (
     <>

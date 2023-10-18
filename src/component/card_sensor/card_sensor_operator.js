@@ -37,8 +37,8 @@ function CardSensorOperator(props) {
       },
     })
       .then((response) => {
-        console.log(response.data)
-        setDataTable(response.data.data[0]?.[filter]);
+        console.log(response.data.data[0])
+        setDataTable(response.data.data[0].sensor);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -47,7 +47,7 @@ function CardSensorOperator(props) {
   };
   useEffect(() => {
     getPagination();
-    setIsLoading(true);
+    setIsLoading(false);
   }, [idApi]);
 
   return (

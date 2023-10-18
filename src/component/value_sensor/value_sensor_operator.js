@@ -78,7 +78,7 @@ function ValueSensorOperator(props) {
 
   useEffect(() => {
     if (firstCheck == true) {
-      getValue();
+      // getValue();
     } else {
       onRefreshUpdate();
     }
