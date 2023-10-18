@@ -77,7 +77,7 @@ function GreenHouse() {
 								  created_at: placement.created_at,
 								  id: placement.id,
 								  image: placement.thumbnail,
-								  title: placement.nama,
+								  title: placement.name,
 								  location: placement.location,
 								  user_id: placement.user_id,
 								  user_name: placement.user_name,

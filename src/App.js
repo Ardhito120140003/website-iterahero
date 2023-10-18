@@ -45,6 +45,8 @@ function App() {
           <Route path="greenhouse" element={<GreenHouse />} />
           <Route path="peracikan" element={<Peracikan />} />
           <Route path="penjadwalan" element={<Penjadwalan />} />
+          <Route path="greenhouse/add" element={<GreenhouseAdd />} />
+          <Route path="greenhouse/:slug" element={<GreenhouseEdit />} />
           {user === 'admin' ? (
             <>
               <Route path="monitoring" element={<Monitoring />} />
@@ -55,8 +57,6 @@ function App() {
                 element={<MoreNotification />}
               />
               <Route path="dashboard/sensor/:id" element={<Grafik />} />
-              <Route path="greenhouse/add" element={<GreenhouseAdd />} />
-              <Route path="greenhouse/:slug" element={<GreenhouseEdit />} />
               <Route path="monitoring/add/:id" element={<Monitoring_Add />} />
               <Route path="controlling/add/:id" element={<Controlling_Add />} />
               <Route path="monitoring/edit/:id" element={<Monitoring_Edit />} />
