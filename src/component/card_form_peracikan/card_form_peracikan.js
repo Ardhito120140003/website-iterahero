@@ -25,11 +25,16 @@ function CardFormPeracikan() {
   const { isOpen: isRacikModalOpen, onOpen: onRacikModalOpen, onClose: onRacikModalClose } = useDisclosure();
   const { isOpen: isSaveModalOpen, onOpen: onOpenSaveModal, onClose: onCloseSaveModal } = useDisclosure();
 
+  const [newFormulaName, setNewFormulaName] = useState('');
   const [phValue, setPhValue] = useState('');
   const [ppmValue, setPpmValue] = useState('');
   const [formula, setFormula] = useState('');
+  const [volume, setVolume] = useState('');
+  const [tandon, setTandon] = useState('');
+
+
+
   const [dataApi, setDataApi] = useState([]);
-  const [newFormulaName, setNewFormulaName] = useState('');
   const base_url = useSelector(selectUrl);
   const header = localStorage.getItem('token');
 
@@ -112,18 +117,18 @@ function CardFormPeracikan() {
               <option value="">--Pilih Formula--</option>
               {dataApi.map((data, index) => (
                 <option key={index} value={index} style={{ color: 'black' }}>
-                      {data.nama.toUpperCase()}
-                    </option>
+                  {data.nama.toUpperCase()}
+                </option>
               ))}
               <option value="Tambah Formula">--Tambah Formula--</option>
             </Select>
           </Box>
           <Box
-            bg="#ffff"
-            borderRadius="10px"
-            border="1px solid #E2E8F0"
-            p={8}
-            pb={20}
+          // bg="#ffff"
+          // borderRadius="10px"
+          // border="1px solid #E2E8F0"
+          // p={8}
+          // pb={20}
           >
             <form
               onSubmit={(e) => {
@@ -131,146 +136,156 @@ function CardFormPeracikan() {
               }}
             >
               {formula === 'Tambah Formula' && (
-              <Box marginBottom="16px">
-                      <FormControl>
-                        <Text>Nama Formula</Text>
-                        <Input
-                          type="text"
-                          value={newFormulaName}
-                          onChange={(e) => setNewFormulaName(e.target.value)}
-                          style={{ color: 'black' }}
-                          placeholder="masukkan nama formula"
-                          required="Nama formula harus diisi"
-                        />
-                      </FormControl>
-                    </Box>
+                <Box marginBottom="16px">
+                  <FormControl>
+                    <Text>Nama Formula</Text>
+                    <Input
+                      type="text"
+                      value={newFormulaName}
+                      onChange={(e) => setNewFormulaName(e.target.value)}
+                      style={{ color: 'black' }}
+                      placeholder="masukkan nama formula"
+                      required="Nama formula harus diisi"
+                    />
+                  </FormControl>
+                </Box>
               )}
               <Box marginBottom="16px">
                 <FormControl>
-                      <Text>PH Value</Text>
-                      <Input
-                          type="number"
-                          value={phValue}
-                          onChange={(e) => setPhValue(e.target.value)}
-                          style={{ color: 'black' }}
-                          placeholder="masukkan ph value"
-                          required="PH harus diisi"
-                        />
-                    </FormControl>
+                  <Text>PH Value</Text>
+                  <Input
+                    type="number"
+                    value={phValue}
+                    onChange={(e) => setPhValue(e.target.value)}
+                    style={{ color: 'black' }}
+                    placeholder="masukkan ph value"
+                    required="PH harus diisi"
+                  />
+                </FormControl>
               </Box>
 
               <Box marginBottom="16px">
                 <FormControl>
-                      <Text>PPM Value</Text>
-                      <Input
-                          type="number"
-                          value={ppmValue}
-                          onChange={(e) => setPpmValue(e.target.value)}
-                          style={{ color: 'black' }}
-                          placeholder="masukkan ppm value"
-                          required="PPM harus diisi"
-                        />
-                    </FormControl>
+                  <Text>PPM Value</Text>
+                  <Input
+                    type="number"
+                    value={ppmValue}
+                    onChange={(e) => setPpmValue(e.target.value)}
+                    style={{ color: 'black' }}
+                    placeholder="masukkan ppm value"
+                    required="PPM harus diisi"
+                  />
+                </FormControl>
               </Box>
 
               <Box marginBottom="16px">
                 <FormControl>
-                      <Text>Volume</Text>
-                      <Input
+                  <Text>Volume</Text>
+                  <Input
+                    type="number"
+                    value={volume}
+                    onChange={(e) => setVolume(e.target.value)}
+                    style={{ color: 'black' }}
+                    placeholder="masukkan volume pupuk (liter)"
+                    required="interval harus diisi"
+                  />
+                </FormControl>
+              </Box>
+
+              <Box marginBottom="16px">
+                <FormControl>
+                  <Text>Tandon Penyimpanan</Text>
+                  {/* <Input
                           type="number"
-                          value={ppmValue}
-                          onChange={(e) => setPpmValue(e.target.value)}
+                          value={tandon}
+                          onChange={(e) => setTandon(e.target.value)}
                           style={{ color: 'black' }}
-                          placeholder="masukkan volume pupuk (liter)"
+                          placeholder="Tandon Penyimpanan"
                           required="interval harus diisi"
-                        />
-                    </FormControl>
-              </Box>
+                        /> */}
 
-              <Box marginBottom="16px">
-                <FormControl>
-                      <Text>Tandon Penyimpanan</Text>
-                      <Input
-                          type="number"
-                          value={ppmValue}
-                          onChange={(e) => setPpmValue(e.target.value)}
-                          style={{ color: 'black' }}
-                          placeholder="masukkan volume pupuk (liter)"
-                          required="interval harus diisi"
-                        />
-                    </FormControl>
+                  <Select>
+                    <option value="">Pilih tandon penyimpanan</option>
+                    {dataApi.map((data, index) => (
+                      <option key={index} value={index} style={{ color: 'black' }}>
+                        {data.nama.toUpperCase()}
+                      </option>
+                    ))}
+                  </Select>
+
+                </FormControl>
               </Box>
 
               <Box marginTop="16px" display="flex" flexDirection="row">
                 <Button
+                  type="Submit"
+                  backgroundColor="#09322D"
+                  onClick={onRacikModalOpen}
+                >
+                  Racik
+                </Button>
+                {formula === 'Tambah Formula'
+                  && (
+                    <Button
                       type="Submit"
                       backgroundColor="#09322D"
-                      onClick={onRacikModalOpen}
+                      onClick={onOpenSaveModal}
+                      ml="20px"
                     >
-                        Racik
+                      Simpan
                     </Button>
-                {formula === 'Tambah Formula'
-                                && (
-                                <Button
-                                  type="Submit"
-                                  backgroundColor="#09322D"
-                                  onClick={onOpenSaveModal}
-                                  ml="20px"
-                                >
-                                  Simpan
-                                </Button>
-                                )}
+                  )}
               </Box>
 
               {/* Modal Racik */}
               <Modal isOpen={isRacikModalOpen} onClose={onRacikModalClose}>
                 <ModalOverlay />
                 <ModalContent>
-                      <ModalHeader alignSelf="center">Proses Peracikan</ModalHeader>
-                      <ModalCloseButton />
-                      <ModalBody pb={6}>
-                          <Text>Apakah anda yakin untuk memproses formula ini ?</Text>
-                        </ModalBody>
+                  <ModalHeader alignSelf="center">Proses Peracikan</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody pb={6}>
+                    <Text>Apakah anda yakin untuk memproses formula ini ?</Text>
+                  </ModalBody>
 
-                      <ModalFooter>
-                          <Button
-                            onClick={() => { onRacikModalClose(); handleRacikSubmit(); }}
+                  <ModalFooter>
+                    <Button
+                      onClick={() => { onRacikModalClose(); handleRacikSubmit(); }}
 
-                            backgroundColor="#09322D"
-                            color="white"
-                            mr="3"
-                            paddingX="30px"
-                          >
-                                      Ok
-                          </Button>
-                          <Button onClick={onRacikModalClose}>Cancel</Button>
-                        </ModalFooter>
-                    </ModalContent>
+                      backgroundColor="#09322D"
+                      color="white"
+                      mr="3"
+                      paddingX="30px"
+                    >
+                      Ok
+                    </Button>
+                    <Button onClick={onRacikModalClose}>Cancel</Button>
+                  </ModalFooter>
+                </ModalContent>
               </Modal>
 
               {/* Modal Save */}
               <Modal isOpen={isSaveModalOpen} onClose={onCloseSaveModal}>
                 <ModalOverlay />
                 <ModalContent>
-                      <ModalHeader alignSelf="center">Simpan Formula</ModalHeader>
-                      <ModalCloseButton />
-                      <ModalBody pb={6}>
-                          <Text>Apakah anda yakin untuk menyimpan formula ini ?</Text>
-                        </ModalBody>
+                  <ModalHeader alignSelf="center">Simpan Formula</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody pb={6}>
+                    <Text>Apakah anda yakin untuk menyimpan formula ini ?</Text>
+                  </ModalBody>
 
-                      <ModalFooter>
-                          <Button
-                            onClick={() => { onCloseSaveModal(); handleSaveSubmit(); }}
-                            backgroundColor="#09322D"
-                            color="white"
-                            mr="3"
-                            paddingX="30px"
-                          >
-                                      Simpan Formula
-                          </Button>
-                          <Button onClick={onOpenSaveModal}>Cancel</Button>
-                        </ModalFooter>
-                    </ModalContent>
+                  <ModalFooter>
+                    <Button
+                      onClick={() => { onCloseSaveModal(); handleSaveSubmit(); }}
+                      backgroundColor="#09322D"
+                      color="white"
+                      mr="3"
+                      paddingX="30px"
+                    >
+                      Simpan Formula
+                    </Button>
+                    <Button onClick={onOpenSaveModal}>Cancel</Button>
+                  </ModalFooter>
+                </ModalContent>
               </Modal>
 
             </form>

@@ -74,7 +74,7 @@ function Peracikan() {
               _hover={{ borderColor: "var(--color-border)" }}
               _focusWithin={{ borderColor: "var(--color-border)" }}
               value={values.tandon}
-              placeholder='Tandon'
+              placeholder='--Pilih Tandon Peracikan--'
               onChange={async (e) => {
                 setFieldValue("tandon", e.target.value);
                 axios
@@ -117,10 +117,10 @@ function Peracikan() {
             <GridItem>
               <CardStatusPeracikan id={data.id} isOnline={dataApi.isOnline} sensor={data.sensor} status={dataApi[0].status} />
             </GridItem>
-            <Flex flexDirection="column">
+            <Flex flexDirection="column" border="1px solid #E2E8F0" borderRadius={'10px'} p={'10px'}>
               {/* <ValueTandon tandonBahan={data.tandonBahan} /> */}
 
-              <Tabs isLazy colorScheme='#09322D'>
+              <Tabs isFitted colorScheme='#09322D'>
                 <TabList mx={'20px'}>
                   <Tab color={'black'}>Besaran</Tab>
                   <Tab color={'black'}>Rasio</Tab>

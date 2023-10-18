@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { TabTitle } from '../../Utility/utility';
-import { login, logout, selectToken } from '../../features/auth/authSlice';
+import { login, logout, selectToken, selectUrl } from '../../features/auth/authSlice';
 
 const schema = yup.object({
   email: yup.string().required('Email harus diisi'),
@@ -24,14 +24,15 @@ const schema = yup.object({
 });
 
 function Login() {
+  const base_url = useSelector(selectUrl)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
 
   const handleSubmitComplate = (emailValue, passwordValue) => {
     axios
-      .post('http://localhost:3000/api/v1/login', {
-        // .post('https://iterahero-e1a0e90da51e.herokuapp.com/api/v1/login', {
+      // .post('http://localhost:3000/api/v1/login', {
+        .post(base_url + 'api/v1/login', {
         email: emailValue,
         password: passwordValue,
       })

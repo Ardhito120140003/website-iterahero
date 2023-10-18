@@ -15,7 +15,7 @@ const userSlice = createSlice({
     accessToken: !isExpired ? token : null,
     role,
     routeName: 'Dashboard',
-    fetchUrl: 'http://localhost:3000/',
+    fetchUrl: 'https://iterahero-e1a0e90da51e.herokuapp.com/',
   },
   reducers: {
     login: (state, action) => {

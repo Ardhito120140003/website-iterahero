@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Text, Image, Flex, Wrap, WrapItem, Center, CircularProgress, CircularProgressLabel
+  Text, Image, Flex, Wrap, WrapItem, Center, Button, Switch
 } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -12,11 +12,11 @@ import { selectUrl } from '../../features/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ValueSensorOperator from '../value_sensor/value_sensor_operator';
+import ValueAktuatorOperator from '../value_aktuator/value_aktuator_operator';
 
-function CardSensorOperator(props) {
+function CardAktuatorOperator(props) {
   const idApi = props.data.id;
   const route = props.data.alat;
-  const { filter } = props.data;
   const base_url = useSelector(selectUrl);
   const navigate = useNavigate();
   const [dataTable, setDataTable] = useState([]);
@@ -26,19 +26,19 @@ function CardSensorOperator(props) {
 
   const getPagination = async () => {
     setIsLoading(true);
+
     let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
     if (route) {
-      url = `${base_url}api/v1/${route}/${idApi}/sensor`;
+      url = `${base_url}api/v1/${route}/${idApi}/actuator`;
     }
-    console.log(url)
-    axios.get(url, {
+    await axios.get(url, {
       headers: {
         Authorization: `Bearer ${header}`,
       },
     })
       .then((response) => {
-        console.log(response.data)
-        setDataTable(response.data.data[0]?.[filter]);
+        // console.log(response.data.data)
+        setDataTable(response.data.data);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -47,8 +47,26 @@ function CardSensorOperator(props) {
   };
   useEffect(() => {
     getPagination();
-    setIsLoading(true);
+    setIsLoading(false);
   }, [idApi]);
+
+  const handleswitch = async (id) => {
+    console.log({ header, id })
+    axios.post(base_url + "api/v1/kontrol", {}, {
+      params: {
+        id: parseInt(id)
+      },
+      headers: {
+        Authorization: `Bearer ${header}`
+      }
+    })
+    .then(response => {
+      console.log(response.data.data)
+    })
+    .catch(err => {
+      console.error(err);
+    })
+  }
 
   return (
     <>
@@ -69,7 +87,7 @@ function CardSensorOperator(props) {
                 border="1px solid #E2E8F0"
                 paddingTop="20px"
                 paddingBottom="20px"
-                px={'15px'}
+                px={'20px'}
               >
                 <Center
                   justifyContent="center"
@@ -78,27 +96,16 @@ function CardSensorOperator(props) {
                 >
                   <Flex flexDir="row" justify="space-between">
                     <Image
-                      w={'20px'}
                       src={`${item.icon}`}
                       color={item.color}
                     />
-                    <Text color={`${item.color}`}>{item.name}</Text>
+                    {/* <Text color={`${item.color}`}>{item.name}</Text> */}
+                    <Text color={'black'}>{item.name}</Text>
                   </Flex>
-
-                  <Text my={"40px"} fontSize={'3xl'}>
-                    0
-                  </Text>
-
-                  {/* <CircularProgress size={'80px'} m={"5px"}>
-                    <CircularProgressLabel>
-                      0
-                    </CircularProgressLabel>
-                  </CircularProgress> */}
-                
                   {item.id === '' ? (
                     <></>
                   ) : (
-                    <ValueSensorOperator
+                    <ValueAktuatorOperator
                       data={{
                         id: item.id,
                         color: item.color,
@@ -110,7 +117,8 @@ function CardSensorOperator(props) {
                     />
                   )}
 
-                
+                <Switch mt={'20px'} onChange={() => handleswitch(item.id)}/>
+
                 </Center>
               </WrapItem>
             // </Link>
@@ -120,4 +128,4 @@ function CardSensorOperator(props) {
     </>
   );
 }
-export default CardSensorOperator;
+export default CardAktuatorOperator;

@@ -19,7 +19,7 @@ import {
   AccordionPanel,
   AccordionIcon,
   useDisclosure,
-  Tabs, TabList, TabPanels, Tab, TabPanel
+  Tabs, TabList, TabPanels, Tab, TabPanel,Icon
 } from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
 import { selectUrl } from "../../features/auth/authSlice";
@@ -28,13 +28,15 @@ import axios from "axios";
 import Loading from "../../component/loading/loading";
 import { AiOutlineControl } from "react-icons/ai";
 import { GiGreenhouse } from "react-icons/gi";
-import { MdMonitor } from "react-icons/md";
 import CardDashboard from "../../component/card_dashboard/card_dashboard";
 import { Field, Form, Formik, setIn } from "formik";
 import CardSensorOperator from "../../component/card_sensor/card_sensor_operator";
-import { MdOutlineMoreTime } from "react-icons/md";
+import { MdOutlineMoreTime,MdMonitor  } from "react-icons/md";
 import dashboardMenu from '../../Utility/dashboard_menu';
 import { useNavigate, useParams } from 'react-router-dom';
+import CardAktuatorOperator from "../../component/card_sensor/card_aktuator_operator";
+
+
 
 const DashboardOperator = () => {
   TabTitle("Dashboard - ITERA Hero");
@@ -44,10 +46,12 @@ const DashboardOperator = () => {
   const [firstFilter, setFirstFilter] = useState("");
   const [filterData, setFilterData] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
-  const [info, setInfo] = useState("sensor")
 
   const [action, setAction] = useState(false);
   const headers = localStorage.getItem("token");
+
+  const id = parseInt(useParams().id);
+  const [selected, setSelected] = useState(id);
 
   const getApiPenjadwalan = async () => {
     axios
@@ -57,7 +61,7 @@ const DashboardOperator = () => {
         },
       })
       .then((response) => {
-        console.log("data yang di get :", response.data.data);
+        console.log("data penjadwalan :", response.data.data);
         setDataApiPenjadwalan(response.data.data);
       })
       .catch((err) => {
@@ -160,7 +164,7 @@ const DashboardOperator = () => {
                         name="filter1"
                         as={Select}
                         borderRadius={"10"}
-                        placeholder="Pilih Filter"
+                        placeholder="--Pilih Filter--"
                         width={"100%"}
                         height={"5vh"}
                         bg={"white"}
@@ -189,7 +193,7 @@ const DashboardOperator = () => {
                         width={"100%"}
                         height={"5vh"}
                         placeholder={
-                          values.filter1 ? "Pilih " + values.filter1 : "--"
+                          values.filter1 ? "--Pilih " + values.filter1 +"--": "--"
                         }
                         bg={"white"}
                         _active={{ bg: "white" }}
@@ -203,39 +207,38 @@ const DashboardOperator = () => {
                         disabled={values.filter1 === ""}
                         onChange={async (e) => {
                           setFieldValue("filter2", e.target.value);
-                          axios
-                            .get(
-                              base_url +
-                              "api/v1/" +
-                              values.filter1 +
-                              "/" +
-                              e.target.value +
-                              "/sensor",
-                              {
-                                headers: {
-                                  Authorization: "Bearer " + headers,
-                                },
-                              }
-                            )
-                            .then((response) => {
-                              console.log(response.data);
-                              setData(response.data.data);
-                            })
-                            .catch((err) => console.error(err));
+                          // axios
+                          //   .get(
+                          //     base_url +
+                          //     "api/v1/" +
+                          //     values.filter1 +
+                          //     "/" +
+                          //     e.target.value +
+                          //     "/sensor",
+                          //     {
+                          //       headers: {
+                          //         Authorization: "Bearer " + headers,
+                          //       },
+                          //     }
+                          //   )
+                          //   .then((response) => {
+                          //     console.log(response.data);
+                          //     setData(response.data.data);
+                          //   })
+                          //   .catch((err) => console.error(err));
                         }}
                       >
                         {filterData.map((item, index) => (
                           <option key={index} value={item.id}>
-                            {item.id}
+                            {item.nama}
                           </option>
                         ))}
                       </Select>
                     </Flex>
 
                     <Flex border={'3px solid #d9d9d9'} borderRadius={15} justifyContent={'center'} px={"10px"} mt={'20px'} minHeight={'350px'}>
-
-                      <Tabs isFitted width={'100%'}>
-                        <TabList colorScheme='#09322D' va>
+                      <Tabs isFitted width={'100%'} colorScheme='black'>
+                        <TabList>
                           <Tab color={'black'}>Sensor</Tab>
                           <Tab color={'black'}>Aktuator</Tab>
                         </TabList>
@@ -251,7 +254,7 @@ const DashboardOperator = () => {
                           {/* initially not mounted */}
                           <TabPanel>
                             {values.filter2 !== "" ? (
-                              <CardSensorOperator
+                              <CardAktuatorOperator
                                 data={{ alat: values.filter1, id: values.filter2 }}
                               />
                             ) : null}
@@ -292,7 +295,7 @@ const DashboardOperator = () => {
                 {dataApiPenjadwalan.length < 1 && isLoading ? (
                   <Loading />
                 ) : dataApiPenjadwalan.length < 1 ? (
-                  <Text>Tidak Ada data Penjadwalan</Text>
+                  <Text color={'gray'} mt={'100px'}>Tidak Ada data Penjadwalan</Text>
                 ) : (
                   dataApiPenjadwalan.map((item, index) => (
                     // <Box color={'black'} key={index}>{JSON.stringify(item)}</Box>
@@ -302,32 +305,42 @@ const DashboardOperator = () => {
                       border="1px solid #E2E8F0"
                       marginY="8px"
                       marginX="20px"
-                      paddingY="0px"
-                      paddingX="20px"
                       justifyContent="space-around"
                     >
                       {/* <Icon as={MdOutlineMoreTime} color="#14453E" w="50px" h="50px" alignSelf="center" /> */}
-                      <Accordion color={'black'} allowToggle width={'40vh'}>
+                      <Accordion color={'black'} allowToggle w={'100%'}>
                         <AccordionItem>
                           <h2>
                             <AccordionButton>
-                              <Box as="span" flex='1' textAlign='left'>
-                                10.15
-                              </Box>
+                              <Flex flexDir={'row'} as="span" flex='1' textAlign='left'>
+                                <Icon as={MdOutlineMoreTime} color="#14453E" w="40px" h="40px" alignSelf="center" />
+                                {/* <Text ml={'10px'} alignSelf={'center'}>{item.waktu} - {item.resep.nama} </Text> */}
+                                <Text ml={'10px'} alignSelf={'center'}>{item.waktu} - {item.resep.nama} </Text>
+                              </Flex>
                               <AccordionIcon />
                             </AccordionButton>
                           </h2>
                           <AccordionPanel pb={4}>
-                            <Flex flexDir="column" marginRight="50px" marginY="20px">
-                              <Text align="left">
-                                Formula :
-                              </Text>
-                              <Text align="left">
-                                Jam :
-                              </Text>
-                              <Text align="Left">
-                                Durasi Penyiraman :
-                              </Text>
+                            <Flex direction={'column'}>
+                              <Flex flexDir={'row'} gap={'20px'}>
+                                <Flex flexDir="row" marginRight="5px" marginY="20px">
+                                  <Flex direction={'column'} alignItems={'start'}>
+                                    <Text color="black"> Formula </Text>
+                                    <Text color="black"> Jam </Text>
+                                    <Text color="black"> Durasi Penyiraman</Text>
+                                  </Flex>
+                                  <Flex direction={'column'}>
+                                    <Text color="black"> : </Text>
+                                    <Text color="black"> : </Text>
+                                    <Text color="black"> : </Text>
+                                  </Flex>
+                                  <Flex direction={'column'} alignItems={'start'}>
+                                    <Text color="black"> {item.resep.nama} </Text>
+                                    <Text color="black"> {item.resep.interval} </Text>
+                                    <Text color="black"> {item.waktu} </Text>
+                                  </Flex>
+                                </Flex>
+                              </Flex>
                             </Flex>
                           </AccordionPanel>
                         </AccordionItem>
