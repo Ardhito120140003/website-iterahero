@@ -81,13 +81,13 @@ function CardAktuatorOperator(props) {
             // <Link to={`/unit/dashboard/sensor/${item.id}`}>
               <WrapItem
                 key={index}
-                className="card-sensor"
+                // className="card-sensor"
                 bg="#ffff"
                 borderRadius="10px"
                 border="1px solid #E2E8F0"
-                paddingTop="30px"
-                paddingBottom="30px"
-                px={'30px'}
+                paddingTop="20px"
+                paddingBottom="20px"
+                px={'20px'}
               >
                 <Center
                   justifyContent="center"
@@ -96,12 +96,11 @@ function CardAktuatorOperator(props) {
                 >
                   <Flex flexDir="row" justify="space-between">
                     <Image
-                      size="1px"
                       src={`${item.icon}`}
-                      // color={item.color}
-                      color={'black'}
+                      color={item.color}
                     />
-                    <Text color={`${item.color}`}>{item.name}</Text>
+                    {/* <Text color={`${item.color}`}>{item.name}</Text> */}
+                    <Text color={'black'}>{item.name}</Text>
                   </Flex>
                   {item.id === '' ? (
                     <></>

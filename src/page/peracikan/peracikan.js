@@ -74,7 +74,7 @@ function Peracikan() {
               _hover={{ borderColor: "var(--color-border)" }}
               _focusWithin={{ borderColor: "var(--color-border)" }}
               value={values.tandon}
-              placeholder='Tandon'
+              placeholder='--Pilih Tandon Peracikan--'
               onChange={async (e) => {
                 setFieldValue("tandon", e.target.value);
                 axios

@@ -164,7 +164,7 @@ const DashboardOperator = () => {
                         name="filter1"
                         as={Select}
                         borderRadius={"10"}
-                        placeholder="Pilih Filter"
+                        placeholder="--Pilih Filter--"
                         width={"100%"}
                         height={"5vh"}
                         bg={"white"}
@@ -193,7 +193,7 @@ const DashboardOperator = () => {
                         width={"100%"}
                         height={"5vh"}
                         placeholder={
-                          values.filter1 ? "Pilih " + values.filter1 : "--"
+                          values.filter1 ? "--Pilih " + values.filter1 +"--": "--"
                         }
                         bg={"white"}
                         _active={{ bg: "white" }}
@@ -230,7 +230,7 @@ const DashboardOperator = () => {
                       >
                         {filterData.map((item, index) => (
                           <option key={index} value={item.id}>
-                            {item.id}
+                            {item.nama}
                           </option>
                         ))}
                       </Select>
@@ -295,7 +295,7 @@ const DashboardOperator = () => {
                 {dataApiPenjadwalan.length < 1 && isLoading ? (
                   <Loading />
                 ) : dataApiPenjadwalan.length < 1 ? (
-                  <Text color={'gray'}>Tidak Ada data Penjadwalan</Text>
+                  <Text color={'gray'} mt={'100px'}>Tidak Ada data Penjadwalan</Text>
                 ) : (
                   dataApiPenjadwalan.map((item, index) => (
                     // <Box color={'black'} key={index}>{JSON.stringify(item)}</Box>

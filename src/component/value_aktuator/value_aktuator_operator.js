@@ -93,11 +93,15 @@ function ValueAktuatorOperator(props) {
         <Loading />
       ) : (
         <>
-          <Flex justify="center" mt="30px" px={'20px'} m={'20px'}>
+          <Flex justify="center" 
+          mt="30px" 
+          px={'20px'} 
+          m={'20px'}
+          >
             <Image
-              className="Image"
-              w="180px"
-              h="auto"
+              // className="Image"
+              w="70px"
+              // h="auto"
               src={
                 automation == 0
                   ? status == 0
@@ -106,7 +110,7 @@ function ValueAktuatorOperator(props) {
                   : '/automation.png'
               }
               alt="image"
-              boxSize="100px"
+              // boxSize="100px"
             />
           </Flex>
           <Flex flexDir="row">

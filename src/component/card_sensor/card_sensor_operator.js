@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Text, Image, Flex, Wrap, WrapItem, Center,
+  Text, Image, Flex, Wrap, WrapItem, Center, CircularProgress, CircularProgressLabel
 } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -57,15 +57,16 @@ function CardSensorOperator(props) {
           mt="20px"
         >
           {dataTable.map((item, index) => (
-            <Link to={`/unit/dashboard/sensor/${item.id}`}>
+            // <Link to={`/unit/dashboard/sensor/${item.id}`}>
               <WrapItem
                 key={index}
-                className="card-sensor"
+                // className="card-sensor"
                 bg="#ffff"
                 borderRadius="10px"
                 border="1px solid #E2E8F0"
-                paddingTop="30px"
-                paddingBottom="30px"
+                paddingTop="20px"
+                paddingBottom="20px"
+                px={'15px'}
               >
                 <Center
                   justifyContent="center"
@@ -74,12 +75,23 @@ function CardSensorOperator(props) {
                 >
                   <Flex flexDir="row" justify="space-between">
                     <Image
-                      size="1px"
+                      w={'20px'}
                       src={`${item.icon}`}
                       color={item.color}
                     />
                     <Text color={`${item.color}`}>{item.name}</Text>
                   </Flex>
+
+                  <Text my={"40px"} fontSize={'3xl'}>
+                    0
+                  </Text>
+
+                  {/* <CircularProgress size={'80px'} m={"5px"}>
+                    <CircularProgressLabel>
+                      0
+                    </CircularProgressLabel>
+                  </CircularProgress> */}
+                
                   {item.id === '' ? (
                     <></>
                   ) : (
@@ -98,7 +110,7 @@ function CardSensorOperator(props) {
                 
                 </Center>
               </WrapItem>
-            </Link>
+            // </Link>
           ))}
         </Wrap>
       )}
