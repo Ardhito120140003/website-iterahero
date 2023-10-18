@@ -49,6 +49,7 @@ function Header() {
       </Text>
 
       <Flex flexDirection="row">
+        <Flex gap={"15px"}>
         <Link
           to="/login"
           onClick={() => {
@@ -65,7 +66,27 @@ function Header() {
             />
           </div>
         </Link>
+
+        <Link
+          to="/login"
+          onClick={() => {
+            localStorage.clear();
+            dispatch(logout());
+          }}
+        >
+          <div>
+            <Icon
+              cursor="pointer"
+              as={IoExitOutline}
+              color="var(--color-primer)"
+              fontSize="xx-large"
+            />
+          </div>
+        </Link>
+        </Flex>
+        
       </Flex>
+      
     </Flex>
   );
 }
