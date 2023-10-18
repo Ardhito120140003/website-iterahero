@@ -13,7 +13,13 @@ import {
   FormLabel,
   Select,
   FormControl,
-  Checkbox,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  useDisclosure,
+  Tabs, TabList, TabPanels, Tab, TabPanel
 } from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
 import { selectUrl } from "../../features/auth/authSlice";
@@ -26,6 +32,9 @@ import { MdMonitor } from "react-icons/md";
 import CardDashboard from "../../component/card_dashboard/card_dashboard";
 import { Field, Form, Formik, setIn } from "formik";
 import CardSensorOperator from "../../component/card_sensor/card_sensor_operator";
+import { MdOutlineMoreTime } from "react-icons/md";
+import dashboardMenu from '../../Utility/dashboard_menu';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const DashboardOperator = () => {
   TabTitle("Dashboard - ITERA Hero");
@@ -79,11 +88,6 @@ const DashboardOperator = () => {
       });
   };
 
-  const selectorMonitoring = (filter) => {
-    setInfo(filter);
-
-  }
-
   useEffect(() => {
     if (firstFilter) {
       axios
@@ -104,10 +108,10 @@ const DashboardOperator = () => {
 
   useEffect(() => {
     getApiDashboard()
-    .then(() => {
-      getApiPenjadwalan().then(() =>
-        setIsLoading(false))
-    });
+      .then(() => {
+        getApiPenjadwalan().then(() =>
+          setIsLoading(false))
+      });
   }, [action]);
 
   return (
@@ -122,7 +126,7 @@ const DashboardOperator = () => {
             src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
             alignSelf={"center"}
           />
-          <Flex alignItems={"center"}>
+          <Flex alignItems={"center"} my={'20px'}>
             <Wrap mt={8} justify={{ md: "center", sm: "center" }} spacing={30}>
               {dataApiDashboard.map((item, index) => (
                 <CardDashboard
@@ -136,107 +140,203 @@ const DashboardOperator = () => {
               ))}
             </Wrap>
           </Flex>
-          <Grid templateColumns={{md: 'repeat(3, 1fr)', base: 'repeat(1, 1fr)'}} gap={6} mt={5}>
-          <GridItem colSpan={2}>
-            <Formik
-              initialValues={{
-                filter1: "",
-                filter2: "",
-                filter3: "sensor"
-              }}
-              onSubmit={(values) => {
-                alert(JSON.stringify(values.filter2));
-              }}
-            >
-              {({ values, setFieldValue, resetForm }) => (
-                <Form>
-                  <Flex alignItems={"space-between"}>
-                    <Select
-                      size={"lg"}
-                      name="filter1"
-                      as={Select}
-                      borderRadius={"10"}
-                      placeholder="Pilih Filter"
-                      width={"100%"}
-                      height={"5vh"}
-                      bg={"white"}
-                      _active={{ bg: "white" }}
-                      borderColor={"var(--color-border)"}
-                      fontSize={"var(--header-5)"}
-                      fontWeight={"normal"}
-                      color={"var(--color-primer)"}
-                      _hover={{ borderColor: "var(--color-border)" }}
-                      _focusWithin={{ borderColor: "var(--color-border)" }}
-                      mr={5}
-                      value={values.filter1}
-                      onChange={(e) => {
-                        resetForm({ filter1: e.target.value, filter2: "" });
-                        setFieldValue("filter1", e.target.value);
-                        setFirstFilter(e.target.value);
-                      }}
-                    >
-                      <option value="greenhouse">Greenhouse</option>
-                      <option value="tandonUtama">Tandon</option>
-                    </Select>
-                    <Select
-                      name="filter2"
-                      as={Select}
-                      borderRadius={"10"}
-                      width={"100%"}
-                      height={"5vh"}
-                      placeholder={
-                        values.filter1 ? "Pilih " + values.filter1 : "--"
-                      }
-                      bg={"white"}
-                      _active={{ bg: "white" }}
-                      borderColor={"var(--color-border)"}
-                      fontSize={"var(--header-5)"}
-                      fontWeight={"normal"}
-                      color={"var(--color-primer)"}
-                      _hover={{ borderColor: "var(--color-border)" }}
-                      _focusWithin={{ borderColor: "var(--color-border)" }}
-                      value={values.filter2}
-                      disabled={values.filter1 === ""}
-                      onChange={async (e) => {
-                        setFieldValue("filter2", e.target.value);
-                      }}
-                    >
-                      {filterData.map((item, index) => (
-                        <option key={index} value={item.id}>
-                          {item.id}
-                        </option>
-                      ))}
-                    </Select>
-                  </Flex>
-                  <Flex>
-                    <Button
-                      onClick={() => selectorMonitoring("sensor")}>
-                        <Text fontWeight={"semibold"}>Sensor</Text>
-                    </Button>
-                    <Button onClick={() => selectorMonitoring("actuator")}>
-                        <Text fontWeight={"semibold"}>Aktuator</Text>
-                    </Button>
-                  </Flex>
-                  {values.filter2 !== "" && info ? (
-                    <CardSensorOperator
-                      data={{ alat: values.filter1, id: values.filter2, filter: info }}
-                    />
-                  ) : null}
-                </Form>
-              )}
-            </Formik>
+
+          <Grid templateColumns={{ md: 'repeat(3, 1fr)', base: 'repeat(1, 1fr)' }} gap={6} mt={5}>
+            <GridItem colSpan={2} >
+              <Formik
+                initialValues={{
+                  filter1: "",
+                  filter2: "",
+                }}
+                onSubmit={(values) => {
+                  alert(JSON.stringify(values.filter2));
+                }}
+              >
+                {({ values, setFieldValue, resetForm }) => (
+                  <Form>
+                    <Flex alignItems={"space-between"}>
+                      <Select
+                        size={"lg"}
+                        name="filter1"
+                        as={Select}
+                        borderRadius={"10"}
+                        placeholder="Pilih Filter"
+                        width={"100%"}
+                        height={"5vh"}
+                        bg={"white"}
+                        _active={{ bg: "white" }}
+                        borderColor={"var(--color-border)"}
+                        fontSize={"var(--header-5)"}
+                        fontWeight={"normal"}
+                        color={"var(--color-primer)"}
+                        _hover={{ borderColor: "var(--color-border)" }}
+                        _focusWithin={{ borderColor: "var(--color-border)" }}
+                        mr={5}
+                        value={values.filter1}
+                        onChange={(e) => {
+                          resetForm({ filter1: e.target.value, filter2: "" });
+                          setFieldValue("filter1", e.target.value);
+                          setFirstFilter(e.target.value);
+                        }}
+                      >
+                        <option value="greenhouse">Greenhouse</option>
+                        <option value="tandonUtama">Tandon</option>
+                      </Select>
+                      <Select
+                        name="filter2"
+                        as={Select}
+                        borderRadius={"10"}
+                        width={"100%"}
+                        height={"5vh"}
+                        placeholder={
+                          values.filter1 ? "Pilih " + values.filter1 : "--"
+                        }
+                        bg={"white"}
+                        _active={{ bg: "white" }}
+                        borderColor={"var(--color-border)"}
+                        fontSize={"var(--header-5)"}
+                        fontWeight={"normal"}
+                        color={"var(--color-primer)"}
+                        _hover={{ borderColor: "var(--color-border)" }}
+                        _focusWithin={{ borderColor: "var(--color-border)" }}
+                        value={values.filter2}
+                        disabled={values.filter1 === ""}
+                        onChange={async (e) => {
+                          setFieldValue("filter2", e.target.value);
+                          axios
+                            .get(
+                              base_url +
+                              "api/v1/" +
+                              values.filter1 +
+                              "/" +
+                              e.target.value +
+                              "/sensor",
+                              {
+                                headers: {
+                                  Authorization: "Bearer " + headers,
+                                },
+                              }
+                            )
+                            .then((response) => {
+                              console.log(response.data);
+                              setData(response.data.data);
+                            })
+                            .catch((err) => console.error(err));
+                        }}
+                      >
+                        {filterData.map((item, index) => (
+                          <option key={index} value={item.id}>
+                            {item.id}
+                          </option>
+                        ))}
+                      </Select>
+                    </Flex>
+
+                    <Flex border={'3px solid #d9d9d9'} borderRadius={15} justifyContent={'center'} px={"10px"} mt={'20px'} minHeight={'350px'}>
+
+                      <Tabs isFitted width={'100%'}>
+                        <TabList colorScheme='#09322D' va>
+                          <Tab color={'black'}>Sensor</Tab>
+                          <Tab color={'black'}>Aktuator</Tab>
+                        </TabList>
+                        <TabPanels>
+                          {/* initially mounted */}
+                          <TabPanel>
+                            {values.filter2 !== "" ? (
+                              <CardSensorOperator
+                                data={{ alat: values.filter1, id: values.filter2 }}
+                              />
+                            ) : null}
+                          </TabPanel>
+                          {/* initially not mounted */}
+                          <TabPanel>
+                            {values.filter2 !== "" ? (
+                              <CardSensorOperator
+                                data={{ alat: values.filter1, id: values.filter2 }}
+                              />
+                            ) : null}
+                          </TabPanel>
+                        </TabPanels>
+                      </Tabs>
+
+                    </Flex>
+                  </Form>
+                )}
+              </Formik>
+
             </GridItem>
-            <Flex border={'3px solid #d9d9d9'} borderRadius={15} alignItems={"center"} justifyContent={"center"} minH={'100px'}>
-              {dataApiPenjadwalan.length < 1 && isLoading ? (
-                <Loading />
-              ) : dataApiPenjadwalan.length < 1 ? (
+
+
+            {/* ================================ jadwal =====================================*/}
+            <Flex flexDir={'column'} border={'3px solid #d9d9d9'} borderRadius={15} minH={'100px'} >
+
+              <Flex m={'20px'} justifyContent={'center'}>
+                <Text align="center">
+                  Jadwal Pendistribusian
+                </Text>
+              </Flex>
+
+              <Flex css={{
+                overflowY: 'scroll',
+                '&::-webkit-scrollbar': {
+                  width: '0.4em',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                  backgroundColor: 'transparent',
+                },
+              }}
+                flexDirection="column"
+                width="100%"
+                height="300px">
+
+                {dataApiPenjadwalan.length < 1 && isLoading ? (
+                  <Loading />
+                ) : dataApiPenjadwalan.length < 1 ? (
                   <Text>Tidak Ada data Penjadwalan</Text>
-              ) : (
-                dataApiPenjadwalan.map((item, index) => (
-                <Box key={index}>{JSON.stringify(item)}</Box>
-               )  
-              ))
-              }
+                ) : (
+                  dataApiPenjadwalan.map((item, index) => (
+                    // <Box color={'black'} key={index}>{JSON.stringify(item)}</Box>
+                    <Flex
+                      key={index}
+                      borderRadius="10px"
+                      border="1px solid #E2E8F0"
+                      marginY="8px"
+                      marginX="20px"
+                      paddingY="0px"
+                      paddingX="20px"
+                      justifyContent="space-around"
+                    >
+                      {/* <Icon as={MdOutlineMoreTime} color="#14453E" w="50px" h="50px" alignSelf="center" /> */}
+                      <Accordion color={'black'} allowToggle width={'40vh'}>
+                        <AccordionItem>
+                          <h2>
+                            <AccordionButton>
+                              <Box as="span" flex='1' textAlign='left'>
+                                10.15
+                              </Box>
+                              <AccordionIcon />
+                            </AccordionButton>
+                          </h2>
+                          <AccordionPanel pb={4}>
+                            <Flex flexDir="column" marginRight="50px" marginY="20px">
+                              <Text align="left">
+                                Formula :
+                              </Text>
+                              <Text align="left">
+                                Jam :
+                              </Text>
+                              <Text align="Left">
+                                Durasi Penyiraman :
+                              </Text>
+                            </Flex>
+                          </AccordionPanel>
+                        </AccordionItem>
+                      </Accordion>
+                    </Flex>
+                  )
+                  ))
+                }
+              </Flex>
             </Flex>
           </Grid>
         </Flex>

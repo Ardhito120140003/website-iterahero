@@ -5,8 +5,11 @@ import {
 import { GiWaterTower } from 'react-icons/gi';
 
 function CardStatusPeracikan({
-  id, isOnline, sensor, status,
+  id, isOnline, sensor, status
 }) {
+  
+console.log(status)
+
   return (
     <Flex
       borderRadius="10px"
@@ -31,7 +34,7 @@ function CardStatusPeracikan({
       </Flex>
       <Flex justifyContent="center" marginY="30px">
         {
-                        status == null
+                        status == 'Idle'
                           ? (<Text color="grey" fontSize="12px">Tandon Kosong</Text>)
                           : (<Text color="grey" fontSize="12px">Sedang Melakukan Peracikan...</Text>)
 
@@ -39,8 +42,8 @@ function CardStatusPeracikan({
       </Flex>
       <Flex>
         <Flex flexDirection="column" p={12} borderRadius={20}>
-          {sensor.map((item) => (
-            <Grid templateColumns="repeat(2, 1fr)">
+          {sensor.map((item, index) => (
+            <Grid key={index} templateColumns="repeat(2, 1fr)">
               <Text color="black" textAlign="left">
                 {item.name}
               </Text>

@@ -3,7 +3,7 @@ import jwtDecode from 'jwt-decode';
 
 const token = localStorage.getItem('token');
 const decoded = token ? jwtDecode(token) : null;
-const isExpired = decoded ? decoded.exp > Date.now() : false;
+const isExpired = decoded ? decoded.exp > Date.now() / 1000 : false;
 if (isExpired) {
   localStorage.clear('token');
 }
