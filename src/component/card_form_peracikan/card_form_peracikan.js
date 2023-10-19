@@ -58,9 +58,22 @@ function CardFormPeracikan() {
   };
 
   const handleRacikSubmit = async () => {
-    console.log('pH Value:', phValue);
-    console.log('ppm Value:', ppmValue);
-  };
+    console.log({ header })
+    axios.post(base_url + "api/v1/kontrol", {}, {
+      params: {
+        id: 1
+      },
+      headers: {
+        Authorization: `Bearer ${header}`
+      }
+    })
+    .then(response => {
+      console.log(response.data)
+    })
+    .catch(err => {
+      console.error(err);
+    })
+  }
 
   const handleSaveSubmit = async () => {
     console.log('Nama Formula:', newFormulaName);
@@ -216,11 +229,12 @@ function CardFormPeracikan() {
                 </FormControl>
               </Box>
 
-              <Box marginTop="16px" display="flex" flexDirection="row">
+              <Flex marginTop="16px" flexDirection="row">
                 <Button
                   type="Submit"
                   backgroundColor="#09322D"
                   onClick={onRacikModalOpen}
+                  w={'100%'}
                 >
                   Racik
                 </Button>
@@ -231,11 +245,12 @@ function CardFormPeracikan() {
                       backgroundColor="#09322D"
                       onClick={onOpenSaveModal}
                       ml="20px"
+                      w={'100%'}
                     >
                       Simpan
                     </Button>
                   )}
-              </Box>
+              </Flex>
 
               {/* Modal Racik */}
               <Modal isOpen={isRacikModalOpen} onClose={onRacikModalClose}>

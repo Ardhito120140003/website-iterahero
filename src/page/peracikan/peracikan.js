@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Flex, Grid, GridItem, Select, Tabs, TabList, TabPanels, Tab, TabPanel
+  Flex, Grid, GridItem, Select, Tabs, TabList, TabPanels, Tab, TabPanel, Button, Text
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
@@ -114,30 +114,34 @@ function Peracikan() {
           <Loading />
         ) : (
           <Grid templateColumns="repeat(2, 1fr)" gap={5} mt={'20px'}>
+            
+            <GridItem>
+              {/* <ValueTandon tandonBahan={data.tandonBahan} /> */}
+              <Flex flexDirection="column" border="1px solid #E2E8F0" borderRadius={'10px'} p={'30px'} h={'100%'}>
+                <Text m={'20px'}>
+                  Form Peracikan
+                </Text>
+                {/* <Tabs isFitted colorScheme='#09322D'>
+                  <TabList mx={'20px'}>
+                    <Tab color={'black'}>Besaran</Tab>
+                    <Tab color={'black'}>Rasio</Tab>
+                  </TabList>
+                  <TabPanels>
+                    <TabPanel>
+                      <CardFormPeracikan />
+                    </TabPanel>
+                    <TabPanel>
+                      <CardFormPeracikanRasio />
+                    </TabPanel>
+                  </TabPanels>
+                </Tabs> */}
+                <CardFormPeracikan />
+              </Flex>
+            </GridItem>
+
             <GridItem>
               <CardStatusPeracikan id={data.id} isOnline={dataApi.isOnline} sensor={data.sensor} status={dataApi[0].status} />
             </GridItem>
-            <Flex flexDirection="column" border="1px solid #E2E8F0" borderRadius={'10px'} p={'10px'}>
-              {/* <ValueTandon tandonBahan={data.tandonBahan} /> */}
-
-              <Tabs isFitted colorScheme='#09322D'>
-                <TabList mx={'20px'}>
-                  <Tab color={'black'}>Besaran</Tab>
-                  <Tab color={'black'}>Rasio</Tab>
-                </TabList>
-                <TabPanels>
-                  {/* initially mounted */}
-                  <TabPanel>
-                    <CardFormPeracikan />
-                  </TabPanel>
-                  {/* initially not mounted */}
-                  <TabPanel>
-                    <CardFormPeracikanRasio/>
-                  </TabPanel>
-                </TabPanels>
-              </Tabs>
-
-            </Flex>
           </Grid>
         )
       )}
