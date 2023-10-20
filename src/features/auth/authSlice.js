@@ -3,7 +3,8 @@ import jwtDecode from 'jwt-decode';
 
 const token = localStorage.getItem('token');
 const decoded = token ? jwtDecode(token) : null;
-const isExpired = decoded ? decoded.exp > Date.now() / 1000 : false;
+const isExpired = decoded ? decoded.exp < Date.now() / 1000 : true;
+
 if (isExpired) {
   localStorage.clear('token');
 }
@@ -12,10 +13,11 @@ const role = decoded ? decoded.role : null;
 const userSlice = createSlice({
   name: 'iterahero',
   initialState: {
-    accessToken: !isExpired ? token : null,
+    accessToken: isExpired ? null : token,
     role,
     routeName: 'Dashboard',
-    fetchUrl: 'https://iterahero-e1a0e90da51e.herokuapp.com/',
+    // fetchUrl: 'https://iterahero-e1a0e90da51e.herokuapp.com/',
+    fetchUrl: 'http://localhost:3000/',
   },
   reducers: {
     login: (state, action) => {

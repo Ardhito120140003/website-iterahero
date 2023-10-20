@@ -34,6 +34,7 @@ function Penjadwalan() {
   }, [action]);
 
   const handleDelete = (id) => {
+    console.log(id)
     axios.delete(`${base_url}api/v1/penjadwalan?id=${id}`, {
       headers: {
         Authorization: `Bearer ${headers}`,
@@ -54,8 +55,8 @@ function Penjadwalan() {
   };
 
   const cardStyle = {
-    flex: '1', // Masing-masing komponen akan mengambil setengah lebar parent
-    marginLeft: '20px', // Jarak antar komponen (20px dalam contoh ini)
+    flex: '1', 
+    marginLeft: '20px', 
   };
 
   return (
@@ -63,9 +64,7 @@ function Penjadwalan() {
       {data === null ? (
         <Loading />
       ) : (
-        <Flex
-          style={containerStyle}
-        >
+        <Flex style={containerStyle}>
           <CardFormPenjadwalan
             updateAction={() => setAction(!action)}
             style={cardStyle}

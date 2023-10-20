@@ -58,7 +58,7 @@ function CardJadwal({ jadwal, deleteHandler }) {
       setHari([...hari, val]);
     }
   };
-
+  console.log(jadwal)
   return (
     <Flex
       flexDirection="column"
@@ -67,7 +67,7 @@ function CardJadwal({ jadwal, deleteHandler }) {
       borderRadius="10px"
       border="1px solid #E2E8F0"
     >
-      <Text padding="30px">Jadwal Peracikan</Text>
+      <Text padding="30px">Jadwal Pendistribusian</Text>
 
       <Flex
         css={{
@@ -105,7 +105,7 @@ function CardJadwal({ jadwal, deleteHandler }) {
                     <AccordionIcon />
                   </AccordionButton>
                 </h2>
-                <AccordionPanel pb={4}>
+                <AccordionPanel pb={4} fontSize={'15px'}>
                   <Flex direction={'column'}>
                     <Flex flexDir={'row'} gap={'20px'}>
                       <Flex flexDir="row" marginRight="5px" marginY="20px">
@@ -120,9 +120,10 @@ function CardJadwal({ jadwal, deleteHandler }) {
                           <Text color="black"> : </Text>
                         </Flex>
                         <Flex direction={'column'} alignItems={'start'}>
+                          <Text color="black"> {item.id} </Text>
                           <Text color="black"> {item.resep.nama} </Text>
-                          <Text color="black"> {item.resep.interval} </Text>
                           <Text color="black"> {item.waktu} </Text>
+                          <Text color="black"> {item.resep.interval} </Text>
                         </Flex>
                       </Flex>
                     </Flex>
@@ -169,7 +170,8 @@ function CardJadwal({ jadwal, deleteHandler }) {
                   </AlertDialogHeader>
 
                   <AlertDialogBody>
-                    Are you sure? You can't undo this action afterwards.
+                    {/* Are you sure? You can't undo this action afterwards. */}
+                    Apakah anda yakin menghapus jadwal ini ?
                   </AlertDialogBody>
 
                   <AlertDialogFooter>

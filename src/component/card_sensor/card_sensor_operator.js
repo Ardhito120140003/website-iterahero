@@ -70,6 +70,7 @@ function CardSensorOperator(props) {
                 paddingTop="20px"
                 paddingBottom="20px"
                 px={'15px'}
+                w={'48.5%'}
               >
                 <Center
                   justifyContent="center"

@@ -49,6 +49,7 @@ function Header() {
       </Text>
 
       <Flex flexDirection="row">
+        <Flex>
         <Link
           to="/login"
           onClick={() => {
@@ -65,6 +66,7 @@ function Header() {
             />
           </div>
         </Link>
+        </Flex>
       </Flex>
       
     </Flex>
