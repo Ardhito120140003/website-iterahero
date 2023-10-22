@@ -23,6 +23,8 @@ function CardSensorOperator(props) {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const header = localStorage.getItem('token');
+  const [sensorValue, setSensorValue] = useState([]);
+  const [trigger, setTrigger] = useState(true)
 
   const getPagination = async () => {
     setIsLoading(true);
@@ -30,7 +32,6 @@ function CardSensorOperator(props) {
     if (route) {
       url = `${base_url}api/v1/${route}/${idApi}/sensor`;
     }
-    console.log(url)
     axios.get(url, {
       headers: {
         Authorization: `Bearer ${header}`,
@@ -45,10 +46,18 @@ function CardSensorOperator(props) {
         console.log(error);
       });
   };
+
+  const fetchSensor = (id) => {
+    const data = id.map((item) => (Math.random() * 14).toString().slice(0, 4))
+    setSensorValue(data)
+  }
+
   useEffect(() => {
     getPagination();
     setIsLoading(false);
-  }, [idApi]);
+    fetchSensor([1, 2, 3, 4])
+    setTimeout(() => setTrigger(!trigger), 2500)
+  }, [idApi, trigger]);
 
   return (
     <>
@@ -87,7 +96,7 @@ function CardSensorOperator(props) {
                   </Flex>
 
                   <Text my={"40px"} fontSize={'3xl'}>
-                    0
+                    {sensorValue[index]} {item.unit_measurement}
                   </Text>
 
                   {/* <CircularProgress size={'80px'} m={"5px"}>

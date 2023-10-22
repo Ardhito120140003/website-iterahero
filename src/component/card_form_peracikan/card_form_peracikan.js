@@ -31,9 +31,6 @@ function CardFormPeracikan() {
   const [formula, setFormula] = useState('');
   const [volume, setVolume] = useState('');
   const [tandon, setTandon] = useState('');
-
-
-
   const [dataApi, setDataApi] = useState([]);
   const base_url = useSelector(selectUrl);
   const header = localStorage.getItem('token');
@@ -43,6 +40,9 @@ function CardFormPeracikan() {
       headers: {
         Authorization: `Bearer ${header}`,
       },
+      params: {
+        tipe: 'rasio'
+      }
     })
       .then((response) => {
         setDataApi(response.data.data);

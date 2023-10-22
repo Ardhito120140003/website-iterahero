@@ -26,7 +26,7 @@ function CardFormPenjadwalan({ updateAction }) {
   const [dataApi, setDataApi] = useState([]);
   const [waktuMulai, setWaktuMulai] = useState('');
   const [perulangan, setPerulangan] = useState('');
-  const [interval, setInterval] = useState('');
+  const [durasi, setDurasi] = useState('');
   const [formula, setFormula] = useState('');
   const base_url = useSelector(selectUrl);
   const header = localStorage.getItem('token');
@@ -52,8 +52,8 @@ function CardFormPenjadwalan({ updateAction }) {
       id_tandon: 1,
       waktu: waktuMulai,
       iterasi: parseInt(perulangan),
-      interval: parseInt(interval),
-      hari,
+      durasi: parseInt(durasi),
+      hari
     };
 
     axios.post(`${base_url}api/v1/penjadwalan`, newSchedule, {
@@ -66,7 +66,7 @@ function CardFormPenjadwalan({ updateAction }) {
         setFormula('');
         setWaktuMulai('');
         setPerulangan('');
-        setInterval('');
+        setDurasi('');
         updateAction();
       })
       .catch((error) => {
@@ -135,8 +135,8 @@ function CardFormPenjadwalan({ updateAction }) {
           <Input
             type="number"
             placeholder="60 (untuk satu jam)"
-            value={interval}
-            onInput={(e) => setInterval(e.target.value)}
+            value={durasi}
+            onInput={(e) => setDurasi(e.target.value)}
           />
         </FormControl>
 

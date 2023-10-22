@@ -34,11 +34,13 @@ function Penjadwalan() {
   }, [action]);
 
   const handleDelete = (id) => {
-    console.log(id)
-    axios.delete(`${base_url}api/v1/penjadwalan?id=${id}`, {
+    axios.delete(`${base_url}api/v1/penjadwalan`, {
       headers: {
         Authorization: `Bearer ${headers}`,
       },
+      params: {
+        id: id
+      }
     })
       .then((response) => {
         console.log(response);
@@ -48,6 +50,21 @@ function Penjadwalan() {
         console.error(err);
       });
   };
+
+  const handleUpdate = (id) => {
+    axios.patch(`${base_url}api/v1/penjadwalan`, {
+      id
+    }, {
+      headers: {
+        Authorization: `Bearer ${headers}`
+      }
+    })
+    .then(response => {
+      console.log(response);
+      setAction(!action)
+    })
+    .catch(err => console.error(err))
+  }
 
   const containerStyle = {
     flexDirection: 'row',
@@ -69,7 +86,7 @@ function Penjadwalan() {
             updateAction={() => setAction(!action)}
             style={cardStyle}
           />
-          <CardJadwal jadwal={data} deleteHandler={handleDelete} style={cardStyle} />
+          <CardJadwal jadwal={data} deleteHandler={handleDelete} updateHandler={handleUpdate} style={cardStyle} />
         </Flex>
       )}
     </>

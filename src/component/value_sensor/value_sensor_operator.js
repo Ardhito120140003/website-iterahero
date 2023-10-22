@@ -78,7 +78,7 @@ function ValueSensorOperator(props) {
 
   useEffect(() => {
     if (firstCheck == true) {
-      // getValue();
+      getValue();
     } else {
       onRefreshUpdate();
     }
@@ -87,81 +87,6 @@ function ValueSensorOperator(props) {
 
   return (
     <Flex alignContent="center" justify="center" flexDir="column" alignItems="center">
-      {/* {
-        kategori == 'Persen'
-          ? (
-            <Flex flexDir="column" justify="center" alignItems="center" textAlign="center" mb="5px" mt="10px" style={{ width: '100px' }}>
-              <Flex>
-                <CircularProgress value={valueSensor} color={valueSensor > max || valueSensor < min ? 'var(--color-error)' : `${color}`} size="70px">
-                  <CircularProgressLabel>
-                    {valueSensor}
-                    %
-                  </CircularProgressLabel>
-                </CircularProgress>
-              </Flex>
-              <Flex width="130px" mt="10px" flexDir="row" justifyContent="center" alignItems="center">
-                <Text width="100%" fontSize="12px" fontWeight="bold" color="var(--color-primer)">Status :</Text>
-                {
-                  status == null && status == undefined
-                    ? (<Text width="100%" fontSize="12px" fontWeight="bold" color="var(--color-primer)">Offline</Text>)
-                    : (<Text width="100%" ml="-20px" fontSize="12px" fontWeight="bold" color={status == 'offline' || status == undefined || status == '' ? 'var(--color-error)' : 'var(--color-secondary-variant)'}>{status == 'offline' || status == undefined || status == '' ? 'Offline' : 'Online'}</Text>)
-                }
-              </Flex>
-            </Flex>
-          )
-          : null
-      }
-      {
-        kategori == 'Derajat'
-          ? (
-            <Flex justify="center" mb="10px" mt="10px" flexDir="column" alignItems="center" textAlign="center" style={{ width: '50px' }}>
-              <>
-                <Text fontSize="20px" color={valueSensor > max || valueSensor < min ? 'var(--color-error)' : `${color}`}>
-                  {valueSensor}
-                  °
-                </Text>
-                <Text fontSize="20px" color={valueSensor > max || valueSensor < min ? 'var(--color-error)' : `${color}`}>{satuan}</Text>
-              </>
-              <Flex width="130px" mt="10px" flexDir="row" justifyContent="center" alignItems="center">
-                <Text width="100%" fontSize="12px" fontWeight="bold" color="var(--color-primer)">Status :</Text>
-                {
-                  status == null && status == undefined
-                    ? (<Text width="100%" fontSize="12px" fontWeight="bold" color="var(--color-error)">Offline</Text>)
-                    : (<Text width="100%" ml="-20px" fontSize="12px" fontWeight="bold" color={status == 'offline' || status == undefined || status == '' ? 'var(--color-error)' : 'var(--color-secondary-variant)'}>{status == 'offline' || status == undefined || status == '' ? 'Offline' : 'Online'}</Text>)
-                }
-              </Flex>
-            </Flex>
-          )
-
-          : null
-      }
-      {
-        kategori == 'Lainnya'
-          ? (
-            <Flex justify="center" mb="10px" mt="10px" flexDir="column" alignItems="center" textAlign="center" style={{ width: '50px' }}>
-              <>
-                <Text
-                  fontSize="20px"
-                  color={
-                    valueSensor > max || valueSensor < min ? 'var(--color-error)' : `${color}`
-                  }
-                >
-                  {valueSensor}
-                </Text>
-                <Text fontSize="20px" color={valueSensor > max || valueSensor < min ? 'var(--color-error)' : `${color}`}>{satuan}</Text>
-              </>
-              <Flex width="130px" mt="10px" flexDir="row" justifyContent="center" alignItems="center">
-                <Text width="100%" fontSize="12px" fontWeight="bold" color="var(--color-primer)">Status :</Text>
-                {
-                  status == null && status == undefined
-                    ? (<Text width="100%" fontSize="12px" fontWeight="bold" color="var(--color-error)">Offline</Text>)
-                    : (<Text width="100%" ml="-20px" fontSize="12px" fontWeight="bold" color={status == 'offline' || status == undefined || status == '' ? 'var(--color-error)' : 'var(--color-secondary-variant)'}>{status == 'offline' || status == undefined || status == '' ? 'Offline' : 'Online'}</Text>)
-                }
-              </Flex>
-            </Flex>
-          )
-          : null
-      } */}
       <Flex flexDir="column" justifyContent="flex-start" mx={'40px'}>
         <Text fontSize="var(--caption)">Diperbarui : </Text>
         <Text fontSize="var(--caption)">

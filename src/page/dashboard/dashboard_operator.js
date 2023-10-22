@@ -23,7 +23,7 @@ import {
 } from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
 import { selectUrl } from "../../features/auth/authSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Loading from "../../component/loading/loading";
 import { AiOutlineControl } from "react-icons/ai";
@@ -35,7 +35,7 @@ import { MdOutlineMoreTime,MdMonitor  } from "react-icons/md";
 import dashboardMenu from '../../Utility/dashboard_menu';
 import { useNavigate, useParams } from 'react-router-dom';
 import CardAktuatorOperator from "../../component/card_sensor/card_aktuator_operator";
-
+import { logout } from "../../features/auth/authSlice";
 
 
 const DashboardOperator = () => {
@@ -46,6 +46,7 @@ const DashboardOperator = () => {
   const [firstFilter, setFirstFilter] = useState("");
   const [filterData, setFilterData] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
+  const dispatch = useDispatch();
 
   const [action, setAction] = useState(false);
   const headers = localStorage.getItem("token");
@@ -65,7 +66,11 @@ const DashboardOperator = () => {
         setDataApiPenjadwalan(response.data.data);
       })
       .catch((err) => {
-        console.error(err);
+        if (err.response.data.message === "Token maximum age exceeded") {
+          // dispatch(logout());
+          console.log("Token abis waktunya")
+        }
+        console.error(err.response.data.message);
       });
   };
 
