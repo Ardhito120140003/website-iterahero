@@ -331,8 +331,8 @@ const DashboardOperator = () => {
                                   </Flex>
                                   <Flex direction={'column'} alignItems={'flex-start'}>
                                     <Text color="black"> {item.resep.nama} </Text>
-                                    <Text color="black"> {item.resep.interval} </Text>
                                     <Text color="black"> {item.waktu} </Text>
+                                    <Text color="black"> {item.durasi} </Text>
                                   </Flex>
                                 </Flex>
                               </Flex>
