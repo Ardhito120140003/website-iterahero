@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Text, Image, Flex, Wrap, WrapItem, Center, Button, Switch
+  Text, Image, Flex, Wrap, WrapItem, Center, Switch
 } from '@chakra-ui/react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { paginationMonitoring } from '../../Utility/api_link';
 import Loading from '../loading/loading';
@@ -11,7 +11,6 @@ import './card_sensor.css';
 import { selectUrl } from '../../features/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ValueSensorOperator from '../value_sensor/value_sensor_operator';
 import ValueAktuatorOperator from '../value_aktuator/value_aktuator_operator';
 
 function CardAktuatorOperator(props) {

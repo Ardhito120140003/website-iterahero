@@ -4,22 +4,14 @@ import {
   Grid,
   GridItem,
   Select,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Button,
   Text,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { TabTitle } from "../../Utility/utility";
-import ValueTandon from "../../component/value_tandon/value_tandon";
 import CardFormPeracikan from "../../component/card_form_peracikan/card_form_peracikan";
-import CardFormPeracikanRasio from "../../component/card_form_peracikan/card_form_peracikam_rasio";
 import CardStatusPeracikan from "../../component/card_tandon_peracikan/card_tandon_peracikan";
-import { Formik, Field, Form } from "formik";
+import { Formik, Form } from "formik";
 import { selectUrl, routePageName } from "../../features/auth/authSlice";
 import "./peracikan.css";
 import Loading from "../../component/loading/loading";

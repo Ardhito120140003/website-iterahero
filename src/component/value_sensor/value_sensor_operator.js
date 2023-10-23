@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Text,
   Flex,
-  CircularProgress,
-  CircularProgressLabel,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { brokerSensor } from '../../Utility/api_link';

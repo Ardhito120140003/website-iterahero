@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {
   Text,
-  FormControl,
   Image,
   Flex,
-  Stack,
-  Icon,
-  Switch,
 } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import useSound from 'use-sound';
 import { useSelector } from 'react-redux';
-import { RiArrowRightSLine } from 'react-icons/ri';
 import clickSound from '../../assets/switch.mp3';
 import { postLogAktuator, Status } from '../../Utility/api_link';
 import Loading from '../loading/loading';

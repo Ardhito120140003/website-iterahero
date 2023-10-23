@@ -2,23 +2,15 @@ import React, { useState, useEffect } from "react";
 import {
   Flex,
   Text,
-  Box,
-  CircularProgress,
   Grid,
   GridItem,
-  Image,
-  Center,
   Wrap,
-  Button,
-  FormLabel,
   Select,
-  FormControl,
   Accordion,
   AccordionItem,
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
-  useDisclosure,
   Tabs, TabList, TabPanels, Tab, TabPanel,Icon
 } from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
@@ -26,16 +18,13 @@ import { selectUrl } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Loading from "../../component/loading/loading";
-import { AiOutlineControl } from "react-icons/ai";
 import { GiGreenhouse } from "react-icons/gi";
 import CardDashboard from "../../component/card_dashboard/card_dashboard";
-import { Field, Form, Formik, setIn } from "formik";
+import { Form, Formik } from "formik";
 import CardSensorOperator from "../../component/card_sensor/card_sensor_operator";
-import { MdOutlineMoreTime,MdMonitor  } from "react-icons/md";
-import dashboardMenu from '../../Utility/dashboard_menu';
-import { useNavigate, useParams } from 'react-router-dom';
+import { MdOutlineMoreTime  } from "react-icons/md";
+import { useParams } from 'react-router-dom';
 import CardAktuatorOperator from "../../component/card_sensor/card_aktuator_operator";
-import { logout } from "../../features/auth/authSlice";
 
 
 const DashboardOperator = () => {

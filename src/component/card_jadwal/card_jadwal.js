@@ -18,7 +18,6 @@ import {
   AccordionIcon,
   useDisclosure,
   Box,
-  Grid,
 } from "@chakra-ui/react";
 import { MdOutlineMoreTime } from "react-icons/md";
 import { BiTrash } from "react-icons/bi";
