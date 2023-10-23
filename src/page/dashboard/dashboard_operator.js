@@ -118,7 +118,7 @@ const DashboardOperator = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        <Flex flexDirection={"column"} alignContent={'center'}>
+        <Flex flexDirection={"column"}>
           {/* <Image
             width={"20%"}
             height={"auto"}
@@ -159,7 +159,7 @@ const DashboardOperator = () => {
                         name="filter1"
                         as={Select}
                         borderRadius={"10"}
-                        placeholder="--Pilih Filter--"
+                        // placeholder="--Pilih Filter--"
                         width={"100%"}
                         height={"5vh"}
                         bg={"white"}

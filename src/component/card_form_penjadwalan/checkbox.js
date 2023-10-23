@@ -13,13 +13,14 @@ function CustomCheckbox({ label, onSelect, value }) {
       style={{
         display: 'inline-block',
         padding: '5px 10px',
-        fontSize: "sm",
+        fontSize: "13px",
         fontWeight: 'bold',
         cursor: 'pointer',
         backgroundColor: isChecked ? '#09322D' : 'transparent',
         color: isChecked ? 'white' : 'gray',
-        borderRadius: 'md',
         border: isChecked ? '1px solid #09322D' : '1px solid gray',
+        borderRadius:"10px",
+        marginRight: "5px"
       }}
       onClick={handleCheckboxChange}
     >
