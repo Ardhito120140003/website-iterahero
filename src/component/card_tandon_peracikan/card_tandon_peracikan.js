@@ -46,9 +46,9 @@ function CardStatusPeracikan({ isOnline, sensor, status }) {
       flexDirection="column"
       alignItems="center"
       position="sticky"
-      p={"20px"}
+      p={"30px"}
     >
-      <Flex justifyContent="center" paddingTop="30px">
+      <Flex justifyContent="center">
         <Text>Tandon Peracikan</Text>
       </Flex>
 

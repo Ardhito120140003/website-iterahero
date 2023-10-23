@@ -18,44 +18,31 @@ import {
   AccordionIcon,
   useDisclosure,
   Box,
+  Wrap,
 } from "@chakra-ui/react";
-import { MdOutlineMoreTime } from "react-icons/md";
+import { MdOutlineAccessTime } from "react-icons/md";
 import { BiTrash } from "react-icons/bi";
-import CustomCheckbox from "../card_form_penjadwalan/checkbox";
+// import CustomCheckbox from "../card_form_penjadwalan/checkbox";
 import { motion, AnimatePresence } from "framer-motion";
+import { RiPencilFill } from 'react-icons/ri';
 
-const weekdays = [
-  { label: "senin", value: 1 },
-  { label: "selasa", value: 2 },
-  { label: "rabu", value: 3 },
-  { label: "kamis", value: 4 },
-  // { label: 'jumat', value: 5 },
-  // { label: 'sabtu', value: 6 },
-  //{ label: 'minggu', value: 0 },
-];
-
-const weekdays2 = [
-  // { label: 'senin', value: 1 },
-  // { label: 'selasa', value: 2 },
-  // { label: 'rabu', value: 3 },
-  { label: "kamis", value: 4 },
-  { label: "jumat", value: 5 },
-  { label: "sabtu", value: 6 },
-  { label: "minggu", value: 0 },
-];
+function getDayName(dayValue) {
+  const daysOfWeek = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+  return daysOfWeek[dayValue];
+}
 
 function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
   const [target, setTarget] = useState(null);
 
-  const handleDay = (val) => {
-    if (hari.includes(val)) {
-      setHari([...hari.filter((item) => item !== val)]);
-    } else {
-      setHari([...hari, val]);
-    }
-  };
+  // const handleDay = (val) => {
+  //   if (hari.includes(val)) {
+  //     setHari([...hari.filter((item) => item !== val)]);
+  //   } else {
+  //     setHari([...hari, val]);
+  //   }
+  // };
 
   return (
     <Flex
@@ -95,7 +82,7 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                 marginY="8px"
                 marginX="20px"
                 paddingY="0px"
-                paddingX="20px"
+                paddingX="10px"
                 justifyContent="space-around"
               >
                 <Accordion color={"black"} allowToggle w={"100%"}>
@@ -110,10 +97,10 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                           textAlign="left"
                         >
                           <Icon
-                            as={MdOutlineMoreTime}
+                            as={MdOutlineAccessTime}
                             color="#14453E"
-                            w="40px"
-                            h="40px"
+                            w="35px"
+                            h="35px"
                             alignSelf="center"
                           />
                           <Text ml={"10px"} alignSelf={"center"}>
@@ -145,58 +132,65 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                           </Flex>
                         </Flex>
 
-                        <Flex
-                          direction="row"
-                          justifyContent="stretch"
-                          gap={"5px"}
-                        >
-                          {weekdays.map((item, index) => (
-                            <CustomCheckbox
-                              label={item.label}
-                              value={item.value}
-                              onSelect={handleDay}
-                              key={index}
-                            />
-                          ))}
-                        </Flex>
+                        <Wrap flexDir="row" alignItems="start" gap={2} >
+                          {item.hari.map((day) => (
 
-                        <Flex
-                          direction="row"
-                          justifyContent="stretch"
-                          gap={"5px"}
-                          mt={"5px"}
-                        >
-                          {weekdays2.map((item, index) => (
-                            <CustomCheckbox
-                              label={item.label}
-                              value={item.value}
-                              onSelect={handleDay}
-                              key={index}
-                            />
+                            <Flex
+                              key={day}
+                              bg="#09322D"
+                              color="white"
+                              paddingX={2}
+                              paddingY={1}
+                              borderRadius="md"
+                              fontSize="sm"
+                              fontWeight="bold"
+                            >
+                              {getDayName(day)}
+                            </Flex>
                           ))}
-                        </Flex>
+                        </Wrap>
+
                       </Flex>
                     </AccordionPanel>
                   </AccordionItem>
                 </Accordion>
 
                 <Flex mx={"10px"} gap={"10px"}>
-                  <Switch isChecked={item.isActive} onChange={() => {
-                    updateHandler(item.id)
-                  }} 
-                  alignSelf="center" />
 
-                  <Icon
-                    as={BiTrash}
-                    color="#14453E"
-                    w="30px"
-                    h="30px"
-                    alignSelf="center"
-                    onClick={() => {
-                      onOpen();
-                      setTarget(item.id);
+                  <Flex alignSelf="center">
+                    <Switch isChecked={item.isActive} size={"sm"} onChange={() => {
+                      updateHandler(item.id)
                     }}
-                  />
+                    />
+                  </Flex>
+
+                  <Flex alignSelf="center">
+                    <Icon
+                      as={BiTrash}
+                      color="#14453E"
+                      w="20px"
+                      h="20px"
+                      alignSelf="center"
+                      onClick={() => {
+                        onOpen();
+                        setTarget(item.id);
+                      }}
+                    />
+                  </Flex>
+
+                  <Flex alignSelf="center">
+                    {/* <Link
+                      className="touch"
+                    > */}
+                    <Icon
+                      as={RiPencilFill}
+                      w="20px"
+                      h="20px"
+                      color="#007BFF"
+                    />
+                    {/* </Link> */}
+                  </Flex>
+
                 </Flex>
 
                 <AlertDialog

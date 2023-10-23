@@ -118,7 +118,7 @@ function Peracikan() {
               p={"30px"}
               h={"100%"}
             >
-              <Text m={"20px"}>Form Peracikan</Text>
+              <Text mb={"20px"}>Form Peracikan</Text>
               <CardFormPeracikan />
             </Flex>
           </GridItem>

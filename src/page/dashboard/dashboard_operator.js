@@ -11,7 +11,7 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
-  Tabs, TabList, TabPanels, Tab, TabPanel,Icon
+  Tabs, TabList, TabPanels, Tab, TabPanel, Icon
 } from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
 import { selectUrl } from "../../features/auth/authSlice";
@@ -22,7 +22,7 @@ import { GiGreenhouse } from "react-icons/gi";
 import CardDashboard from "../../component/card_dashboard/card_dashboard";
 import { Form, Formik } from "formik";
 import CardSensorOperator from "../../component/card_sensor/card_sensor_operator";
-import { MdOutlineMoreTime  } from "react-icons/md";
+import { MdOutlineAccessTime } from "react-icons/md";
 import { useParams } from 'react-router-dom';
 import CardAktuatorOperator from "../../component/card_sensor/card_aktuator_operator";
 
@@ -188,7 +188,7 @@ const DashboardOperator = () => {
                         width={"100%"}
                         height={"5vh"}
                         placeholder={
-                          values.filter1 ? "--Pilih " + values.filter1 +"--": "--"
+                          values.filter1 ? "--Pilih " + values.filter1 + "--" : "--"
                         }
                         bg={"white"}
                         _active={{ bg: "white" }}
@@ -237,7 +237,17 @@ const DashboardOperator = () => {
                           <Tab color={'black'}>Sensor</Tab>
                           <Tab color={'black'}>Aktuator</Tab>
                         </TabList>
-                        <TabPanels>
+                        <TabPanels css={{
+                          overflowY: 'scroll',
+                          '&::-webkit-scrollbar': {
+                            width: '0.4em',
+                          },
+                          '&::-webkit-scrollbar-thumb': {
+                            backgroundColor: 'transparent',
+                          },
+                        }}  
+                        width="100%"
+                        height={"425px"}>
                           {/* initially mounted */}
                           <TabPanel>
                             {values.filter2 !== "" ? (
@@ -285,7 +295,7 @@ const DashboardOperator = () => {
               }}
                 flexDirection="column"
                 width="100%"
-                height="300px">
+                height={"425px"}>
 
                 {dataApiPenjadwalan.length < 1 && isLoading ? (
                   <Loading />
@@ -308,7 +318,7 @@ const DashboardOperator = () => {
                           <h2>
                             <AccordionButton>
                               <Flex flexDir={'row'} as="span" flex='1' textAlign='left'>
-                                <Icon as={MdOutlineMoreTime} color="#14453E" w="40px" h="40px" alignSelf="center" />
+                                <Icon as={MdOutlineAccessTime} color="#14453E" w="35px" h="35px" alignSelf="center" />
                                 {/* <Text ml={'10px'} alignSelf={'center'}>{item.waktu} - {item.resep.nama} </Text> */}
                                 <Text ml={'10px'} alignSelf={'center'}>{item.waktu} - {item.resep.nama} </Text>
                               </Flex>
