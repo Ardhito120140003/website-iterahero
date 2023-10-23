@@ -65,7 +65,7 @@ function CardSensorOperator(props) {
         <Loading />
       ) : (
         <Wrap
-          justify={{ base: 'center', lg: 'start' }}
+          justify={'start'}
           mt="20px"
         >
           {dataTable.map((item, index) => (

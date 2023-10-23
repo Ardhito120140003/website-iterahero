@@ -59,12 +59,12 @@ function CardAktuatorOperator(props) {
         Authorization: `Bearer ${header}`
       }
     })
-    .then(response => {
-      console.log(response.data.data)
-    })
-    .catch(err => {
-      console.error(err);
-    })
+      .then(response => {
+        console.log(response.data.data)
+      })
+      .catch(err => {
+        console.error(err);
+      })
   }
 
   return (
@@ -73,55 +73,55 @@ function CardAktuatorOperator(props) {
         <Loading />
       ) : (
         <Wrap
-          justify={{ base: 'center', lg: 'start' }}
+          justify={'start'}
           mt="20px"
         >
           {dataTable.map((item, index) => (
             // <Link to={`/unit/dashboard/sensor/${item.id}`}>
-              <WrapItem
-                key={index}
-                // className="card-sensor"
-                bg="#ffff"
-                borderRadius="10px"
-                border="1px solid #E2E8F0"
-                paddingTop="20px"
-                paddingBottom="20px"
-                px={'20px'}
-                w={'48.5%'}
+            <WrapItem
+              key={index}
+              // className="card-sensor"
+              bg="#ffff"
+              borderRadius="10px"
+              border="1px solid #E2E8F0"
+              paddingTop="20px"
+              paddingBottom="20px"
+              px={'20px'}
+              w={{ sm:'100%', md:"100%", lg:"100%", xl:'48.5%', "2xl":"48.5%" }}
+            >
+              <Center
+                justifyContent="center"
+                flexDir="column"
+                data={{ data: idApi }}
               >
-                <Center
-                  justifyContent="center"
-                  flexDir="column"
-                  data={{ data: idApi }}
-                >
-                  <Flex flexDir="row" justify="space-between">
-                    <Image
-                      src={`${item.icon}`}
-                      color={item.color}
-                    />
-                    {/* <Text color={`${item.color}`}>{item.name}</Text> */}
-                    <Text color={'black'}>{item.name}</Text>
-                  </Flex>
-                  {item.id === '' ? (
-                    <></>
-                  ) : (
-                    <ValueAktuatorOperator
-                      data={{
-                        id: item.id,
-                        color: item.color,
-                        category: item.name,
-                        unit: item.unit_measurement,
-                        max: item.range_max,
-                        min: item.range_min,
-                        isAvailable: item.status
-                      }}
-                    />
-                  )}
+                <Flex flexDir="row" justify="space-between">
+                  <Image
+                    src={`${item.icon}`}
+                    color={item.color}
+                  />
+                  {/* <Text color={`${item.color}`}>{item.name}</Text> */}
+                  <Text color={'black'}>{item.name}</Text>
+                </Flex>
+                {item.id === '' ? (
+                  <></>
+                ) : (
+                  <ValueAktuatorOperator
+                    data={{
+                      id: item.id,
+                      color: item.color,
+                      category: item.name,
+                      unit: item.unit_measurement,
+                      max: item.range_max,
+                      min: item.range_min,
+                      isAvailable: item.status
+                    }}
+                  />
+                )}
 
-                <Switch mt={'20px'} onChange={() => handleswitch(item.id)}/>
+                <Switch mt={'20px'} onChange={() => handleswitch(item.id)} />
 
-                </Center>
-              </WrapItem>
+              </Center>
+            </WrapItem>
             // </Link>
           ))}
         </Wrap>

@@ -13,13 +13,13 @@ import { selectUrl } from '../../features/auth/authSlice';
 import CustomCheckbox from './checkbox';
 
 const weekdays = [
-  { label: 'minggu', value: 0 },
-  { label: 'senin', value: 1 },
-  { label: 'selasa', value: 2 },
-  { label: 'rabu', value: 3 },
-  { label: 'kamis', value: 4 },
-  { label: 'jumat', value: 5 },
-  { label: 'sabtu', value: 6 },
+  { label: 'Minggu', value: 0 },
+  { label: 'Senin', value: 1 },
+  { label: 'Selasa', value: 2 },
+  { label: 'Rabu', value: 3 },
+  { label: 'Kamis', value: 4 },
+  { label: 'Jumat', value: 5 },
+  { label: 'Sabtu', value: 6 },
 ];
 
 function CardFormPenjadwalan({ updateAction }) {

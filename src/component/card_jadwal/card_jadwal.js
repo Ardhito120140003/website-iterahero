@@ -117,7 +117,7 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                             <Flex direction={"column"} alignItems={"start"}>
                               <Text color="black"> Formula </Text>
                               <Text color="black"> Jam </Text>
-                              <Text color="black"> Durasi Penyiraman</Text>
+                              <Text color="black"> Durasi Siram</Text>
                             </Flex>
                             <Flex direction={"column"}>
                               <Text color="black"> : </Text>
