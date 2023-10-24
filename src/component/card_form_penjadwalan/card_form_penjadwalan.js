@@ -6,6 +6,8 @@ import {
   Button,
   Input,
   FormControl,
+  Wrap,
+  // WrapItem,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
@@ -13,13 +15,14 @@ import { selectUrl } from '../../features/auth/authSlice';
 import CustomCheckbox from './checkbox';
 
 const weekdays = [
-  { label: 'Minggu', value: 0 },
+  
   { label: 'Senin', value: 1 },
   { label: 'Selasa', value: 2 },
   { label: 'Rabu', value: 3 },
   { label: 'Kamis', value: 4 },
   { label: 'Jumat', value: 5 },
   { label: 'Sabtu', value: 6 },
+  { label: 'Minggu', value: 0 },
 ];
 
 function CardFormPenjadwalan({ updateAction }) {
@@ -140,17 +143,29 @@ function CardFormPenjadwalan({ updateAction }) {
           />
         </FormControl>
 
-        <FormControl my="10px" color="black">
+        <FormControl 
+        // my="10px" 
+        color="black"
+        >
           <Text>Ulangi</Text>
-          <Flex marginLeft="10px" marginTop="20px" direction="row" justifyContent="space-between">
-            {weekdays.map((item, index) => (
-              <CustomCheckbox label={item.label} value={item.value} onSelect={handleDay} key={index} />
-            ))}
-          </Flex>
+          {/* <Flex> */}
+            <Wrap
+              marginTop="20px"
+              // direction="row" 
+              // justifyContent="flex-start"
+              gap={2}
+              
+            >
+              {weekdays.map((item, index) => (
+                <CustomCheckbox label={item.label} value={item.value} onSelect={handleDay} key={index} />
+              ))}
+            </Wrap>
+          {/* </Flex> */}
+
         </FormControl>
 
         <Button
-                // onClick={() => alert(hari)}
+          // onClick={() => alert(hari)}
           onClick={handleSubmit}
           my="20px"
           backgroundColor="#09322D"

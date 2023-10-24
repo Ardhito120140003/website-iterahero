@@ -87,7 +87,7 @@ function CardAktuatorOperator(props) {
               paddingTop="20px"
               paddingBottom="20px"
               px={'20px'}
-              w={{ sm:'100%', md:"100%", lg:"100%", xl:'48.5%', "2xl":"48.5%" }}
+              w={{ sm:'100%', md:"100%", lg:"48%", xl:'48.5%', "2xl":"48.5%" }}
             >
               <Center
                 justifyContent="center"

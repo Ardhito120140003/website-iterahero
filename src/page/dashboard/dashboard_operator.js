@@ -125,7 +125,7 @@ const DashboardOperator = () => {
             src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
             alignSelf={"center"}
           /> */}
-          <Flex alignItems={"center"} >
+          <Flex alignItems={"center"}  mb={"50px"}>
             <Wrap mt={8} justify={{ md: "center", sm: "center" }} spacing={30}>
               {dataApiDashboard.map((item, index) => (
                 <CardDashboard

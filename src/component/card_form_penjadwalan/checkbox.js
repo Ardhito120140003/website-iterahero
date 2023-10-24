@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/layout';
 import React, { useState } from 'react';
 
 function CustomCheckbox({ label, onSelect, value }) {
@@ -9,23 +10,27 @@ function CustomCheckbox({ label, onSelect, value }) {
   };
 
   return (
-    <label
+    <Flex>
+      <label
       style={{
-        display: 'inline-block',
-        padding: '5px 10px',
+        width: '65px',
+        height: '30px',
         fontSize: "13px",
         fontWeight: 'bold',
         cursor: 'pointer',
         backgroundColor: isChecked ? '#09322D' : 'transparent',
         color: isChecked ? 'white' : 'gray',
         border: isChecked ? '1px solid #09322D' : '1px solid gray',
-        borderRadius:"10px",
-        marginRight: "5px"
+        borderRadius:"5px",
+        display: 'flex', // Use display: flex
+        justifyContent: 'center', // To center the content horizontally
+        alignItems: 'center', // To center the content vertically
       }}
       onClick={handleCheckboxChange}
     >
       {label}
     </label>
+    </Flex>
   );
 }
 

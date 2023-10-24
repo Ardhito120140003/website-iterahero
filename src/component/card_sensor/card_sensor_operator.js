@@ -70,59 +70,61 @@ function CardSensorOperator(props) {
         >
           {dataTable.map((item, index) => (
             // <Link to={`/unit/dashboard/sensor/${item.id}`}>
-              <WrapItem
-                key={index}
-                // className="card-sensor"
-                bg="#ffff"
-                borderRadius="10px"
-                border="1px solid #E2E8F0"
-                paddingTop="20px"
-                paddingBottom="20px"
-                px={'15px'}
-                w={'48.5%'}
+            <WrapItem
+              key={index}
+              // className="card-sensor"
+              bg="#ffff"
+              borderRadius="10px"
+              border="1px solid #E2E8F0"
+              paddingTop="20px"
+              paddingBottom="20px"
+              px={'15px'}
+              // w={'48.5%'}
+              w={{ sm: '100%', md: "100%", lg: "48%", xl: '48.5%', "2xl": "48.5%" }}
+
+            >
+              <Center
+                justifyContent="center"
+                flexDir="column"
+                data={{ data: idApi }}
               >
-                <Center
-                  justifyContent="center"
-                  flexDir="column"
-                  data={{ data: idApi }}
-                >
-                  <Flex flexDir="row" justify="space-between">
-                    <Image
-                      w={'20px'}
-                      src={`${item.icon}`}
-                      color={item.color}
-                    />
-                    <Text color={`${item.color}`}>{item.name}</Text>
-                  </Flex>
+                <Flex flexDir="row" justify="space-between">
+                  <Image
+                    w={'20px'}
+                    src={`${item.icon}`}
+                    color={item.color}
+                  />
+                  <Text color={`${item.color}`}>{item.name}</Text>
+                </Flex>
 
-                  <Text my={"40px"} fontSize={'3xl'}>
-                    {sensorValue[index]} {item.unit_measurement}
-                  </Text>
+                <Text my={"40px"} fontSize={'3xl'}>
+                  {sensorValue[index]} {item.unit_measurement}
+                </Text>
 
-                  {/* <CircularProgress size={'80px'} m={"5px"}>
+                {/* <CircularProgress size={'80px'} m={"5px"}>
                     <CircularProgressLabel>
                       0
                     </CircularProgressLabel>
                   </CircularProgress> */}
-                
-                  {item.id === '' ? (
-                    <></>
-                  ) : (
-                    <ValueSensorOperator
-                      data={{
-                        id: item.id,
-                        color: item.color,
-                        category: item.name,
-                        unit: item.unit_measurement,
-                        max: item.range_max,
-                        min: item.range_min,
-                      }}
-                    />
-                  )}
 
-                
-                </Center>
-              </WrapItem>
+                {item.id === '' ? (
+                  <></>
+                ) : (
+                  <ValueSensorOperator
+                    data={{
+                      id: item.id,
+                      color: item.color,
+                      category: item.name,
+                      unit: item.unit_measurement,
+                      max: item.range_max,
+                      min: item.range_min,
+                    }}
+                  />
+                )}
+
+
+              </Center>
+            </WrapItem>
             // </Link>
           ))}
         </Wrap>

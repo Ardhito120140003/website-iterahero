@@ -139,11 +139,13 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                               key={day}
                               bg="#09322D"
                               color="white"
-                              paddingX={2}
-                              paddingY={1}
-                              borderRadius="md"
+                              justifyContent='center' // To center the content horizontally
+                              alignItems='center' // To center the content vertically
+                              borderRadius="5"
                               fontSize="sm"
                               fontWeight="bold"
+                              width= '80px'
+        height= '30px'
                             >
                               {getDayName(day)}
                             </Flex>

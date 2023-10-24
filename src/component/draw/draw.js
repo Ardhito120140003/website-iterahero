@@ -8,9 +8,14 @@ import {
   DrawerContent,
 } from '@chakra-ui/react';
 import { useSelector, useDispatch } from 'react-redux';
-import { FiHome, FiMonitor } from 'react-icons/fi';
+// import { FiHome, FiMonitor } from 'react-icons/fi';
+import { FiHome} from 'react-icons/fi';
+
+
 import { GiGreenhouse } from 'react-icons/gi';
-import { AiOutlineControl, AiOutlineHistory } from 'react-icons/ai';
+// import { AiOutlineControl, AiOutlineHistory } from 'react-icons/ai';
+import { AiOutlineHistory } from 'react-icons/ai';
+
 import { Link } from 'react-router-dom';
 import NavItem from '../navitem/navitem';
 import { selectUrl, routePageName } from '../../features/auth/authSlice';
@@ -67,7 +72,7 @@ function Draw(props) {
               active={routeName === 'Greenhouse'}
             />
           </Link>
-          <Link
+          {/* <Link
             to="/unit/monitoring"
             onClick={() => {
               patchRoute('Monitoring');
@@ -79,8 +84,8 @@ function Draw(props) {
               title="Monitoring"
               active={routeName === 'Monitoring'}
             />
-          </Link>
-          <Link
+          </Link> */}
+          {/* <Link
             to="/unit/controlling"
             onClick={() => {
               patchRoute('Controlling');
@@ -92,8 +97,8 @@ function Draw(props) {
               title="Controlling"
               active={routeName === 'Controlling'}
             />
-          </Link>
-          <Link
+          </Link> */}
+          {/* <Link
             to="/unit/historynotifikasi"
             onClick={() => {
               patchRoute('History Notification');
@@ -105,7 +110,7 @@ function Draw(props) {
               title="History Notification"
               active={routeName === 'History Notification'}
             />
-          </Link>
+          </Link> */}
           <Link
             to="/unit/peracikan"
             onClick={() => {

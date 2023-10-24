@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import {
   Flex,
-  Grid,
-  GridItem,
+  // Grid,
+  // GridItem,
   Select,
   Text,
 } from "@chakra-ui/react";
@@ -67,72 +67,85 @@ function Peracikan() {
 
   return (
     <>
-      <Formik
-        initialValues={{
-          tandon: 0,
-        }}
-      >
-        {({ setFieldValue, values }) => (
-          <Form>
-            <Select
-              name="filter2"
-              as={Select}
-              borderRadius={"10"}
-              width={"100%"}
-              height={"5vh"}
-              bg={"white"}
-              _active={{ bg: "white" }}
-              borderColor={"var(--color-border)"}
-              fontSize={"var(--header-5)"}
-              fontWeight={"normal"}
-              color={"var(--color-primer)"}
-              _hover={{ borderColor: "var(--color-border)" }}
-              _focusWithin={{ borderColor: "var(--color-border)" }}
-              value={values.tandon}
-              // placeholder="--Pilih Tandon Peracikan--"
-              onChange={e => {
-                setFieldValue("tandon", e.target.value);
-                if (e.target.value) getInfo(e.target.value)
-              }}
-            >
-              {dataTandon.map((item, index) => (
-                <option key={index} value={item.id}>
-                  {item.nama}
-                </option>
-              ))}
-            </Select>
-          </Form>
-        )}
-      </Formik>
-
       {isLoading ? (
         <Loading />
       ) : (
-        <Grid templateColumns="repeat(2, 1fr)" gap={5} mt={"20px"}>
-          <GridItem>
-            {/* <ValueTandon tandonBahan={data.tandonBahan} /> */}
-            <Flex
-              flexDirection="column"
-              border="1px solid #E2E8F0"
-              borderRadius={"10px"}
-              p={"30px"}
-              h={"100%"}
-            >
-              <Text mb={"20px"}>Form Peracikan</Text>
-              <CardFormPeracikan />
-            </Flex>
-          </GridItem>
-
-          <GridItem>
-          {data.sensor && (
-            <CardStatusPeracikan
-              isOnline={dataTandon[0].isOnline}
-              sensor={data.sensor}
-              status={dataTandon[0].status}
-            />
+        <Flex flexDirection={'column'}>
+          <Formik
+            initialValues={{
+              tandon: 0,
+            }}
+          >
+            {({ setFieldValue, values }) => (
+              <Form>
+                <Select
+                  name="filter2"
+                  as={Select}
+                  borderRadius={"10"}
+                  width={"100%"}
+                  height={"5vh"}
+                  bg={"white"}
+                  _active={{ bg: "white" }}
+                  borderColor={"var(--color-border)"}
+                  fontSize={"var(--header-5)"}
+                  fontWeight={"normal"}
+                  color={"var(--color-primer)"}
+                  _hover={{ borderColor: "var(--color-border)" }}
+                  _focusWithin={{ borderColor: "var(--color-border)" }}
+                  value={values.tandon}
+                  // placeholder="--Pilih Tandon Peracikan--"
+                  onChange={e => {
+                    setFieldValue("tandon", e.target.value);
+                    if (e.target.value) getInfo(e.target.value)
+                  }}
+                >
+                  {dataTandon.map((item, index) => (
+                    <option key={index} value={item.id}>
+                      {item.nama}
+                    </option>
+                  ))}
+                </Select>
+              </Form>
             )}
-          </GridItem>
-        </Grid>
+          </Formik>
+
+          <Flex gap={5} mt={"20px"} w={'100%'}
+          direction={{ sm: 'column-reverse', md: 'row', lg: 'row', xl: 'row', "2xl": 'row' }}
+          >
+     
+              {/* <ValueTandon tandonBahan={data.tandonBahan} /> */}
+              <Flex
+                flexDirection="column"
+                border="1px solid #E2E8F0"
+                borderRadius={"10px"}
+                p={"30px"}
+                h={"100%"}
+                // w={'50%'}
+                w={{ sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%" }}
+
+              >
+                <Text mb={"20px"}>Form Peracikan</Text>
+                <CardFormPeracikan />
+              </Flex>
+
+
+              <Flex
+              //  w={'50%'}
+              w={{ sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%" }}
+               >
+                {data.sensor && (
+                  <CardStatusPeracikan
+                    isOnline={dataTandon[0].isOnline}
+                    sensor={data.sensor}
+                    status={dataTandon[0].status}
+                  />
+                )}
+              </Flex>
+        
+            </Flex>
+        </Flex>
+
+
       )}
     </>
   );
