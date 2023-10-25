@@ -177,7 +177,7 @@ function CardStatusPeracikan({ isOnline, sensor, status }) {
               mr="3"
               paddingX="30px"
             >
-              Save
+              Simpan
             </Button>
             <Button onClick={onClose}>Cancel</Button>
           </ModalFooter>

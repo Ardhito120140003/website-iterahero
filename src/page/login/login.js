@@ -126,14 +126,14 @@ function Login() {
             maxWidth="200px"
             src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1664911531/itera%20herro%20icon/Frame_245_3_nvtrkl.png"
           />
-          <Image
+          {/* <Image
             sizes="md"
             display={{ base: 'flex', lg: 'none' }}
             position="Relative"
             width="80%"
             maxWidth="200px"
             src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
-          />
+          /> */}
           <Text
             size="md"
             fontWeight="bold"
