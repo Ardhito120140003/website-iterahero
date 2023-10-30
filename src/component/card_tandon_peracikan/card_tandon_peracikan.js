@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   Icon,
   Flex,
@@ -19,11 +19,24 @@ import {
 } from "@chakra-ui/react";
 import { GiWaterTower } from "react-icons/gi";
 import { useEffect } from "react";
+import axios from 'axios';
+import { selectUrl } from '../../features/auth/authSlice';
+import { useSelector } from 'react-redux';
 
 function CardStatusPeracikan({ isOnline, sensor, status }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [trigger, setTrigger] = useState(true)
-  const [sensorValue, setSensorValue] = useState([])
+  const [trigger, setTrigger] = useState(true);
+  const [sensorValue, setSensorValue] = useState([]);
+
+  const [rasioA, setRasioA] = useState();
+  const [rasioB, setRasioB] = useState();
+  const [rasioAir, setRasioAir] = useState();
+  const [ppm, setPpm] = useState();
+
+  const [dataApi, setDataApi] = useState([]);
+
+  const base_url = useSelector(selectUrl);
+  const header = localStorage.getItem('token');
 
   const fetchingMqtt = (id) => {
     // const data = id.map((item) => ({ id: item, value: Math.random()}));
@@ -31,10 +44,60 @@ function CardStatusPeracikan({ isOnline, sensor, status }) {
     setSensorValue(data);
   }
 
+  const handleSubmit = async () => {
+
+    console.log('rasioA :', rasioA)
+    console.log('rasioB :', rasioB)
+    console.log('rasioAir :',rasioAir)
+    console.log('ppm :',ppm)
+
+    const newPerbandingan = {
+      rasioA: rasioA,
+      rasioB: rasioB,
+      rasioAir: rasioAir,
+      ppm: ppm,
+    };
+  
+    //console.log({ header })
+    axios.post(base_url + "api/v1/tandonUtama", newPerbandingan, {
+      headers: {
+        Authorization: `Bearer ${header}`
+      },
+      params:{
+        id: '2'
+      }
+    })
+      .then(response => {
+        console.log(response.data);
+        setRasioA('');
+        setRasioB('');
+        setRasioAir('');
+        setPpm('');
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }
+
+
   useEffect(() => {
     console.log(sensor)
     fetchingMqtt([1, 2, 3, 4, 5]);
     setTimeout(() => setTrigger(!trigger), 3000)
+
+    axios.get(`${base_url}api/v1/tandonUtama`, {
+      headers: {
+        Authorization: `Bearer ${header}`,
+      }
+    })
+      .then((response) => {
+        setDataApi(response.data.data);
+        console.log(dataApi)
+      })
+      .catch((error) => {
+        console.error('Error fetching formula data:', error);
+      });
+
   }, [trigger])
 
   return (
@@ -123,7 +186,7 @@ function CardStatusPeracikan({ isOnline, sensor, status }) {
         alignContent={"center"}
       >
         <Text color={"white"} fontSize={"20px"}>
-          5 : 5 : 1000 = 1300
+          {dataApi.rasioA} : {dataApi.rasioB} : {dataApi.rasioAir} = {dataApi.ppm}
         </Text>
       </Button>
 
@@ -134,44 +197,56 @@ function CardStatusPeracikan({ isOnline, sensor, status }) {
           <ModalCloseButton />
           <ModalBody pb={6}>
             <form>
+              <Flex>
               <FormControl mt={"10px"}>
                 <Text>Nutrisi A</Text>
                 <Input
                   type="number"
+                  value={rasioA}
                   style={{ color: "black" }}
                   placeholder="masukkan rasio nutrisi A"
                 />
               </FormControl>
+              </Flex>
+              <Flex>
               <FormControl mt={"10px"}>
                 <Text>Nutrisi B</Text>
                 <Input
                   type="number"
+                  value={rasioB}
                   style={{ color: "black" }}
                   placeholder="masukkan rasio nutrisi B"
                 />
               </FormControl>
+              </Flex>
+              <Flex>
               <FormControl mt={"10px"}>
                 <Text>Air</Text>
                 <Input
                   type="number"
+                  value={rasioAir}
                   style={{ color: "black" }}
                   placeholder="masukkan rasio air"
                 />
               </FormControl>
+              </Flex>
+              <Flex>
               <FormControl mt={"10px"}>
                 <Text>PPM</Text>
                 <Input
                   type="number"
+                  value={ppm}
                   style={{ color: "black" }}
                   placeholder="masukkan PPM yang dihasilkan"
                 />
               </FormControl>
+              </Flex>
             </form>
           </ModalBody>
 
           <ModalFooter>
             <Button
-              onClick={onClose}
+              onClick={()=>{onClose();handleSubmit();}}
               backgroundColor="#09322D"
               color="white"
               mr="3"
