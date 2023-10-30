@@ -25,7 +25,7 @@ import CardSensorOperator from "../../component/card_sensor/card_sensor_operator
 import { MdOutlineAccessTime } from "react-icons/md";
 import { useParams } from 'react-router-dom';
 import CardAktuatorOperator from "../../component/card_sensor/card_aktuator_operator";
-
+import { logout } from "../../features/auth/authSlice";
 
 const DashboardOperator = () => {
   TabTitle("Dashboard - ITERA Hero");
@@ -51,12 +51,13 @@ const DashboardOperator = () => {
         },
       })
       .then((response) => {
+        const hari = new Date().getDay()
         console.log("data penjadwalan :", response.data.data);
-        setDataApiPenjadwalan(response.data.data);
+        setDataApiPenjadwalan(response.data.data.filter((item, index) => item.hari.includes(hari)));
       })
       .catch((err) => {
         if (err.response.data.message === "Token maximum age exceeded") {
-          // dispatch(logout());
+          dispatch(logout());
           console.log("Token abis waktunya")
         }
         console.error(err.response.data.message);

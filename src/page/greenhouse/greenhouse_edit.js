@@ -1,35 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Flex, Text, Button, Input,
-} from '@chakra-ui/react';
-import { Link, useNavigate } from 'react-router-dom';
-import {
-  Formik, Form,
-} from 'formik';
+import React, { useState, useEffect } from "react";
+import { Flex, Text, Button, Input } from "@chakra-ui/react";
+import { Link, useNavigate } from "react-router-dom";
+import { Formik, Form } from "formik";
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-} from '@chakra-ui/form-control';
-import * as yup from 'yup';
-import { useParams } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import { routePageName, selectUrl } from '../../features/auth/authSlice';
-import { TabTitle } from '../../Utility/utility';
-import { updateGreenhouse } from '../../Utility/api_link';
-import Loading from '../../component/loading/loading';
+} from "@chakra-ui/form-control";
+import * as yup from "yup";
+import { useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { routePageName, selectUrl } from "../../features/auth/authSlice";
+import { TabTitle } from "../../Utility/utility";
+import { updateGreenhouse } from "../../Utility/api_link";
+import Loading from "../../component/loading/loading";
 
 function GreenhouseEdit() {
   const base_url = useSelector(selectUrl);
-  TabTitle('Edit Greenhouse - ITERA Hero');
+  TabTitle("Edit Greenhouse - ITERA Hero");
 
   const { slug } = useParams();
   const navigate = useNavigate();
 
   const [dataApi, setDataApi] = useState(null);
 
-  const header = localStorage.getItem('token');
+  const header = localStorage.getItem("token");
 
   const getApibyID = async () => {
     await axios
@@ -48,24 +44,24 @@ function GreenhouseEdit() {
   };
 
   const data = {
-    name: '',
-    location: '',
+    name: "",
+    location: "",
   };
   const [image, onChangeImage] = useState(null);
   const [isloading, checkLoading] = useState(false);
 
   const schema = yup.object({
-    name: yup.string().required('data harus diisi'),
-    location: yup.string().required('data harus diisi'),
-    image: yup.object().required('data harus diisi'),
+    name: yup.string().required("data harus diisi"),
+    location: yup.string().required("data harus diisi"),
+    image: yup.object().required("data harus diisi"),
   });
 
   const submit = async (name, location) => {
     data.name = name;
     data.location = location;
 
-    if (data.name == '' || data.location == '') {
-      return alert('Masih ada yang belum di isi');
+    if (data.name == "" || data.location == "") {
+      return alert("Masih ada yang belum di isi");
     }
     checkLoading(true);
     console.log(location);
@@ -83,14 +79,14 @@ function GreenhouseEdit() {
         },
         {
           headers: {
-            'content-type': 'multipart/form-data',
+            "content-type": "multipart/form-data",
             Authorization: `Bearer ${header}`,
           },
-        },
+        }
       )
       .then((response) => {
         checkLoading(false);
-        navigate('/unit/greenhouse');
+        navigate("/unit/greenhouse");
         // alert("Data Greenhouse Berhasil Diperbaharui ");
       })
       .catch((error) => {
@@ -100,7 +96,7 @@ function GreenhouseEdit() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(routePageName('Greenhouse'));
+    dispatch(routePageName("Greenhouse"));
     getApibyID();
   }, []);
 
@@ -114,38 +110,36 @@ function GreenhouseEdit() {
             <Flex width="100%">
               <Link to="/unit/monitoring">
                 <Flex marginRight="2">
-              <Text
-              fontWeight="semibold"
-              fontSize="var(--header-3)"
-              color="var(--color-primer)"
-            >
-              List GreenHouse
-            </Text>
-            </Flex>
+                  <Text
+                    fontWeight="semibold"
+                    fontSize="var(--header-3)"
+                    color="var(--color-primer)"
+                  >
+                    List GreenHouse
+                  </Text>
+                </Flex>
               </Link>
               <Flex marginRight="2">
                 <Text
-              fontWeight="semibold"
-              fontSize="var(--header-3)"
-              color="var(--color-primer)"
-            >
-              {' '}
-              {'>'}
-              {' '}
-            </Text>
+                  fontWeight="semibold"
+                  fontSize="var(--header-3)"
+                  color="var(--color-primer)"
+                >
+                  {" "}
+                  {">"}{" "}
+                </Text>
               </Flex>
               <Link>
                 <Flex>
-              <Text
-              fontWeight="semibold"
-              fontSize="var(--header-3)"
-              color="var(--color-primer)"
-            >
-              {' '}
-              {dataApi.name}
-              {' '}
-            </Text>
-            </Flex>
+                  <Text
+                    fontWeight="semibold"
+                    fontSize="var(--header-3)"
+                    color="var(--color-primer)"
+                  >
+                    {" "}
+                    {dataApi.name}{" "}
+                  </Text>
+                </Flex>
               </Link>
             </Flex>
           </Flex>
@@ -153,9 +147,9 @@ function GreenhouseEdit() {
           <Flex w="100%" flexDir="column">
             <Formik
               initialValues={{
-							  name: dataApi.name,
-							  location: dataApi.location,
-							  image: {},
+                name: dataApi.name,
+                location: dataApi.location,
+                image: {},
               }}
               validationSchema={schema}
             >
@@ -168,107 +162,107 @@ function GreenhouseEdit() {
                 handleSubmit,
                 isSubmitting,
               }) => (
-            <Form>
-            <FormControl
-              marginTop="20px"
-              isInvalid={errors.name && touched.name}
-            >
-              <FormLabel htmlFor="name" color="black">
-              Nama Greenhouse
-        </FormLabel>
-              <Input
-              width="100%"
-              h="60px"
-              maxWidth="100%"
-              marginTop="0 auto"
-              type="text"
-              name="name"
-              value={values.name}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              variant="outline"
-              placeholder={dataApi.name}
-              color="black"
-            />
-              <FormErrorMessage>{errors.name}</FormErrorMessage>
-            </FormControl>
+                <Form>
+                  <FormControl
+                    marginTop="20px"
+                    isInvalid={errors.name && touched.name}
+                  >
+                    <FormLabel htmlFor="name" color="black">
+                      Nama Greenhouse
+                    </FormLabel>
+                    <Input
+                      width="100%"
+                      h="60px"
+                      maxWidth="100%"
+                      marginTop="0 auto"
+                      type="text"
+                      name="name"
+                      value={values.name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      variant="outline"
+                      placeholder={dataApi.name}
+                      color="black"
+                    />
+                    <FormErrorMessage>{errors.name}</FormErrorMessage>
+                  </FormControl>
 
-            <FormControl
-              marginTop="20px"
-              isInvalid={errors.location && touched.location}
-            >
-              <FormLabel htmlFor="location" color="black">
-              Lokasi Greenhouse
-        </FormLabel>
-              <Input
-              width="100%"
-              h="60px"
-              maxWidth="100%"
-              marginTop="0 auto"
-              type="text"
-              name="location"
-              value={values.location}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              variant="outline"
-              placeholder={dataApi.location}
-              color="black"
-            />
-              <FormErrorMessage>{errors.location}</FormErrorMessage>
-            </FormControl>
+                  <FormControl
+                    marginTop="20px"
+                    isInvalid={errors.location && touched.location}
+                  >
+                    <FormLabel htmlFor="location" color="black">
+                      Lokasi Greenhouse
+                    </FormLabel>
+                    <Input
+                      width="100%"
+                      h="60px"
+                      maxWidth="100%"
+                      marginTop="0 auto"
+                      type="text"
+                      name="location"
+                      value={values.location}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      variant="outline"
+                      placeholder={dataApi.location}
+                      color="black"
+                    />
+                    <FormErrorMessage>{errors.location}</FormErrorMessage>
+                  </FormControl>
 
-            <FormControl
-              marginTop="20px"
-              isInvalid={errors.image && touched.image}
-            >
-              <FormLabel htmlFor="image" color="black">
-              Gambar Greenhouse
-        </FormLabel>
-              <Flex
-              width="100%"
-              h="100px"
-              borderRadius="5px"
-              maxWidth="100%"
-              marginTop="0 auto"
-              variant="outline"
-              placeholder="Masukkan email"
-              color="black"
-              alignItems="center"
-              borderWidth="1px"
-              borderColor="#D9D9D9"
-              padding="20px"
-            >
-              <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-												  onChangeImage(e.target.files[0]);
-            }}
-            />
-            </Flex>
-            </FormControl>
-            <Button
-              marginTop="44px"
-              width="100%"
-              height="50px"
-              borderRadius="10px"
-              backgroundColor="var(--color-primer)"
-              type="submit"
-										// disabled={isSubmitting}
-										// className="btn-login"
-              onClick={() => submit(values.name, values.location)}
-            >
-              <Text
-              fontWeight="bold"
-              fontFamily="var(--font-family-secondary)"
-              fontSize="var(--header-3)"
-              color="var(--color-on-primary)"
-              colorScheme="var(--color-on-primary)"
-            >
-          Tambah
-            </Text>
-            </Button>
-          </Form>
+                  <FormControl
+                    marginTop="20px"
+                    isInvalid={errors.image && touched.image}
+                  >
+                    <FormLabel htmlFor="image" color="black">
+                      Gambar Greenhouse
+                    </FormLabel>
+                    <Flex
+                      width="100%"
+                      h="100px"
+                      borderRadius="5px"
+                      maxWidth="100%"
+                      marginTop="0 auto"
+                      variant="outline"
+                      placeholder="Masukkan email"
+                      color="black"
+                      alignItems="center"
+                      borderWidth="1px"
+                      borderColor="#D9D9D9"
+                      padding="20px"
+                    >
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          onChangeImage(e.target.files[0]);
+                        }}
+                      />
+                    </Flex>
+                  </FormControl>
+                  <Button
+                    marginTop="44px"
+                    width="100%"
+                    height="50px"
+                    borderRadius="10px"
+                    backgroundColor="var(--color-primer)"
+                    type="submit"
+                    // disabled={isSubmitting}
+                    // className="btn-login"
+                    onClick={() => submit(values.name, values.location)}
+                  >
+                    <Text
+                      fontWeight="bold"
+                      fontFamily="var(--font-family-secondary)"
+                      fontSize="var(--header-3)"
+                      color="var(--color-on-primary)"
+                      colorScheme="var(--color-on-primary)"
+                    >
+                      Tambah
+                    </Text>
+                  </Button>
+                </Form>
               )}
             </Formik>
           </Flex>

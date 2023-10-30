@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Flex,
   Image,
@@ -14,40 +14,40 @@ import {
   ModalBody,
   useDisclosure,
   Button,
-} from '@chakra-ui/react';
-import { RiMapPinFill } from 'react-icons/ri';
-import moment from 'moment';
-import axios from 'axios';
-import { deleteNotification } from '../../Utility/api_link';
+} from "@chakra-ui/react";
+import { RiMapPinFill } from "react-icons/ri";
+import moment from "moment";
+import axios from "axios";
+import { deleteNotification } from "../../Utility/api_link";
 
 function CardNotification(props) {
   const { data } = props;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [id, setId] = useState('');
+  const [id, setId] = useState("");
 
   const deleteItem = (e, id) => {
     e.preventDefault();
     axios
       .delete(`${deleteNotification}${id}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
       .then((response) => {
         window.location.reload();
-        alert('Berhasil Menghapus Data');
+        alert("Berhasil Menghapus Data");
       })
       .catch((error) => {});
   };
 
   const eleminateZ = (date) => {
-    const result = date.replace('T', ' ').replace('Z', ' +0700');
+    const result = date.replace("T", " ").replace("Z", " +0700");
     return result;
   };
 
-  const idLocale = require('moment/locale/id');
-  moment.locale('id', idLocale);
+  const idLocale = require("moment/locale/id");
+  moment.locale("id", idLocale);
 
   return (
     <Flex
@@ -84,12 +84,7 @@ function CardNotification(props) {
           >
             {data.detail}
           </Text>
-          <Flex
-            flexDir="row"
-            paddingLeft="2%"
-            gap={2}
-            alignItems="center"
-          >
+          <Flex flexDir="row" paddingLeft="2%" gap={2} alignItems="center">
             <Icon as={RiMapPinFill} w={25} h={25} color="black" />
             <Text
               alignItems="left"
@@ -109,7 +104,7 @@ function CardNotification(props) {
             justifyContent="left"
             textAlign="left"
           >
-            {moment(eleminateZ(data.created_at)).startOf('seconds').fromNow()}
+            {moment(eleminateZ(data.created_at)).startOf("seconds").fromNow()}
           </Text>
         </Flex>
       </Flex>
@@ -119,8 +114,8 @@ function CardNotification(props) {
         color="black"
         size={20}
         onClick={() => {
-				  setId(data.id);
-				  onOpen();
+          setId(data.id);
+          onOpen();
         }}
       />
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -129,18 +124,14 @@ function CardNotification(props) {
           <ModalHeader>Peringatan !</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            Apakah anda yakin ingin menghapus notifikasi
-            {' '}
-            {id}
-            {' '}
-            ini?
+            Apakah anda yakin ingin menghapus notifikasi {id} ini?
           </ModalBody>
           <ModalFooter>
             <Button
               colorScheme="blue"
               onClick={(e) => {
-							  deleteItem(e, id);
-							  onClose();
+                deleteItem(e, id);
+                onClose();
               }}
               mr={3}
             >
@@ -148,7 +139,7 @@ function CardNotification(props) {
             </Button>
             <Button
               onClick={() => {
-							  onClose();
+                onClose();
               }}
               variant="ghost"
             >

@@ -37,7 +37,7 @@ function ValueSensorOperator(props) {
           .then((response) => {
             setValueSensor(response.data.data[0].value);
             setStatus(response.data.data[0].status);
-            setTime(response.data.data[0].createdAt);
+            setTime(response.data.data[0].updated_at);
             setOnRefresh(true);
           });
       },
@@ -88,7 +88,7 @@ function ValueSensorOperator(props) {
       <Flex flexDir="column" justifyContent="flex-start" mx={'40px'}>
         <Text fontSize="var(--caption)">Diperbarui : </Text>
         <Text fontSize="var(--caption)">
-          {moment(time).format('MMMM Do YYYY, h:mm:ss a')}
+          {moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a')}
         </Text>
       </Flex>
     </Flex>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Flex,
   Image,
@@ -15,29 +15,27 @@ import {
   ModalCloseButton,
   useDisclosure,
   Button,
-} from '@chakra-ui/react';
-import { RiDeleteBinFill, RiPencilFill, RiMapPinFill } from 'react-icons/ri';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { deleteGreenhouse } from '../../Utility/api_link';
-import './card_green.css';
+} from "@chakra-ui/react";
+import { RiDeleteBinFill, RiPencilFill, RiMapPinFill } from "react-icons/ri";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { deleteGreenhouse } from "../../Utility/api_link";
+import "./card_green.css";
 
 function CardGreenhouse(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { data } = props;
 
-  const header = localStorage.getItem('token');
+  const header = localStorage.getItem("token");
 
   const deleteItem = async () => {
-    axios.delete(
-      deleteGreenhouse + data.id,
-      {
+    axios
+      .delete(deleteGreenhouse + data.id, {
         headers: {
           Authorization: `Bearer ${header}`,
         },
-      },
-    )
+      })
       .then(() => window.location.reload());
   };
   return (
@@ -63,7 +61,7 @@ function CardGreenhouse(props) {
               <div
                 className="touch"
                 onClick={() => {
-								  onOpen();
+                  onOpen();
                 }}
               >
                 <Icon as={RiDeleteBinFill} size="24px" color="#B00020" />
@@ -71,7 +69,7 @@ function CardGreenhouse(props) {
               <Link
                 className="touch"
                 to={{
-								  pathname: `/unit/greenhouse/${data.id}`,
+                  pathname: `/unit/greenhouse/${data.id}`,
                 }}
               >
                 <Icon

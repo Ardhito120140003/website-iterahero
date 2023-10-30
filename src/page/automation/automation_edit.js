@@ -273,12 +273,12 @@ function AutomationEdit() {
                       id="sensor"
                     >
                       <option value="">Pilih Sensor</option>
-                      {dataSensor.map((item) => (item.id === dataAutomation.sensor.id ? (
-                        <option value={item.id} selected>
+                      {dataSensor.map((item, index) => (item.id === dataAutomation.sensor.id ? (
+                        <option value={item.id} key={index} selected>
                           {item.name}
                         </option>
                       ) : (
-                        <option value={item.id}>{item.name}</option>
+                        <option value={item.id} key={index}>{item.name}</option>
                       )))}
                     </Select>
                     <FormErrorMessage>{errors.sensor}</FormErrorMessage>
@@ -299,12 +299,12 @@ function AutomationEdit() {
                       id="condition"
                     >
                       <option value="">Pilih Kondisi</option>
-                      {dataKondisi.map((data) => (data.value === dataAutomation.condition ? (
-                        <option value={data.value} selected>
+                      {dataKondisi.map((data, index) => (data.value === dataAutomation.condition ? (
+                        <option value={data.value} key={index} selected>
                           {data.name}
                         </option>
                       ) : (
-                        <option value={data.value}>{data.name}</option>
+                        <option value={data.value} key={index}>{data.name}</option>
                       )))}
                     </Select>
                     <FormErrorMessage>{errors.condition}</FormErrorMessage>
@@ -325,12 +325,12 @@ function AutomationEdit() {
                       id="lifecycle"
                     >
                       <option value="">Pilih Status Lifecycle</option>
-                      {dropLifeCycle.map((data) => (data.value === dataAutomation.status_lifecycle ? (
-                        <option value={data.value} selected>
+                      {dropLifeCycle.map((data, index) => (data.value === dataAutomation.status_lifecycle ? (
+                        <option value={data.value} key={index} selected>
                           {data.name}
                         </option>
                       ) : (
-                        <option value={data.value}>{data.name}</option>
+                        <option value={data.value} key={index}>{data.name}</option>
                       )))}
                     </Select>
                     <FormErrorMessage>{errors.lifecycle}</FormErrorMessage>
