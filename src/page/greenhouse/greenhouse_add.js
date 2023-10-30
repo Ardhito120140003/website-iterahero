@@ -10,9 +10,9 @@ import {
   FormErrorMessage,
 } from '@chakra-ui/form-control';
 import * as yup from 'yup';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { routePageName } from '../../features/auth/authSlice';
+import { routePageName, selectUrl } from '../../features/auth/authSlice';
 import { TabTitle } from '../../Utility/utility';
 import { addGreenhouse } from '../../Utility/api_link';
 
@@ -25,6 +25,7 @@ function GreenhouseAdd() {
     location: '',
   };
 
+  const base_url = useSelector(selectUrl)
   const [image, onChangeImage] = useState(null);
   const [isloading, checkLoading] = useState(false);
 
@@ -127,6 +128,15 @@ function GreenhouseAdd() {
                 image: {},
               }}
               validationSchema={schema}
+              onSubmit={async () => {
+                axios.post(base_url + "api/v1/greenhouse", {
+                  name,
+                  location,
+                  image
+                })
+                .then((response) => console.log(response))
+                .catch((err) => console.error(err))
+              }}
             >
               {({
                 values,
