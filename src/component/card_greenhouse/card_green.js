@@ -19,23 +19,31 @@ import {
 import { RiDeleteBinFill, RiPencilFill, RiMapPinFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { deleteGreenhouse } from "../../Utility/api_link";
 import "./card_green.css";
+import { useSelector } from "react-redux";
+import { selectUrl } from "../../features/auth/authSlice";
 
 function CardGreenhouse(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const base_url = useSelector(selectUrl);
   const { data } = props;
 
   const header = localStorage.getItem("token");
 
   const deleteItem = async () => {
     axios
-      .delete(deleteGreenhouse + data.id, {
-        headers: {
-          Authorization: `Bearer ${header}`,
-        },
-      })
+      .delete(
+        // deleteGreenhouse + data.id,
+        base_url + "api/v1/greenhouse",
+        {
+          params: {
+            id: data.id,
+          },
+          headers: {
+            Authorization: `Bearer ${header}`,
+          },
+        }
+      )
       .then(() => window.location.reload());
   };
   return (

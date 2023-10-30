@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { routePageName, selectUrl } from "../../features/auth/authSlice";
 import { TabTitle } from "../../Utility/utility";
-import { updateGreenhouse } from "../../Utility/api_link";
 import Loading from "../../component/loading/loading";
 
 function GreenhouseEdit() {
@@ -29,7 +28,12 @@ function GreenhouseEdit() {
 
   const getApibyID = async () => {
     await axios
-      .get(base_url + updateGreenhouse + slug, {
+      // .get(base_url + updateGreenhouse + slug, {
+      .get(base_url + "api/v1/greenhouse",
+      {
+        params: {
+          id: slug
+        },
         headers: {
           Authorization: `Bearer ${header}`,
         },
@@ -64,20 +68,29 @@ function GreenhouseEdit() {
       return alert("Masih ada yang belum di isi");
     }
     checkLoading(true);
-    console.log(location);
     putGreenhouse(name, image, location);
   };
 
   const putGreenhouse = async (valueName, valueImage, valueLocation) => {
     await axios
-      .put(
-        updateGreenhouse + slug,
+      // .put(
+        .patch(
+        base_url + "api/v1/greenhouse",
+        // updateGreenhouse + slug,
+        // {
+        //   name: valueName,
+        //   image: valueImage,
+        //   location: valueLocation,
+        // },
         {
           name: valueName,
-          image: valueImage,
+          thumbnail: valueImage,
           location: valueLocation,
         },
         {
+          params: {
+            id: slug
+          },
           headers: {
             "content-type": "multipart/form-data",
             Authorization: `Bearer ${header}`,
@@ -85,6 +98,7 @@ function GreenhouseEdit() {
         }
       )
       .then((response) => {
+        console.log(response)
         checkLoading(false);
         navigate("/unit/greenhouse");
         // alert("Data Greenhouse Berhasil Diperbaharui ");

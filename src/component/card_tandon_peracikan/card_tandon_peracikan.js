@@ -79,25 +79,25 @@ function CardStatusPeracikan({ isOnline, sensor, status }) {
       })
   }
 
-
   useEffect(() => {
-    console.log(sensor)
-    fetchingMqtt([1, 2, 3, 4, 5]);
-    setTimeout(() => setTrigger(!trigger), 3000)
-
     axios.get(`${base_url}api/v1/tandonUtama`, {
       headers: {
         Authorization: `Bearer ${header}`,
       }
     })
       .then((response) => {
-        setDataApi(response.data.data);
+        setDataApi(response.data.data[0]);
         console.log(dataApi)
       })
       .catch((error) => {
         console.error('Error fetching formula data:', error);
       });
+  }, [])
 
+  useEffect(() => {
+    console.log(sensor)
+    fetchingMqtt([1, 2, 3, 4, 5]);
+    setTimeout(() => setTrigger(!trigger), 3000)
   }, [trigger])
 
   return (

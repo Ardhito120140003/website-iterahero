@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { routePageName, selectUrl } from '../../features/auth/authSlice';
 import { TabTitle } from '../../Utility/utility';
-import { addGreenhouse } from '../../Utility/api_link';
 
 import Loading from '../../component/loading/loading';
 
@@ -60,11 +59,17 @@ function GreenhouseAdd() {
   const postGreenhouse = (valueName, valueImage, valueLocation) => {
     axios
       .post(
-        addGreenhouse,
+        // addGreenhouse,
+        // {
+        //   name: valueName,
+        //   image: valueImage,
+        //   location: valueLocation,
+        // },
+        base_url + "api/v1/greenhouse",
         {
           name: valueName,
-          image: valueImage,
-          location: valueLocation,
+          thumbnail: valueImage,
+          location: valueLocation
         },
         {
           headers: {
@@ -128,15 +133,6 @@ function GreenhouseAdd() {
                 image: {},
               }}
               validationSchema={schema}
-              onSubmit={async () => {
-                axios.post(base_url + "api/v1/greenhouse", {
-                  name,
-                  location,
-                  image
-                })
-                .then((response) => console.log(response))
-                .catch((err) => console.error(err))
-              }}
             >
               {({
                 values,
@@ -144,6 +140,7 @@ function GreenhouseAdd() {
                 touched,
                 handleChange,
                 handleBlur,
+                setFieldValue,
                 handleSubmit,
               }) => (
                 <Form>
@@ -216,18 +213,12 @@ function GreenhouseAdd() {
                       borderColor="#D9D9D9"
                       padding="20px"
                     >
-                      {/* <FilePicker
-                                            onFileChange={(fileList) => onChangeImage(fileList)}
-                                            placeholder="Pilih Gambar"
-                                            clearButtonLabel="Hapus"
-                                            multipleFiles={true}
-                                            accept="image/*"
-                                            hideClearButton={false}
-                                        /> */}
                       <input
                         type="file"
+                        name='thumbnail'
                         accept="image/*"
                         onChange={(e) => {
+                          // setFieldValue("image", e.target.files[0])
                           onChangeImage(e.target.files[0]);
                         }}
                       />
@@ -242,6 +233,7 @@ function GreenhouseAdd() {
                     backgroundColor="var(--color-primer)"
                     type="submit"
                     // className="btn-login"
+                    disabled={image === null || values.location === "" || values.name === "" }
                     onClick={() => submit(values.name, values.location)}
                   >
                     <Text
