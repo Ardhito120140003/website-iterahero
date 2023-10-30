@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Flex, Text, Icon, useDisclosure,
 } from '@chakra-ui/react';

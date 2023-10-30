@@ -57,9 +57,10 @@ function CardSensor(props) {
           mt="30px"
         >
           {dataTable.map((item, index) => (
-            <Link to={`/unit/dashboard/sensor/${item.id}`}>
-              <WrapItem
+            <Link to={`/unit/dashboard/sensor/${item.id}`} 
                 key={index}
+            >
+              <WrapItem
                 w={{ base: '90vw', md: 'sm' }}
                 className="card-sensor"
                 bg="#ffff"

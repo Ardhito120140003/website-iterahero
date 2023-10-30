@@ -1,4 +1,5 @@
 import Lottie from 'react-lottie-player';
+import React from 'react';
 import { Flex } from '@chakra-ui/react';
 import data from '../../assets/loading.json';
 

@@ -37,6 +37,9 @@ function CardFormPenjadwalan({ updateAction }) {
 
   useEffect(() => {
     axios.get(`${base_url}api/v1/resep`, {
+      params: {
+        tipe: "besaran"
+      },
       headers: {
         Authorization: `Bearer ${header}`,
       },
