@@ -24,6 +24,7 @@ function Peracikan() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const headers = localStorage.getItem("token");
+  const [selected, setSelected] = useState("")
 
   const getTandon = async () => {
     try {
@@ -55,6 +56,7 @@ function Peracikan() {
       );
       console.log(response.data.data)
       setData(response.data.data[0]);
+      setSelected(target)
     } catch (err) {
       console.error(err);
     }
@@ -135,6 +137,7 @@ function Peracikan() {
                >
                 {data.sensor && (
                   <CardStatusPeracikan
+                    id={selected}
                     isOnline={dataTandon[0].isOnline}
                     sensor={data.sensor}
                     status={dataTandon[0].status}

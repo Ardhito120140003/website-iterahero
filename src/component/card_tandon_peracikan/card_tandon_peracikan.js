@@ -23,7 +23,7 @@ import axios from 'axios';
 import { selectUrl } from '../../features/auth/authSlice';
 import { useSelector } from 'react-redux';
 
-function CardStatusPeracikan({ isOnline, sensor, status }) {
+function CardStatusPeracikan({ id, isOnline, sensor, status }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [trigger, setTrigger] = useState(true);
   const [sensorValue, setSensorValue] = useState([]);
@@ -81,12 +81,15 @@ function CardStatusPeracikan({ isOnline, sensor, status }) {
 
   useEffect(() => {
     axios.get(`${base_url}api/v1/tandonUtama`, {
+      params: {
+        id
+      },
       headers: {
         Authorization: `Bearer ${header}`,
       }
     })
       .then((response) => {
-        setDataApi(response.data.data[0]);
+        setDataApi(response.data.data);
         console.log(dataApi)
       })
       .catch((error) => {
