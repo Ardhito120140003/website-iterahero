@@ -207,7 +207,7 @@ function CardStatusPeracikan({ id, isOnline, sensor, status }) {
                   type="number"
                   value={rasioA}
                   style={{ color: "black" }}
-                  placeholder="masukkan rasio nutrisi A"
+                  placeholder={dataApi.rasioA}
                 />
               </FormControl>
               </Flex>
@@ -218,7 +218,7 @@ function CardStatusPeracikan({ id, isOnline, sensor, status }) {
                   type="number"
                   value={rasioB}
                   style={{ color: "black" }}
-                  placeholder="masukkan rasio nutrisi B"
+                  placeholder={dataApi.rasioB}
                 />
               </FormControl>
               </Flex>
@@ -229,7 +229,7 @@ function CardStatusPeracikan({ id, isOnline, sensor, status }) {
                   type="number"
                   value={rasioAir}
                   style={{ color: "black" }}
-                  placeholder="masukkan rasio air"
+                  placeholder={dataApi.rasioAir}
                 />
               </FormControl>
               </Flex>
@@ -240,7 +240,7 @@ function CardStatusPeracikan({ id, isOnline, sensor, status }) {
                   type="number"
                   value={ppm}
                   style={{ color: "black" }}
-                  placeholder="masukkan PPM yang dihasilkan"
+                  placeholder={dataApi.ppm}
                 />
               </FormControl>
               </Flex>

@@ -41,7 +41,7 @@ function CardFormPeracikan() {
         Authorization: `Bearer ${header}`,
       },
       params: {
-        tipe: 'rasio'
+        tipe: 'besaran'
       }
     })
       .then((response) => {
@@ -121,6 +121,7 @@ function CardFormPeracikan() {
                   setPpmValue('');
                   handleFormulaChange(e);
                 } else {
+                  console.log(dataApi[idx])
                   handleFormulaChange(e);
                   setPhValue(dataApi[idx].ph);
                   setPpmValue(dataApi[idx].ppm);
