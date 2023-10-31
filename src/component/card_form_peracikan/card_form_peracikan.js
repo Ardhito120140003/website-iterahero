@@ -84,6 +84,7 @@ function CardFormPeracikan() {
       nama: newFormulaName,
       ppm: ppmValue,
       ph: phValue,
+      volume,
       interval: 0,
     };
 
@@ -97,6 +98,7 @@ function CardFormPeracikan() {
         setNewFormulaName('');
         setPpmValue('');
         setPhValue('');
+        setVolume('')
       })
       .catch((error) => {
         console.error('Error menyimpan formula :', error);
@@ -125,6 +127,7 @@ function CardFormPeracikan() {
                   handleFormulaChange(e);
                   setPhValue(dataApi[idx].ph);
                   setPpmValue(dataApi[idx].ppm);
+                  setVolume(dataApi[idx].volume)
                 }
               }}
             >
