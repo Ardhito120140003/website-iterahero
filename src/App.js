@@ -4,7 +4,6 @@ import {
   Routes,
   Route,
   Navigate,
-  useNavigate,
 } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Board from './component/board/board';
@@ -30,9 +29,10 @@ import { selectToken, selectUser } from './features/auth/authSlice';
 import Peracikan from './page/peracikan/peracikan';
 import Penjadwalan from './page/penjadwalan/penjadwalan';
 import DashboardOperator from './page/dashboard/dashboard_operator';
+import Register from './page/register/Register';
 
 function App() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const user = useSelector(selectUser);
   const token = useSelector(selectToken);
 
@@ -40,6 +40,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={token ? <Login /> : <Register />} />
       {token && (
         <Route path="/unit" element={<Board />}>
           <Route path="dashboard/:id" element={user === 'admin' ? <Dashboard /> : <DashboardOperator />} />
