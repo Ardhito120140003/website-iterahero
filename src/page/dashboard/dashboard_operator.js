@@ -281,7 +281,7 @@ const DashboardOperator = () => {
 
               <Flex m={'20px'} justifyContent={'center'}>
                 <Text align="center">
-                  Jadwal Pendistribusian
+                  Penjadwalan Hari Ini
                 </Text>
               </Flex>
 

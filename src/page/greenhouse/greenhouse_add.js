@@ -83,6 +83,8 @@ function GreenhouseAdd() {
         navigate('/unit/greenhouse');
       })
       .catch((error) => {
+        checkLoading(false);
+        alert(error.message)
         console.log(error);
       });
   };
