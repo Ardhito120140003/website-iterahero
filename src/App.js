@@ -43,7 +43,7 @@ function App() {
       <Route path="/register" element={token ? <Login /> : <Register />} />
       {token && (
         <Route path="/unit" element={<Board />}>
-          <Route path="dashboard/:id" element={user === 'admin' ? <Dashboard /> : <DashboardOperator />} />
+          <Route path="dashboard/:id" element={<Dashboard />} />
           <Route path="greenhouse" element={<GreenHouse />} />
           <Route path="peracikan" element={<Peracikan />} />
           <Route path="penjadwalan" element={<Penjadwalan />} />

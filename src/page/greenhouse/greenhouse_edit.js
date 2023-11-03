@@ -122,7 +122,7 @@ function GreenhouseEdit() {
         <Flex w="100%" flexDir="column">
           <Flex w="100%" flexDir="row" alignItems="center">
             <Flex width="100%">
-              <Link to="/unit/monitoring">
+              <Link to="/unit/greenhouse">
                 <Flex marginRight="2">
                   <Text
                     fontWeight="semibold"

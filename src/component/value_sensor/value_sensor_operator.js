@@ -75,12 +75,12 @@ function ValueSensorOperator(props) {
   };
 
   useEffect(() => {
-    if (firstCheck == true) {
-      getValue();
-    } else {
-      onRefreshUpdate();
-    }
-    return () => setFirstCheck(false);
+    // if (firstCheck == true) {
+    //   // getValue();
+    // } else {
+    //   onRefreshUpdate();
+    // }
+    // return () => setFirstCheck(false);
   }, [onRefresh, firstCheck, valueSensor, status]);
 
   return (

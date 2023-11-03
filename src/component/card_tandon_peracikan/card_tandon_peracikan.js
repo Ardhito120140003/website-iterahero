@@ -59,12 +59,12 @@ function CardStatusPeracikan({ id, isOnline, sensor, status }) {
     };
   
     //console.log({ header })
-    axios.post(base_url + "api/v1/tandonUtama", newPerbandingan, {
+    axios.patch(base_url + "api/v1/tandonUtama", newPerbandingan, {
       headers: {
         Authorization: `Bearer ${header}`
       },
       params:{
-        id: '2'
+        id
       }
     })
       .then(response => {
@@ -254,6 +254,7 @@ function CardStatusPeracikan({ id, isOnline, sensor, status }) {
               color="white"
               mr="3"
               paddingX="30px"
+              disabled={ppm === '' || rasioA === '' || rasioB === '' || rasioAir === ''}
             >
               Simpan
             </Button>
