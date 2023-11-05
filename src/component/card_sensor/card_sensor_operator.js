@@ -4,7 +4,7 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { paginationMonitoring } from '../../Utility/api_link';
+// import { paginationMonitoring } from '../../Utility/api_link';
 import Loading from '../loading/loading';
 
 import './card_sensor.css';
@@ -16,7 +16,6 @@ import ValueSensorOperator from '../value_sensor/value_sensor_operator';
 function CardSensorOperator(props) {
   const idApi = props.data.id;
   const route = props.data.alat;
-  const { filter } = props.data;
   const base_url = useSelector(selectUrl);
   const navigate = useNavigate();
   const [dataTable, setDataTable] = useState([]);
@@ -28,23 +27,23 @@ function CardSensorOperator(props) {
 
   const getPagination = async () => {
     setIsLoading(true);
-    let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
-    if (route) {
-      url = `${base_url}api/v1/${route}/${idApi}/sensor`;
-    }
+    // let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
+    // if (route) {
+    let url = `${base_url}api/v1/${route}/${idApi}/sensor`;
+    // }
     axios.get(url, {
       headers: {
         Authorization: `Bearer ${header}`,
       },
     })
       .then((response) => {
-        console.log(response.data.data[0])
-        setDataTable(response.data.data[0].sensor);
-        setIsLoading(false);
+        console.log(response.data.data)
+        setDataTable(response.data.data);
       })
       .catch((error) => {
         console.log(error);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const fetchSensor = (id) => {
@@ -54,14 +53,13 @@ function CardSensorOperator(props) {
 
   useEffect(() => {
     getPagination();
-    setIsLoading(false);
-    fetchSensor([1, 2, 3, 4])
+    fetchSensor(dataTable.map((item, index) => item["id_sensor"]))
     setTimeout(() => setTrigger(!trigger), 2500)
   }, [idApi, trigger]);
 
   return (
     <>
-      {dataTable == null || isLoading ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <Wrap
@@ -101,12 +99,6 @@ function CardSensorOperator(props) {
                   {sensorValue[index]} {item.unit_measurement}
                 </Text>
 
-                {/* <CircularProgress size={'80px'} m={"5px"}>
-                    <CircularProgressLabel>
-                      0
-                    </CircularProgressLabel>
-                  </CircularProgress> */}
-
                 {item.id === '' ? (
                   <></>
                 ) : (
@@ -121,8 +113,6 @@ function CardSensorOperator(props) {
                     }}
                   />
                 )}
-
-
               </Center>
             </WrapItem>
             // </Link>

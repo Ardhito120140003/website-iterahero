@@ -53,7 +53,6 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
       border="1px solid #E2E8F0"
     >
       <Text padding="30px">Jadwal Pendistribusian</Text>
-
       <Flex
         css={{
           overflowY: "scroll",
@@ -68,7 +67,12 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
         width="100%"
         height="500px"
       >
-        <AnimatePresence>
+        {jadwal.length < 1 ? (
+          <Flex h={'100%'} alignItems={'center'} justifyContent={'center'} overflow={'auto'}>
+            <Text color={'grey'}>Tidak Ada penjadwalan</Text>
+          </Flex>
+        ) : (
+          <AnimatePresence>
           {jadwal.map((item, index) => (
             <motion.div
               key={index}
@@ -233,6 +237,7 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
             </motion.div>
           ))}
         </AnimatePresence>
+        )}
       </Flex>
     </Flex>
   );

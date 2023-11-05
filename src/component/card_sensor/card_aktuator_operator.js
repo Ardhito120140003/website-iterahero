@@ -4,7 +4,7 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { paginationMonitoring } from '../../Utility/api_link';
+// import { paginationMonitoring } from '../../Utility/api_link';
 import Loading from '../loading/loading';
 
 import './card_sensor.css';
@@ -26,17 +26,17 @@ function CardAktuatorOperator(props) {
   const getPagination = async () => {
     setIsLoading(true);
 
-    let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
-    if (route) {
-      url = `${base_url}api/v1/${route}/${idApi}/actuator`;
-    }
+    // let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
+    // if (route) {
+    let url = `${base_url}api/v1/${route}/${idApi}/actuator`;
+    // }
     await axios.get(url, {
       headers: {
         Authorization: `Bearer ${header}`,
       },
     })
       .then((response) => {
-        // console.log(response.data.data)
+        console.log(response.data.data)
         setDataTable(response.data.data);
         setIsLoading(false);
       })

@@ -16,13 +16,15 @@ const userSlice = createSlice({
     accessToken: isExpired ? null : token,
     role,
     routeName: 'Dashboard',
-    fetchUrl: role === 'operator' ? 'http://localhost:3000/' : role === 'admin' ? 'https://iterahero.fly.dev/' : null,
+    fetchUrl: role === 'operator' ? 'http://localhost:3000/' : role === 'admin' ? 'http://localhost:8000/' : null,
+    // fetchUrl: role === 'operator' ? 'http://localhost:3000/' : role === 'admin' ? 'https://iterahero.fly.dev/' : null,
   },
   reducers: {
     login: (state, action) => {
       state.role = jwtDecode(action.payload.accessToken).role;
       state.accessToken = action.payload.accessToken;
-      state.fetchUrl = state.role === 'admin' ? 'https://iterahero.fly.dev/' : 'http://localhost:3000/';
+      state.fetchUrl = state.role === 'admin' ? 'http://localhost:8000/' : 'http://localhost:3000/';
+      // state.fetchUrl = state.role === 'admin' ? 'https://iterahero.fly.dev/' : 'http://localhost:3000/';
     },
     logout: (state) => {
       state.role = null;

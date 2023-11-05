@@ -14,7 +14,7 @@ import {
   Tabs, TabList, TabPanels, Tab, TabPanel, Icon
 } from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
-import { selectUrl, selectUser } from "../../features/auth/authSlice";
+import { selectUrl } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Loading from "../../component/loading/loading";
@@ -26,15 +26,13 @@ import { MdOutlineAccessTime } from "react-icons/md";
 import { useParams } from 'react-router-dom';
 import CardAktuatorOperator from "../../component/card_sensor/card_aktuator_operator";
 import { logout } from "../../features/auth/authSlice";
-import CardSensor from "../../component/card_sensor/card_sensor";
 
 const DashboardOperator = () => {
   TabTitle("Dashboard - ITERA Hero");
   const base_url = useSelector(selectUrl);
-  const role = useSelector(selectUser);
   const [dataApiDashboard, setDataApiDashboard] = useState([]);
   const [dataApiPenjadwalan, setDataApiPenjadwalan] = useState([]);
-  const [firstFilter, setFirstFilter] = useState("");
+  const [firstFilter, setFirstFilter] = useState("greenhouse");
   const [filterData, setFilterData] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch();
@@ -43,7 +41,6 @@ const DashboardOperator = () => {
   const headers = localStorage.getItem("token");
 
   const id = parseInt(useParams().id);
-  const [selected, setSelected] = useState(id);
 
   const getApiPenjadwalan = async () => {
     axios
@@ -76,6 +73,9 @@ const DashboardOperator = () => {
       .then((response) => {
         const data = [];
         for (const item in response.data.data) {
+          if (item === 'name') {
+            continue
+          }
           const obj = {};
           let key = item.replace(/([A-Z])/g, ' $1');
           key = key.charAt(0).toUpperCase() + key.slice(1);
@@ -115,33 +115,31 @@ const DashboardOperator = () => {
           setIsLoading(false))
       });
   }, [action]);
-  console.log(dataApiDashboard);
+
   return (
     <>
       {isLoading ? (
         <Loading />
       ) : (
         <Flex flexDirection={"column"}>
-          <Flex alignItems={"center"}  mb={"50px"}>
-            <Wrap mt={8} justify={{ md: "center", sm: "center" }} spacing={30}>
-              {dataApiDashboard.map((item, index) => (
-                <CardDashboard
-                  data={{
-                    value: Object.values(item),
-                    icon: GiGreenhouse,
-                    name: Object.keys(item),
-                  }}
-                  key={index}
-                />
-              ))}
-            </Wrap>
-          </Flex>
+          <Wrap mt={8} justify={"center"} spacing={6}>
+            {dataApiDashboard.map((item, index) => (
+              <CardDashboard
+                data={{
+                  value: Object.values(item),
+                  icon: GiGreenhouse,
+                  name: Object.keys(item),
+                }}
+                key={index}
+              />
+            ))}
+          </Wrap>
 
           <Grid templateColumns={{ md: 'repeat(3, 1fr)', base: 'repeat(1, 1fr)' }} gap={6} mt={5}>
             <GridItem colSpan={2} >
               <Formik
                 initialValues={{
-                  filter1: "",
+                  filter1: firstFilter,
                   filter2: "",
                 }}
                 onSubmit={(values) => {
@@ -229,9 +227,9 @@ const DashboardOperator = () => {
                           {/* initially mounted */}
                           <TabPanel>
                             {values.filter2 !== "" ? (
-                              role === 'operator' ? <CardSensorOperator
+                              <CardSensorOperator
                                 data={{ alat: values.filter1, id: values.filter2 }}
-                              /> : <CardSensor />
+                              />
                             ) : null}
                           </TabPanel>
                           {/* initially not mounted */}

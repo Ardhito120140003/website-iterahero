@@ -91,8 +91,6 @@ function Penjadwalan() {
           <Flex w={{ sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%" }}>
             <CardJadwal jadwal={data} deleteHandler={handleDelete} updateHandler={handleUpdate} style={cardStyle} />
           </Flex>
-
-
         </Flex>
       )}
     </>
