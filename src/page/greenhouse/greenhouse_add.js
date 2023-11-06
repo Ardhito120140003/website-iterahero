@@ -68,7 +68,7 @@ function GreenhouseAdd() {
         base_url + "api/v1/greenhouse",
         {
           name: valueName,
-          thumbnail: valueImage,
+          image: valueImage,
           location: valueLocation
         },
         {
@@ -217,7 +217,7 @@ function GreenhouseAdd() {
                     >
                       <input
                         type="file"
-                        name='thumbnail'
+                        name='image'
                         accept="image/*"
                         onChange={(e) => {
                           // setFieldValue("image", e.target.files[0])

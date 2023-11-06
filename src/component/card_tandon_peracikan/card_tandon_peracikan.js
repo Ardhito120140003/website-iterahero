@@ -23,7 +23,7 @@ import axios from 'axios';
 import { selectUrl } from '../../features/auth/authSlice';
 import { useSelector } from 'react-redux';
 
-function CardStatusPeracikan({ id, isOnline, sensor, status }) {
+function CardStatusPeracikan({ id, tandon, sensor }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [trigger, setTrigger] = useState(true);
   const [sensorValue, setSensorValue] = useState([]);
@@ -120,7 +120,7 @@ function CardStatusPeracikan({ id, isOnline, sensor, status }) {
 
       <Flex direction={"column"}>
         <Flex justifyContent="center" marginY="30px">
-          {status == "Idle" ? (
+          {tandon.status === "Idle" ? (
             <Icon as={GiWaterTower} w="230px" h="130px" color="#14453E" />
           ) : (
             <CircularProgress
@@ -132,7 +132,7 @@ function CardStatusPeracikan({ id, isOnline, sensor, status }) {
           )}
         </Flex>
         <Flex justifyContent="center" marginY="10px">
-          {status == "Idle" ? (
+          {tandon.status === "Idle" ? (
             <Text color="grey" fontSize="12px">
               Tandon Kosong
             </Text>
@@ -168,13 +168,13 @@ function CardStatusPeracikan({ id, isOnline, sensor, status }) {
           <Text color="black" textAlign="left">
             Status Tandon
           </Text>
-          {isOnline == null ? (
-            <Text color="red" textAlign="left">
-              : Offline
-            </Text>
-          ) : (
+          {tandon.isOnline ? (
             <Text color="green" textAlign="left">
               : Online
+            </Text>
+          ) : (
+            <Text color="red" textAlign="left">
+              : Offline
             </Text>
           )}
         </Grid>

@@ -90,12 +90,13 @@ function Login() {
         >
           Kerjasama ITERA dan PT. East West Seed Indonesia
         </Text>
-        {/* <Image
-          width={"25%"}
+        <Image
+          width={"35%"}
           position={"Relative"}
           maxWidth={"350px"}
-          src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
-        /> */}
+          src="https://res.cloudinary.com/iterahero2023/image/upload/v1699238050/iterahero2023/MITRA%20ITERAHERO2023.png"
+          // src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
+        />
       </Flex>
       <Flex
         backgroundColor={{ lg: 'var(--color-primer)' }}

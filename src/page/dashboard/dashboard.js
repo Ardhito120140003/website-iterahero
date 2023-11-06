@@ -11,7 +11,7 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
-  Tabs, TabList, TabPanels, Tab, TabPanel, Icon
+  Tabs, TabList, TabPanels, Tab, TabPanel, Icon, Image
 } from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
 import { selectUrl } from "../../features/auth/authSlice";
@@ -122,7 +122,14 @@ const DashboardOperator = () => {
         <Loading />
       ) : (
         <Flex flexDirection={"column"}>
-          <Wrap mt={8} justify={"center"} spacing={6}>
+            <Image
+                  width={"22%"}
+                  height={"auto"}
+                  src="https://res.cloudinary.com/iterahero2023/image/upload/v1699238050/iterahero2023/MITRA%20ITERAHERO2023.png"
+                  // src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
+                  alignSelf={"center"}
+                />
+          <Wrap mt={6} justify={"center"} spacing={6}>
             {dataApiDashboard.map((item, index) => (
               <CardDashboard
                 data={{

@@ -36,6 +36,7 @@ function Peracikan() {
       if (response.data.data.length > 0) {
         setDataTandon(response.data.data);
         getInfo(response.data.data[0].id)
+        setSelected(response.data.data[0].id)
       }
     } catch (err) {
       console.error(err);
@@ -55,7 +56,7 @@ function Peracikan() {
         }
       );
       console.log(response.data.data)
-      setData(response.data.data[0]);
+      setData(response.data.data);
       setSelected(target)
     } catch (err) {
       console.error(err);
@@ -67,6 +68,8 @@ function Peracikan() {
     dispatch(routePageName("Peracikan"));
   }, []);
 
+  console.log(dataTandon);
+
   return (
     <>
       {isLoading ? (
@@ -75,13 +78,13 @@ function Peracikan() {
         <Flex flexDirection={'column'}>
           <Formik
             initialValues={{
-              tandon: 0,
+              tandon: selected,
             }}
           >
             {({ setFieldValue, values }) => (
               <Form>
                 <Select
-                  name="filter2"
+                  name="tandon"
                   as={Select}
                   borderRadius={"10"}
                   width={"100%"}
@@ -135,12 +138,11 @@ function Peracikan() {
               //  w={'50%'}
               w={{ sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%" }}
                >
-                {data.sensor && (
+                {data && (
                   <CardStatusPeracikan
                     id={selected}
-                    isOnline={dataTandon[0].isOnline}
-                    sensor={data.sensor}
-                    status={dataTandon[0].status}
+                    tandon={dataTandon.find((tandon) => tandon.id === selected )}
+                    sensor={data}
                   />
                 )}
               </Flex>

@@ -77,7 +77,7 @@ function GreenHouse() {
                 data={{
                   created_at: placement.created_at,
                   id: placement.id,
-                  image: placement.thumbnail,
+                  image: placement.image,
                   title: placement.name,
                   location: placement.location,
                   user_id: placement.user_id,

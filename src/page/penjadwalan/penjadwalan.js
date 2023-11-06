@@ -39,7 +39,7 @@ function Penjadwalan() {
         Authorization: `Bearer ${headers}`,
       },
       params: {
-        id: id
+        id
       }
     })
       .then((response) => {

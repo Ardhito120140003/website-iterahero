@@ -84,7 +84,7 @@ function GreenhouseEdit() {
         // },
         {
           name: valueName,
-          thumbnail: valueImage,
+          image: valueImage,
           location: valueLocation,
         },
         {

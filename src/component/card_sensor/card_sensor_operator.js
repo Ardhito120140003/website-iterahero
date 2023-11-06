@@ -19,14 +19,13 @@ function CardSensorOperator(props) {
   const base_url = useSelector(selectUrl);
   const navigate = useNavigate();
   const [dataTable, setDataTable] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const header = localStorage.getItem('token');
   const [sensorValue, setSensorValue] = useState([]);
   const [trigger, setTrigger] = useState(true)
 
   const getPagination = async () => {
-    setIsLoading(true);
     // let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
     // if (route) {
     let url = `${base_url}api/v1/${route}/${idApi}/sensor`;
@@ -43,7 +42,7 @@ function CardSensorOperator(props) {
       .catch((error) => {
         console.log(error);
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsLoading(false))
   };
 
   const fetchSensor = (id) => {
@@ -55,12 +54,14 @@ function CardSensorOperator(props) {
     getPagination();
     fetchSensor(dataTable.map((item, index) => item["id_sensor"]))
     setTimeout(() => setTrigger(!trigger), 2500)
-  }, [idApi, trigger]);
+  }, [trigger]);
 
   return (
     <>
       {isLoading ? (
-        <Loading />
+        <Flex alignItems={"center"}>
+          <Loading />
+        </Flex>
       ) : (
         <Wrap
           justify={'start'}
@@ -95,9 +96,14 @@ function CardSensorOperator(props) {
                   <Text color={`${item.color}`}>{item.name}</Text>
                 </Flex>
 
-                <Text my={"40px"} fontSize={'3xl'}>
-                  {sensorValue[index]} {item.unit_measurement}
-                </Text>
+                <Flex my={"20px"} justifyContent={'space-around'} alignItems={"center"}>
+                  <Text fontSize={'3xl'} color={sensorValue[index] ? 'black' : 'red'} textAlign={"right"}>
+                    {sensorValue[index] ?? '?'}
+                  </Text>
+                  <Text fontSize={'3xl'} textAlign={"left"}>
+                    {item.unit_measurement}
+                  </Text>
+                </Flex>
 
                 {item.id === '' ? (
                   <></>

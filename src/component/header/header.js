@@ -22,7 +22,8 @@ function Header() {
       justifyContent="space-between"
       alignItems="center"
       flexDirection="row"
-      shadow="0 0 0 1px rgba(0, 0, 0, 0.1)"
+      // shadow="0 0 0 1px rgba(0, 0, 0, 0.1)"
+      borderBottom={"2px solid rgba(0, 0, 0, 0.1)"}
     >
       <Icon
         as={AiOutlineMenu}

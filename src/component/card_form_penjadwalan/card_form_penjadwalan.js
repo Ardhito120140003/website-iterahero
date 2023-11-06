@@ -80,11 +80,6 @@ function CardFormPenjadwalan({ updateAction }) {
       });
   };
 
-  const handleFormulaChange = (e) => {
-    const selectedFormula = e.target.value;
-    setFormula(selectedFormula);
-  };
-
   const handleDay = (val) => {
     if (hari.includes(val)) {
       setHari([...hari.filter((item) => item !== val)]);
