@@ -15,7 +15,6 @@ import { selectUrl } from '../../features/auth/authSlice';
 import CustomCheckbox from './checkbox';
 
 const weekdays = [
-  
   { label: 'Senin', value: 1 },
   { label: 'Selasa', value: 2 },
   { label: 'Rabu', value: 3 },
@@ -52,7 +51,7 @@ function CardFormPenjadwalan({ updateAction }) {
       });
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newSchedule = {
       resep: formula,
       id_tandon: 1,
@@ -73,11 +72,11 @@ function CardFormPenjadwalan({ updateAction }) {
         setWaktuMulai('');
         setPerulangan('');
         setDurasi('');
-        updateAction();
       })
       .catch((error) => {
         console.error('Error menambahkan jadwal :', error);
-      });
+      })
+      .finally(() => updateAction());
   };
 
   const handleDay = (val) => {

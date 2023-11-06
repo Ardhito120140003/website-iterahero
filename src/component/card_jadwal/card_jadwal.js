@@ -36,14 +36,6 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
   const cancelRef = React.useRef();
   const [target, setTarget] = useState(null);
 
-  // const handleDay = (val) => {
-  //   if (hari.includes(val)) {
-  //     setHari([...hari.filter((item) => item !== val)]);
-  //   } else {
-  //     setHari([...hari, val]);
-  //   }
-  // };
-
   return (
     <Flex
       flexDirection="column"
