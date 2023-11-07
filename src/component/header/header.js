@@ -1,18 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Flex, Text, Icon, useDisclosure,
+  Flex, Text, Icon, useDisclosure, Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverArrow,
+  PopoverCloseButton,
+  Button,
+  Box
 } from '@chakra-ui/react';
-import { IoExitOutline } from 'react-icons/io5';
+import { IoExitOutline, IoNotificationsOutline, IoRefreshOutline } from 'react-icons/io5';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 import Draw from '../draw/draw';
-import { selectRoute, logout } from '../../features/auth/authSlice';
+import { selectRoute, logout, selectUrl, selectToken } from '../../features/auth/authSlice';
+import Loading from '../loading/loading';
+import axios from 'axios';
+import moment from "moment";
+
 
 function Header() {
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const routeName = useSelector(selectRoute);
+  const token = useSelector(selectToken)
+  const base_url = useSelector(selectUrl)
+  const [refresh, setRefresh] = useState(false);
+  const [notification, setNotification] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    axios.get(base_url + "api/v1/notification", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then((response) => {
+        if (response.data.data) {
+          setNotification(response.data.data)
+        }
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false))
+  }, [refresh])
 
   return (
     <Flex
@@ -22,7 +53,6 @@ function Header() {
       justifyContent="space-between"
       alignItems="center"
       flexDirection="row"
-      // shadow="0 0 0 1px rgba(0, 0, 0, 0.1)"
       borderBottom={"2px solid rgba(0, 0, 0, 0.1)"}
     >
       <Icon
@@ -49,28 +79,56 @@ function Header() {
       >
         {routeName}
       </Text>
-
-      <Flex flexDirection="row">
-        <Flex>
-        <Link
-          to="/login"
-          onClick={() => {
-            localStorage.clear();
-            dispatch(logout());
-          }}
-        >
-          <div>
+      <Flex flexDirection="row" alignItems={"center"} gap={10}>
+        <Popover>
+          <PopoverTrigger>
+            <Button>
+              <Icon cursor="pointer"
+                as={IoNotificationsOutline}
+                color="var(--color-primer)"
+                fontSize="xx-large"
+              />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <PopoverHeader>
+            <Flex justify={"space-between"}>
+              <Text>Notification!</Text>
+              <Icon cursor={"pointer"} as={IoRefreshOutline} color={"var(--color-primer)"} fontSize="large" />
+            </Flex>
+            </PopoverHeader>
+            <PopoverBody>
+              {loading ? (
+                <Loading />
+              ) : notification.length < 1 ? (<Text color={"gray.400"}>Tidak ada notifikasi</Text>) : (notification.map((item, index) => (
+                <Flex key={index} p={3} justifyContent={"space-between"} >
+                  <Text>{item.message}</Text>
+                  <Text color="gray.400">{moment(item["created_at"]).format('HH:mm YYYY-MM-DD')}</Text>
+                </Flex>
+              )))}
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
+        <Box>
+          <Button
+            backgroundColor={"red.200"}
+            // to="/login"
+            onClick={() => {
+              localStorage.clear();
+              dispatch(logout());
+            }}
+          >
             <Icon
               cursor="pointer"
               as={IoExitOutline}
               color="var(--color-primer)"
               fontSize="xx-large"
             />
-          </div>
-        </Link>
-        </Flex>
+          </Button>
+        </Box>
       </Flex>
-      
     </Flex>
   );
 }
