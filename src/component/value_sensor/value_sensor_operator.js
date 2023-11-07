@@ -25,7 +25,7 @@ function ValueSensorOperator(props) {
   const [category, setCategory] = useState('');
   const [status, setStatus] = useState('');
 
-  console.log(kategori);
+  // console.log(kategori);
 
   const [onRefresh, setOnRefresh] = useState(true);
   const [firstCheck, setFirstCheck] = useState(true);

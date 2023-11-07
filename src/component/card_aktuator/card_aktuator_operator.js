@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import {
   Text, Image, Flex, Wrap, WrapItem, Center, Switch
 } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 // import { paginationMonitoring } from '../../Utility/api_link';
 import Loading from '../loading/loading';
 
-import './card_sensor.css';
+import './card_aktuator.css';
 import { selectUrl } from '../../features/auth/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import ValueAktuatorOperator from '../value_aktuator/value_aktuator_operator';
 
@@ -17,32 +16,34 @@ function CardAktuatorOperator(props) {
   const idApi = props.data.id;
   const route = props.data.alat;
   const base_url = useSelector(selectUrl);
-  const navigate = useNavigate();
   const [dataTable, setDataTable] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
   const header = localStorage.getItem('token');
+  const [cursor, setCursor] = useState(null)
+  const [page, setPage] = useState(1)
 
   const getPagination = async () => {
-    setIsLoading(true);
-
     // let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
     // if (route) {
     let url = `${base_url}api/v1/${route}/${idApi}/actuator`;
     // }
     await axios.get(url, {
+      params: {
+        cursor: page === 1 ? null : cursor,
+        size: 50
+      },
       headers: {
         Authorization: `Bearer ${header}`,
       },
     })
       .then((response) => {
-        console.log(response.data.data)
+        setCursor(response.data.cursor)
         setDataTable(response.data.data);
-        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
   useEffect(() => {
     getPagination();

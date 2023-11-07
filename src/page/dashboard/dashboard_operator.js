@@ -24,7 +24,7 @@ import { Form, Formik } from "formik";
 import CardSensorOperator from "../../component/card_sensor/card_sensor_operator";
 import { MdOutlineAccessTime } from "react-icons/md";
 import { useParams } from 'react-router-dom';
-import CardAktuatorOperator from "../../component/card_sensor/card_aktuator_operator";
+import CardAktuatorOperator from "../../component/card_aktuator/card_aktuator_operator";
 import { logout } from "../../features/auth/authSlice";
 
 const DashboardOperator = () => {

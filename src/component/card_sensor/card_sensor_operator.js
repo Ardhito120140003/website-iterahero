@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import {
   Text, Image, Flex, Wrap, WrapItem, Center
 } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 // import { paginationMonitoring } from '../../Utility/api_link';
 import Loading from '../loading/loading';
 
 import './card_sensor.css';
 import { selectUrl } from '../../features/auth/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import ValueSensorOperator from '../value_sensor/value_sensor_operator';
 
@@ -17,13 +16,13 @@ function CardSensorOperator(props) {
   const idApi = props.data.id;
   const route = props.data.alat;
   const base_url = useSelector(selectUrl);
-  const navigate = useNavigate();
   const [dataTable, setDataTable] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const dispatch = useDispatch();
   const header = localStorage.getItem('token');
   const [sensorValue, setSensorValue] = useState([]);
   const [trigger, setTrigger] = useState(true)
+  const [cursor, setCursor] = useState(null)
+  const [page, setPage] = useState(1)
 
   const getPagination = async () => {
     // let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
@@ -31,12 +30,16 @@ function CardSensorOperator(props) {
     let url = `${base_url}api/v1/${route}/${idApi}/sensor`;
     // }
     axios.get(url, {
+      params: {
+        cursor: page === 1 ? null : cursor,
+        size: 50
+      },
       headers: {
         Authorization: `Bearer ${header}`,
       },
     })
       .then((response) => {
-        console.log(response.data.data)
+        setCursor(response.data.cursor);
         setDataTable(response.data.data);
       })
       .catch((error) => {
