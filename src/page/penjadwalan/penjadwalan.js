@@ -44,11 +44,11 @@ function Penjadwalan() {
     })
       .then((response) => {
         console.log(response);
-        setAction(!action);
       })
       .catch((err) => {
         console.error(err);
-      });
+      })
+      .finally(() => setAction(!action));
   };
 
   const handleUpdate = (id) => {
@@ -61,9 +61,9 @@ function Penjadwalan() {
     })
       .then(response => {
         console.log(response);
-        setAction(!action)
       })
       .catch(err => console.error(err))
+      .finally(() => setAction(!action))
   }
 
   const containerStyle = {
