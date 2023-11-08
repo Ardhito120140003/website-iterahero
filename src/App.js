@@ -28,7 +28,7 @@ import ScheduleEdit from './page/automation/scheduling_edit';
 import { selectToken, selectUser } from './features/auth/authSlice';
 import Peracikan from './page/peracikan/peracikan';
 import Penjadwalan from './page/penjadwalan/penjadwalan';
-import DashboardOperator from './page/dashboard/dashboard_operator';
+// import DashboardOperator from './page/dashboard/dashboard_operator';
 import Register from './page/register/Register';
 
 function App() {

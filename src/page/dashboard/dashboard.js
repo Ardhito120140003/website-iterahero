@@ -293,7 +293,7 @@ const DashboardOperator = () => {
                       justifyContent="space-around"
                     >
                       {/* <Icon as={MdOutlineMoreTime} color="#14453E" w="50px" h="50px" alignSelf="center" /> */}
-                      <Accordion color={'black'} allowToggle w={'100%'}>
+                      <Accordion border={'white'} color={'black'} allowToggle w={'100%'}>
                         <AccordionItem>
                           <h2>
                             <AccordionButton>

@@ -80,7 +80,7 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                   paddingX="10px"
                   justifyContent="space-around"
                 >
-                  <Accordion color={"black"} allowToggle w={"100%"}>
+                  <Accordion border={'white'} color={"black"} allowToggle w={"100%"}>
                     <AccordionItem>
                       <h2>
                         <AccordionButton>

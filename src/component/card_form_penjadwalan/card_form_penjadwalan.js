@@ -7,12 +7,15 @@ import {
   Input,
   FormControl,
   Wrap,
+  Icon,
   // WrapItem,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { selectUrl } from '../../features/auth/authSlice';
 import CustomCheckbox from './checkbox';
+import { BiTrash } from "react-icons/bi";
+import { MdOutlineLibraryAdd } from "react-icons/md";
 
 const weekdays = [
   { label: 'Senin', value: 1 },
@@ -33,6 +36,28 @@ function CardFormPenjadwalan({ updateAction }) {
   const base_url = useSelector(selectUrl);
   const header = localStorage.getItem('token');
   const [hari, setHari] = useState([]);
+
+  ////////////////////////////////////////////////
+
+  const [startTimes, setStartTimes] = useState(['']); // Initialize with one empty field
+
+  const handleAddStartTime = () => {
+    setStartTimes([...startTimes, '']); // Add a new empty field for the start time
+  };
+
+  const handleStartTimeChange = (index, e) => {
+    const updatedStartTimes = [...startTimes];
+    updatedStartTimes[index] = e.target.value;
+    setStartTimes(updatedStartTimes);
+  };
+
+  const handleRemoveStartTime = (index) => {
+    const updatedStartTimes = [...startTimes];
+    updatedStartTimes.splice(index, 1);
+    setStartTimes(updatedStartTimes);
+  };
+
+  /////////////////////////////////////////////
 
   useEffect(() => {
     axios.get(`${base_url}api/v1/resep`, {
@@ -112,15 +137,71 @@ function CardFormPenjadwalan({ updateAction }) {
 
         <FormControl my="10px" color="black">
           <Text>Jam Mulai</Text>
-          <Input
+          {/* <Input
             type="time"
             placeholder="--:--"
             value={waktuMulai}
             onChange={(e) => setWaktuMulai(e.target.value)}
-          />
+          /> */}
+
+          {startTimes.map((startTime, index) => (
+            <Flex key={index} my={'10px'}>
+              <Flex w={'100%'}>
+                <Input
+                  type="time"
+                  value={startTime}
+                  onChange={(e) => handleStartTimeChange(index, e)}
+                />
+              </Flex>
+
+              {startTimes.length > 1 && (
+              <Icon
+                as={BiTrash}
+                color="#14453E"
+                w="20px"
+                h="20px"
+                alignSelf="center"
+                ml={'10px'}
+                onClick={() => handleRemoveStartTime(index)}
+              />
+              )}
+
+              {/* <Button
+              fontSize={'13px'}
+              fontWeight={'bold'}
+              border={'1px'} 
+              borderColor={'blue.600'} 
+              bgColor={'white'} 
+              color={'blue.600'}  
+              ml={'10px'} 
+              onClick={() => handleRemoveStartTime(index)}>-</Button> */}
+            </Flex>
+          ))}
+
+
+
+          <Button
+            //w={'65px'}
+            h={'30px'}
+            fontSize={'13px'}
+            fontWeight={'bold'}
+            border={'1px'}
+            borderColor={"blue.600"}
+            bgColor={'white'}
+            color={"blue.600"}
+            onClick={handleAddStartTime} >
+            <Icon
+              as={MdOutlineLibraryAdd}
+              color="blue.600"
+              w="15px"
+              h="15px"
+              alignSelf="center"
+              onClick={handleAddStartTime}
+              mr={'10px'}
+            />Tambah</Button>
         </FormControl>
 
-        <FormControl my="10px" color="black">
+        {/* <FormControl my="10px" color="black">
           <Text>Perulangan</Text>
           <Input
             type="number"
@@ -128,7 +209,7 @@ function CardFormPenjadwalan({ updateAction }) {
             value={perulangan}
             onChange={(e) => setPerulangan(e.target.value)}
           />
-        </FormControl>
+        </FormControl> */}
 
         <FormControl my="10px" color="black">
           <Text>Durasi per penyiraman (menit)</Text>
@@ -140,23 +221,23 @@ function CardFormPenjadwalan({ updateAction }) {
           />
         </FormControl>
 
-        <FormControl 
-        // my="10px" 
-        color="black"
+        <FormControl
+          // my="10px" 
+          color="black"
         >
           <Text>Ulangi</Text>
           {/* <Flex> */}
-            <Wrap
-              marginTop="20px"
-              // direction="row" 
-              // justifyContent="flex-start"
-              gap={2}
-              
-            >
-              {weekdays.map((item, index) => (
-                <CustomCheckbox label={item.label} value={item.value} onSelect={handleDay} key={index} />
-              ))}
-            </Wrap>
+          <Wrap
+            marginTop="20px"
+            // direction="row" 
+            // justifyContent="flex-start"
+            gap={2}
+
+          >
+            {weekdays.map((item, index) => (
+              <CustomCheckbox label={item.label} value={item.value} onSelect={handleDay} key={index} />
+            ))}
+          </Wrap>
           {/* </Flex> */}
 
         </FormControl>
