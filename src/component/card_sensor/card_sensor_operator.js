@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Text, Image, Flex, Wrap, WrapItem, Center
+  Text, Image, Flex, Wrap, WrapItem, Center, Box
 } from '@chakra-ui/react';
 import axios from 'axios';
 // import { paginationMonitoring } from '../../Utility/api_link';
@@ -11,6 +11,7 @@ import { selectUrl } from '../../features/auth/authSlice';
 import { useSelector } from 'react-redux';
 
 import ValueSensorOperator from '../value_sensor/value_sensor_operator';
+import Pagination from '../pagination/Pagination';
 
 function CardSensorOperator(props) {
   const idApi = props.data.id;
@@ -23,16 +24,15 @@ function CardSensorOperator(props) {
   const [trigger, setTrigger] = useState(true)
   const [cursor, setCursor] = useState(null)
   const [page, setPage] = useState(1)
+  const [totalPage, setTotalPage] = useState(0)
 
   const getPagination = async () => {
     // let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
-    // if (route) {
     let url = `${base_url}api/v1/${route}/${idApi}/sensor`;
-    // }
     axios.get(url, {
       params: {
         cursor: page === 1 ? null : cursor,
-        size: 50
+        size: 2
       },
       headers: {
         Authorization: `Bearer ${header}`,
@@ -41,6 +41,7 @@ function CardSensorOperator(props) {
       .then((response) => {
         setCursor(response.data.cursor);
         setDataTable(response.data.data);
+        setTotalPage(response.data.totalPage);
       })
       .catch((error) => {
         console.log(error);
@@ -54,10 +55,15 @@ function CardSensorOperator(props) {
   }
 
   useEffect(() => {
-    getPagination();
-    fetchSensor(dataTable.map((item, index) => item["id_sensor"]))
-    setTimeout(() => setTrigger(!trigger), 2500)
-  }, [trigger]);
+    getPagination()
+  }, [page]);
+
+  useEffect(() => {
+    if (dataTable.length > 0) {
+      fetchSensor(dataTable.map((item, index) => item["id_sensor"]))
+      setTimeout(() => setTrigger(!trigger), 2500)
+    }
+  }, [trigger])
 
   return (
     <>
@@ -107,27 +113,27 @@ function CardSensorOperator(props) {
                     {item.unit_measurement}
                   </Text>
                 </Flex>
-
-                {item.id === '' ? (
-                  <></>
-                ) : (
-                  <ValueSensorOperator
-                    data={{
-                      id: item.id,
-                      color: item.color,
-                      category: item.name,
-                      unit: item.unit_measurement,
-                      max: item.range_max,
-                      min: item.range_min,
-                    }}
-                  />
-                )}
+                <ValueSensorOperator
+                  data={{
+                    id: item.id,
+                    color: item.color,
+                    category: item.name,
+                    unit: item.unit_measurement,
+                    max: item.range_max,
+                    min: item.range_min,
+                  }}
+                />
               </Center>
             </WrapItem>
             // </Link>
           ))}
         </Wrap>
       )}
+      {totalPage > 1 &&
+        <Box position={"sticky"}>
+          <Pagination currentPage={page} setPage={(halaman) => setPage(halaman)} totalPage={totalPage} />
+        </Box>
+      }
     </>
   );
 }
