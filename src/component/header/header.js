@@ -81,14 +81,14 @@ function Header() {
       >
         {routeName}
       </Text>
-      <Flex flexDirection="row" alignItems={"center"} gap={10}>
+      <Flex flexDirection="row" alignItems={"center"} gap={{base:1,sm:1,md:3,lg:5,xl:5}}>
         <Popover>
           <PopoverTrigger>
-            <Button>
+            <Button bgColor={'white'}>
               <Icon cursor="pointer"
                 as={IoNotificationsOutline}
                 color="var(--color-primer)"
-                fontSize="xx-large"
+                fontSize={{base:"x-large",sm:"x-large",md:"xx-large",lg:"xx-large",xl:"xx-large"}}
               />
             </Button>
           </PopoverTrigger>
@@ -98,7 +98,12 @@ function Header() {
             <PopoverHeader>
               <Flex justify={"flex-start"} alignItems={"center"}>
                 <Button>
-                  <Icon cursor={"pointer"} as={IoRefreshOutline} color={"var(--color-primer)"} fontSize="large" onClick={() => setRefresh(!refresh)} />
+                  <Icon 
+                  cursor={"pointer"} 
+                  as={IoRefreshOutline} 
+                  color={"var(--color-primer)"} 
+                  fontSize={{base:"medium",sm:"medium",md:"large",lg:"large",xl:"large"}}
+                  onClick={() => setRefresh(!refresh)} />
                 </Button>
                 <Text>Notification</Text>
               </Flex>
@@ -114,15 +119,15 @@ function Header() {
               )))}
             </PopoverBody>
             <PopoverFooter>
-              <Button>
-                <Link to={"/historynotifikasi"}>Show All</Link>
+              <Button color={"var(--color-primer)"} w={'100%'}>
+                <Link to={"/unit/historynotifikasi"}>Show All</Link>
               </Button>
             </PopoverFooter>
           </PopoverContent>
         </Popover>
         <Box>
           <Button
-            backgroundColor={"red.200"}
+            bgColor={"white"}
             // to="/login"
             onClick={() => {
               localStorage.clear();
@@ -133,7 +138,7 @@ function Header() {
               cursor="pointer"
               as={IoExitOutline}
               color="var(--color-primer)"
-              fontSize="xx-large"
+              fontSize={{base:"x-large",sm:"x-large",md:"xx-large",lg:"xx-large",xl:"xx-large"}}
             />
           </Button>
         </Box>

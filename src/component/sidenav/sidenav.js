@@ -7,7 +7,7 @@ import { FiHome, FiMonitor } from 'react-icons/fi';
 import { GiGreenhouse } from 'react-icons/gi';
 import {
   AiOutlineControl,
-  AiOutlineHistory,
+ // AiOutlineHistory,
   AiOutlineHourglass,
 } from 'react-icons/ai';
 import { MdOutlineMoreTime } from 'react-icons/md';
@@ -144,7 +144,7 @@ function SideNav() {
             }
           />
         </Link>
-        <Link
+        {/* <Link
           to="/unit/historynotifikasi"
           onClick={() => {
             patchRoute('History Notification');
@@ -156,7 +156,7 @@ function SideNav() {
             title="Notification"
             active={routeName === 'History Notification'}
           />
-        </Link>
+        </Link> */}
       </Flex>
     </Flex>
   );

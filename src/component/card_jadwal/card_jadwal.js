@@ -19,11 +19,31 @@ import {
   useDisclosure,
   Box,
   Wrap,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  FormControl,
+  Input,
 } from "@chakra-ui/react";
 import { MdOutlineAccessTime } from "react-icons/md";
 import { BiTrash } from "react-icons/bi";
 import { motion, AnimatePresence } from "framer-motion";
 import { RiPencilFill } from 'react-icons/ri';
+import CustomCheckbox from "../card_form_penjadwalan/checkbox";
+
+const weekdays = [
+  { label: 'Senin', value: 1 },
+  { label: 'Selasa', value: 2 },
+  { label: 'Rabu', value: 3 },
+  { label: 'Kamis', value: 4 },
+  { label: 'Jumat', value: 5 },
+  { label: 'Sabtu', value: 6 },
+  { label: 'Minggu', value: 0 },
+];
 
 function getDayName(dayValue) {
   const daysOfWeek = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
@@ -31,9 +51,19 @@ function getDayName(dayValue) {
 }
 
 function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isEditModalOpen, onOpen: onEditModalOpen, onClose: onEditModalClose } = useDisclosure();
+  const { isOpen: isDeleteModalOpen, onOpen: onDeleteModalOpen, onClose: onDeleteModalCLose } = useDisclosure();
   const cancelRef = React.useRef();
   const [target, setTarget] = useState(null);
+  const [hari, setHari] = useState([]);
+
+  const handleDay = (val) => {
+    if (hari.includes(val)) {
+      setHari([...hari.filter((item) => item !== val)]);
+    } else {
+      setHari([...hari, val]);
+    }
+  };
 
   return (
     <Flex
@@ -167,7 +197,7 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                         h="20px"
                         alignSelf="center"
                         onClick={() => {
-                          onOpen();
+                          onDeleteModalOpen();
                           setTarget(item.id);
                         }}
                       />
@@ -182,16 +212,83 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                         w="20px"
                         h="20px"
                         color="#007BFF"
+                        onClick={() => {
+                          onEditModalOpen();
+                        }}
                       />
                       {/* </Link> */}
                     </Flex>
 
                   </Flex>
 
+                  <Modal isOpen={isEditModalOpen} onClose={onEditModalClose}>
+                    <ModalOverlay />
+                    <ModalContent p={"10px"}>
+                      <ModalHeader alignSelf="center">Ubah Jadwal</ModalHeader>
+                      <ModalCloseButton />
+                      <ModalBody pb={6}>
+
+                      <FormControl my="10px" color="black">
+                          <Text>Jam Penyiraman</Text>
+                          <Input
+                            type="time"
+                            mt={'10px'}
+                            placeholder="60 (untuk satu jam)"
+                            // value={durasi}
+                            // onInput={(e) => setDurasi(e.target.value)}
+                          />
+                        </FormControl>
+
+                        <FormControl my="10px" color="black">
+                          <Text>Durasi per penyiraman (menit)</Text>
+                          <Input
+                            type="number"
+                            mt={'10px'}
+                            placeholder="60 (untuk satu jam)"
+                            // value={durasi}
+                            // onInput={(e) => setDurasi(e.target.value)}
+                          />
+                        </FormControl>
+
+                        <FormControl
+                          color="black"
+                        >
+                          <Text>Ulangi</Text>
+                          <Wrap
+                            marginTop="10px"
+                            // direction="row" 
+                            // justifyContent="flex-start"
+                            gap={2}
+                          >
+                            {weekdays.map((item, index) => (
+                              <CustomCheckbox label={item.label} value={item.value} onSelect={handleDay} key={index} />
+                            ))}
+                          </Wrap>
+
+                        </FormControl>
+                      </ModalBody>
+
+                      <ModalFooter>
+                        <Button
+                          onClick={() => { onEditModalClose(); }}
+                          backgroundColor="#09322D"
+                          color="white"
+                          mr="3"
+                          paddingX="30px"
+                        //disabled={ppm === '' || rasioA === '' || rasioB === '' || rasioAir === ''}
+                        >
+                          Simpan
+                        </Button>
+                        <Button onClick={onEditModalClose}>Cancel</Button>
+                      </ModalFooter>
+                    </ModalContent>
+                  </Modal>
+
+
                   <AlertDialog
-                    isOpen={isOpen}
+                    isOpen={isDeleteModalOpen}
                     leastDestructiveRef={cancelRef}
-                    onClose={onClose}
+                    onClose={onDeleteModalCLose}
                   >
                     <AlertDialogOverlay>
                       <AlertDialogContent>
@@ -205,14 +302,14 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
-                          <Button ref={cancelRef} onClick={onClose}>
+                          <Button ref={cancelRef} onClick={onDeleteModalCLose}>
                             Cancel
                           </Button>
                           <Button
                             colorScheme="red"
                             ml={3}
                             onClick={() => {
-                              onClose();
+                              onDeleteModalCLose();
                               deleteHandler(target);
                             }}
                           >

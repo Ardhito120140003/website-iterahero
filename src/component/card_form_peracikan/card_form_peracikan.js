@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import Loading from '../loading/loading';
+//import Loading from '../loading/loading';
 import { selectUrl } from '../../features/auth/authSlice';
 
 function CardFormPeracikan() {
@@ -107,9 +107,9 @@ function CardFormPeracikan() {
 
   return (
     <>
-      {dataApi.length < 1 ? (
+      {/* {dataApi.length < 1 ? (
         <Loading />
-      ) : (
+      ) : ( */}
         <Flex flexDirection="column" width="100%" height="100%">
           <Box color="black" mb="20px" mt="5px">
             <Select
@@ -310,7 +310,7 @@ function CardFormPeracikan() {
             </form>
           </Box>
         </Flex>
-      )}
+      {/* )} */}
     </>
   );
 }

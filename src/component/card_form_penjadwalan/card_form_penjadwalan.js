@@ -49,12 +49,14 @@ function CardFormPenjadwalan({ updateAction }) {
     const updatedStartTimes = [...startTimes];
     updatedStartTimes[index] = e.target.value;
     setStartTimes(updatedStartTimes);
+    console.log(startTimes);
   };
 
   const handleRemoveStartTime = (index) => {
     const updatedStartTimes = [...startTimes];
     updatedStartTimes.splice(index, 1);
     setStartTimes(updatedStartTimes);
+    console.log(startTimes);
   };
 
   /////////////////////////////////////////////
