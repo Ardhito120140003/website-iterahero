@@ -80,7 +80,7 @@ function CardFormPenjadwalan({ updateAction }) {
     const newSchedule = {
       resep: formula,
       id_tandon: 1,
-      waktu: waktuMulai,
+      waktu: startTimes,
       iterasi: parseInt(perulangan),
       durasi: parseInt(durasi),
       hari
@@ -136,7 +136,7 @@ function CardFormPenjadwalan({ updateAction }) {
         </FormControl>
 
         <FormControl my="10px" color="black">
-          <Text>Jam Mulai</Text>
+          <Text>Jam Penyiraman</Text>
           {/* <Input
             type="time"
             placeholder="--:--"

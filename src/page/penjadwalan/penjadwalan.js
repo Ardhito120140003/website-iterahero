@@ -33,7 +33,7 @@ function Penjadwalan() {
     dispatch(routePageName('Penjadwalan'));
   }, [action]);
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     axios.delete(`${base_url}api/v1/penjadwalan`, {
       headers: {
         Authorization: `Bearer ${headers}`,
@@ -51,7 +51,7 @@ function Penjadwalan() {
       .finally(() => setAction(!action));
   };
 
-  const handleUpdate = (id) => {
+  const handleUpdate = async (id) => {
     axios.patch(`${base_url}api/v1/penjadwalan`, {
       id
     }, {
@@ -81,14 +81,14 @@ function Penjadwalan() {
       {data === null ? (
         <Loading />
       ) : (
-        <Flex gap={'20px'} direction={{ sm: 'column-reverse', md: 'row', lg: 'row', xl: 'row', "2xl": 'row' }}>
-          <Flex w={{ sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%" }}>
+        <Flex gap={'20px'} direction={{ sm: 'column', md: 'row', lg: 'row', xl: 'row', "2xl": 'row' }}>
+          <Flex w={{ sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%", base: "100%" }}>
             <CardFormPenjadwalan
               updateAction={() => setAction(!action)}
               style={cardStyle}
             />
           </Flex>
-          <Flex w={{ sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%" }}>
+          <Flex w={{ sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%", base: "100%" }}>
             <CardJadwal jadwal={data} deleteHandler={handleDelete} updateHandler={handleUpdate} style={cardStyle} />
           </Flex>
         </Flex>

@@ -49,15 +49,12 @@ function App() {
           <Route path="penjadwalan" element={<Penjadwalan />} />
           <Route path="greenhouse/add" element={<GreenhouseAdd />} />
           <Route path="greenhouse/:slug" element={<GreenhouseEdit />} />
+          <Route path="historynotifikasi" element={<Notification />} />
+          <Route path="historynotifikasi/more-notification" element={<MoreNotification />} />
           {user === 'admin' ? (
             <>
               <Route path="monitoring" element={<Monitoring />} />
               <Route path="controlling" element={<Controlling />} />
-              <Route path="historynotifikasi" element={<Notification />} />
-              <Route
-                path="historynotifikasi/more-notifcation"
-                element={<MoreNotification />}
-              />
               <Route path="dashboard/sensor/:id" element={<Grafik />} />
               <Route path="monitoring/add/:id" element={<Monitoring_Add />} />
               <Route path="controlling/add/:id" element={<Controlling_Add />} />

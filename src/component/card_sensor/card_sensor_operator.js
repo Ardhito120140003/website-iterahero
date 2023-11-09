@@ -32,13 +32,14 @@ function CardSensorOperator(props) {
     axios.get(url, {
       params: {
         cursor: page === 1 ? null : cursor,
-        size: 2
+        size: 50
       },
       headers: {
         Authorization: `Bearer ${header}`,
       },
     })
       .then((response) => {
+        console.log(response.data.data)
         setCursor(response.data.cursor);
         setDataTable(response.data.data);
         setTotalPage(response.data.totalPage);
@@ -54,15 +55,15 @@ function CardSensorOperator(props) {
     setSensorValue(data)
   }
 
+  // Fetch sensor
   useEffect(() => {
-    getPagination()
+    getPagination().then(() => console.log(dataTable.length))
   }, [page]);
 
+  // Bacaan sensor
   useEffect(() => {
-    if (dataTable.length > 0) {
-      fetchSensor(dataTable.map((item, index) => item["id_sensor"]))
-      setTimeout(() => setTrigger(!trigger), 2500)
-    }
+    fetchSensor(dataTable.map((item, index) => item["id_sensor"]))
+    setTimeout(() => setTrigger(!trigger), 2500)
   }, [trigger])
 
   return (

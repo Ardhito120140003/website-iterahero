@@ -62,10 +62,10 @@ function SideNav() {
             icon={FiHome}
             title="Dashboard"
             active={
-                routeName === 'Dashboard'
-                || routeName.includes('Automation')
-                || routeName.includes('automation')
-              }
+              routeName === 'Dashboard'
+              || routeName.includes('Automation')
+              || routeName.includes('automation')
+            }
           />
         </Link>
         <Link
@@ -94,9 +94,9 @@ function SideNav() {
                 icon={FiMonitor}
                 title="Monitoring"
                 active={
-                    routeName === 'Monitoring'
-                    || routeName === 'Monitoring Detail'
-                  }
+                  routeName === 'Monitoring'
+                  || routeName === 'Monitoring Detail'
+                }
               />
             </Link>
             <Link
@@ -112,19 +112,6 @@ function SideNav() {
                 active={routeName === 'Controlling'}
               />
             </Link>
-            <Link
-              to="/unit/historynotifikasi"
-              onClick={() => {
-                patchRoute('History Notification');
-              }}
-            >
-              <NavItem
-                navSize={navSize}
-                icon={AiOutlineHistory}
-                title="Notification"
-                active={routeName === 'History Notification'}
-              />
-            </Link>
           </>
         ) : null}
         <Link
@@ -138,8 +125,8 @@ function SideNav() {
             icon={AiOutlineHourglass}
             title="Peracikan"
             active={
-                routeName === 'Peracikan'
-              }
+              routeName === 'Peracikan'
+            }
           />
         </Link>
         <Link
@@ -153,8 +140,21 @@ function SideNav() {
             icon={MdOutlineMoreTime}
             title="Penjadwalan"
             active={
-                routeName === 'Penjadwalan'
-              }
+              routeName === 'Penjadwalan'
+            }
+          />
+        </Link>
+        <Link
+          to="/unit/historynotifikasi"
+          onClick={() => {
+            patchRoute('History Notification');
+          }}
+        >
+          <NavItem
+            navSize={navSize}
+            icon={AiOutlineHistory}
+            title="Notification"
+            active={routeName === 'History Notification'}
           />
         </Link>
       </Flex>

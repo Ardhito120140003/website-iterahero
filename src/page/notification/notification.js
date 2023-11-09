@@ -58,7 +58,7 @@ function Notification() {
           <Flex gap="20px" width="100%" flexDir="column">
             {dataNotification.map((item, index) => <CardNotification key={index} data={item} index={index} />)}
           </Flex>
-          <Link to="/unit/historynotifikasi/more-notifcation">
+          <Link to="/unit/historynotifikasi/more-notification">
             <Button
               marginTop="36px"
               width="100%"

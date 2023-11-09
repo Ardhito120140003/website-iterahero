@@ -142,7 +142,7 @@ const DashboardOperator = () => {
           </Wrap>
 
           <Grid templateColumns={{ md: 'repeat(3, 1fr)', base: 'repeat(1, 1fr)' }} gap={6} mt={5}>
-            <GridItem colSpan={2} >
+            <GridItem colSpan={2} w={"100%"}>
               <Formik
                 initialValues={{
                   filter1: firstFilter,
@@ -256,86 +256,87 @@ const DashboardOperator = () => {
 
 
             {/* ================================ jadwal =====================================*/}
-            <Flex flexDir={'column'} border={'3px solid #d9d9d9'} borderRadius={15} minH={'100px'} >
+            <GridItem w={"100%"}>
+              <Flex flexDir={'column'} border={'3px solid #d9d9d9'} borderRadius={15} minH={'100px'} >
+                <Flex m={'20px'} justifyContent={'center'}>
+                  <Text align="center">
+                    Penjadwalan Hari Ini
+                  </Text>
+                </Flex>
 
-              <Flex m={'20px'} justifyContent={'center'}>
-                <Text align="center">
-                  Penjadwalan Hari Ini
-                </Text>
-              </Flex>
+                <Flex css={{
+                  overflowY: 'scroll',
+                  '&::-webkit-scrollbar': {
+                    width: '0.4em',
+                  },
+                  '&::-webkit-scrollbar-thumb': {
+                    backgroundColor: 'transparent',
+                  },
+                }}
+                  flexDirection="column"
+                  width="100%"
+                  height={"425px"}>
 
-              <Flex css={{
-                overflowY: 'scroll',
-                '&::-webkit-scrollbar': {
-                  width: '0.4em',
-                },
-                '&::-webkit-scrollbar-thumb': {
-                  backgroundColor: 'transparent',
-                },
-              }}
-                flexDirection="column"
-                width="100%"
-                height={"425px"}>
-
-                {dataApiPenjadwalan.length < 1 && isLoading ? (
-                  <Loading />
-                ) : dataApiPenjadwalan.length < 1 ? (
-                  <Text color={'gray'} mt={'100px'}>Tidak Ada data Penjadwalan</Text>
-                ) : (
-                  dataApiPenjadwalan.map((item, index) => (
-                    // <Box color={'black'} key={index}>{JSON.stringify(item)}</Box>
-                    <Flex
-                      key={index}
-                      borderRadius="10px"
-                      border="1px solid #E2E8F0"
-                      marginY="8px"
-                      marginX="20px"
-                      justifyContent="space-around"
-                    >
-                      {/* <Icon as={MdOutlineMoreTime} color="#14453E" w="50px" h="50px" alignSelf="center" /> */}
-                      <Accordion border={'white'} color={'black'} allowToggle w={'100%'}>
-                        <AccordionItem>
-                          <h2>
-                            <AccordionButton>
-                              <Flex flexDir={'row'} as="span" flex='1' textAlign='left'>
-                                <Icon as={MdOutlineAccessTime} color="#14453E" w="35px" h="35px" alignSelf="center" />
-                                {/* <Text ml={'10px'} alignSelf={'center'}>{item.waktu} - {item.resep.nama} </Text> */}
-                                <Text ml={'10px'} alignSelf={'center'}>{item.waktu} - {item.resep.nama} </Text>
-                              </Flex>
-                              <AccordionIcon />
-                            </AccordionButton>
-                          </h2>
-                          <AccordionPanel pb={4} fontSize={'0.8rem'}>
-                            <Flex direction={'column'}>
-                              <Flex flexDir={'row'} >
-                                <Flex flexDir="row">
-                                  <Flex direction={'column'} alignItems={'flex-start'} >
-                                    <Text color="black"> Formula </Text>
-                                    <Text color="black"> Jam </Text>
-                                    <Text color="black" > Durasi Siram</Text>
-                                  </Flex>
-                                  <Flex direction={'column'}>
-                                    <Text color="black"> : </Text>
-                                    <Text color="black"> : </Text>
-                                    <Text color="black"> : </Text>
-                                  </Flex>
-                                  <Flex direction={'column'} alignItems={'flex-start'}>
-                                    <Text color="black"> {item.resep.nama} </Text>
-                                    <Text color="black"> {item.waktu} </Text>
-                                    <Text color="black"> {item.durasi} Menit</Text>
+                  {dataApiPenjadwalan.length < 1 && isLoading ? (
+                    <Loading />
+                  ) : dataApiPenjadwalan.length < 1 ? (
+                    <Text color={'gray'} mt={'100px'}>Tidak Ada data Penjadwalan</Text>
+                  ) : (
+                    dataApiPenjadwalan.map((item, index) => (
+                      // <Box color={'black'} key={index}>{JSON.stringify(item)}</Box>
+                      <Flex
+                        key={index}
+                        borderRadius="10px"
+                        border="1px solid #E2E8F0"
+                        marginY="8px"
+                        marginX="20px"
+                        justifyContent="space-around"
+                      >
+                        {/* <Icon as={MdOutlineMoreTime} color="#14453E" w="50px" h="50px" alignSelf="center" /> */}
+                        <Accordion border={'white'} color={'black'} allowToggle w={'100%'}>
+                          <AccordionItem>
+                            <h2>
+                              <AccordionButton>
+                                <Flex flexDir={'row'} as="span" flex='1' textAlign='left'>
+                                  <Icon as={MdOutlineAccessTime} color="#14453E" w="35px" h="35px" alignSelf="center" />
+                                  {/* <Text ml={'10px'} alignSelf={'center'}>{item.waktu} - {item.resep.nama} </Text> */}
+                                  <Text ml={'10px'} alignSelf={'center'}>{item.waktu} - {item.resep.nama} </Text>
+                                </Flex>
+                                <AccordionIcon />
+                              </AccordionButton>
+                            </h2>
+                            <AccordionPanel pb={4} fontSize={'0.8rem'}>
+                              <Flex direction={'column'}>
+                                <Flex flexDir={'row'} >
+                                  <Flex flexDir="row">
+                                    <Flex direction={'column'} alignItems={'flex-start'} >
+                                      <Text color="black"> Formula </Text>
+                                      <Text color="black"> Jam </Text>
+                                      <Text color="black" > Durasi Siram</Text>
+                                    </Flex>
+                                    <Flex direction={'column'}>
+                                      <Text color="black"> : </Text>
+                                      <Text color="black"> : </Text>
+                                      <Text color="black"> : </Text>
+                                    </Flex>
+                                    <Flex direction={'column'} alignItems={'flex-start'}>
+                                      <Text color="black"> {item.resep.nama} </Text>
+                                      <Text color="black"> {item.waktu} </Text>
+                                      <Text color="black"> {item.durasi} Menit</Text>
+                                    </Flex>
                                   </Flex>
                                 </Flex>
                               </Flex>
-                            </Flex>
-                          </AccordionPanel>
-                        </AccordionItem>
-                      </Accordion>
-                    </Flex>
-                  )
-                  ))
-                }
+                            </AccordionPanel>
+                          </AccordionItem>
+                        </Accordion>
+                      </Flex>
+                    )
+                    ))
+                  }
+                </Flex>
               </Flex>
-            </Flex>
+            </GridItem>
           </Grid>
         </Flex>
       )}

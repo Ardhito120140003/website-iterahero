@@ -8,7 +8,8 @@ import {
   PopoverArrow,
   PopoverCloseButton,
   Button,
-  Box
+  Box,
+  PopoverFooter
 } from '@chakra-ui/react';
 import { IoExitOutline, IoNotificationsOutline, IoRefreshOutline } from 'react-icons/io5';
 import { AiOutlineMenu } from 'react-icons/ai';
@@ -18,6 +19,7 @@ import { selectRoute, logout, selectUrl, selectToken } from '../../features/auth
 import Loading from '../loading/loading';
 import axios from 'axios';
 import moment from "moment";
+import { Link } from 'react-router-dom';
 
 
 function Header() {
@@ -94,21 +96,28 @@ function Header() {
             <PopoverArrow />
             <PopoverCloseButton />
             <PopoverHeader>
-            <Flex justify={"space-between"}>
-              <Text>Notification!</Text>
-              <Icon cursor={"pointer"} as={IoRefreshOutline} color={"var(--color-primer)"} fontSize="large" />
-            </Flex>
+              <Flex justify={"flex-start"} alignItems={"center"}>
+                <Button>
+                  <Icon cursor={"pointer"} as={IoRefreshOutline} color={"var(--color-primer)"} fontSize="large" onClick={() => setRefresh(!refresh)} />
+                </Button>
+                <Text>Notification</Text>
+              </Flex>
             </PopoverHeader>
             <PopoverBody>
               {loading ? (
                 <Loading />
               ) : notification.length < 1 ? (<Text color={"gray.400"}>Tidak ada notifikasi</Text>) : (notification.map((item, index) => (
-                <Flex key={index} p={3} justifyContent={"space-between"} >
-                  <Text>{item.message}</Text>
-                  <Text color="gray.400">{moment(item["created_at"]).format('HH:mm YYYY-MM-DD')}</Text>
+                <Flex key={index} p={3} justifyContent={"space-between"} alignItems={"baseline"} >
+                  <Text flex={3} textAlign={"left"}>{item.message}</Text>
+                  <Text flex={2} color="gray.400" fontSize={'2xs'}>{moment(item["created_at"]).format('HH:mm YYYY-MM-DD')}</Text>
                 </Flex>
               )))}
             </PopoverBody>
+            <PopoverFooter>
+              <Button>
+                <Link to={"/historynotifikasi"}>Show All</Link>
+              </Button>
+            </PopoverFooter>
           </PopoverContent>
         </Popover>
         <Box>
