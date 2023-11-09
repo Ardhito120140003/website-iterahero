@@ -302,7 +302,7 @@ function CardFormPeracikan() {
                     >
                       Simpan Formula
                     </Button>
-                    <Button onClick={onOpenSaveModal}>Cancel</Button>
+                    <Button onClick={onCloseSaveModal}>Cancel</Button>
                   </ModalFooter>
                 </ModalContent>
               </Modal>

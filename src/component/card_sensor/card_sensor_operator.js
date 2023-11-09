@@ -89,7 +89,7 @@ function CardSensorOperator(props) {
               paddingBottom="20px"
               px={'15px'}
               // w={'48.5%'}
-              w={{ sm: '100%', md: "100%", lg: "48%", xl: '48.5%', "2xl": "48.5%" }}
+              w={{ base:'100%', sm: '100%', md: "100%", lg: "48%", xl: '48.5%', "2xl": "48.5%" }}
 
             >
               <Center

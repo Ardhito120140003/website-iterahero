@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   Flex,
   Text,
-  Grid,
-  GridItem,
   Wrap,
   Select,
   Accordion,
@@ -120,7 +118,7 @@ const DashboardOperator = () => {
       {isLoading ? (
         <Loading />
       ) : (
-        <Flex flexDirection={"column"}>
+        <Flex flexDirection={'column'}>
           <Image
             width={"22%"}
             height={"auto"}
@@ -141,8 +139,8 @@ const DashboardOperator = () => {
             ))}
           </Wrap>
 
-          <Grid templateColumns={{ md: 'repeat(3, 1fr)', base: 'repeat(1, 1fr)' }} gap={6} mt={5}>
-            <GridItem colSpan={2} w={"100%"}>
+          <Flex direction={{base:"column",sm:'column',md:'row',lg:'row',xl:'row'}} mt={5} gap={5}>
+            <Flex flex={2}>
               <Formik
                 initialValues={{
                   filter1: firstFilter,
@@ -153,7 +151,7 @@ const DashboardOperator = () => {
                 }}
               >
                 {({ values, setFieldValue, resetForm }) => (
-                  <Form>
+                  <Form style={{width:'100%'}}>
                     <Flex alignItems={"space-between"}>
                       <Select
                         size={"lg"}
@@ -252,12 +250,12 @@ const DashboardOperator = () => {
                   </Form>
                 )}
               </Formik>
-            </GridItem>
+            </Flex>
 
 
             {/* ================================ jadwal =====================================*/}
-            <GridItem w={"100%"}>
-              <Flex flexDir={'column'} border={'3px solid #d9d9d9'} borderRadius={15} minH={'100px'} >
+            <Flex flex={1}>
+              <Flex flexDir={'column'} border={'3px solid #d9d9d9'} borderRadius={15} minH={'100px'} w={'100%'}>
                 <Flex m={'20px'} justifyContent={'center'}>
                   <Text align="center">
                     Penjadwalan Hari Ini
@@ -336,8 +334,8 @@ const DashboardOperator = () => {
                   }
                 </Flex>
               </Flex>
-            </GridItem>
-          </Grid>
+            </Flex>
+          </Flex>
         </Flex>
       )}
     </>

@@ -150,9 +150,10 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
         borderRadius={"10px"}
         w={"100%"}
         p={"15px"}
-        justify={"center"}
         my={"20px"}
-        paddingLeft={"60px"}
+        paddingLeft={{base:"7%",sm:"15%",md:"15%",lg:"13%",xl:"15%"}}
+        // justifyContent={'center'}
+        // alignContent={'center'}
       >
         {sensor.map((item, index) => (
           <Grid key={index} templateColumns="repeat(2, 1fr)">

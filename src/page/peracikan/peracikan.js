@@ -115,7 +115,7 @@ function Peracikan() {
           </Formik>
 
           <Flex gap={5} mt={"20px"} w={'100%'}
-          direction={{ sm: 'column-reverse', md: 'row', lg: 'row', xl: 'row', "2xl": 'row' }}
+          direction={{ base:'column-reverse', sm: 'column-reverse', md: 'row', lg: 'row', xl: 'row', "2xl": 'row' }}
           >
      
               {/* <ValueTandon tandonBahan={data.tandonBahan} /> */}
@@ -126,7 +126,7 @@ function Peracikan() {
                 p={"30px"}
                 h={"100%"}
                 // w={'50%'}
-                w={{ sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%" }}
+                w={{ base:'100%', sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%" }}
 
               >
                 <Text mb={"20px"}>Form Peracikan</Text>
@@ -136,7 +136,7 @@ function Peracikan() {
 
               <Flex
               //  w={'50%'}
-              w={{ sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%" }}
+              w={{ base:'100%', sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%" }}
                >
                 {data && (
                   <CardStatusPeracikan

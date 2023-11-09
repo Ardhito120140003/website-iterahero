@@ -15,7 +15,7 @@ function CardDashboard(props) {
       borderColor="#D9D9D9"
       px={5}
       boxShadow="0px 0.1px 2px rgba(0, 0, 0, 0.25)"
-      w={{ sm:'80%', md:"40%", lg:"40%", xl: "31%" }}
+      w={{ base:'80%', sm:'80%', md:"40%", lg:"40%", xl: "31%" }}
       h={{ base: '120px', sm: '120px', md: '220px', lg: '220px', xl: '220px', "2xl": '220px'}}
       align="center"
       justifyContent="center"
