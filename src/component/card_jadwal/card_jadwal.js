@@ -56,6 +56,12 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
   const cancelRef = React.useRef();
   const [target, setTarget] = useState(null);
   const [hari, setHari] = useState([]);
+  const [editingIndex, setEditingIndex] = useState(null);
+
+  const handleEditClick = (index) => {
+    setEditingIndex(index);
+    onEditModalOpen();
+  };
 
   const handleDay = (val) => {
     if (hari.includes(val)) {
@@ -203,11 +209,10 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                       />
                     </Flex>
 
-                    <Flex alignSelf="center">
-                      {/* <Link
-                      className="touch"
-                    > */}
+                    {/* <Flex alignSelf="center">
+         
                       <Icon
+                        key={index}
                         as={RiPencilFill}
                         w="20px"
                         h="20px"
@@ -216,12 +221,83 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                           onEditModalOpen();
                         }}
                       />
-                      {/* </Link> */}
+              
+                    </Flex> */}
+
+                    <Flex alignSelf="center">
+                      <Icon
+                        as={RiPencilFill}
+                        w="20px"
+                        h="20px"
+                        color="#007BFF"
+                        onClick={() => handleEditClick(index)} // Pass the index to handleEditClick
+                      />
                     </Flex>
 
                   </Flex>
 
-                  <Modal isOpen={isEditModalOpen} onClose={onEditModalClose}>
+                  <Modal isOpen={isEditModalOpen} onClose={() => { onEditModalClose(); setEditingIndex(null); }}>
+                    {/* ... (existing code) */}
+                    <ModalOverlay />
+                    <ModalContent p={"10px"}>
+                      <ModalHeader alignSelf="center">Ubah Jadwal</ModalHeader>
+                      <ModalCloseButton />
+                
+                    <ModalBody pb={6}>
+                      <FormControl my="10px" color="black">
+                        <Text>Waktu Penyiraman</Text>
+                        <Input
+                          type="time"
+                          mt={'10px'}
+                          defaultValue={editingIndex !== null ? jadwal[editingIndex].waktu : ''}
+                        />
+                      </FormControl>
+
+                      <FormControl my="10px" color="black">
+                        <Text>Durasi per penyiraman (menit)</Text>
+                        <Input
+                          type="number"
+                          mt={'10px'}
+                          defaultValue={editingIndex !== null ? jadwal[editingIndex].resep.interval : ''}
+                        />
+                      </FormControl>
+
+                      <FormControl color="black">
+                        <Text>Ulangi</Text>
+                        <Wrap
+                          marginTop="10px"
+                          gap={2}
+                        >
+                          {weekdays.map((weekday) => (
+                            <CustomCheckbox
+                              label={weekday.label}
+                              value={weekday.value}
+                              onSelect={handleDay}
+                              key={weekday.value}
+                              isChecked={editingIndex !== null && jadwal[editingIndex].hari.includes(weekday.value)}
+                            />
+                          ))}
+                        </Wrap>
+                      </FormControl>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button
+                          onClick={() => { onEditModalClose(); }}
+                          backgroundColor="#09322D"
+                          color="white"
+                          mr="3"
+                          paddingX="30px"
+                        //disabled={ppm === '' || rasioA === '' || rasioB === '' || rasioAir === ''}
+                        >
+                          Simpan
+                        </Button>
+                        <Button onClick={onEditModalClose}>Cancel</Button>
+                      </ModalFooter>
+                    </ModalContent>
+                    {/* ... (existing code) */}
+                  </Modal>
+
+                  {/* <Modal isOpen={isEditModalOpen} onClose={onEditModalClose}>
                     <ModalOverlay />
                     <ModalContent p={"10px"}>
                       <ModalHeader alignSelf="center">Ubah Jadwal</ModalHeader>
@@ -229,11 +305,13 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                       <ModalBody pb={6}>
 
                       <FormControl my="10px" color="black">
-                          <Text>Jam Penyiraman</Text>
+                          <Text>Waktu Penyiraman</Text>
                           <Input
+                            key={index}
                             type="time"
                             mt={'10px'}
-                            placeholder="60 (untuk satu jam)"
+                            defaultValue={item.waktu}
+                            // placeholder="60 (untuk satu jam)"
                             // value={durasi}
                             // onInput={(e) => setDurasi(e.target.value)}
                           />
@@ -242,9 +320,11 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                         <FormControl my="10px" color="black">
                           <Text>Durasi per penyiraman (menit)</Text>
                           <Input
+                            key={index}
                             type="number"
                             mt={'10px'}
-                            placeholder="60 (untuk satu jam)"
+                            defaultValue={item.resep.interval}
+                            //placeholder="60 (untuk satu jam)"
                             // value={durasi}
                             // onInput={(e) => setDurasi(e.target.value)}
                           />
@@ -282,7 +362,9 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                         <Button onClick={onEditModalClose}>Cancel</Button>
                       </ModalFooter>
                     </ModalContent>
-                  </Modal>
+                  </Modal> */}
+
+
 
 
                   <AlertDialog

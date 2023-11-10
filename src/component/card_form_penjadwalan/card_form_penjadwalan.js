@@ -138,7 +138,7 @@ function CardFormPenjadwalan({ updateAction }) {
         </FormControl>
 
         <FormControl my="10px" color="black">
-          <Text>Jam Penyiraman</Text>
+          <Text>Waktu Penyiraman</Text>
           {/* <Input
             type="time"
             placeholder="--:--"
