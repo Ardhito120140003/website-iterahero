@@ -378,7 +378,7 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                           Hapus Penjadwalan
                         </AlertDialogHeader>
 
-                        <AlertDialogBody>
+                        <AlertDialogBody py={"10px"}>
                           {/* Are you sure? You can't undo this action afterwards. */}
                           Apakah anda yakin menghapus jadwal ini ?
                         </AlertDialogBody>

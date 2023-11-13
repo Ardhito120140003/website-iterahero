@@ -17,10 +17,13 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Icon,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { selectUrl } from '../../features/auth/authSlice';
+import { BiTrash } from "react-icons/bi";
+//import { RiPencilFill } from 'react-icons/ri';
 
 function CardFormPeracikan() {
   const { isOpen: isRacikModalOpen, onOpen: onRacikModalOpen, onClose: onRacikModalClose } = useDisclosure();
@@ -132,7 +135,7 @@ function CardFormPeracikan() {
       {({ values, errors, touched, isValid, setFieldValue }) => (
         <Form>
           <Flex flexDirection="column" width="100%" height="100%" gap={"10px"}>
-            <Box color="black" 
+            <Box color="black"
             //mt="5px"
             >
               <Field name="formula">
@@ -251,18 +254,51 @@ function CardFormPeracikan() {
               </Field>
             </Box>
 
-            <Flex 
-            flexDirection="row" 
-            mt={values.formula === 'Tambah Formula' ? "16px" : "90px"}
-            > 
-              <Button
-                type="Submit"
-                backgroundColor="#09322D"
-                w={'100%'}
-                isDisabled={!isValid}
-              >
-                {values.formula === 'Tambah Formula' ? 'Simpan Formula' : 'Racik'}
-              </Button>
+            {(values.formula !== 'Tambah Formula' && values.formula !== '') && (
+              <Box justifyContent={'flex-end'} p={'10px'} display={'flex'}>
+                <Flex alignSelf="center">
+                  <Icon
+                    as={BiTrash}
+                    color="#14453E"
+                    w="20px"
+                    h="20px"
+                    alignSelf="center"
+                  // onClick={() => {
+                  //   onDeleteModalOpen();
+                  //   setTarget(item.id);
+                  // }}
+                  />
+                </Flex>
+              </Box>
+            )}
+
+
+            <Flex
+              flexDirection="row"
+              gap="10px"
+              mt={values.formula === 'Tambah Formula' ? "16px" : values.formula === '' ? "90px" : "40px"}
+            >
+              {values.formula !== '' && (
+                <Button
+                  type="Submit"
+                  backgroundColor="#09322D"
+                  w={'100%'}
+                  isDisabled={!isValid}
+                >
+                  Simpan Formula
+                </Button>
+              )}
+
+              {values.formula !== 'Tambah Formula' && (
+                <Button
+                  type="Submit"
+                  backgroundColor="#09322D"
+                  w={'100%'}
+                  isDisabled={!isValid}
+                >
+                  Racik
+                </Button>
+              )}
             </Flex>
           </Flex>
 
