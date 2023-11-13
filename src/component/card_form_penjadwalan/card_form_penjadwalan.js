@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Flex,
   Text,
@@ -8,14 +8,24 @@ import {
   FormControl,
   Wrap,
   Icon,
-  // WrapItem,
+  Box,
+  FormErrorMessage,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from '@chakra-ui/react';
+import { Formik, Field, Form, FieldArray } from 'formik'; // Import FieldArray
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { selectUrl } from '../../features/auth/authSlice';
 import CustomCheckbox from './checkbox';
-import { BiTrash } from "react-icons/bi";
-import { MdOutlineLibraryAdd } from "react-icons/md";
+import { BiTrash } from 'react-icons/bi';
+import { MdOutlineLibraryAdd } from 'react-icons/md';
 
 const weekdays = [
   { label: 'Senin', value: 1 },
@@ -28,232 +38,232 @@ const weekdays = [
 ];
 
 function CardFormPenjadwalan({ updateAction }) {
-  const [dataApi, setDataApi] = useState([]);
-  const [waktuMulai, setWaktuMulai] = useState('');
-  const [perulangan, setPerulangan] = useState('');
-  const [durasi, setDurasi] = useState('');
-  const [formula, setFormula] = useState('');
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const base_url = useSelector(selectUrl);
   const header = localStorage.getItem('token');
-  const [hari, setHari] = useState([]);
+  const [dataApi, setDataApi] = useState([]);
 
-  ////////////////////////////////////////////////
-
-  const [startTimes, setStartTimes] = useState(['']); // Initialize with one empty field
-
-  const handleAddStartTime = () => {
-    setStartTimes([...startTimes, '']); // Add a new empty field for the start time
-  };
-
-  const handleStartTimeChange = (index, e) => {
-    const updatedStartTimes = [...startTimes];
-    updatedStartTimes[index] = e.target.value;
-    setStartTimes(updatedStartTimes);
-    console.log(startTimes);
-  };
-
-  const handleRemoveStartTime = (index) => {
-    const updatedStartTimes = [...startTimes];
-    updatedStartTimes.splice(index, 1);
-    setStartTimes(updatedStartTimes);
-    console.log(startTimes);
-  };
-
-  /////////////////////////////////////////////
-
-  useEffect(() => {
-    axios.get(`${base_url}api/v1/resep`, {
-      params: {
-        tipe: "besaran"
-      },
-      headers: {
-        Authorization: `Bearer ${header}`,
-      },
-    })
+  React.useEffect(() => {
+    axios
+      .get(`${base_url}api/v1/resep`, {
+        headers: {
+          Authorization: `Bearer ${header}`,
+        },
+        params: {
+          tipe: 'besaran',
+        },
+      })
       .then((response) => {
         setDataApi(response.data.data);
+        console.log(dataApi);
       })
       .catch((error) => {
         console.error('Error fetching formula data:', error);
       });
   }, []);
 
-  const handleSubmit = async () => {
-    const newSchedule = {
-      resep: formula,
-      id_tandon: 1,
-      waktu: startTimes,
-      iterasi: parseInt(perulangan),
-      durasi: parseInt(durasi),
-      hari
-    };
-
-    axios.post(`${base_url}api/v1/penjadwalan`, newSchedule, {
-      headers: {
-        Authorization: `Bearer ${header}`,
-      },
-    })
-      .then((response) => {
-        console.log('Jadwal berhasil ditambahkan:', response.data);
-        setFormula('');
-        setWaktuMulai('');
-        setPerulangan('');
-        setDurasi('');
-      })
-      .catch((error) => {
-        console.error('Error menambahkan jadwal :', error);
-      })
-      .finally(() => updateAction());
-  };
-
-  const handleDay = (val) => {
-    if (hari.includes(val)) {
-      setHari([...hari.filter((item) => item !== val)]);
-    } else {
-      setHari([...hari, val]);
-    }
-  };
-
   return (
-    <Flex
-      flexDirection="column"
-      width="100%"
-      height="100%"
-      borderRadius="10px"
-      border="1px solid #E2E8F0"
-      padding="30px"
+    <Formik
+      initialValues={{
+        formula: '',
+        waktuMulai: [''],
+        durasi: '',
+        hari: [''],
+      }}
+      validate={(values) => {
+        const errors = {};
+        if (!values.formula) {
+          errors.formula = 'Formula harus diisi';
+        }
+        if (!values.waktuMulai.some((time) => time !== '')) {
+          errors.waktuMulai = 'Waktu penyiraman harus diisi';
+        }
+        if (!values.durasi) {
+          errors.durasi = 'Durasi harus diisi';
+        }
+        if (!values.hari.some((day) => day !== '')) {
+          errors.hari = 'Hari harus diisi';
+        }
+        return errors;
+      }}
+      onSubmit={(values, actions) => {
+        const allFieldsFilled = Object.values(values).every((value) => value !== '');
+        if (allFieldsFilled) {
+          onOpen();
+        }
+        actions.setSubmitting(false);
+      }}
     >
-      <Text>Tambah Penjadwalan</Text>
-      <Flex flexDir="column" justifyContent="space-around">
-        <FormControl my="10px" color="black">
-          <Text>Formula</Text>
-          <Select value={formula} name="formula" onChange={(e) => setFormula(e.target.value)}>
-            <option value="">--Pilih Formula--</option>
-            {dataApi.map((data, index) => (
-              <option key={index} value={data.nama} style={{ color: 'black' }}>
-                {data.nama.toUpperCase()}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
+      {({ values, errors, touched, isValid, setFieldValue }) => (
+        <Form>
+          <Flex
+            flexDirection="column"
+            width="100%"
+            height="100%"
+            borderRadius="10px"
+            border="1px solid #E2E8F0"
+            padding="30px"
+          >
+            <Text>Tambah Penjadwalan</Text>
 
-        <FormControl my="10px" color="black">
-          <Text>Waktu Penyiraman</Text>
-          {/* <Input
-            type="time"
-            placeholder="--:--"
-            value={waktuMulai}
-            onChange={(e) => setWaktuMulai(e.target.value)}
-          /> */}
+            <Flex flexDir="column" justifyContent="space-around" gap={'10px'} >
+              <Box mt={'20px'}>
+                <Field name="formula">
+                  {({ field }) => (
+                    <FormControl isInvalid={errors.formula && touched.formula}>
+                      <Text>Formula</Text>
+                      <Select
+                        {...field}
+                        borderRadius="10"
+                        value={values.formula}
+                        color= 'black'
+                        onChange={(e) => {
+                          setFieldValue('formula', e.target.value);
+                        }}
+                      >
+                        <option style={{ color: 'black' }} value="">--Pilih Formula--</option>
+                        {dataApi.map((data, index) => (
+                          <option key={index} value={index} style={{ color: 'black' }}>
+                            {data.nama.toUpperCase()}
+                          </option>
+                        ))}
+                      </Select>
+                      <FormErrorMessage>{errors.formula}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+              </Box>
 
-          {startTimes.map((startTime, index) => (
-            <Flex key={index} my={'10px'}>
-              <Flex w={'100%'}>
-                <Input
-                  type="time"
-                  value={startTime}
-                  onChange={(e) => handleStartTimeChange(index, e)}
-                />
+              <Box>
+                <FieldArray name="waktuMulai">
+                  {({ push, remove }) => (
+                    <FormControl isRequired isInvalid={errors.waktuMulai && touched.waktuMulai}>
+                      <Text>Waktu Penyiraman</Text>
+                      {values.waktuMulai.map((_, index) => (
+                        <Flex key={index} mb={'10px'}>
+                          <Flex w={'100%'}>
+                            <Input
+                              type="time"
+                              name={`waktuMulai.${index}`}
+                              value={values.waktuMulai[index]}
+                              style={{ color: 'black' }}
+                              onChange={(e) => setFieldValue(`waktuMulai.${index}`, e.target.value)}
+                            />
+                          </Flex>
+                          {values.waktuMulai.length > 1 && (
+                            <Icon
+                              as={BiTrash}
+                              color="#14453E"
+                              w="20px"
+                              h="20px"
+                              alignSelf="center"
+                              ml={'10px'}
+                              onClick={() => remove(index)}
+                            />
+                          )}
+                        </Flex>
+                      ))}
+                      <Button
+                        h={'30px'}
+                        fontSize={'13px'}
+                        fontWeight={'bold'}
+                        border={'1px'}
+                        borderColor={'blue.600'}
+                        bgColor={'white'}
+                        color={'blue.600'}
+                        onClick={() => push('')}
+                      >
+                        <Icon
+                          as={MdOutlineLibraryAdd}
+                          color="blue.600"
+                          w="15px"
+                          h="15px"
+                          alignSelf="center"
+                          mr={'10px'}
+                        />
+                        Tambah
+                      </Button>
+                    </FormControl>
+                  )}
+                </FieldArray>
+              </Box>
+
+              <Box>
+                <Field name="durasi">
+                  {({ field }) => (
+                    <FormControl isRequired isInvalid={errors.durasi && touched.durasi}>
+                      <Text>Durasi per penyiraman (menit)</Text>
+                      <Input
+                        {...field}
+                        type="number"
+                        value={values.durasi}
+                        onChange={(e) => setFieldValue('durasi', e.target.value)}
+                        style={{ color: 'black' }}
+                        placeholder="60 (untuk satu jam)"
+                      />
+                      <FormErrorMessage>{errors.durasi}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+              </Box>
+
+              <Box>
+                <Field name="hari">
+                  {({ field }) => (
+                    <FormControl isRequired isInvalid={errors.hari && touched.hari}>
+                      <Text>Ulangi</Text>
+                      <Wrap mb="20px" gap={2}>
+                        {weekdays.map((item, index) => (
+                          <CustomCheckbox
+                            {...field}
+                            label={item.label}
+                            value={item.value}
+                            onSelect={() => setFieldValue('hari', values.hari.includes(item.value) ? [] : [item.value])}
+                            key={index}
+                          />
+                        ))}
+                      </Wrap>
+                      <FormErrorMessage>{errors.hari}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+              </Box>
+
+              <Flex marginTop="16px" flexDirection="row">
+                <Button type="Submit" backgroundColor="#09322D" w={'100%'} isDisabled={!isValid}>
+                  Tambah
+                </Button>
               </Flex>
 
-              {startTimes.length > 1 && (
-              <Icon
-                as={BiTrash}
-                color="#14453E"
-                w="20px"
-                h="20px"
-                alignSelf="center"
-                ml={'10px'}
-                onClick={() => handleRemoveStartTime(index)}
-              />
-              )}
-
-              {/* <Button
-              fontSize={'13px'}
-              fontWeight={'bold'}
-              border={'1px'} 
-              borderColor={'blue.600'} 
-              bgColor={'white'} 
-              color={'blue.600'}  
-              ml={'10px'} 
-              onClick={() => handleRemoveStartTime(index)}>-</Button> */}
+              <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader alignSelf="center">Tambah Jadwal</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody pb={6}>
+                    <Text>Apakah anda yakin untuk menambahkan jadwal ini ?</Text>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button
+                      onClick={() => {
+                        onClose();
+                      }}
+                      backgroundColor="#09322D"
+                      color="white"
+                      mr="3"
+                      paddingX="30px"
+                    >
+                      Ok
+                    </Button>
+                    <Button onClick={onClose}>Cancel</Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
             </Flex>
-          ))}
-
-
-
-          <Button
-            //w={'65px'}
-            h={'30px'}
-            fontSize={'13px'}
-            fontWeight={'bold'}
-            border={'1px'}
-            borderColor={"blue.600"}
-            bgColor={'white'}
-            color={"blue.600"}
-            onClick={handleAddStartTime} >
-            <Icon
-              as={MdOutlineLibraryAdd}
-              color="blue.600"
-              w="15px"
-              h="15px"
-              alignSelf="center"
-              onClick={handleAddStartTime}
-              mr={'10px'}
-            />Tambah</Button>
-        </FormControl>
-
-        {/* <FormControl my="10px" color="black">
-          <Text>Perulangan</Text>
-          <Input
-            type="number"
-            placeholder="Masukkan perulangan.."
-            value={perulangan}
-            onChange={(e) => setPerulangan(e.target.value)}
-          />
-        </FormControl> */}
-
-        <FormControl my="10px" color="black">
-          <Text>Durasi per penyiraman (menit)</Text>
-          <Input
-            type="number"
-            placeholder="60 (untuk satu jam)"
-            value={durasi}
-            onInput={(e) => setDurasi(e.target.value)}
-          />
-        </FormControl>
-
-        <FormControl
-          // my="10px" 
-          color="black"
-        >
-          <Text>Ulangi</Text>
-          {/* <Flex> */}
-          <Wrap
-            marginTop="20px"
-            // direction="row" 
-            // justifyContent="flex-start"
-            gap={2}
-
-          >
-            {weekdays.map((item, index) => (
-              <CustomCheckbox label={item.label} value={item.value} onSelect={handleDay} key={index} />
-            ))}
-          </Wrap>
-          {/* </Flex> */}
-
-        </FormControl>
-
-        <Button
-          // onClick={() => alert(hari)}
-          onClick={handleSubmit}
-          my="20px"
-          backgroundColor="#09322D"
-        >
-          Tambah
-        </Button>
-      </Flex>
-    </Flex>
+          </Flex>
+        </Form>
+      )}
+    </Formik>
   );
 }
 

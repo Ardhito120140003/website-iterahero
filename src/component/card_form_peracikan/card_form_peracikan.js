@@ -30,13 +30,13 @@ function CardFormPeracikan() {
   const base_url = useSelector(selectUrl);
   const header = localStorage.getItem('token');
 
-  const data = {
-    nama: '',
-    ph: '',
-    ppm: '',
-    volume: '',
-    interval: '',
-  };
+  // const data = {
+  //   nama: '',
+  //   ph: '',
+  //   ppm: '',
+  //   volume: '',
+  //   interval: '',
+  // };
 
   React.useEffect(() => {
     axios.get(`${base_url}api/v1/resep`, {
@@ -97,7 +97,6 @@ function CardFormPeracikan() {
         phValue: '',
         ppmValue: '',
         volume: '',
-        selenoid:'',
       }}
       validate={(values) => {
         const errors = {};
@@ -112,9 +111,6 @@ function CardFormPeracikan() {
         }
         if (!values.volume) {
           errors.volume = 'Volume harus diisi';
-        }
-        if (!values.tandonTujuan) {
-          errors.selenoid = 'Tandon tujuan harus diisi';
         }
         return errors;
       }}
@@ -154,13 +150,11 @@ function CardFormPeracikan() {
                           setFieldValue('phValue', '');
                           setFieldValue('ppmValue', '');
                           setFieldValue('volume', '');
-                          setFieldValue('selenoid','');
                         } else {
                           setFieldValue('newFormulaName', dataApi[idx].nama);
                           setFieldValue('phValue', dataApi[idx].ph);
                           setFieldValue('ppmValue', dataApi[idx].ppm);
                           setFieldValue('volume', dataApi[idx].volume);
-                          setFieldValue('selenoid', dataApi[idx].selenoid);
                         }
                         setFieldValue('formula', e.target.value);
                       }}
@@ -257,34 +251,10 @@ function CardFormPeracikan() {
               </Field>
             </Box>
 
-            <Box color="black">
-              <Field name="formula">
-                {({ field }) => (
-                  <FormControl isInvalid={errors.selenoid && touched.selenoid}>
-                    <Text>Greenhouse Tujuan</Text>
-                    <Select
-                      {...field}
-                      borderRadius="10"
-                      value={values.selenoid}
-                      onChange={(e) => {
-                        setFieldValue('selenoid', e.target.value);
-                      }}
-                    >
-                      <option value="">--Pilih Greenhouse--</option>
-                      {dataApi.map((data, index) => (
-                        <option key={index} value={index} style={{ color: 'black' }}>
-                          {data.nama.toUpperCase()}
-                        </option>
-                      ))}
-                      {/* <option style={{ backgroundColor: '#09322D', color: 'white' }} value="Tambah Formula">--Tambah Formula--</option> */}
-                    </Select>
-                    <FormErrorMessage>{errors.selenoid}</FormErrorMessage>
-                  </FormControl>
-                )}
-              </Field>
-            </Box>
-
-            <Flex marginTop="16px" flexDirection="row">
+            <Flex 
+            flexDirection="row" 
+            mt={values.formula === 'Tambah Formula' ? "16px" : "90px"}
+            > 
               <Button
                 type="Submit"
                 backgroundColor="#09322D"
