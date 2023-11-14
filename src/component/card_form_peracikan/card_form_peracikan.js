@@ -7,6 +7,7 @@ import {
   Button,
   Box,
   Input,
+  FormLabel,
   FormControl,
   FormErrorMessage,
   Modal,
@@ -18,6 +19,12 @@ import {
   ModalCloseButton,
   useDisclosure,
   Icon,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
@@ -28,18 +35,12 @@ import { BiTrash } from "react-icons/bi";
 function CardFormPeracikan() {
   const { isOpen: isRacikModalOpen, onOpen: onRacikModalOpen, onClose: onRacikModalClose } = useDisclosure();
   const { isOpen: isSaveModalOpen, onOpen: onOpenSaveModal, onClose: onCloseSaveModal } = useDisclosure();
+  const { isOpen: isOpenDeleteModal, onOpen: onOpenDeleteModal, onClose: onCLoseDeleteModal } = useDisclosure();
 
   const [dataApi, setDataApi] = React.useState([]);
   const base_url = useSelector(selectUrl);
   const header = localStorage.getItem('token');
-
-  // const data = {
-  //   nama: '',
-  //   ph: '',
-  //   ppm: '',
-  //   volume: '',
-  //   interval: '',
-  // };
+  const cancelRef = React.useRef();
 
   React.useEffect(() => {
     axios.get(`${base_url}api/v1/resep`, {
@@ -141,7 +142,7 @@ function CardFormPeracikan() {
               <Field name="formula">
                 {({ field }) => (
                   <FormControl isInvalid={errors.formula && touched.formula}>
-                    <Text>Formula</Text>
+                    <FormLabel  color={'black'}>Formula</FormLabel>
                     <Select
                       {...field}
                       borderRadius="10"
@@ -181,7 +182,7 @@ function CardFormPeracikan() {
                 <Field name="newFormulaName">
                   {({ field }) => (
                     <FormControl isRequired isInvalid={errors.newFormulaName && touched.newFormulaName}>
-                      <Text>Nama Formula</Text>
+                      <FormLabel color={'black'}>Nama Formula</FormLabel>
                       <Input
                         {...field}
                         type="text"
@@ -201,7 +202,7 @@ function CardFormPeracikan() {
               <Field name="phValue">
                 {({ field }) => (
                   <FormControl isRequired isInvalid={errors.phValue && touched.phValue}>
-                    <Text>PH Value</Text>
+                    <FormLabel  color={'black'}>PH Value</FormLabel>
                     <Input
                       {...field}
                       type="number"
@@ -220,7 +221,7 @@ function CardFormPeracikan() {
               <Field name="ppmValue">
                 {({ field }) => (
                   <FormControl isRequired isInvalid={errors.ppmValue && touched.ppmValue}>
-                    <Text>PPM Value</Text>
+                    <FormLabel  color={'black'}>PPM Value</FormLabel>
                     <Input
                       {...field}
                       type="number"
@@ -239,7 +240,7 @@ function CardFormPeracikan() {
               <Field name="volume">
                 {({ field }) => (
                   <FormControl isRequired isInvalid={errors.volume && touched.volume}>
-                    <Text>Volume</Text>
+                    <FormLabel  color={'black'}>Volume</FormLabel>
                     <Input
                       {...field}
                       type="number"
@@ -263,10 +264,10 @@ function CardFormPeracikan() {
                     w="20px"
                     h="20px"
                     alignSelf="center"
-                  // onClick={() => {
-                  //   onDeleteModalOpen();
-                  //   setTarget(item.id);
-                  // }}
+                    onClick={() => {
+                      onOpenDeleteModal();
+                      //setTarget(item.id);
+                    }}
                   />
                 </Flex>
               </Box>
@@ -276,7 +277,7 @@ function CardFormPeracikan() {
             <Flex
               flexDirection="row"
               gap="10px"
-              mt={values.formula === 'Tambah Formula' ? "16px" : values.formula === '' ? "90px" : "40px"}
+              mt={values.formula === 'Tambah Formula' ? "16px" : values.formula === '' ? "60px" : "10px"}
             >
               {values.formula !== '' && (
                 <Button
@@ -350,6 +351,41 @@ function CardFormPeracikan() {
               </ModalFooter>
             </ModalContent>
           </Modal>
+
+          <AlertDialog
+            isOpen={isOpenDeleteModal}
+            leastDestructiveRef={cancelRef}
+            onClose={onCLoseDeleteModal}
+          >
+            <AlertDialogOverlay>
+              <AlertDialogContent>
+                <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                  Hapus Formula
+                </AlertDialogHeader>
+
+                <AlertDialogBody py={"10px"}>
+                  {/* Are you sure? You can't undo this action afterwards. */}
+                  Apakah anda yakin menghapus formula ini ?
+                </AlertDialogBody>
+
+                <AlertDialogFooter>
+                  <Button ref={cancelRef} onClick={onCLoseDeleteModal}>
+                    Cancel
+                  </Button>
+                  <Button
+                    colorScheme="red"
+                    ml={3}
+                    onClick={() => {
+                      onCLoseDeleteModal();
+                      //deleteHandler(target);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
 
         </Form>
       )}

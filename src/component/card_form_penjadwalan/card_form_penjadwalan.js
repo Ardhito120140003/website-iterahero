@@ -10,6 +10,7 @@ import {
   Icon,
   Box,
   FormErrorMessage,
+  FormLabel,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -128,7 +129,7 @@ function CardFormPenjadwalan({ updateAction }) {
                 <Field name="resep">
                   {({ field }) => (
                     <FormControl isInvalid={errors.resep && touched.resep}>
-                      <Text>Formula</Text>
+                      <FormLabel color="black">Formula</FormLabel>
                       <Select
                         {...field}
                         borderRadius="10"
@@ -155,7 +156,7 @@ function CardFormPenjadwalan({ updateAction }) {
                 <FieldArray name="waktu">
                   {({ push, remove, replace }) => (
                     <FormControl isRequired isInvalid={errors.waktu && touched.waktu}>
-                      <Text>Waktu Penyiraman</Text>
+                      <FormLabel color="black">Waktu Penyiraman</FormLabel>
                       {values.waktu.map((_, index) => (
                         <Flex key={index} mb={'10px'}>
                           <Flex w={'100%'}>
@@ -210,7 +211,7 @@ function CardFormPenjadwalan({ updateAction }) {
                 <Field name="durasi">
                   {({ field }) => (
                     <FormControl isRequired isInvalid={errors.durasi && touched.durasi}>
-                      <Text>Durasi per penyiraman (menit)</Text>
+                      <FormLabel color="black">Durasi per penyiraman (menit)</FormLabel>
                       <Input
                         {...field}
                         type="number"
@@ -232,7 +233,7 @@ function CardFormPenjadwalan({ updateAction }) {
                 <Field name="hari">
                   {({ field }) => (
                     <FormControl isRequired isInvalid={errors.hari && touched.hari}>
-                      <Text>Ulangi</Text>
+                      <FormLabel color="black">Ulangi</FormLabel>
                       <Wrap mb="20px" gap={2}>
                         {weekdays.map((item, index) => (
                           <CustomCheckbox

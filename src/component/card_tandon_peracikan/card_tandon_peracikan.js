@@ -10,73 +10,107 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  FormControl,
   useDisclosure,
   Input,
 } from "@chakra-ui/react";
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+} from '@chakra-ui/form-control';
 import { GiWaterTower } from "react-icons/gi";
 import { useEffect } from "react";
 import axios from 'axios';
 import { selectUrl } from '../../features/auth/authSlice';
 import { useSelector } from 'react-redux';
+import * as yup from 'yup';
+import { Formik, Form } from 'formik';
 
 function CardStatusPeracikan({ id, tandon, sensor }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [trigger, setTrigger] = useState(true);
   const [sensorValue, setSensorValue] = useState([]);
-
-  const [rasioA, setRasioA] = useState();
-  const [rasioB, setRasioB] = useState();
-  const [rasioAir, setRasioAir] = useState();
-  const [ppm, setPpm] = useState();
-
   const [dataApi, setDataApi] = useState([]);
 
   const base_url = useSelector(selectUrl);
   const header = localStorage.getItem('token');
 
-  const fetchingMqtt = (id) => {
-    // const data = id.map((item) => ({ id: item, value: Math.random()}));
-    const data = id.map(item => (Math.random() * 15).toString().slice(0, 4));
-    setSensorValue(data);
-  }
+  const data = {
+    rasioA: '',
+    rasioB: '',
+    rasioAir: '',
+    ppm: '',
+  };
 
-  const handleSubmit = async () => {
+  const schema = yup.object({
+    rasioA: yup.number().required(' data harus diisi'),
+    rasioB: yup.number().required('data harus diisi'),
+    rasioAir: yup.number().required('data harus diisi'),
+    ppm: yup.number().required('data harus diisi'),
+  });
 
-    console.log('rasioA :', rasioA)
-    console.log('rasioB :', rasioB)
-    console.log('rasioAir :',rasioAir)
-    console.log('ppm :',ppm)
 
-    const newPerbandingan = {
+  const submit = (
+    rasioA,
+    rasioB,
+    rasioAir,
+    ppm,
+  ) => {
+    data.rasioA = rasioA;
+    data.rasioB = rasioB;
+    data.rasioAir = rasioAir;
+    data.ppm = ppm;
+
+    if (
+      data.rasioA == ''
+      || data.rasioB == ''
+      || data.rasioAir == ''
+      || data.ppm == ''
+    ) {
+      return alert('Masih ada yang belum di isi');
+    }
+    //setIsLoading(false);
+    updateAutomation(
+      rasioA,
+      rasioB,
+      rasioAir,
+      ppm,
+    );
+  };
+
+  const updateAutomation = (
+    rasioA,
+    rasioB,
+    rasioAir,
+    ppm,
+  ) => {
+    axios.patch(base_url + "api/v1/tandonUtama",    {
       rasioA: rasioA,
       rasioB: rasioB,
       rasioAir: rasioAir,
       ppm: ppm,
-    };
-  
-    //console.log({ header })
-    axios.patch(base_url + "api/v1/tandonUtama", newPerbandingan, {
+    }, {
       headers: {
         Authorization: `Bearer ${header}`
       },
-      params:{
+      params: {
         id
       }
     })
       .then(response => {
         console.log(response.data);
-        setRasioA('');
-        setRasioB('');
-        setRasioAir('');
-        setPpm('');
       })
       .catch(err => {
         console.error(err);
       })
+  };
+
+  const fetchingMqtt = (id) => {
+    // const data = id.map((item) => ({ id: item, value: Math.random()}));
+    const data = id.map(item => (Math.random() * 15).toString().slice(0, 4));
+    setSensorValue(data);
   }
 
   useEffect(() => {
@@ -151,9 +185,7 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
         w={"100%"}
         p={"15px"}
         my={"20px"}
-        paddingLeft={{base:"7%",sm:"15%",md:"15%",lg:"13%",xl:"15%"}}
-        // justifyContent={'center'}
-        // alignContent={'center'}
+        paddingLeft={{ base: "7%", sm: "15%", md: "15%", lg: "13%", xl: "15%" }}
       >
         {sensor.map((item, index) => (
           <Grid key={index} templateColumns="repeat(2, 1fr)">
@@ -200,70 +232,137 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
           <ModalHeader alignSelf="center">Perbandingan Rasio Pupuk</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <form>
-              <Flex>
-              <FormControl mt={"10px"}>
-                <Text>Nutrisi A</Text>
-                <Input
-                  type="number"
-                  value={rasioA}
-                  style={{ color: "black" }}
-                  placeholder={dataApi.rasioA}
-                />
-              </FormControl>
-              </Flex>
-              <Flex>
-              <FormControl mt={"10px"}>
-                <Text>Nutrisi B</Text>
-                <Input
-                  type="number"
-                  value={rasioB}
-                  style={{ color: "black" }}
-                  placeholder={dataApi.rasioB}
-                />
-              </FormControl>
-              </Flex>
-              <Flex>
-              <FormControl mt={"10px"}>
-                <Text>Air</Text>
-                <Input
-                  type="number"
-                  value={rasioAir}
-                  style={{ color: "black" }}
-                  placeholder={dataApi.rasioAir}
-                />
-              </FormControl>
-              </Flex>
-              <Flex>
-              <FormControl mt={"10px"}>
-                <Text>PPM</Text>
-                <Input
-                  type="number"
-                  value={ppm}
-                  style={{ color: "black" }}
-                  placeholder={dataApi.ppm}
-                />
-              </FormControl>
-              </Flex>
-            </form>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button
-              onClick={()=>{onClose();handleSubmit();}}
-              backgroundColor="#09322D"
-              color="white"
-              mr="3"
-              paddingX="30px"
-              disabled={ppm === '' || rasioA === '' || rasioB === '' || rasioAir === ''}
+            <Formik
+              initialValues={{
+                rasioA: dataApi.rasioA,
+                rasioB: dataApi.rasioB,
+                rasioAir: dataApi.rasioAir,
+                ppm: dataApi.ppm,
+              }}
+              validationSchema={schema}
             >
-              Simpan
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+              }) => (
+                <Form>
+                  <FormControl
+                  isRequired
+                    mb={'15px'}
+                    isInvalid={errors.rasioA && touched.rasioA}
+                  >
+                    <FormLabel color="var(--color-primer)">
+                      Rasio Nutrisi A
+                    </FormLabel>
+                    <Input
+                      color="var(--color-primer)"
+                      maxWidth="100%"
+                      marginTop="0 auto"
+                      type="number"
+                      name="rasioA"
+                      defaultValue={values.rasioA}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      variant="outline"
+                    />
+                    <FormErrorMessage>{errors.rasioA}</FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl
+                  isRequired
+                  mb={'15px'}
+                    isInvalid={errors.rasioB && touched.rasioB}
+                  >
+                    <FormLabel color="var(--color-primer)">Sensor</FormLabel>
+                    <Input
+                      color="var(--color-primer)"
+                      maxWidth="100%"
+                      marginTop="0 auto"
+                      type="number"
+                      name="rasioB"
+                      defaultValue={values.rasioB}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      variant="outline"
+                    />
+                    <FormErrorMessage>{errors.rasioB}</FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl
+                  isRequired
+                  mb={'15px'}
+                    isInvalid={errors.rasioAir && touched.rasioAir}
+                  >
+                    <FormLabel color="var(--color-primer)">
+                      Rasio Air
+                    </FormLabel>
+                    <Input
+                      color="var(--color-primer)"
+                      maxWidth="100%"
+                      marginTop="0 auto"
+                      type="number"
+                      name="rasioAir"
+                      defaultValue={values.rasioAir}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      variant="outline"
+                    />
+                    <FormErrorMessage>{errors.rasioAir}</FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl
+                  isRequired
+                  mb={'15px'}
+                    isInvalid={errors.ppm && touched.ppm}
+                  >
+                    <FormLabel color="var(--color-primer)">
+                      PPM
+                    </FormLabel>
+                    <Input
+                      color="var(--color-primer)"
+                      maxWidth="100%"
+                      marginTop="0 auto"
+                      type="number"
+                      name="ppm"
+                      defaultValue={values.ppm}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      variant="outline"
+                    />
+                    <FormErrorMessage>{errors.ppm}</FormErrorMessage>
+                  </FormControl>
+
+                  <Flex mt={'20px'} justifyContent={'flex-end'}>
+                  <Button
+                    onClick={() => {
+                      submit(
+                        values.rasioA,
+                        values.rasioB,
+                        values.rasioAir,
+                        values.ppm,
+                      ); onClose()
+                    }}
+                    backgroundColor="#09322D"
+                    color="white"
+                    mr="3"
+                    paddingX="30px"
+                  >
+                    Simpan
+                  </Button>
+                  <Button onClick={onClose}>Cancel</Button>
+                  </Flex>
+                </Form>
+              )}
+            </Formik>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </Flex>
+
   );
 }
 
