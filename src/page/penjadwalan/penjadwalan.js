@@ -82,13 +82,13 @@ function Penjadwalan() {
         <Loading />
       ) : (
         <Flex gap={'20px'} direction={{base:'column', sm: 'column', md: 'row', lg: 'row', xl: 'row', "2xl": 'row' }}>
-          <Flex w={{ base:'100%', sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%"}}>
+          <Flex w={{ base:'100%', sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%"}} flex={1}>
             <CardFormPenjadwalan
               updateAction={() => setAction(!action)}
               style={cardStyle}
             />
           </Flex>
-          <Flex w={{ base:'100%', sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%"}}>
+          <Flex w={{ base:'100%', sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%"}} flex={1}>
             <CardJadwal jadwal={data} deleteHandler={handleDelete} updateHandler={handleUpdate} style={cardStyle} />
           </Flex>
         </Flex>

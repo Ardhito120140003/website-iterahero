@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Flex,
   Text,
@@ -26,6 +26,7 @@ import { selectUrl } from '../../features/auth/authSlice';
 import CustomCheckbox from './checkbox';
 import { BiTrash } from 'react-icons/bi';
 import { MdOutlineLibraryAdd } from 'react-icons/md';
+import * as Yup from 'yup';
 
 const weekdays = [
   { label: 'Senin', value: 1 },
@@ -37,13 +38,28 @@ const weekdays = [
   { label: 'Minggu', value: 0 },
 ];
 
+const validatePenjadwalanSchema = Yup.object().shape({
+  resep: Yup.string().required('Formula harus diisi'),
+  waktu: Yup.array()
+    .of(Yup.string().required('Waktu penyiraman harus diisi'))
+    .min(1, 'Minimal satu waktu penyiraman harus diisi'),
+  durasi: Yup.string()
+    .min(2, 'Minimal 10 menit')
+    .max(2, 'Kelamaan')
+    .required('Durasi harus diisi'),
+  hari: Yup.array()
+    .of(Yup.number().required('Hari harus diisi'))
+    .min(1, 'Minimal satu hari harus diisi'),
+})
+
 function CardFormPenjadwalan({ updateAction }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const base_url = useSelector(selectUrl);
   const header = localStorage.getItem('token');
   const [dataApi, setDataApi] = useState([]);
+  const [buttonLoading, setButtonLoading] = useState(false)
 
-  React.useEffect(() => {
+  useEffect(() => {
     axios
       .get(`${base_url}api/v1/resep`, {
         headers: {
@@ -58,43 +74,40 @@ function CardFormPenjadwalan({ updateAction }) {
         console.log(dataApi);
       })
       .catch((error) => {
-        console.error('Error fetching formula data:', error);
+        console.error('Error fetching resep data:', error);
       });
   }, []);
 
   return (
     <Formik
       initialValues={{
-        formula: '',
-        waktuMulai: [''],
+        resep: '',
+        waktu: [''],
         durasi: '',
-        hari: [''],
+        hari: [],
       }}
-      validate={(values) => {
-        const errors = {};
-        if (!values.formula) {
-          errors.formula = 'Formula harus diisi';
-        }
-        if (!values.waktuMulai.some((time) => time !== '')) {
-          errors.waktuMulai = 'Waktu penyiraman harus diisi';
-        }
-        if (!values.durasi) {
-          errors.durasi = 'Durasi harus diisi';
-        }
-        if (!values.hari.some((day) => day !== '')) {
-          errors.hari = 'Hari harus diisi';
-        }
-        return errors;
-      }}
+      validationSchema={validatePenjadwalanSchema}
       onSubmit={(values, actions) => {
-        const allFieldsFilled = Object.values(values).every((value) => value !== '');
-        if (allFieldsFilled) {
-          onOpen();
-        }
-        actions.setSubmitting(false);
+        setButtonLoading(true)
+        const payload = values;
+        payload.id_tandon = 1
+        axios.post(base_url + "api/v1/penjadwalan", payload, {
+          headers: {
+            Authorization: `Bearer ${header}`,
+          },
+        }).then((response) => {
+          console.log(response.data)
+        })
+          .catch((err) => console.error(err))
+          .finally(() => {
+            updateAction()
+            setButtonLoading(false)
+            actions.setSubmitting(false)
+            actions.resetForm()
+          })
       }}
     >
-      {({ values, errors, touched, isValid, setFieldValue }) => (
+      {({ values, errors, touched, isValid, setFieldValue, submitForm }) => (
         <Form>
           <Flex
             flexDirection="column"
@@ -108,49 +121,49 @@ function CardFormPenjadwalan({ updateAction }) {
 
             <Flex flexDir="column" justifyContent="space-around" gap={'10px'} >
               <Box mt={'20px'}>
-                <Field name="formula">
+                <Field name="resep">
                   {({ field }) => (
-                    <FormControl isInvalid={errors.formula && touched.formula}>
+                    <FormControl isInvalid={errors.resep && touched.resep}>
                       <Text>Formula</Text>
                       <Select
                         {...field}
                         borderRadius="10"
-                        value={values.formula}
-                        color= 'black'
+                        value={values.resep}
+                        color='black'
                         onChange={(e) => {
-                          setFieldValue('formula', e.target.value);
+                          setFieldValue('resep', e.target.value);
                         }}
                       >
                         <option style={{ color: 'black' }} value="">--Pilih Formula--</option>
                         {dataApi.map((data, index) => (
-                          <option key={index} value={index} style={{ color: 'black' }}>
+                          <option key={index} value={data.nama} style={{ color: 'black' }}>
                             {data.nama.toUpperCase()}
                           </option>
                         ))}
                       </Select>
-                      <FormErrorMessage>{errors.formula}</FormErrorMessage>
+                      <FormErrorMessage>{errors.resep}</FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
               </Box>
 
               <Box>
-                <FieldArray name="waktuMulai">
-                  {({ push, remove }) => (
-                    <FormControl isRequired isInvalid={errors.waktuMulai && touched.waktuMulai}>
+                <FieldArray name="waktu">
+                  {({ push, remove, replace }) => (
+                    <FormControl isRequired isInvalid={errors.waktu && touched.waktu}>
                       <Text>Waktu Penyiraman</Text>
-                      {values.waktuMulai.map((_, index) => (
+                      {values.waktu.map((_, index) => (
                         <Flex key={index} mb={'10px'}>
                           <Flex w={'100%'}>
                             <Input
                               type="time"
-                              name={`waktuMulai.${index}`}
-                              value={values.waktuMulai[index]}
+                              name={`waktu.${index}`}
+                              value={values.waktu[index]}
                               style={{ color: 'black' }}
-                              onChange={(e) => setFieldValue(`waktuMulai.${index}`, e.target.value)}
+                              onChange={(e) => replace(index, e.target.value)}
                             />
                           </Flex>
-                          {values.waktuMulai.length > 1 && (
+                          {values.waktu.length > 1 && (
                             <Icon
                               as={BiTrash}
                               color="#14453E"
@@ -197,7 +210,7 @@ function CardFormPenjadwalan({ updateAction }) {
                         {...field}
                         type="number"
                         value={values.durasi}
-                        onChange={(e) => setFieldValue('durasi', e.target.value)}
+                        onChange={(e) => setFieldValue('durasi', parseInt(e.target.value))}
                         style={{ color: 'black' }}
                         placeholder="60 (untuk satu jam)"
                       />
@@ -218,7 +231,10 @@ function CardFormPenjadwalan({ updateAction }) {
                             {...field}
                             label={item.label}
                             value={item.value}
-                            onSelect={() => setFieldValue('hari', values.hari.includes(item.value) ? [] : [item.value])}
+                            isChecked={values.hari.includes(item.value)}
+                            onSelect={(value) => {
+                              setFieldValue('hari', values.hari.includes(value) ? [...values.hari.filter(day => day !== value)] : [...values.hari, value])
+                            }}
                             key={index}
                           />
                         ))}
@@ -230,7 +246,10 @@ function CardFormPenjadwalan({ updateAction }) {
               </Box>
 
               <Flex marginTop="16px" flexDirection="row">
-                <Button type="Submit" backgroundColor="#09322D" w={'100%'} isDisabled={!isValid}>
+                <Button isLoading={buttonLoading} backgroundColor="#09322D" w={'100%'} isDisabled={!isValid}
+                  onClick={() => {
+                    onOpen()
+                  }}>
                   Tambah
                 </Button>
               </Flex>
@@ -240,13 +259,14 @@ function CardFormPenjadwalan({ updateAction }) {
                 <ModalContent>
                   <ModalHeader alignSelf="center">Tambah Jadwal</ModalHeader>
                   <ModalCloseButton />
-                  <ModalBody pb={6}>
-                    <Text>Apakah anda yakin untuk menambahkan jadwal ini ?</Text>
+                  <ModalBody pb={8}>
+                    <Text>Apakah anda yakin untuk menambahkan jadwal ini?</Text>
                   </ModalBody>
                   <ModalFooter>
                     <Button
                       onClick={() => {
-                        onClose();
+                        submitForm()
+                        onClose()
                       }}
                       backgroundColor="#09322D"
                       color="white"

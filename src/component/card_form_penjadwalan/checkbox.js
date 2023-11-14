@@ -1,11 +1,9 @@
 import { Flex } from '@chakra-ui/layout';
-import React, { useState } from 'react';
+import React from 'react';
 
-function CustomCheckbox({ label, onSelect, value }) {
-  const [isChecked, setIsChecked] = useState(false);
+function CustomCheckbox({ label, onSelect, isChecked, value }) {
 
   const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
     onSelect(value);
   };
 

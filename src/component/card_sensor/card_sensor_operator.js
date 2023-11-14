@@ -32,7 +32,7 @@ function CardSensorOperator(props) {
     axios.get(url, {
       params: {
         cursor: page === 1 ? null : cursor,
-        size: 50
+        // size: 50
       },
       headers: {
         Authorization: `Bearer ${header}`,
