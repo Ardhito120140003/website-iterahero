@@ -40,16 +40,10 @@ const weekdays = [
 
 const validatePenjadwalanSchema = Yup.object().shape({
   resep: Yup.string().required('Formula harus diisi'),
-  waktu: Yup.array()
-    .of(Yup.string().required('Waktu penyiraman harus diisi'))
-    .min(1, 'Minimal satu waktu penyiraman harus diisi'),
   durasi: Yup.string()
     .min(2, 'Minimal 10 menit')
     .max(2, 'Kelamaan')
-    .required('Durasi harus diisi'),
-  hari: Yup.array()
-    .of(Yup.number().required('Hari harus diisi'))
-    .min(1, 'Minimal satu hari harus diisi'),
+    .required('Durasi harus diisi')
 })
 
 function CardFormPenjadwalan({ updateAction }) {
@@ -83,8 +77,18 @@ function CardFormPenjadwalan({ updateAction }) {
       initialValues={{
         resep: '',
         waktu: [''],
-        durasi: '',
+        durasi: 0,
         hari: [],
+      }}
+      validate={(values) => {
+        const errors = {};
+        if (values.waktu.includes('')) {
+          errors.waktu = 'Waktu penyiraman ada yang tidak sesuai';
+        }
+        if (values.hari.length < 1) {
+          errors.hari = 'Hari harus diisi';
+        }
+        return errors;
       }}
       validationSchema={validatePenjadwalanSchema}
       onSubmit={(values, actions) => {
@@ -196,6 +200,7 @@ function CardFormPenjadwalan({ updateAction }) {
                         />
                         Tambah
                       </Button>
+                      {errors.waktu && <FormErrorMessage>{errors.waktu}</FormErrorMessage>}
                     </FormControl>
                   )}
                 </FieldArray>
@@ -210,11 +215,14 @@ function CardFormPenjadwalan({ updateAction }) {
                         {...field}
                         type="number"
                         value={values.durasi}
-                        onChange={(e) => setFieldValue('durasi', parseInt(e.target.value))}
+                        onChange={(e) => {
+                          const val = parseInt(e.target.value)
+                          setFieldValue('durasi', isNaN(val) ? '' : val)
+                        }}
                         style={{ color: 'black' }}
                         placeholder="60 (untuk satu jam)"
                       />
-                      <FormErrorMessage>{errors.durasi}</FormErrorMessage>
+                      {errors.durasi && <FormErrorMessage>{errors.durasi}</FormErrorMessage>}
                     </FormControl>
                   )}
                 </Field>
@@ -239,7 +247,7 @@ function CardFormPenjadwalan({ updateAction }) {
                           />
                         ))}
                       </Wrap>
-                      <FormErrorMessage>{errors.hari}</FormErrorMessage>
+                      {errors.hari && <FormErrorMessage>{errors.hari}</FormErrorMessage>}
                     </FormControl>
                   )}
                 </Field>
