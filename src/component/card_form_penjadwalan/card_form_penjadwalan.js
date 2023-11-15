@@ -78,9 +78,10 @@ function CardFormPenjadwalan({ updateAction }) {
       initialValues={{
         resep: '',
         waktu: [''],
-        durasi: 0,
+        durasi: '',
         hari: [],
       }}
+
       validate={(values) => {
         const errors = {};
         if (values.waktu.includes('')) {
@@ -91,7 +92,9 @@ function CardFormPenjadwalan({ updateAction }) {
         }
         return errors;
       }}
+
       validationSchema={validatePenjadwalanSchema}
+
       onSubmit={(values, actions) => {
         setButtonLoading(true)
         const payload = values;
@@ -216,12 +219,12 @@ function CardFormPenjadwalan({ updateAction }) {
                         {...field}
                         type="number"
                         value={values.durasi}
+                        style={{ color: 'black' }}
+                        placeholder="60 (untuk satu jam)"
                         onChange={(e) => {
                           const val = parseInt(e.target.value)
                           setFieldValue('durasi', isNaN(val) ? '' : val)
                         }}
-                        style={{ color: 'black' }}
-                        placeholder="60 (untuk satu jam)"
                       />
                       {errors.durasi && <FormErrorMessage>{errors.durasi}</FormErrorMessage>}
                     </FormControl>
@@ -263,7 +266,7 @@ function CardFormPenjadwalan({ updateAction }) {
                 </Button>
               </Flex>
 
-              <Modal isOpen={isOpen} onClose={onClose}>
+              <Modal isOpen={isOpen} onClose={onClose} size={{base:'sm',md:'xl'}}>
                 <ModalOverlay />
                 <ModalContent>
                   <ModalHeader alignSelf="center">Tambah Jadwal</ModalHeader>
@@ -281,6 +284,7 @@ function CardFormPenjadwalan({ updateAction }) {
                       color="white"
                       mr="3"
                       paddingX="30px"
+                      isDisabled={!isValid}
                     >
                       Ok
                     </Button>

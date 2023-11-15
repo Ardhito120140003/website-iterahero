@@ -32,7 +32,7 @@ import {
 import { MdOutlineAccessTime } from "react-icons/md";
 import { BiTrash } from "react-icons/bi";
 import { motion, AnimatePresence } from "framer-motion";
-import { RiPencilFill } from 'react-icons/ri';
+//import { RiPencilFill } from 'react-icons/ri';
 import CustomCheckbox from "../card_form_penjadwalan/checkbox";
 
 const weekdays = [
@@ -209,21 +209,7 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                       />
                     </Flex>
 
-                    {/* <Flex alignSelf="center">
-         
-                      <Icon
-                        key={index}
-                        as={RiPencilFill}
-                        w="20px"
-                        h="20px"
-                        color="#007BFF"
-                        onClick={() => {
-                          onEditModalOpen();
-                        }}
-                      />
-              
-                    </Flex> */}
-
+{/* 
                     <Flex alignSelf="center">
                       <Icon
                         as={RiPencilFill}
@@ -232,11 +218,14 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                         color="#007BFF"
                         onClick={() => handleEditClick(index)} // Pass the index to handleEditClick
                       />
-                    </Flex>
+                    </Flex> */}
 
                   </Flex>
 
-                  <Modal isOpen={isEditModalOpen} onClose={() => { onEditModalClose(); setEditingIndex(null); }}>
+                  <Modal 
+                  isOpen={isEditModalOpen} 
+                  onClose={() => { onEditModalClose(); setEditingIndex(null); }}
+                  size={{base:'sm',md:'xl'}}>
                     {/* ... (existing code) */}
                     <ModalOverlay />
                     <ModalContent p={"10px"}>
@@ -297,80 +286,11 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                     {/* ... (existing code) */}
                   </Modal>
 
-                  {/* <Modal isOpen={isEditModalOpen} onClose={onEditModalClose}>
-                    <ModalOverlay />
-                    <ModalContent p={"10px"}>
-                      <ModalHeader alignSelf="center">Ubah Jadwal</ModalHeader>
-                      <ModalCloseButton />
-                      <ModalBody pb={6}>
-
-                      <FormControl my="10px" color="black">
-                          <Text>Waktu Penyiraman</Text>
-                          <Input
-                            key={index}
-                            type="time"
-                            mt={'10px'}
-                            defaultValue={item.waktu}
-                            // placeholder="60 (untuk satu jam)"
-                            // value={durasi}
-                            // onInput={(e) => setDurasi(e.target.value)}
-                          />
-                        </FormControl>
-
-                        <FormControl my="10px" color="black">
-                          <Text>Durasi per penyiraman (menit)</Text>
-                          <Input
-                            key={index}
-                            type="number"
-                            mt={'10px'}
-                            defaultValue={item.resep.interval}
-                            //placeholder="60 (untuk satu jam)"
-                            // value={durasi}
-                            // onInput={(e) => setDurasi(e.target.value)}
-                          />
-                        </FormControl>
-
-                        <FormControl
-                          color="black"
-                        >
-                          <Text>Ulangi</Text>
-                          <Wrap
-                            marginTop="10px"
-                            // direction="row" 
-                            // justifyContent="flex-start"
-                            gap={2}
-                          >
-                            {weekdays.map((item, index) => (
-                              <CustomCheckbox label={item.label} value={item.value} onSelect={handleDay} key={index} />
-                            ))}
-                          </Wrap>
-
-                        </FormControl>
-                      </ModalBody>
-
-                      <ModalFooter>
-                        <Button
-                          onClick={() => { onEditModalClose(); }}
-                          backgroundColor="#09322D"
-                          color="white"
-                          mr="3"
-                          paddingX="30px"
-                        //disabled={ppm === '' || rasioA === '' || rasioB === '' || rasioAir === ''}
-                        >
-                          Simpan
-                        </Button>
-                        <Button onClick={onEditModalClose}>Cancel</Button>
-                      </ModalFooter>
-                    </ModalContent>
-                  </Modal> */}
-
-
-
-
                   <AlertDialog
                     isOpen={isDeleteModalOpen}
                     leastDestructiveRef={cancelRef}
                     onClose={onDeleteModalCLose}
+                    size={{base:'sm',md:'xl'}}
                   >
                     <AlertDialogOverlay>
                       <AlertDialogContent>

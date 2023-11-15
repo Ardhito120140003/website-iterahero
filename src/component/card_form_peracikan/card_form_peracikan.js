@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect,useRef }  from 'react';
 import { Formik, Field, Form } from 'formik';
 import {
   Flex,
@@ -33,16 +33,19 @@ import { BiTrash } from "react-icons/bi";
 //import { RiPencilFill } from 'react-icons/ri';
 
 function CardFormPeracikan() {
-  const { isOpen: isRacikModalOpen, onOpen: onRacikModalOpen, onClose: onRacikModalClose } = useDisclosure();
-  const { isOpen: isSaveModalOpen, onOpen: onOpenSaveModal, onClose: onCloseSaveModal } = useDisclosure();
+  const { isOpen: isOpenRacikModal, onOpen: onOpenRacikModal, onClose: onCloseRacikModal } = useDisclosure();
+  const { isOpen: isOpenSaveModal, onOpen: onOpenSaveModal, onClose: onCloseSaveModal } = useDisclosure();
+  const { isOpen: isOpenUpdateModal, onOpen: onOpenUpdateModal, onClose: onCloseUpdateModal } = useDisclosure();
   const { isOpen: isOpenDeleteModal, onOpen: onOpenDeleteModal, onClose: onCLoseDeleteModal } = useDisclosure();
 
-  const [dataApi, setDataApi] = React.useState([]);
+  const [dataApi, setDataApi] = useState([]);
   const base_url = useSelector(selectUrl);
   const header = localStorage.getItem('token');
-  const cancelRef = React.useRef();
+  const cancelRef = useRef();
+  const [selectedFormulaId, setSelectedFormulaId] = useState(null);
+  const [action, setAction] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     axios.get(`${base_url}api/v1/resep`, {
       headers: {
         Authorization: `Bearer ${header}`,
@@ -53,19 +56,18 @@ function CardFormPeracikan() {
     })
       .then((response) => {
         setDataApi(response.data.data);
+        console.log('data api :',dataApi)
       })
       .catch((error) => {
         console.error('Error fetching formula data:', error);
       });
-  }, [onOpenSaveModal]);
+  }, [onOpenSaveModal,action]);
 
-  const handleRacikSubmit = async (values) => {
-    console.log({ header });
-    console.log('Form Values:', values);
+  const handleRacikSubmit = async (id) => {
     axios.post(base_url + 'api/v1/kontrol', {}, {
-      params: {
-        id: 1
-      },
+      // params: {
+      //   id
+      // },
       headers: {
         Authorization: `Bearer ${header}`
       }
@@ -78,9 +80,51 @@ function CardFormPeracikan() {
       });
   };
 
-  const handleSaveSubmit = async (values) => {
-    console.log('Form Values:', values);
-    axios.post(`${base_url}api/v1/resep`, values, {
+  const handleUpdate = async (
+    nama,
+    ppm,
+    ph,
+    volume,
+    greenhouseId
+  ) => {
+    axios.patch(`${base_url}api/v1/resep`, {
+      nama: nama,
+      ppm: ppm,
+      ph: ph,
+      volume: volume,
+      greenhouseId: greenhouseId
+
+    }, {
+      headers: {
+        Authorization: `Bearer ${header}`
+      }, 
+      // params: {
+      //   id
+      // }
+    })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => {
+        console.error(err)
+      })
+      .finally(() => setAction(!action))
+  };
+
+  const handleSaveSubmit = async (
+    nama,
+    ppm,
+    ph,
+    volume,
+    greenhouseId,
+    ) => {
+    axios.post(`${base_url}api/v1/resep`, {
+      nama: nama,
+      ppm: ppm,
+      ph: ph,
+      volume: volume,
+      greenhouseId: greenhouseId,
+    }, {
       headers: {
         Authorization: `Bearer ${header}`,
       },
@@ -93,15 +137,37 @@ function CardFormPeracikan() {
       });
   };
 
+  const handleDelete = async (id) => {
+    console.log('Formula id:', id);
+    axios.delete(`${base_url}api/v1/resep`, {
+      headers: {
+        Authorization: `Bearer ${header}`,
+      },
+      params: {
+        id
+      }
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => setAction(!action));
+  };
+
   return (
     <Formik
       initialValues={{
+        id: '',
         formula: '',
         newFormulaName: '',
         phValue: '',
         ppmValue: '',
         volume: '',
+        greenhouseId: '',
       }}
+
       validate={(values) => {
         const errors = {};
         if (!values.newFormulaName) {
@@ -116,22 +182,23 @@ function CardFormPeracikan() {
         if (!values.volume) {
           errors.volume = 'Volume harus diisi';
         }
+        // if (!values.greenhouseId) {
+        //   errors.greenhouseId = 'Greenhouse harus diisi';
+        // }
         return errors;
       }}
+
       onSubmit={(values, actions) => {
-        // Check if all fields are filled
-        const allFieldsFilled = Object.values(values).every((value) => value !== '');
-
-        if (allFieldsFilled) {
-          if (values.formula === 'Tambah Formula') {
-            onOpenSaveModal();
-          } else {
-            onRacikModalOpen();
-          }
-        }
-
+        console.log('values yang disubmit :',values);
+       
+           if (values.formula === 'Tambah Formula') {
+              onOpenSaveModal();
+           } else if (values.formula !== 'Tambah Formula' && values.formula !== '') {
+              onOpenRacikModal();
+           }
+     
         actions.setSubmitting(false);
-      }}
+     }}
     >
       {({ values, errors, touched, isValid, setFieldValue }) => (
         <Form>
@@ -142,7 +209,7 @@ function CardFormPeracikan() {
               <Field name="formula">
                 {({ field }) => (
                   <FormControl isInvalid={errors.formula && touched.formula}>
-                    <FormLabel  color={'black'}>Formula</FormLabel>
+                    <FormLabel color={'black'}>Formula</FormLabel>
                     <Select
                       {...field}
                       borderRadius="10"
@@ -150,15 +217,19 @@ function CardFormPeracikan() {
                       onChange={(e) => {
                         const idx = parseInt(e.target.value);
                         if (isNaN(idx)) {
+                          setFieldValue('id', '');
                           setFieldValue('newFormulaName', '');
                           setFieldValue('phValue', '');
                           setFieldValue('ppmValue', '');
                           setFieldValue('volume', '');
+                          setFieldValue('greenhouseId', '');
                         } else {
+                          setFieldValue('id', dataApi[idx].id);
                           setFieldValue('newFormulaName', dataApi[idx].nama);
                           setFieldValue('phValue', dataApi[idx].ph);
                           setFieldValue('ppmValue', dataApi[idx].ppm);
                           setFieldValue('volume', dataApi[idx].volume);
+                          setFieldValue('greenhouseId', dataApi[idx].greenhouseId);
                         }
                         setFieldValue('formula', e.target.value);
                       }}
@@ -202,7 +273,7 @@ function CardFormPeracikan() {
               <Field name="phValue">
                 {({ field }) => (
                   <FormControl isRequired isInvalid={errors.phValue && touched.phValue}>
-                    <FormLabel  color={'black'}>PH Value</FormLabel>
+                    <FormLabel color={'black'}>PH Value</FormLabel>
                     <Input
                       {...field}
                       type="number"
@@ -221,7 +292,7 @@ function CardFormPeracikan() {
               <Field name="ppmValue">
                 {({ field }) => (
                   <FormControl isRequired isInvalid={errors.ppmValue && touched.ppmValue}>
-                    <FormLabel  color={'black'}>PPM Value</FormLabel>
+                    <FormLabel color={'black'}>PPM Value</FormLabel>
                     <Input
                       {...field}
                       type="number"
@@ -240,7 +311,7 @@ function CardFormPeracikan() {
               <Field name="volume">
                 {({ field }) => (
                   <FormControl isRequired isInvalid={errors.volume && touched.volume}>
-                    <FormLabel  color={'black'}>Volume</FormLabel>
+                    <FormLabel color={'black'}>Volume</FormLabel>
                     <Input
                       {...field}
                       type="number"
@@ -256,7 +327,7 @@ function CardFormPeracikan() {
             </Box>
 
             {(values.formula !== 'Tambah Formula' && values.formula !== '') && (
-              <Box justifyContent={'flex-end'} p={'10px'} display={'flex'}>
+              <Box justifyContent={'flex-start'} p={'10px'} display={'flex'}>
                 <Flex alignSelf="center">
                   <Icon
                     as={BiTrash}
@@ -265,8 +336,9 @@ function CardFormPeracikan() {
                     h="20px"
                     alignSelf="center"
                     onClick={() => {
+                      console.log(values.id);
+                      setSelectedFormulaId(values.id);
                       onOpenDeleteModal();
-                      //setTarget(item.id);
                     }}
                   />
                 </Flex>
@@ -279,7 +351,7 @@ function CardFormPeracikan() {
               gap="10px"
               mt={values.formula === 'Tambah Formula' ? "16px" : values.formula === '' ? "60px" : "10px"}
             >
-              {values.formula !== '' && (
+              {values.formula === 'Tambah Formula' && (
                 <Button
                   type="Submit"
                   backgroundColor="#09322D"
@@ -289,6 +361,19 @@ function CardFormPeracikan() {
                   Simpan Formula
                 </Button>
               )}
+
+              {(values.formula !== 'Tambah Formula' &&  values.formula !== '')  && (
+                <Button
+                  type="button"
+                  backgroundColor="#09322D"
+                  w={'100%'}
+                  isDisabled={!isValid}
+                  onClick={onOpenUpdateModal}
+                >
+                  Simpan Perubahan
+                </Button>
+              )}
+
 
               {values.formula !== 'Tambah Formula' && (
                 <Button
@@ -304,7 +389,7 @@ function CardFormPeracikan() {
           </Flex>
 
           {/* Modal Racik */}
-          <Modal isOpen={isRacikModalOpen} onClose={onRacikModalClose}>
+          <Modal isOpen={isOpenRacikModal} onClose={onCloseRacikModal} size={{base:'sm',md:'xl'}}>
             <ModalOverlay />
             <ModalContent>
               <ModalHeader alignSelf="center">Proses Peracikan</ModalHeader>
@@ -314,7 +399,7 @@ function CardFormPeracikan() {
               </ModalBody>
               <ModalFooter>
                 <Button
-                  onClick={() => { onRacikModalClose(); handleRacikSubmit(values); }}
+                  onClick={() => { onCloseRacikModal(); handleRacikSubmit(values.id); }}
                   backgroundColor="#09322D"
                   color="white"
                   mr="3"
@@ -322,13 +407,40 @@ function CardFormPeracikan() {
                 >
                   Ok
                 </Button>
-                <Button onClick={onRacikModalClose}>Cancel</Button>
+                <Button onClick={onCloseRacikModal}>Cancel</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+
+          {/* Modal Update */}
+          <Modal isOpen={isOpenUpdateModal} onClose={onCloseUpdateModal} size={{base:'sm',md:'xl'}}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader alignSelf="center">Update Formula</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody pb={6}>
+                <Text>Apakah anda yakin untuk menyimpan perubahan ini ?</Text>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  onClick={() => { onCloseUpdateModal(); handleUpdate(values.id); }}
+                  backgroundColor="#09322D"
+                  color="white"
+                  mr="3"
+                  paddingX="30px"
+                  isDisabled={!isValid}
+                >
+                  Update
+                </Button>
+                <Button 
+                onClick={onCloseUpdateModal}
+                >Cancel</Button>
               </ModalFooter>
             </ModalContent>
           </Modal>
 
           {/* Modal Save */}
-          <Modal isOpen={isSaveModalOpen} onClose={onCloseSaveModal}>
+          <Modal isOpen={isOpenSaveModal} onClose={onCloseSaveModal} size={{base:'sm',md:'xl'}}>
             <ModalOverlay />
             <ModalContent>
               <ModalHeader alignSelf="center">Simpan Formula</ModalHeader>
@@ -338,7 +450,7 @@ function CardFormPeracikan() {
               </ModalBody>
               <ModalFooter>
                 <Button
-                  onClick={() => { onCloseSaveModal(); handleSaveSubmit(values); }}
+                  onClick={() => { onCloseSaveModal(); handleSaveSubmit(values.newFormulaName,values.ppm,values.ph,values.id); }}
                   backgroundColor="#09322D"
                   color="white"
                   mr="3"
@@ -347,15 +459,19 @@ function CardFormPeracikan() {
                 >
                   Simpan Formula
                 </Button>
-                <Button onClick={onCloseSaveModal}>Cancel</Button>
+                <Button 
+                onClick={onCloseSaveModal}
+                >Cancel</Button>
               </ModalFooter>
             </ModalContent>
           </Modal>
 
+          {/* Modal Delete */}
           <AlertDialog
             isOpen={isOpenDeleteModal}
             leastDestructiveRef={cancelRef}
             onClose={onCLoseDeleteModal}
+            size={{base:'sm',md:'xl'}}
           >
             <AlertDialogOverlay>
               <AlertDialogContent>
@@ -377,7 +493,7 @@ function CardFormPeracikan() {
                     ml={3}
                     onClick={() => {
                       onCLoseDeleteModal();
-                      //deleteHandler(target);
+                      handleDelete(selectedFormulaId);
                     }}
                   >
                     Delete

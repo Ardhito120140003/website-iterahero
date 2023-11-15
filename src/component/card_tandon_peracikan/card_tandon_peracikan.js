@@ -226,7 +226,7 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
         </Text>
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size={{base:'sm',md:'xl'}}>
         <ModalOverlay />
         <ModalContent p={"10px"}>
           <ModalHeader alignSelf="center">Perbandingan Rasio Pupuk</ModalHeader>
