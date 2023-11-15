@@ -15,12 +15,12 @@ function Penjadwalan() {
   const base_url = useSelector(selectUrl);
   const [data, setData] = useState(null);
   const [action, setAction] = useState(false);
-  const headers = localStorage.getItem('token');
+  const header = localStorage.getItem('token');
 
   useEffect(() => {
     axios.get(`${base_url}api/v1/penjadwalan`, {
       headers: {
-        Authorization: `Bearer ${headers}`,
+        Authorization: `Bearer ${header}`,
       },
     })
       .then((response) => {
@@ -36,7 +36,7 @@ function Penjadwalan() {
   const handleDelete = async (id) => {
     axios.delete(`${base_url}api/v1/penjadwalan`, {
       headers: {
-        Authorization: `Bearer ${headers}`,
+        Authorization: `Bearer ${header}`,
       },
       params: {
         id
@@ -56,13 +56,15 @@ function Penjadwalan() {
       id
     }, {
       headers: {
-        Authorization: `Bearer ${headers}`
+        Authorization: `Bearer ${header}`
       }
     })
       .then(response => {
         console.log(response);
       })
-      .catch(err => console.error(err))
+      .catch(err => {
+        console.error(err)
+      })
       .finally(() => setAction(!action))
   }
 
