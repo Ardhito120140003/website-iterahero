@@ -11,7 +11,9 @@ function CustomCheckbox({ label, onSelect, isChecked, value }) {
     <Flex>
       <label
       style={{
-        width: '65px',
+        //width: '65px',
+        width: '6vw',
+        //height: '5vh',
         height: '30px',
         fontSize: "13px",
         fontWeight: 'bold',
