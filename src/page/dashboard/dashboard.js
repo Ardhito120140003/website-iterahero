@@ -120,7 +120,7 @@ const DashboardOperator = () => {
       ) : (
         <Flex flexDirection={'column'}>
           <Image
-            width={"22%"}
+            width={{base:'50%',sm:"35%",md:"30%",lg:"22%",xl:"22%"}}
             height={"auto"}
             src="https://res.cloudinary.com/iterahero2023/image/upload/v1699238050/iterahero2023/MITRA%20ITERAHERO2023.png"
             // src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
