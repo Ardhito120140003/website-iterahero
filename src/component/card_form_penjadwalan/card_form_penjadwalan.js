@@ -40,11 +40,12 @@ const weekdays = [
 ];
 
 const validatePenjadwalanSchema = Yup.object().shape({
-  resep: Yup.string().required('Formula harus diisi'),
+  resep: Yup.string().required('data harus diisi'),
   durasi: Yup.string()
     .min(2, 'Minimal 10 menit')
     .max(2, 'Kelamaan')
-    .required('Durasi harus diisi')
+    .required('Durasi harus diisi'),
+  id_greenhouse: Yup.string().required('data harus diisi'),
 })
 
 function CardFormPenjadwalan({ updateAction }) {
@@ -52,7 +53,24 @@ function CardFormPenjadwalan({ updateAction }) {
   const base_url = useSelector(selectUrl);
   const header = localStorage.getItem('token');
   const [dataApi, setDataApi] = useState([]);
+  const [dataApiGreenhouse, setDataApiGreenhouse] = useState([]);
   const [buttonLoading, setButtonLoading] = useState(false)
+
+  const getApiGreenhouse = async () => {
+    axios
+      .get(`${base_url}api/v1/greenhouse`, {
+        headers: {
+          Authorization: `Bearer ${header}`,
+        }
+      })
+    .then((response) => {
+      setDataApiGreenhouse(response.data.data);
+      console.log('data api greenhouse : ', dataApiGreenhouse);
+    })
+    .catch((error) => {
+      console.error('Error fetching greenhouse data:', error);
+    });
+  };
 
   useEffect(() => {
     axios
@@ -66,11 +84,13 @@ function CardFormPenjadwalan({ updateAction }) {
       })
       .then((response) => {
         setDataApi(response.data.data);
-        console.log(dataApi);
+        console.log('datApi : ', dataApi);
       })
       .catch((error) => {
         console.error('Error fetching resep data:', error);
       });
+
+    getApiGreenhouse();
   }, []);
 
   return (
@@ -80,6 +100,7 @@ function CardFormPenjadwalan({ updateAction }) {
         waktu: [''],
         durasi: '',
         hari: [],
+        id_greenhouse: '',
       }}
 
       validate={(values) => {
@@ -88,7 +109,7 @@ function CardFormPenjadwalan({ updateAction }) {
           errors.waktu = 'Waktu penyiraman ada yang tidak sesuai';
         }
         if (values.hari.length < 1) {
-          errors.hari = 'Hari harus diisi';
+          errors.hari = 'data harus diisi';
         }
         return errors;
       }}
@@ -98,8 +119,15 @@ function CardFormPenjadwalan({ updateAction }) {
       onSubmit={(values, actions) => {
         setButtonLoading(true)
         const payload = values;
-        payload.id_tandon = 1
-        axios.post(base_url + "api/v1/penjadwalan", payload, {
+        axios.post(base_url + "api/v1/penjadwalan", {
+          resep: payload.resep,
+          id_tandon: 1,
+          waktu: payload.waktu,
+          hari: payload.hari,
+          durasi: payload.durasi,
+          id_greenhouse: parseInt(payload.id_greenhouse) 
+
+        }, {
           headers: {
             Authorization: `Bearer ${header}`,
           },
@@ -257,6 +285,33 @@ function CardFormPenjadwalan({ updateAction }) {
                 </Field>
               </Box>
 
+              <Box>
+                <Field name="id_greenhouse">
+                  {({ field }) => (
+                    <FormControl isInvalid={errors.id_greenhouse && touched.id_greenhouse}>
+                      <FormLabel color="black">Greenhouse Tujuan</FormLabel>
+                      <Select
+                        {...field}
+                        borderRadius="10"
+                        value={values.id_greenhouse}
+                        color='black'
+                        onChange={(e) => {
+                          setFieldValue('id_greenhouse', e.target.value);
+                        }}
+                      >
+                        <option style={{ color: 'black' }} value="">--Pilih Greenhouse--</option>
+                        {dataApiGreenhouse.map((data, index) => (
+                          <option key={index} value={data.id} style={{ color: 'black' }}>
+                            {data.name.toUpperCase()}
+                          </option>
+                        ))}
+                      </Select>
+                      <FormErrorMessage>{errors.id_greenhouse}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+              </Box>
+
               <Flex marginTop="16px" flexDirection="row">
                 <Button isLoading={buttonLoading} backgroundColor="#09322D" w={'100%'} isDisabled={!isValid}
                   onClick={() => {
@@ -266,7 +321,7 @@ function CardFormPenjadwalan({ updateAction }) {
                 </Button>
               </Flex>
 
-              <Modal isOpen={isOpen} onClose={onClose} size={{base:'sm',md:'xl'}}>
+              <Modal isOpen={isOpen} onClose={onClose} size={{ base: 'sm', md: 'xl' }}>
                 <ModalOverlay />
                 <ModalContent>
                   <ModalHeader alignSelf="center">Tambah Jadwal</ModalHeader>

@@ -64,10 +64,13 @@ function CardFormPeracikan() {
   }, [onOpenSaveModal,action]);
 
   const handleRacikSubmit = async (id) => {
+    console.log({ header });
+    console.log('ID Form Values:', id);
+
     axios.post(base_url + 'api/v1/kontrol', {}, {
-      // params: {
-      //   id
-      // },
+      params: {
+        id : id
+      },
       headers: {
         Authorization: `Bearer ${header}`
       }
@@ -80,27 +83,27 @@ function CardFormPeracikan() {
       });
   };
 
+  
   const handleUpdate = async (
     nama,
     ppm,
     ph,
     volume,
-    greenhouseId
+    id,
   ) => {
+
     axios.patch(`${base_url}api/v1/resep`, {
       nama: nama,
-      ppm: ppm,
-      ph: ph,
-      volume: volume,
-      greenhouseId: greenhouseId
-
+      ppm: parseFloat(ppm),
+      ph: parseFloat(ph),
+      volume: parseFloat(volume),
     }, {
       headers: {
         Authorization: `Bearer ${header}`
       }, 
-      // params: {
-      //   id
-      // }
+      params: {
+        id : id
+      }
     })
       .then(response => {
         console.log(response);
@@ -113,17 +116,15 @@ function CardFormPeracikan() {
 
   const handleSaveSubmit = async (
     nama,
-    ppm,
     ph,
+    ppm,
     volume,
-    greenhouseId,
     ) => {
     axios.post(`${base_url}api/v1/resep`, {
       nama: nama,
-      ppm: ppm,
-      ph: ph,
-      volume: volume,
-      greenhouseId: greenhouseId,
+      ph: parseFloat(ph),
+      ppm: parseFloat(ppm),
+      volume: parseFloat(volume)
     }, {
       headers: {
         Authorization: `Bearer ${header}`,
@@ -135,6 +136,8 @@ function CardFormPeracikan() {
       .catch((error) => {
         console.error('Error menyimpan formula :', error);
       });
+
+      console.log('simpan',nama,ph,ppm,volume);
   };
 
   const handleDelete = async (id) => {
@@ -144,7 +147,7 @@ function CardFormPeracikan() {
         Authorization: `Bearer ${header}`,
       },
       params: {
-        id
+        id : id
       }
     })
       .then((response) => {
@@ -162,10 +165,9 @@ function CardFormPeracikan() {
         id: '',
         formula: '',
         newFormulaName: '',
-        phValue: '',
-        ppmValue: '',
+        ph: '',
+        ppm: '',
         volume: '',
-        greenhouseId: '',
       }}
 
       validate={(values) => {
@@ -173,18 +175,15 @@ function CardFormPeracikan() {
         if (!values.newFormulaName) {
           errors.newFormulaName = 'Nama formula harus diisi';
         }
-        if (!values.phValue) {
-          errors.phValue = 'PH harus diisi';
+        if (!values.ph) {
+          errors.ph = 'PH harus diisi';
         }
-        if (!values.ppmValue) {
-          errors.ppmValue = 'PPM harus diisi';
+        if (!values.ppm) {
+          errors.ppm = 'PPM harus diisi';
         }
         if (!values.volume) {
           errors.volume = 'Volume harus diisi';
         }
-        // if (!values.greenhouseId) {
-        //   errors.greenhouseId = 'Greenhouse harus diisi';
-        // }
         return errors;
       }}
 
@@ -194,7 +193,7 @@ function CardFormPeracikan() {
            if (values.formula === 'Tambah Formula') {
               onOpenSaveModal();
            } else if (values.formula !== 'Tambah Formula' && values.formula !== '') {
-              onOpenRacikModal();
+              onOpenRacikModal(values.id);
            }
      
         actions.setSubmitting(false);
@@ -222,14 +221,12 @@ function CardFormPeracikan() {
                           setFieldValue('phValue', '');
                           setFieldValue('ppmValue', '');
                           setFieldValue('volume', '');
-                          setFieldValue('greenhouseId', '');
                         } else {
                           setFieldValue('id', dataApi[idx].id);
                           setFieldValue('newFormulaName', dataApi[idx].nama);
                           setFieldValue('phValue', dataApi[idx].ph);
                           setFieldValue('ppmValue', dataApi[idx].ppm);
                           setFieldValue('volume', dataApi[idx].volume);
-                          setFieldValue('greenhouseId', dataApi[idx].greenhouseId);
                         }
                         setFieldValue('formula', e.target.value);
                       }}
@@ -270,38 +267,38 @@ function CardFormPeracikan() {
             )}
 
             <Box>
-              <Field name="phValue">
+              <Field name="ph">
                 {({ field }) => (
-                  <FormControl isRequired isInvalid={errors.phValue && touched.phValue}>
+                  <FormControl isRequired isInvalid={errors.ph && touched.ph}>
                     <FormLabel color={'black'}>PH Value</FormLabel>
                     <Input
                       {...field}
                       type="number"
-                      value={values.phValue}
-                      onChange={(e) => setFieldValue('phValue', e.target.value)}
+                      value={values.ph}
+                      onChange={(e) => setFieldValue('ph', e.target.value)}
                       style={{ color: 'black' }}
                       placeholder="masukkan ph value"
                     />
-                    <FormErrorMessage>{errors.phValue}</FormErrorMessage>
+                    <FormErrorMessage>{errors.ph}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
             </Box>
 
             <Box>
-              <Field name="ppmValue">
+              <Field name="ppm">
                 {({ field }) => (
-                  <FormControl isRequired isInvalid={errors.ppmValue && touched.ppmValue}>
+                  <FormControl isRequired isInvalid={errors.ppm && touched.ppm}>
                     <FormLabel color={'black'}>PPM Value</FormLabel>
                     <Input
                       {...field}
                       type="number"
-                      value={values.ppmValue}
-                      onChange={(e) => setFieldValue('ppmValue', e.target.value)}
+                      value={values.ppm}
+                      onChange={(e) => setFieldValue('ppm', e.target.value)}
                       style={{ color: 'black' }}
                       placeholder="masukkan ppm value"
                     />
-                    <FormErrorMessage>{errors.ppmValue}</FormErrorMessage>
+                    <FormErrorMessage>{errors.ppm}</FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
@@ -450,7 +447,7 @@ function CardFormPeracikan() {
               </ModalBody>
               <ModalFooter>
                 <Button
-                  onClick={() => { onCloseSaveModal(); handleSaveSubmit(values.newFormulaName,values.ppm,values.ph,values.id); }}
+                  onClick={() => { onCloseSaveModal(); handleSaveSubmit(values.newFormulaName,values.ph,values.ppm,values.volume); }}
                   backgroundColor="#09322D"
                   color="white"
                   mr="3"
