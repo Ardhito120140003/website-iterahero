@@ -28,14 +28,14 @@ import { useSelector } from 'react-redux';
 import * as yup from 'yup';
 import { Formik, Form } from 'formik';
 
-function CardStatusPeracikan({ id, tandon, sensor }) {
+function CardStatusPeracikan({ id, sensor }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [trigger, setTrigger] = useState(true);
   const [sensorValue, setSensorValue] = useState([]);
   const [dataApi, setDataApi] = useState([]);
-
   const base_url = useSelector(selectUrl);
   const header = localStorage.getItem('token');
+  const [sensorRealtime, setSensorRealtime] = useState([])
 
   const data = {
     rasioA: '',
@@ -114,6 +114,7 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
   }
 
   useEffect(() => {
+    console.log(sensor)
     axios.get(`${base_url}api/v1/tandonUtama`, {
       params: {
         id
@@ -129,12 +130,18 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
       .catch((error) => {
         console.error('Error fetching formula data:', error);
       });
-  }, [])
+      axios.get(`${base_url}api/v1/logging`, {
+        headers: {
+          Authorization: `Bearer ${header}`
+        }
+      })
+      .then((response) => {
+        setSensorRealtime(response.data.data)
+      })
+      .catch(err => console.error(err))
+      .finally(() => console.log(sensorRealtime))
 
-  useEffect(() => {
-    console.log(sensor)
-    fetchingMqtt([1, 2, 3, 4, 5]);
-    setTimeout(() => setTrigger(!trigger), 3000)
+    setTimeout(() => setTrigger(!trigger), 1800)
   }, [trigger])
 
   return (
@@ -154,7 +161,7 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
 
       <Flex direction={"column"}>
         <Flex justifyContent="center" marginY="30px">
-          {tandon.status === "Idle" ? (
+          {dataApi.status === "Kosong" || dataApi.status === "Ada Isinya" ? (
             <Icon as={GiWaterTower} w="230px" h="130px" color="#14453E" />
           ) : (
             <CircularProgress
@@ -166,7 +173,7 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
           )}
         </Flex>
         <Flex justifyContent="center" marginY="10px">
-          {tandon.status === "Idle" ? (
+          {/* {dataApi.status === "Kosong" ? (
             <Text color="grey" fontSize="12px">
               Tandon Kosong
             </Text>
@@ -174,7 +181,8 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
             <Text color="grey" fontSize="12px">
               Sedang Melakukan Peracikan...
             </Text>
-          )}
+          )} */}
+          <Text>{dataApi.status}</Text>
         </Flex>
       </Flex>
 
@@ -187,21 +195,28 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
         my={"20px"}
         paddingLeft={{ base: "7%", sm: "15%", md: "15%", lg: "13%", xl: "15%" }}
       >
-        {sensor.map((item, index) => (
-          <Grid key={index} templateColumns="repeat(2, 1fr)">
-            <Text color="black" textAlign="left">
-              {item.name}
-            </Text>
-            <Text color="black" textAlign="left">
-              : {sensorValue[index]} {item.unit_measurement}
-            </Text>
-          </Grid>
-        ))}
+        {sensor.map((item, index) => {
+          const matchedData = sensorRealtime.find(obj => obj.sensorId === item.id);
+          const sensorValue = matchedData ? matchedData.nilai : null
+          return (
+            <Grid key={index} templateColumns="repeat(2, 1fr)">
+              <Text color="black" textAlign="left">
+                {item.name}
+              </Text>
+              <Text color="black" textAlign="left">
+                : {sensorValue} {item.unit_measurement}
+              </Text>
+              {/* <Text color="black" textAlign="left">
+                : {sensorValue[index]} {item.unit_measurement}
+              </Text> */}
+           </Grid>
+          )
+        })}
         <Grid templateColumns="repeat(2, 1fr)">
           <Text color="black" textAlign="left">
             Status Tandon
           </Text>
-          {tandon.isOnline ? (
+          {dataApi.isOnline ? (
             <Text color="green" textAlign="left">
               : Online
             </Text>

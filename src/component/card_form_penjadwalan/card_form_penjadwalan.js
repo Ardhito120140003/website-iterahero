@@ -80,6 +80,7 @@ function CardFormPenjadwalan({ updateAction }) {
         waktu: [''],
         durasi: '',
         hari: [],
+        id_greenhouse: 2
       }}
 
       validate={(values) => {
