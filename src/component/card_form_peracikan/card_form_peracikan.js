@@ -218,14 +218,14 @@ function CardFormPeracikan() {
                         if (isNaN(idx)) {
                           setFieldValue('id', '');
                           setFieldValue('newFormulaName', '');
-                          setFieldValue('phValue', '');
-                          setFieldValue('ppmValue', '');
+                          setFieldValue('ph', '');
+                          setFieldValue('ppm', '');
                           setFieldValue('volume', '');
                         } else {
                           setFieldValue('id', dataApi[idx].id);
                           setFieldValue('newFormulaName', dataApi[idx].nama);
-                          setFieldValue('phValue', dataApi[idx].ph);
-                          setFieldValue('ppmValue', dataApi[idx].ppm);
+                          setFieldValue('ph', dataApi[idx].ph);
+                          setFieldValue('ppm', dataApi[idx].ppm);
                           setFieldValue('volume', dataApi[idx].volume);
                         }
                         setFieldValue('formula', e.target.value);
@@ -234,7 +234,7 @@ function CardFormPeracikan() {
                       <option value="">--Pilih Formula--</option>
                       {dataApi.map((data, index) => (
                         <option key={index} value={index} style={{ color: 'black' }}>
-                          {data.nama.toUpperCase()}
+                          {data.nama}
                         </option>
                       ))}
                       <option style={{ backgroundColor: '#09322D', color: 'white' }} value="Tambah Formula">--Tambah Formula--</option>

@@ -130,11 +130,11 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                             <Icon
                               as={MdOutlineAccessTime}
                               color="#14453E"
-                              w="35px"
-                              h="35px"
+                              w="30px"
+                              h="30px"
                               alignSelf="center"
                             />
-                            <Text ml={"10px"} alignSelf={"center"}>
+                            <Text ml={"5px"} alignSelf={"center"}>
                               {item.waktu} - {item.resep.nama}{" "}
                             </Text>
                           </Box>
@@ -143,14 +143,16 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                       </h2>
                       <AccordionPanel pb={4} fontSize={"15px"}>
                         <Flex direction={"column"}>
-                          <Flex flexDir={"row"} gap={"20px"}>
-                            <Flex flexDir="row" marginRight="5px" marginY="20px">
+                          <Flex flexDir={"row"}>
+                            <Flex flexDir="row" marginRight="5px" marginY="20px" w={'100%'}>
                               <Flex direction={"column"} alignItems={"start"}>
                                 <Text color="black"> Formula </Text>
                                 <Text color="black"> Waktu </Text>
                                 <Text color="black"> Durasi </Text>
+                                <Text color="black"> Greenhouse </Text>
                               </Flex>
                               <Flex direction={"column"}>
+                                <Text color="black"> : </Text>
                                 <Text color="black"> : </Text>
                                 <Text color="black"> : </Text>
                                 <Text color="black"> : </Text>
@@ -159,6 +161,7 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                                 <Text color="black"> {item.resep.nama} </Text>
                                 <Text color="black"> {item.waktu} </Text>
                                 <Text color="black"> {item.resep.interval} Menit</Text>
+                                <Text color="black"> {item.greenhouseId} </Text>
                               </Flex>
                             </Flex>
                           </Flex>
@@ -186,7 +189,7 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                     </AccordionItem>
                   </Accordion>
 
-                  <Flex mx={"10px"} gap={"10px"}>
+                  <Flex mr={"10px"} gap={"10px"}>
 
                     <Flex alignSelf="center">
                       <Switch isChecked={item.isActive} size={"sm"} onChange={() => {

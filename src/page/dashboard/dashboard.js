@@ -296,7 +296,7 @@ const DashboardOperator = () => {
                             <h2>
                               <AccordionButton>
                                 <Flex flexDir={'row'} as="span" flex='1' textAlign='left'>
-                                  <Icon as={MdOutlineAccessTime} color="#14453E" w="35px" h="35px" alignSelf="center" />
+                                  <Icon as={MdOutlineAccessTime} color="#14453E" w="30px" h="30px" alignSelf="center" />
                                   {/* <Text ml={'10px'} alignSelf={'center'}>{item.waktu} - {item.resep.nama} </Text> */}
                                   <Text ml={'10px'} alignSelf={'center'}>{item.waktu} - {item.resep.nama} </Text>
                                 </Flex>
@@ -309,10 +309,12 @@ const DashboardOperator = () => {
                                   <Flex flexDir="row">
                                     <Flex direction={'column'} alignItems={'flex-start'} >
                                       <Text color="black"> Formula </Text>
-                                      <Text color="black"> Jam </Text>
-                                      <Text color="black" > Durasi Siram</Text>
+                                      <Text color="black"> Waktu</Text>
+                                      <Text color="black" > Durasi</Text>
+                                      <Text color="black" > Greenhouse</Text>
                                     </Flex>
                                     <Flex direction={'column'}>
+                                      <Text color="black"> : </Text>
                                       <Text color="black"> : </Text>
                                       <Text color="black"> : </Text>
                                       <Text color="black"> : </Text>
@@ -321,6 +323,7 @@ const DashboardOperator = () => {
                                       <Text color="black"> {item.resep.nama} </Text>
                                       <Text color="black"> {item.waktu} </Text>
                                       <Text color="black"> {item.durasi} Menit</Text>
+                                      <Text color="black"> {item.greenhouseId}</Text>
                                     </Flex>
                                   </Flex>
                                 </Flex>

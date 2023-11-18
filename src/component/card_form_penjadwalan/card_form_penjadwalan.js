@@ -119,8 +119,9 @@ function CardFormPenjadwalan({ updateAction }) {
       onSubmit={(values, actions) => {
         setButtonLoading(true)
         const payload = values;
+        console.log(payload);
         axios.post(base_url + "api/v1/penjadwalan", {
-          resep: payload.resep,
+          resep: parseInt(payload.resep),
           id_tandon: 1,
           waktu: payload.waktu,
           hari: payload.hari,
@@ -172,7 +173,7 @@ function CardFormPenjadwalan({ updateAction }) {
                       >
                         <option style={{ color: 'black' }} value="">--Pilih Formula--</option>
                         {dataApi.map((data, index) => (
-                          <option key={index} value={data.nama} style={{ color: 'black' }}>
+                          <option key={index} value={data.id} style={{ color: 'black' }}>
                             {data.nama.toUpperCase()}
                           </option>
                         ))}
