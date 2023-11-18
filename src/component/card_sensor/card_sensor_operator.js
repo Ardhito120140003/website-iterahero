@@ -9,8 +9,10 @@ import Loading from '../loading/loading';
 import './card_sensor.css';
 import { selectUrl } from '../../features/auth/authSlice';
 import { useSelector } from 'react-redux';
+import moment from 'moment/moment';
 
-import ValueSensorOperator from '../value_sensor/value_sensor_operator';
+
+// import ValueSensorOperator from '../value_sensor/value_sensor_operator';
 import Pagination from '../pagination/Pagination';
 
 function CardSensorOperator(props) {
@@ -20,11 +22,12 @@ function CardSensorOperator(props) {
   const [dataTable, setDataTable] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const header = localStorage.getItem('token');
-  const [sensorValue, setSensorValue] = useState([]);
+  const [sensorRealtime, setSensorRealtime] = useState([])
   const [trigger, setTrigger] = useState(true)
   const [cursor, setCursor] = useState(null)
   const [page, setPage] = useState(1)
   const [totalPage, setTotalPage] = useState(0)
+  const [updateTime, setUpdateTime] = useState(0)
 
   const getPagination = async () => {
     // let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
@@ -39,7 +42,6 @@ function CardSensorOperator(props) {
       },
     })
       .then((response) => {
-        console.log(response.data.data)
         setCursor(response.data.cursor);
         setDataTable(response.data.data);
         setTotalPage(response.data.totalPage);
@@ -50,20 +52,28 @@ function CardSensorOperator(props) {
       .finally(() => setIsLoading(false))
   };
 
-  const fetchSensor = (id) => {
-    const data = id.map((item) => (Math.random() * 14).toString().slice(0, 4))
-    setSensorValue(data)
-  }
-
   // Fetch sensor
   useEffect(() => {
-    getPagination().then(() => console.log(dataTable.length))
+    getPagination()
   }, [page]);
 
   // Bacaan sensor
   useEffect(() => {
-    fetchSensor(dataTable.map((item, index) => item["id_sensor"]))
-    setTimeout(() => setTrigger(!trigger), 2500)
+    const params = {
+      [`id_${route === 'tandonUtama' ? 'tandon' : 'greenhouse'}`]: idApi
+    }
+    axios.get(`${base_url}api/v1/logging`, {
+      params,
+      headers: {
+        Authorization: `Bearer ${header}`
+      }
+    })
+    .then((response) => {
+      setSensorRealtime(response.data.data)
+      setUpdateTime(Date.now())
+    })
+    .catch(err => console.error(err))
+    .finally(() => setTimeout(() => setTrigger(!trigger), 2000))
   }, [trigger])
 
   return (
@@ -77,7 +87,10 @@ function CardSensorOperator(props) {
           justify={'start'}
           mt="20px"
         >
-          {dataTable.map((item, index) => (
+          {dataTable.map((item, index) => {
+            const matchedData = sensorRealtime.find(obj => obj.channel === item.channel || obj.gpio === item.GPIO);
+            const sensorValue = matchedData ? matchedData.nilai : null
+            return (
             // <Link to={`/unit/dashboard/sensor/${item.id}`}>
             <WrapItem
               key={index}
@@ -100,34 +113,31 @@ function CardSensorOperator(props) {
                 <Flex flexDir="row" justify="space-between">
                   <Image
                     w={'20px'}
-                    src={`${item.icon}`}
+                    src={`${item.icon.logo}`}
                     color={item.color}
                   />
                   <Text color={`${item.color}`}>{item.name}</Text>
                 </Flex>
 
                 <Flex my={"20px"} justifyContent={'space-around'} alignItems={"center"}>
-                  <Text fontSize={'3xl'} color={sensorValue[index] ? 'black' : 'red'} textAlign={"right"}>
-                    {sensorValue[index] ?? '?'}
+                  <Text fontSize={'3xl'} color={sensorValue ? 'black' : 'red'} textAlign={"right"}>
+                    {sensorValue ?? '?'}
                   </Text>
                   <Text fontSize={'3xl'} textAlign={"left"}>
                     {item.unit_measurement}
                   </Text>
                 </Flex>
-                <ValueSensorOperator
-                  data={{
-                    id: item.id,
-                    color: item.color,
-                    category: item.name,
-                    unit: item.unit_measurement,
-                    max: item.range_max,
-                    min: item.range_min,
-                  }}
-                />
+                <Flex flexDir="column" justifyContent="flex-start" mx={'40px'}>
+                  <Text fontSize="var(--caption)">Diperbarui : </Text>
+                  <Text fontSize="var(--caption)">
+                    {moment(updateTime).format('MMMM Do YYYY, h:mm:ss a')}
+                  </Text>
+                </Flex>
               </Center>
             </WrapItem>
             // </Link>
-          ))}
+            )
+          })}
         </Wrap>
       )}
       {totalPage > 1 &&

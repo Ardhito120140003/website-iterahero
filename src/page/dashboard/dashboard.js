@@ -49,7 +49,6 @@ const DashboardOperator = () => {
       })
       .then((response) => {
         const hari = new Date().getDay()
-        console.log("data penjadwalan :", response.data.data);
         setDataApiPenjadwalan(response.data.data.filter((item, index) => item.hari.includes(hari)));
       })
       .catch((err) => {
@@ -111,6 +110,7 @@ const DashboardOperator = () => {
         getApiPenjadwalan().then(() =>
           setIsLoading(false))
       });
+      setTimeout(() => setAction(!action), 2500)
   }, [action]);
 
   return (
@@ -323,7 +323,7 @@ const DashboardOperator = () => {
                                       <Text color="black"> {item.resep.nama} </Text>
                                       <Text color="black"> {item.waktu} </Text>
                                       <Text color="black"> {item.durasi} Menit</Text>
-                                      <Text color="black"> {item.greenhouseId}</Text>
+                                      <Text color="black"> {item.greenhouse.name}</Text>
                                     </Flex>
                                   </Flex>
                                 </Flex>

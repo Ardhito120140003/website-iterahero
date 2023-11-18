@@ -107,14 +107,7 @@ function CardStatusPeracikan({ id, sensor }) {
       })
   };
 
-  const fetchingMqtt = (id) => {
-    // const data = id.map((item) => ({ id: item, value: Math.random()}));
-    const data = id.map(item => (Math.random() * 15).toString().slice(0, 4));
-    setSensorValue(data);
-  }
-
   useEffect(() => {
-    console.log(sensor)
     axios.get(`${base_url}api/v1/tandonUtama`, {
       params: {
         id
@@ -125,7 +118,6 @@ function CardStatusPeracikan({ id, sensor }) {
     })
       .then((response) => {
         setDataApi(response.data.data);
-        console.log(dataApi)
       })
       .catch((error) => {
         console.error('Error fetching formula data:', error);
@@ -139,9 +131,8 @@ function CardStatusPeracikan({ id, sensor }) {
         setSensorRealtime(response.data.data)
       })
       .catch(err => console.error(err))
-      .finally(() => console.log(sensorRealtime))
 
-    setTimeout(() => setTrigger(!trigger), 1800)
+    setTimeout(() => setTrigger(!trigger), 200)
   }, [trigger])
 
   return (
@@ -196,7 +187,7 @@ function CardStatusPeracikan({ id, sensor }) {
         paddingLeft={{ base: "7%", sm: "15%", md: "15%", lg: "13%", xl: "15%" }}
       >
         {sensor.map((item, index) => {
-          const matchedData = sensorRealtime.find(obj => obj.sensorId === item.id);
+          const matchedData = sensorRealtime.find(obj => obj.channel === item.channel || obj.gpio === item.GPIO);
           const sensorValue = matchedData ? matchedData.nilai : null
           return (
             <Grid key={index} templateColumns="repeat(2, 1fr)">

@@ -32,7 +32,7 @@ import { selectUrl } from '../../features/auth/authSlice';
 import { BiTrash } from "react-icons/bi";
 //import { RiPencilFill } from 'react-icons/ri';
 
-function CardFormPeracikan() {
+function CardFormPeracikan({ id_tandon }) {
   const { isOpen: isOpenRacikModal, onOpen: onOpenRacikModal, onClose: onCloseRacikModal } = useDisclosure();
   const { isOpen: isOpenSaveModal, onOpen: onOpenSaveModal, onClose: onCloseSaveModal } = useDisclosure();
   const { isOpen: isOpenUpdateModal, onOpen: onOpenUpdateModal, onClose: onCloseUpdateModal } = useDisclosure();
@@ -64,13 +64,12 @@ function CardFormPeracikan() {
   }, [onOpenSaveModal,action]);
 
   const handleRacikSubmit = async (id) => {
-    console.log({ header });
     console.log('ID Form Values:', id);
 
-    axios.post(base_url + 'api/v1/kontrol', {}, {
-      params: {
-        id : id
-      },
+    axios.post(base_url + 'api/v1/peracikan', {
+      resep: id,
+      id_tandon,
+    }, {
       headers: {
         Authorization: `Bearer ${header}`
       }

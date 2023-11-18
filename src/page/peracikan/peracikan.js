@@ -55,7 +55,6 @@ function Peracikan() {
           },
         }
       );
-      console.log(response.data.data)
       setData(response.data.data);
       setSelected(target)
     } catch (err) {
@@ -130,7 +129,7 @@ function Peracikan() {
 
               >
                 <Text mb={"20px"}>Form Peracikan</Text>
-                <CardFormPeracikan />
+                <CardFormPeracikan id_tandon={selected} />
               </Flex>
 
 

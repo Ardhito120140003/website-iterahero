@@ -20,7 +20,10 @@ function CardAktuatorOperator(props) {
   const [isLoading, setIsLoading] = useState(true);
   const header = localStorage.getItem('token');
   const [cursor, setCursor] = useState(null)
+  const [totalPage, setTotalPage] = useState(0)
   const [page, setPage] = useState(1)
+  const [kontrol, setKontrol] = useState(false)
+  const [trigger, setTrigger] = useState(false)
 
   const getPagination = async () => {
     // let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
@@ -38,6 +41,7 @@ function CardAktuatorOperator(props) {
     })
       .then((response) => {
         setCursor(response.data.cursor)
+        setTotalPage(response.data.totalPage);
         setDataTable(response.data.data);
       })
       .catch((error) => {
@@ -47,11 +51,10 @@ function CardAktuatorOperator(props) {
   };
   useEffect(() => {
     getPagination();
-    setIsLoading(false);
-  }, [idApi]);
+    setTimeout(() => setTrigger(!trigger), 3000)
+  }, [trigger, kontrol]);
 
   const handleswitch = async (id) => {
-    console.log({ header, id })
     axios.post(base_url + "api/v1/kontrol", {}, {
       params: {
         id: parseInt(id)
@@ -61,16 +64,15 @@ function CardAktuatorOperator(props) {
       }
     })
       .then(response => {
-        console.log(response.data.data)
+        console.log(response.data.message)
       })
       .catch(err => {
         console.error(err);
       })
   }
 
-  return (
-    <>
-      {dataTable == null || isLoading ? (
+  return (    <>
+      {dataTable.length < 1 && isLoading ? (
         <Loading />
       ) : (
         <Wrap
@@ -97,7 +99,7 @@ function CardAktuatorOperator(props) {
               >
                 <Flex flexDir="row" justify="space-between">
                   <Image
-                    src={`${item.icon}`}
+                    src={`${item.icon.logo}`}
                     color={item.color}
                   />
                   {/* <Text color={`${item.color}`}>{item.name}</Text> */}
@@ -119,7 +121,10 @@ function CardAktuatorOperator(props) {
                   />
                 )}
 
-                <Switch mt={'20px'} onChange={() => handleswitch(item.id)} />
+                <Switch mt={'20px'} onChange={async () => {
+                  await handleswitch(item.id)
+                  setKontrol(!kontrol)
+                  }} isChecked={item.status} />
 
               </Center>
             </WrapItem>
