@@ -57,17 +57,21 @@ function CardStatusPeracikan({ id, sensor }) {
     rasioB,
     rasioAir,
     ppm,
+    id,
   ) => {
     data.rasioA = rasioA;
     data.rasioB = rasioB;
     data.rasioAir = rasioAir;
     data.ppm = ppm;
+    data.id = id;
 
     if (
       data.rasioA == ''
       || data.rasioB == ''
       || data.rasioAir == ''
       || data.ppm == ''
+      || data.id == ''
+
     ) {
       return alert('Masih ada yang belum di isi');
     }
@@ -77,6 +81,7 @@ function CardStatusPeracikan({ id, sensor }) {
       rasioB,
       rasioAir,
       ppm,
+      id,
     );
   };
 
@@ -85,19 +90,19 @@ function CardStatusPeracikan({ id, sensor }) {
     rasioB,
     rasioAir,
     ppm,
+    id,
   ) => {
+    console.log('data update : ',rasioA,rasioB,rasioAir,ppm,id)
     axios.patch(base_url + "api/v1/tandonUtama",    {
-      rasioA: rasioA,
-      rasioB: rasioB,
-      rasioAir: rasioAir,
-      ppm: ppm,
+      rasioA: parseFloat(rasioA),
+      rasioB: parseFloat(rasioB),
+      rasioAir: parseFloat(rasioAir),
+      ppm: parseFloat(ppm),
+      id_tandon : parseInt(id)
     }, {
       headers: {
         Authorization: `Bearer ${header}`
       },
-      params: {
-        id
-      }
     })
       .then(response => {
         console.log(response.data);
@@ -244,6 +249,7 @@ function CardStatusPeracikan({ id, sensor }) {
                 rasioB: dataApi.rasioB,
                 rasioAir: dataApi.rasioAir,
                 ppm: dataApi.ppm,
+                id: dataApi.id,
               }}
               validationSchema={schema}
             >
@@ -283,7 +289,9 @@ function CardStatusPeracikan({ id, sensor }) {
                   mb={'15px'}
                     isInvalid={errors.rasioB && touched.rasioB}
                   >
-                    <FormLabel color="var(--color-primer)">Sensor</FormLabel>
+                    <FormLabel color="var(--color-primer)">
+                    Rasio Nutrisi B
+                    </FormLabel>
                     <Input
                       color="var(--color-primer)"
                       maxWidth="100%"
@@ -350,6 +358,7 @@ function CardStatusPeracikan({ id, sensor }) {
                         values.rasioB,
                         values.rasioAir,
                         values.ppm,
+                        values.id,
                       ); onClose()
                     }}
                     backgroundColor="#09322D"
