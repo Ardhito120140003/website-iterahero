@@ -277,8 +277,8 @@ function Monitoring_Add() {
                     <option defaultValue="" selected>
                       Pilih Icon
                     </option>
-                    {iconsList.map((item) => (item.type == 'sensor' ? (
-                      <option value={item.icon} color="var(--color-primer)">
+                    {iconsList.map((item, index) => (item.type == 'sensor' ? (
+                      <option value={item.icon} key={index} color="var(--color-primer)">
                         {item.name}
                       </option>
                     ) : null))}
@@ -436,8 +436,8 @@ function Monitoring_Add() {
                     name="id_category_sensor"
                   >
                     <option value="">Pilih Kategori</option>
-                    {dataCategory.map((item) => (
-                      <option value={item.id} color="var(--color-primer)">
+                    {dataCategory.map((item, index) => (
+                      <option value={item.id} key={index} color="var(--color-primer)">
                         {item.name}
                       </option>
                     ))}

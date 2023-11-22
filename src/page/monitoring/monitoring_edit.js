@@ -308,8 +308,8 @@ function Monitoring_Edit() {
                     id="icon"
                   >
                     <option value="">Pilih Icon</option>
-                    {iconsList.map((item) => (item.type == 'sensor' ? (
-                      <option value={item.icon} color="var(--color-primer)">
+                    {iconsList.map((item, index) => (item.type == 'sensor' ? (
+                      <option value={item.icon} key={index} color="var(--color-primer)">
                         {item.name}
                       </option>
                     ) : null))}
@@ -340,11 +340,12 @@ function Monitoring_Edit() {
                     variant="outline"
                   >
                     <option value="">Pilih Warna</option>
-                    {iconsList.map((item) => (item.type == 'sensor' && item.icon == iconSelected ? (
+                    {iconsList.map((item, index) => (item.type == 'sensor' && item.icon == iconSelected ? (
                       <option
                         value={item.color}
                         color="var(--color-primer)"
                         selected
+                        key={index}
                       >
                         {item.name}
                       </option>
@@ -471,8 +472,8 @@ function Monitoring_Edit() {
                     name="id_category_sensor"
                   >
                     <option value="">Pilih Kategori</option>
-                    {dataCategory.map((item) => (
-                      <option value={item.id} color="var(--color-primer)">
+                    {dataCategory.map((item, index) => (
+                      <option value={item.id} key={index} color="var(--color-primer)">
                         {item.name}
                       </option>
                     ))}

@@ -178,7 +178,7 @@ function AutomationList(props) {
             </Flex>
           </Flex>
           <Wrap>
-            {dataApi.map((data) => (
+            {dataApi.map((data, index) => (
               <CardAutomation
                 data={{
                   actuator: data.actuator,
@@ -188,12 +188,13 @@ function AutomationList(props) {
                   constanta: data.constanta,
                   id_automation: data.id_automation,
                 }}
+                key={index}
               />
             ))}
             ;
           </Wrap>
           <Wrap>
-            {dataSchedule.map((data) => (
+            {dataSchedule.map((data, index) => (
               <CardScheduling
                 data={{
                   actuator: data.actuator,
@@ -203,6 +204,7 @@ function AutomationList(props) {
                   start: data.start,
                   id_schedule: data.id_schedule,
                 }}
+                key={index}
               />
             ))}
             ;

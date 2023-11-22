@@ -226,8 +226,8 @@ function Controlling_Add() {
                     <option value="" selected>
                       Pilih Icon
                     </option>
-                    {iconsList.map((item) => (item.type == 'actuator' ? (
-                      <option value={item.icon} color="var(--color-primer)">
+                    {iconsList.map((item, index) => (item.type == 'actuator' ? (
+                      <option value={item.icon} key={index} color="var(--color-primer)">
                         {item.name}
                       </option>
                     ) : null))}
@@ -254,11 +254,12 @@ function Controlling_Add() {
                     variant="outline"
                   >
                     <option value="">Pilih Warna</option>
-                    {iconsList.map((item) => (item.type == 'actuator' && item.icon == icon_selected ? (
+                    {iconsList.map((item, index) => (item.type == 'actuator' && item.icon == icon_selected ? (
                       <option
                         value={item.color}
                         color="var(--color-primer)"
                         selected
+                        key={index}
                       >
                         {item.name}
                       </option>

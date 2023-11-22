@@ -66,7 +66,7 @@ function TableControlling(props) {
 
     const header = localStorage.getItem('token');
     await axios
-      .get(`${base_url}${controllingApi}${idApi}&&page=${page}`, {
+      .get(`${base_url}api/v1/greenhouse/${idApi}/actuator`, {
         headers: {
           Authorization: `Bearer ${header}`,
         },
@@ -112,7 +112,7 @@ function TableControlling(props) {
   }, [idApi, page]);
   return (
     <>
-      {dataTable == null || isLoading ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <Box
@@ -147,7 +147,14 @@ function TableControlling(props) {
                 </Tr>
               </Thead>
               <Tbody>
-                {dataTable.map((item, index) => (
+                {dataTable.length < 1 ? (
+                  <Tr>
+                    <Td colSpan={10} color={"var(--color-primer)"} textAlign="center">
+                      Data kosong
+                    </Td>
+                  </Tr>
+                ) : (
+                  dataTable.map((item, index) => (
                   <Tr key={index}>
                     <Td textAlign="center" color="var(--color-primer)">
                       {index + 1}
@@ -254,8 +261,7 @@ function TableControlling(props) {
                       </Flex>
                     </Td>
                   </Tr>
-                ))}
-                ;
+                )))}
               </Tbody>
             </Table>
           </TableContainer>

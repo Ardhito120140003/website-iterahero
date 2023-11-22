@@ -74,7 +74,7 @@ function GrafikValue(props) {
 
   useEffect(() => {}, [value]);
   return (
-    <div width="300px" height="300px" margin="20px">
+    <div width="300px" height="300px" >
       <Line size="lg" options={options} data={data} />
     </div>
   );

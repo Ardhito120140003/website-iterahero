@@ -229,8 +229,8 @@ function AutomationAddBySensor(props) {
                     <option defaultValue="" selected>
                       Pilih Sensor
                     </option>
-                    {dataSensor.map((item) => (
-                      <option value={item.id}>{item.name}</option>
+                    {dataSensor.map((item, index) => (
+                      <option value={item.id} key={index}>{item.name}</option>
                     ))}
                   </Select>
                   <FormErrorMessage>{errors.id_sensor}</FormErrorMessage>
@@ -253,8 +253,8 @@ function AutomationAddBySensor(props) {
                     <option defaultValue="" selected>
                       Pilih Kondisi
                     </option>
-                    {dataKondisi.map((data) => (
-                      <option value={data.value}>{data.name}</option>
+                    {dataKondisi.map((data, index) => (
+                      <option value={data.value} key={index}>{data.name}</option>
                     ))}
                   </Select>
                   <FormErrorMessage>{errors.condition}</FormErrorMessage>

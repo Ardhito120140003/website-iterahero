@@ -31,17 +31,16 @@ function Monitoring() {
       })
       .then((response) => {
         if (response.data.data.length > 0) {
-          setDataApi(response.data.data);
           setData(response.data.data[0].id);
-        } else {
-          setDataApi(response.data.data);
         }
-      });
-    console.log(dataApi).catch((error) => {
+        setDataApi(response.data.data);
+      })
+      .catch((error) => {
       // localStorage.clear()
       // dispatch(logout());
       // navigate("/login");
     });
+    console.log(dataApi)
   };
   useEffect(() => {
     dispatch(routePageName('Monitoring'));

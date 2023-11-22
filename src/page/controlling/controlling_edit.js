@@ -222,8 +222,8 @@ function Controlling_Edit() {
                     id="icon"
                   >
                     <option value="">Pilih Ikon</option>
-                    {iconsList.map((item) => (item.type == 'actuator' ? (
-                      <option value={item.icon} color="var(--color-primer)">
+                    {iconsList.map((item, index) => (item.type == 'actuator' ? (
+                      <option value={item.icon} key={index} color="var(--color-primer)">
                         {item.name}
                       </option>
                     ) : null))}
@@ -254,11 +254,12 @@ function Controlling_Edit() {
                     variant="outline"
                   >
                     <option value="">Pilih Warna</option>
-                    {iconsList.map((item) => (item.type == 'actuator' && item.icon == iconSelected ? (
+                    {iconsList.map((item, index) => (item.type == 'actuator' && item.icon == iconSelected ? (
                       <option
                         value={item.color}
                         color="var(--color-primer)"
                         selected
+                        key={index}
                       >
                         {item.name}
                       </option>
