@@ -30,7 +30,7 @@ const DashboardOperator = () => {
   const base_url = useSelector(selectUrl);
   const [dataApiDashboard, setDataApiDashboard] = useState([]);
   const [dataApiPenjadwalan, setDataApiPenjadwalan] = useState([]);
-  const [firstFilter, setFirstFilter] = useState("greenhouse");
+  const [firstFilter, setFirstFilter] = useState("tandonUtama");
   const [filterData, setFilterData] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch();
@@ -97,6 +97,7 @@ const DashboardOperator = () => {
         })
         .then((response) => {
           setFilterData(response.data.data);
+          console.log(response.data.data);
         })
         .catch((err) => {
           console.error(err);
@@ -144,7 +145,7 @@ const DashboardOperator = () => {
               <Formik
                 initialValues={{
                   filter1: firstFilter,
-                  filter2: "",
+                  filter2: 2,
                 }}
                 onSubmit={(values) => {
                   alert(JSON.stringify(values.filter2));
@@ -186,9 +187,9 @@ const DashboardOperator = () => {
                         borderRadius={"10"}
                         width={"100%"}
                         height={"5vh"}
-                        placeholder={
-                          values.filter1 ? "--Pilih " + values.filter1 + "--" : "--"
-                        }
+                        // placeholder={
+                        //   values.filter1 ? "--Pilih " + values.filter1 + "--" : "--"
+                        // }
                         bg={"white"}
                         _active={{ bg: "white" }}
                         borderColor={"var(--color-border)"}
