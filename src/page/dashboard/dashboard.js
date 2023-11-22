@@ -324,7 +324,7 @@ const DashboardOperator = () => {
                                       <Text color="black"> {item.resep.nama} </Text>
                                       <Text color="black"> {item.waktu} </Text>
                                       <Text color="black"> {item.durasi} Menit</Text>
-                                      <Text color="black"> {item.greenhouse.name}</Text>
+                                      <Text color="black" align={'left'}> {item.greenhouse.name}</Text>
                                     </Flex>
                                   </Flex>
                                 </Flex>

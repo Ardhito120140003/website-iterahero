@@ -144,7 +144,7 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                       <AccordionPanel pb={4} fontSize={"15px"}>
                         <Flex direction={"column"}>
                           <Flex flexDir={"row"}>
-                            <Flex flexDir="row" marginRight="5px" marginY="20px" w={'100%'}>
+                            <Flex flexDir="row" marginRight="5px" marginY="20px" w={'100%'} align={'left'}>
                               <Flex direction={"column"} alignItems={"start"}>
                                 <Text color="black"> Formula </Text>
                                 <Text color="black"> Waktu </Text>
@@ -161,7 +161,7 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                                 <Text color="black"> {item.resep.nama} </Text>
                                 <Text color="black"> {item.waktu} </Text>
                                 <Text color="black"> {item.resep.interval} Menit</Text>
-                                <Text color="black"> {item.greenhouseId} </Text>
+                                <Text color="black" align={'left'}> {item.greenhouse.name} </Text>
                               </Flex>
                             </Flex>
                           </Flex>
