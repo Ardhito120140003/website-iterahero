@@ -100,7 +100,7 @@ function CardFormPenjadwalan({ updateAction }) {
         waktu: [''],
         durasi: '',
         hari: [],
-        id_greenhouse: 2
+        id_greenhouse: '',
       }}
 
       validate={(values) => {
@@ -171,7 +171,7 @@ function CardFormPenjadwalan({ updateAction }) {
                           setFieldValue('resep', e.target.value);
                         }}
                       >
-                        <option style={{ color: 'black' }} value="">--Pilih Formula--</option>
+                        <option style={{ color: 'black' }} value="" disabled={values.resep}>--Pilih Formula--</option>
                         {dataApi.map((data, index) => (
                           <option key={index} value={data.id} style={{ color: 'black' }}>
                             {data.nama.toUpperCase()}
@@ -300,7 +300,7 @@ function CardFormPenjadwalan({ updateAction }) {
                           setFieldValue('id_greenhouse', e.target.value);
                         }}
                       >
-                        <option style={{ color: 'black' }} value="">--Pilih Greenhouse--</option>
+                        <option style={{ color: 'black' }} value="" disabled={values.id_greenhouse}>--Pilih Greenhouse--</option>
                         {dataApiGreenhouse.map((data, index) => (
                           <option key={index} value={data.id} style={{ color: 'black' }}>
                             {data.name.toUpperCase()}

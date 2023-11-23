@@ -27,7 +27,6 @@ function CardSensorOperator(props) {
   const [cursor, setCursor] = useState(null)
   const [page, setPage] = useState(1)
   const [totalPage, setTotalPage] = useState(0)
-  const [updateTime, setUpdateTime] = useState(0)
 
   const getPagination = async () => {
     // let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
@@ -70,7 +69,6 @@ function CardSensorOperator(props) {
     })
     .then((response) => {
       setSensorRealtime(response.data.data)
-      setUpdateTime(Date.now())
     })
     .catch(err => console.error(err))
     .finally(() => setTimeout(() => setTrigger(!trigger), 2000))
@@ -90,6 +88,7 @@ function CardSensorOperator(props) {
           {dataTable.map((item, index) => {
             const matchedData = sensorRealtime.find(obj => obj.channel === item.channel || obj.gpio === item.GPIO);
             const sensorValue = matchedData ? matchedData.nilai : null
+            const updatedAt = matchedData ? matchedData.updatedAt : null
             return (
             // <Link to={`/unit/dashboard/sensor/${item.id}`}>
             <WrapItem
@@ -119,18 +118,18 @@ function CardSensorOperator(props) {
                   <Text color={`${item.color}`}>{item.name}</Text>
                 </Flex>
 
-                <Flex my={"20px"} justifyContent={'space-around'} alignItems={"center"}>
-                  <Text fontSize={'3xl'} color={sensorValue ? 'black' : 'red'} textAlign={"right"}>
+                <Flex my={"20px"} alignItems={"center"}>
+                  <Text fontSize={'3xl'} color={sensorValue ? 'black' : 'red'} >
                     {sensorValue ?? '?'}
                   </Text>
-                  <Text fontSize={'3xl'} textAlign={"left"}>
+                  <Text fontSize={'3xl'}>
                     {item.unit_measurement}
                   </Text>
                 </Flex>
                 <Flex flexDir="column" justifyContent="flex-start" mx={'40px'}>
                   <Text fontSize="var(--caption)">Diperbarui : </Text>
                   <Text fontSize="var(--caption)">
-                    {moment(updateTime).format('MMMM Do YYYY, h:mm:ss a')}
+                    {moment(updatedAt).format('MMMM Do YYYY, h:mm a')}
                   </Text>
                 </Flex>
               </Center>

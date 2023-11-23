@@ -32,7 +32,6 @@ function Login() {
   const handleSubmitComplate = (emailValue, passwordValue) => {
     axios
       .post(base_url + 'api/v1/login', {
-      //  .post('https://iterahero-e1a0e90da51e.herokuapp.com/api/v1/login', {
         email: emailValue,
         password: passwordValue,
       })
@@ -73,7 +72,7 @@ function Login() {
         height="100%"
         alignItems="center"
         justifyContent="center"
-        display={{ base: 'none', md: 'none', lg: 'flex' }}
+        display={{ base: 'none', sm: 'none', lg: 'flex' }}
       >
         <Image
           position="Relative"
@@ -95,7 +94,7 @@ function Login() {
           position={"Relative"}
           maxWidth={"350px"}
           src="https://res.cloudinary.com/iterahero2023/image/upload/v1699238050/iterahero2023/MITRA%20ITERAHERO2023.png"
-          // src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
+        // src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
         />
       </Flex>
       <Flex
@@ -111,35 +110,47 @@ function Login() {
           display="flex"
           gap="40px"
           flexDirection="column"
-          size="md"
-          width={{ base: '100%', md: '80%' }}
-          padding="90px 50px 90px 50px"
+          size="sm"
+          width={{ base: '100%', sm: '80%' }}
+          padding={{ base: '100px', sm: '70px' }}
           backgroundColor="var(--color-on-primary)"
           justifyContent={{ lg: 'center' }}
           textAlign="center"
           alignItems="center"
         >
           <Image
-            sizes="md"
+            sizes="sm"
             display={{ base: 'flex', lg: 'none' }}
             position="Relative"
             width="80%"
             maxWidth="200px"
             src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1664911531/itera%20herro%20icon/Frame_245_3_nvtrkl.png"
           />
-          {/* <Image
-            sizes="md"
+
+          {/* <Text
+            fontWeight="semibold"
+            fontFamily="var(--font-family-secondary)"
+            fontSize="var(--header-5)"
+            color="{var(--color-primer)}"
+          >
+            Kerjasama ITERA dan PT. East West Seed Indonesia
+          </Text> */}
+
+          <Image
+            sizes="sm"
             display={{ base: 'flex', lg: 'none' }}
             position="Relative"
             width="80%"
             maxWidth="200px"
-            src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
-          /> */}
+            src="https://res.cloudinary.com/iterahero2023/image/upload/v1699238050/iterahero2023/MITRA%20ITERAHERO2023.png"
+          //src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
+          />
+
           <Text
-            size="md"
+            size="sm"
             fontWeight="bold"
             fontFamily="var(--font-family-secondary)"
-            fontSize="var(--header-2)"
+            fontSize="var(--header-3)"
             color="var(--color-primer)"
           >
             Masuk
@@ -161,13 +172,13 @@ function Login() {
             }) => (
               <Form onSubmit={handleSubmit}>
                 <FormControl
-                  size="md"
+                  size="sm"
                   marginTop="20px"
                   isInvalid={errors.email && touched.email}
                 >
                   <FormLabel htmlFor="email">Email</FormLabel>
                   <Input
-                    size="md"
+                    size="sm"
                     marginTop="0 auto"
                     type="text"
                     name="email"
@@ -180,13 +191,13 @@ function Login() {
                   <FormErrorMessage>{errors.email}</FormErrorMessage>
                 </FormControl>
                 <FormControl
-                  size="md"
+                  size="sm"
                   marginTop="20px"
                   isInvalid={!!errors.password && touched.password}
                 >
                   <FormLabel htmlFor="password">Password</FormLabel>
                   <Input
-                    size="md"
+                    size="sm"
                     margin="0 auto"
                     variant="outline"
                     type="password"

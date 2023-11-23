@@ -8,23 +8,24 @@ import {
   DrawerContent,
 } from '@chakra-ui/react';
 import { useSelector, useDispatch } from 'react-redux';
-// import { FiHome, FiMonitor } from 'react-icons/fi';
-import { FiHome} from 'react-icons/fi';
+import { FiHome, FiMonitor } from 'react-icons/fi';
+//import { FiHome } from 'react-icons/fi';
 
 
 import { GiGreenhouse } from 'react-icons/gi';
-// import { AiOutlineControl, AiOutlineHistory } from 'react-icons/ai';
-import { AiOutlineHistory } from 'react-icons/ai';
+import { AiOutlineControl, AiOutlineHistory } from 'react-icons/ai';
+//import { AiOutlineHistory } from 'react-icons/ai';
 
 import { Link } from 'react-router-dom';
 import NavItem from '../navitem/navitem';
-import { selectUrl, routePageName } from '../../features/auth/authSlice';
+import { selectUrl, routePageName, selectUser } from '../../features/auth/authSlice';
 
 function Draw(props) {
   const { data } = props;
   const navSize = 'large';
 
   const routeName = useSelector(selectUrl);
+  const user = useSelector(selectUser)
 
   const dispatch = useDispatch();
 
@@ -72,32 +73,40 @@ function Draw(props) {
               active={routeName === 'Greenhouse'}
             />
           </Link>
-          {/* <Link
-            to="/unit/monitoring"
-            onClick={() => {
-              patchRoute('Monitoring');
-            }}
-          >
-            <NavItem
-              navSize={navSize}
-              icon={FiMonitor}
-              title="Monitoring"
-              active={routeName === 'Monitoring'}
-            />
-          </Link> */}
-          {/* <Link
-            to="/unit/controlling"
-            onClick={() => {
-              patchRoute('Controlling');
-            }}
-          >
-            <NavItem
-              navSize={navSize}
-              icon={AiOutlineControl}
-              title="Controlling"
-              active={routeName === 'Controlling'}
-            />
-          </Link> */}
+
+          {user === 'admin' ? (
+            <>
+            <Link
+              to="/unit/monitoring"
+              onClick={() => {
+                patchRoute('Monitoring');
+              }}
+            >
+              <NavItem
+                navSize={navSize}
+                icon={FiMonitor}
+                title="Monitoring"
+                active={routeName === 'Monitoring'}
+              />
+            </Link>
+            
+            <Link
+              to="/unit/controlling"
+              onClick={() => {
+                patchRoute('Controlling');
+              }}
+            >
+              <NavItem
+                navSize={navSize}
+                icon={AiOutlineControl}
+                title="Controlling"
+                active={routeName === 'Controlling'}
+              />
+            </Link>
+            </>
+          ) : null}
+
+
           {/* <Link
             to="/unit/historynotifikasi"
             onClick={() => {
@@ -111,6 +120,7 @@ function Draw(props) {
               active={routeName === 'History Notification'}
             />
           </Link> */}
+
           <Link
             to="/unit/peracikan"
             onClick={() => {

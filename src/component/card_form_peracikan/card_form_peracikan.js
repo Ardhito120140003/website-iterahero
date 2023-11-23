@@ -85,23 +85,23 @@ function CardFormPeracikan({ id_tandon }) {
   
   const handleUpdate = async (
     nama,
-    ppm,
     ph,
+    ppm,
     volume,
     id,
   ) => {
-
+    console.log(id)
     axios.patch(`${base_url}api/v1/resep`, {
       nama: nama,
       ppm: parseFloat(ppm),
       ph: parseFloat(ph),
       volume: parseFloat(volume),
     }, {
+      params: {
+        id,
+      },
       headers: {
         Authorization: `Bearer ${header}`
-      }, 
-      params: {
-        id : id
       }
     })
       .then(response => {
@@ -230,13 +230,16 @@ function CardFormPeracikan({ id_tandon }) {
                         setFieldValue('formula', e.target.value);
                       }}
                     >
-                      <option value="">--Pilih Formula--</option>
+                      <option value="" disabled={values.formula}>--Pilih Formula--</option>
                       {dataApi.map((data, index) => (
                         <option key={index} value={index} style={{ color: 'black' }}>
                           {data.nama}
                         </option>
                       ))}
-                      <option style={{ backgroundColor: '#09322D', color: 'white' }} value="Tambah Formula">--Tambah Formula--</option>
+                      <option 
+                      //style={{ backgroundColor: '#09322D', color: 'white' }} 
+                      value="Tambah Formula">--Tambah Formula--
+                      </option>
                     </Select>
                     <FormErrorMessage>{errors.formula}</FormErrorMessage>
                   </FormControl>
@@ -419,7 +422,7 @@ function CardFormPeracikan({ id_tandon }) {
               </ModalBody>
               <ModalFooter>
                 <Button
-                  onClick={() => { onCloseUpdateModal(); handleUpdate(values.id); }}
+                  onClick={() => { onCloseUpdateModal(); handleUpdate(values.newFormulaName,values.ph,values.ppm,values.volume,values.id); }}
                   backgroundColor="#09322D"
                   color="white"
                   mr="3"
