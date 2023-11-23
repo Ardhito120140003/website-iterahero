@@ -160,7 +160,7 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                               <Flex direction={"column"} alignItems={"start"}>
                                 <Text color="black"> {item.resep.nama} </Text>
                                 <Text color="black"> {item.waktu} </Text>
-                                <Text color="black"> {item.resep.interval} Menit</Text>
+                                <Text color="black"> {item.durasi} Menit</Text>
                                 <Text color="black" align={'left'}> {item.greenhouse.name} </Text>
                               </Flex>
                             </Flex>
