@@ -1,0 +1,8 @@
+.dont-touch {
+  cursor: none !important;
+  pointer-events: none !important;
+}
+.touch{
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}

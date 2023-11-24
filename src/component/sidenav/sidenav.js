@@ -11,6 +11,7 @@ import {
   AiOutlineHourglass,
 } from 'react-icons/ai';
 import { MdOutlineMoreTime } from 'react-icons/md';
+import { GiWaterTower } from "react-icons/gi";
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import NavItem from '../navitem/navitem';
@@ -79,6 +80,19 @@ function SideNav() {
             icon={GiGreenhouse}
             title="Greenhouse"
             active={routeName === 'Greenhouse'}
+          />
+        </Link>
+        <Link
+          to="/unit/tandon"
+          onClick={() => {
+            patchRoute('tandon');
+          }}
+        >
+          <NavItem
+            navSize={navSize}
+            icon={GiWaterTower}
+            title="Tandon"
+            active={routeName === 'Tandon'}
           />
         </Link>
         {user === 'admin' ? (

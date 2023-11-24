@@ -14,6 +14,7 @@ import { FiHome, FiMonitor } from 'react-icons/fi';
 
 import { GiGreenhouse } from 'react-icons/gi';
 import { AiOutlineControl, AiOutlineHistory } from 'react-icons/ai';
+import { GiWaterTower } from "react-icons/gi";
 //import { AiOutlineHistory } from 'react-icons/ai';
 
 import { Link } from 'react-router-dom';
@@ -71,6 +72,19 @@ function Draw(props) {
               icon={GiGreenhouse}
               title="Greenhouse"
               active={routeName === 'Greenhouse'}
+            />
+          </Link>
+          <Link
+            to="/unit/tandon"
+            onClick={() => {
+              patchRoute('Tandon');
+            }}
+          >
+            <NavItem
+              navSize={navSize}
+              icon={GiWaterTower}
+              title="Tandon"
+              active={routeName === 'Tandon'}
             />
           </Link>
 

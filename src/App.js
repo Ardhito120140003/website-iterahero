@@ -10,11 +10,14 @@ import Board from './component/board/board';
 import Login from './page/login/login';
 import Dashboard from './page/dashboard/dashboard';
 import GreenHouse from './page/greenhouse/greenhouse';
+import Tandon from './page/tandon/tandon';
 import Monitoring from './page/monitoring/monitoring';
 import Controlling from './page/controlling/controlling';
 import Notification from './page/notification/notification';
 import GreenhouseAdd from './page/greenhouse/greenhouse_add';
 import GreenhouseEdit from './page/greenhouse/greenhouse_edit';
+import TandonAdd from './page/tandon/tandon_add';
+import TandonEdit from './page/tandon/tandon_edit';
 import Monitoring_Add from './page/monitoring/monitoring_add';
 import Controlling_Add from './page/controlling/controlling_add';
 import Monitoring_Edit from './page/monitoring/monitoring_edit';
@@ -45,10 +48,13 @@ function App() {
         <Route path="/unit" element={<Board />}>
           <Route path="dashboard/:id" element={<Dashboard />} />
           <Route path="greenhouse" element={<GreenHouse />} />
+          <Route path="tandon" element={<Tandon />} />
           <Route path="peracikan" element={<Peracikan />} />
           <Route path="penjadwalan" element={<Penjadwalan />} />
           <Route path="greenhouse/add" element={<GreenhouseAdd />} />
           <Route path="greenhouse/:slug" element={<GreenhouseEdit />} />
+          <Route path="tandon/add" element={<TandonAdd />} />
+          <Route path="tandon/:slug" element={<TandonEdit />} />
           <Route path="historynotifikasi" element={<Notification />} />
           <Route path="historynotifikasi/more-notification" element={<MoreNotification />} />
           {user === 'admin' ? (
