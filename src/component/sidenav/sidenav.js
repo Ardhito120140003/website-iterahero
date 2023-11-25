@@ -64,8 +64,6 @@ function SideNav() {
             title="Dashboard"
             active={
               routeName === 'Dashboard'
-              || routeName.includes('Automation')
-              || routeName.includes('automation')
             }
           />
         </Link>

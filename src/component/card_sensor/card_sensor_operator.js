@@ -129,7 +129,7 @@ function CardSensorOperator(props) {
                 <Flex flexDir="column" justifyContent="flex-start" mx={'40px'}>
                   <Text fontSize="var(--caption)">Diperbarui : </Text>
                   <Text fontSize="var(--caption)">
-                    {moment(updatedAt).format('MMMM Do YYYY, h:mm a')}
+                    {moment(updatedAt).format('D MMMM YYYY, h:mm a')}
                   </Text>
                 </Flex>
               </Center>

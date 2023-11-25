@@ -55,7 +55,7 @@ function TableMonitoring(props) {
   const [name, setName] = useState('');
   const [dataTable, setDataTable] = useState([]);
   const [totalPage, setTotalPage] = useState(1);
-  const [totalData, setTotalData] = useState('');
+  const [totalData, setTotalData] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = useState(1);
@@ -65,15 +65,16 @@ function TableMonitoring(props) {
 
     const header = localStorage.getItem('token');
     await axios
-      .get(`${base_url}api/v1/greenhouse/${idApi}/sensor`, {
+      .get(`${base_url}api/v1/tandonUtama/${idApi}/sensor`, {
         headers: {
           Authorization: `Bearer ${header}`,
         },
       })
-      .then((response) => {
-        console.log(response)
-        setDataTable(response.data.data);
-        setTotalPage(response.data.totalPage);
+      .then(({ data }) => {
+        console.log(data)
+        setDataTable(data.data);
+        setTotalPage(data.totalPage);
+        setTotalData(data.totalData)
         setIsLoading(false);
       })
       .catch((error) => {
@@ -104,7 +105,7 @@ function TableMonitoring(props) {
       });
   };
   useEffect(() => {
-    getPagination();
+    // getPagination();
     getApiMonitoring();
     return () => {
       setIsLoading(true);
@@ -113,10 +114,7 @@ function TableMonitoring(props) {
 
   return (
     <>
-      {dataTable == null
-        || totalData == null
-        || totalPage == null
-        || isLoading ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <Box
@@ -287,7 +285,6 @@ function TableMonitoring(props) {
                   ))}
                 </Tbody>
               )}
-
             </Table>
           </TableContainer>
           {dataTable.length > 0 ? (
@@ -300,7 +297,7 @@ function TableMonitoring(props) {
                   {' '}
                   of
                   {' '}
-                  {totalData.length}
+                  {totalData}
                   {' '}
                   entries
                 </p>

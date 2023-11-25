@@ -55,15 +55,13 @@ function TableControlling(props) {
   const [name, setName] = useState('');
   const [dataTable, setDataTable] = useState([]);
   const [totalPage, setTotalPage] = useState(1);
-  const [totalData, setTotalData] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [totalData, setTotalData] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
 
   const getApiControlling = async () => {
-    setIsLoading(true);
-
     const header = localStorage.getItem('token');
     await axios
       .get(`${base_url}api/v1/greenhouse/${idApi}/actuator`, {
@@ -71,9 +69,11 @@ function TableControlling(props) {
           Authorization: `Bearer ${header}`,
         },
       })
-      .then((response) => {
-        setDataTable(response.data.data);
-        setTotalPage(response.data.totalPage);
+      .then(({ data }) => {
+        console.log(data)
+        setDataTable(data.data);
+        setTotalPage(data.totalPage);
+        setTotalData(data.totalData)
         setIsLoading(false);
       })
       .catch((error) => {
@@ -107,7 +107,7 @@ function TableControlling(props) {
     getPagination();
     getApiControlling();
     return () => {
-      setIsLoading(true);
+      setIsLoading(false);
     };
   }, [idApi, page]);
   return (
@@ -274,7 +274,7 @@ function TableControlling(props) {
                 {' '}
                 of
                 {' '}
-                {totalData.length}
+                {totalData}
                 {' '}
                 entries
               </p>
