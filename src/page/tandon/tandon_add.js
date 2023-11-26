@@ -65,7 +65,7 @@ function TandonAdd() {
         //   image: valueImage,
         //   location: valueLocation,
         // },
-        base_url + "api/v1/tandon",
+        base_url + "api/v1/tandonUtama",
         {
           name: valueName,
           image: valueImage,

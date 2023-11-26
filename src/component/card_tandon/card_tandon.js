@@ -27,6 +27,7 @@ function CardTandon(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const base_url = useSelector(selectUrl);
   const { data } = props;
+  console.log(props)
 
   const header = localStorage.getItem("token");
 
@@ -109,10 +110,10 @@ function CardTandon(props) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{`Hapus ${data.nama}`}</ModalHeader>
+          <ModalHeader>{`Hapus ${data.title}`}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>{`Apakah kamu yakin menghapus ${data.nama}`}</Text>
+            <Text>{`Apakah kamu yakin menghapus ${data.title}`}</Text>
           </ModalBody>
 
           <ModalFooter>

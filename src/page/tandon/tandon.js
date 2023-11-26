@@ -80,7 +80,6 @@ function Tandon() {
                   title: placement.nama,
                   location: placement.location,
                   updated_at: placement.updated_at,
-                 
                 }}
               />
             ))}

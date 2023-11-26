@@ -71,6 +71,7 @@ function TableControlling(props) {
       })
       .then(({ data }) => {
         console.log(data)
+        console.log(data)
         setDataTable(data.data);
         setTotalPage(data.totalPage);
         setTotalData(data.totalData)
@@ -167,7 +168,7 @@ function TableControlling(props) {
                       justifyContent="center"
                       alignItems="center"
                     >
-                      <Image height="30px" src={item.icon} alt="icon" />
+                      <Image height="30px" src={item.icon.logo} alt="icon" />
                     </Td>
                     <Td textAlign="center" color="var(--color-primer)">
                       {item.status_lifecycle}
@@ -181,7 +182,7 @@ function TableControlling(props) {
                         width="20px"
                         borderRadius="100px"
                         height="20px"
-                        background={item.color}
+                        background={item.icon.color}
                       />
                     </Td>
                     <Td textAlign="center" color="var(--color-primer)">

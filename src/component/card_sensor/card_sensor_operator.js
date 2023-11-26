@@ -40,10 +40,11 @@ function CardSensorOperator(props) {
         Authorization: `Bearer ${header}`,
       },
     })
-      .then((response) => {
-        setCursor(response.data.cursor);
-        setDataTable(response.data.data);
-        setTotalPage(response.data.totalPage);
+      .then(({ data }) => {
+        setCursor(data.cursor);
+        setDataTable(data.data);
+        setTotalPage(data.totalPage);
+        console.log(data)
       })
       .catch((error) => {
         console.log(error);
@@ -54,7 +55,7 @@ function CardSensorOperator(props) {
   // Fetch sensor
   useEffect(() => {
     getPagination()
-  }, [page]);
+  }, [page, idApi, route]);
 
   // Bacaan sensor
   useEffect(() => {

@@ -29,6 +29,7 @@ function CardAktuatorOperator(props) {
     // let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
     // if (route) {
     let url = `${base_url}api/v1/${route}/${idApi}/actuator`;
+    console.log(url)
     // }
     await axios.get(url, {
       params: {
@@ -52,7 +53,7 @@ function CardAktuatorOperator(props) {
   useEffect(() => {
     getPagination();
     setTimeout(() => setTrigger(!trigger), 3000)
-  }, [trigger, kontrol]);
+  }, [trigger, kontrol, idApi, route]);
 
   const handleswitch = async (id) => {
     axios.post(base_url + "api/v1/kontrol", {}, {

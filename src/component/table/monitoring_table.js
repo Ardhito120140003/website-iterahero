@@ -65,7 +65,7 @@ function TableMonitoring(props) {
 
     const header = localStorage.getItem('token');
     await axios
-      .get(`${base_url}api/v1/tandonUtama/${idApi}/sensor`, {
+      .get(`${base_url}api/v1/greenhouse/${idApi}/sensor`, {
         headers: {
           Authorization: `Bearer ${header}`,
         },
@@ -194,7 +194,7 @@ function TableMonitoring(props) {
                           width="30px"
                           borderRadius="100px"
                           height="30px"
-                          background={item.color}
+                          background={item.icon.color}
                         />
                       </Td>
                       <Td textAlign="center" color="var(--color-primer)">

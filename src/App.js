@@ -33,6 +33,9 @@ import Peracikan from './page/peracikan/peracikan';
 import Penjadwalan from './page/penjadwalan/penjadwalan';
 // import DashboardOperator from './page/dashboard/dashboard_operator';
 import Register from './page/register/Register';
+import MonitoringDetail from "./page/monitoring/monitoring_detail";
+import ControllingDetail from "./page/controlling/Controlling_detail";
+
 
 function App() {
   // const navigate = useNavigate();
@@ -54,17 +57,34 @@ function App() {
           <Route path="greenhouse/add" element={<GreenhouseAdd />} />
           <Route path="greenhouse/:slug" element={<GreenhouseEdit />} />
           <Route path="tandon/add" element={<TandonAdd />} />
-          <Route path="tandon/:slug" element={<TandonEdit />} />
+          <Route path="tandonUtama/:slug" element={<TandonEdit />} />
           <Route path="historynotifikasi" element={<Notification />} />
           <Route path="historynotifikasi/more-notification" element={<MoreNotification />} />
+          <Route path="dashboard/aktuator/:id" element={<Automation />} />
+          <Route
+            path="dashboard/aktuator/automation/add/:id"
+            element={<AutomationAdd />}
+          />
+          <Route
+            path="dashboard/aktuator/schedule/edit/:id"
+            element={<ScheduleEdit />}
+          />
+          <Route
+            path="dashboard/aktuator/automation/edit/:id"
+            element={<AutomationEdit />}
+          />
           {user === 'admin' ? (
             <>
               <Route path="monitoring" element={<Monitoring />} />
-              <Route path="controlling" element={<Controlling />} />
               <Route path="dashboard/sensor/:id" element={<Grafik />} />
               <Route path="monitoring/add/:id" element={<Monitoring_Add />} />
-              <Route path="controlling/add/:id" element={<Controlling_Add />} />
               <Route path="monitoring/edit/:id" element={<Monitoring_Edit />} />
+              <Route path="monitoring/detail/:id" element={<MonitoringDetail />} />
+              <Route path="monitoring/detail/:id" element={<MonitoringDetail />} />
+
+              <Route path="controlling" element={<Controlling />} />
+              <Route path="controlling/add/:id" element={<Controlling_Add />} />
+              <Route path="controlling/detail/:id" element={<ControllingDetail />} />
               <Route
                 path="controlling/edit/:id"
                 element={<Controlling_Edit />}
@@ -72,19 +92,6 @@ function App() {
               <Route
                 path="controlling/edit/:id"
                 element={<Controlling_Edit />}
-              />
-              <Route path="dashboard/aktuator/:id" element={<Automation />} />
-              <Route
-                path="dashboard/aktuator/automation/add/:id"
-                element={<AutomationAdd />}
-              />
-              <Route
-                path="dashboard/aktuator/schedule/edit/:id"
-                element={<ScheduleEdit />}
-              />
-              <Route
-                path="dashboard/aktuator/automation/edit/:id"
-                element={<AutomationEdit />}
               />
             </>
           ) : (

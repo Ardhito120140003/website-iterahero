@@ -30,7 +30,7 @@ const DashboardOperator = () => {
   const base_url = useSelector(selectUrl);
   const [dataApiDashboard, setDataApiDashboard] = useState([]);
   const [dataApiPenjadwalan, setDataApiPenjadwalan] = useState([]);
-  const [firstFilter, setFirstFilter] = useState("tandonUtama");
+  const [firstFilter, setFirstFilter] = useState("greenhouse");
   const [filterData, setFilterData] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch();
@@ -38,7 +38,6 @@ const DashboardOperator = () => {
   const [action, setAction] = useState(false);
   const headers = localStorage.getItem("token");
 
-  const id = parseInt(useParams().id);
 
   const getApiPenjadwalan = async () => {
     axios
@@ -87,8 +86,6 @@ const DashboardOperator = () => {
   };
 
   useEffect(() => {
-    if (firstFilter) {
-      setFilterData([]);
       axios
         .get(base_url + "api/v1/" + firstFilter, {
           headers: {
@@ -97,12 +94,10 @@ const DashboardOperator = () => {
         })
         .then((response) => {
           setFilterData(response.data.data);
-          console.log(response.data.data);
         })
         .catch((err) => {
           console.error(err);
         });
-    }
   }, [firstFilter]);
 
   useEffect(() => {
@@ -145,10 +140,7 @@ const DashboardOperator = () => {
               <Formik
                 initialValues={{
                   filter1: firstFilter,
-                  filter2: 2,
-                }}
-                onSubmit={(values) => {
-                  alert(JSON.stringify(values.filter2));
+                  filter2: null,
                 }}
               >
                 {({ values, setFieldValue, resetForm }) => (
@@ -159,7 +151,6 @@ const DashboardOperator = () => {
                         name="filter1"
                         as={Select}
                         borderRadius={"10"}
-                        // placeholder="--Pilih Filter--"
                         width={"100%"}
                         height={"5vh"}
                         bg={"white"}
@@ -173,8 +164,8 @@ const DashboardOperator = () => {
                         mr={5}
                         value={values.filter1}
                         onChange={(e) => {
-                          resetForm({ filter1: e.target.value, filter2: "" });
-                          setFieldValue("filter1", e.target.value);
+                          setFieldValue("filter1", e.target.value)
+                          setFieldValue("filter2", null)
                           setFirstFilter(e.target.value);
                         }}
                       >
@@ -187,9 +178,6 @@ const DashboardOperator = () => {
                         borderRadius={"10"}
                         width={"100%"}
                         height={"5vh"}
-                        // placeholder={
-                        //   values.filter1 ? "--Pilih " + values.filter1 + "--" : "--"
-                        // }
                         bg={"white"}
                         _active={{ bg: "white" }}
                         borderColor={"var(--color-border)"}
@@ -199,11 +187,16 @@ const DashboardOperator = () => {
                         _hover={{ borderColor: "var(--color-border)" }}
                         _focusWithin={{ borderColor: "var(--color-border)" }}
                         value={values.filter2}
-                        disabled={values.filter1 === ""}
+                        disabled={!values.filter1}
                         onChange={async (e) => {
                           setFieldValue("filter2", e.target.value);
                         }}
                       >
+                        <option disabled={values.filter2} selected={!values.filter2}>{`Pilih ${(() => {
+                          let x = values.filter1.replace(/([A-Z])/g, ' $1');
+                          let text = x.charAt(0).toUpperCase() + x.slice(1)
+                          return text
+                        })()}`}</option>
                         {filterData.map((item, index) => (
                           <option key={index} value={item.id}>
                             {item.nama}{item.name}
@@ -231,7 +224,7 @@ const DashboardOperator = () => {
                           height={"425px"}>
                           {/* initially mounted */}
                           <TabPanel>
-                            {values.filter2 !== "" ? (
+                            {values.filter2 ? (
                               <CardSensorOperator
                                 data={{ alat: values.filter1, id: values.filter2 }}
                               />
@@ -239,7 +232,7 @@ const DashboardOperator = () => {
                           </TabPanel>
                           {/* initially not mounted */}
                           <TabPanel>
-                            {values.filter2 !== "" ? (
+                            {values.filter2 ? (
                               <CardAktuatorOperator
                                 data={{ alat: values.filter1, id: values.filter2 }}
                               />

@@ -121,7 +121,7 @@ function GreenhouseEdit() {
       ) : (
         <Flex w="100%" flexDir="column">
           <Flex w="100%" flexDir="row" alignItems="center">
-            <Flex width="100%">
+            <Flex width="100%"  borderRadius={10} bgColor={"gray.100"} px={5} py={2}>
               <Link to="/unit/greenhouse">
                 <Flex marginRight="2">
                   <Text
@@ -129,7 +129,7 @@ function GreenhouseEdit() {
                     fontSize="var(--header-3)"
                     color="var(--color-primer)"
                   >
-                    List GreenHouse
+                    List Greenhouse
                   </Text>
                 </Flex>
               </Link>

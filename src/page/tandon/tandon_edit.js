@@ -18,41 +18,38 @@ import Loading from "../../component/loading/loading";
 function TandonEdit() {
   const base_url = useSelector(selectUrl);
   TabTitle("Edit Tandon - ITERA Hero");
-
   const { slug } = useParams();
   const navigate = useNavigate();
-
   const [dataApi, setDataApi] = useState(null);
-
   const header = localStorage.getItem("token");
+  const dispatch = useDispatch();
+  const [image, onChangeImage] = useState(null);
+  const [isloading, setLoading] = useState(true);
+  const data = {
+    name: "",
+    location: "",
+  };
 
   const getApibyID = async () => {
     await axios
-      // .get(base_url + updateGreenhouse + slug, {
-      .get(base_url + "api/v1/tandon",
-      {
-        params: {
-          id: slug
-        },
-        headers: {
-          Authorization: `Bearer ${header}`,
-        },
-      })
+      .get(base_url + "api/v1/tandonUtama",
+        {
+          params: {
+            id: slug
+          },
+          headers: {
+            Authorization: `Bearer ${header}`,
+          },
+        })
       .then((response) => {
         setDataApi(response.data.data);
         console.log(response.data.data);
       })
       .catch((error) => {
         console.log(error);
-      });
+      })
+      .finally(() => setLoading(false))
   };
-
-  const data = {
-    name: "",
-    location: "",
-  };
-  const [image, onChangeImage] = useState(null);
-  const [isloading, checkLoading] = useState(false);
 
   const schema = yup.object({
     name: yup.string().required("data harus diisi"),
@@ -67,21 +64,14 @@ function TandonEdit() {
     if (data.name == "" || data.location == "") {
       return alert("Masih ada yang belum di isi");
     }
-    checkLoading(true);
-    putGreenhouse(name, image, location);
+    setLoading(true);
+    await updateTandon(name, image, location);
   };
 
-  const putGreenhouse = async (valueName, valueImage, valueLocation) => {
+  const updateTandon = async (valueName, valueImage, valueLocation) => {
     await axios
-      // .put(
-        .patch(
-        base_url + "api/v1/tandon",
-        // updateGreenhouse + slug,
-        // {
-        //   name: valueName,
-        //   image: valueImage,
-        //   location: valueLocation,
-        // },
+      .patch(
+        base_url + "api/v1/tandonUtama",
         {
           name: valueName,
           image: valueImage,
@@ -99,15 +89,13 @@ function TandonEdit() {
       )
       .then((response) => {
         console.log(response)
-        checkLoading(false);
         navigate("/unit/tandon");
-        // alert("Data Greenhouse Berhasil Diperbaharui ");
       })
       .catch((error) => {
         console.log(error);
-      });
+      })
+      .finally(() => setLoading(false))
   };
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(routePageName("Tandon"));
@@ -116,11 +104,11 @@ function TandonEdit() {
 
   return (
     <>
-      {dataApi == null || isloading ? (
+      {isloading ? (
         <Loading />
       ) : (
         <Flex w="100%" flexDir="column">
-          <Flex w="100%" flexDir="row" alignItems="center">
+          <Flex w="100%" flexDir="row" alignItems="center" borderRadius={10} bgColor={"gray.100"} px={5} py={2}>
             <Flex width="100%">
               <Link to="/unit/tandon">
                 <Flex marginRight="2">
@@ -129,7 +117,7 @@ function TandonEdit() {
                     fontSize="var(--header-3)"
                     color="var(--color-primer)"
                   >
-                    List GreenHouse
+                    List Tandon
                   </Text>
                 </Flex>
               </Link>
@@ -151,7 +139,7 @@ function TandonEdit() {
                     color="var(--color-primer)"
                   >
                     {" "}
-                    {dataApi.name}{" "}
+                    {dataApi.nama}{" "}
                   </Text>
                 </Flex>
               </Link>
@@ -161,7 +149,7 @@ function TandonEdit() {
           <Flex w="100%" flexDir="column">
             <Formik
               initialValues={{
-                name: dataApi.name,
+                name: dataApi.nama,
                 location: dataApi.location,
                 image: {},
               }}
@@ -239,7 +227,7 @@ function TandonEdit() {
                       maxWidth="100%"
                       marginTop="0 auto"
                       variant="outline"
-                      placeholder="Masukkan email"
+                      placeholder="Masukkan gambar"
                       color="black"
                       alignItems="center"
                       borderWidth="1px"
@@ -262,8 +250,6 @@ function TandonEdit() {
                     borderRadius="10px"
                     backgroundColor="var(--color-primer)"
                     type="submit"
-                    // disabled={isSubmitting}
-                    // className="btn-login"
                     onClick={() => submit(values.name, values.location)}
                   >
                     <Text
