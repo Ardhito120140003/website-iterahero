@@ -21,7 +21,6 @@ import CardDashboard from "../../component/card_dashboard/card_dashboard";
 import { Form, Formik } from "formik";
 import CardSensorOperator from "../../component/card_sensor/card_sensor_operator";
 import { MdOutlineAccessTime } from "react-icons/md";
-import { useParams } from 'react-router-dom';
 import CardAktuatorOperator from "../../component/card_aktuator/card_aktuator_operator";
 import { logout } from "../../features/auth/authSlice";
 
@@ -86,18 +85,18 @@ const DashboardOperator = () => {
   };
 
   useEffect(() => {
-      axios
-        .get(base_url + "api/v1/" + firstFilter, {
-          headers: {
-            Authorization: "Bearer " + headers,
-          },
-        })
-        .then((response) => {
-          setFilterData(response.data.data);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+    axios
+      .get(base_url + "api/v1/" + firstFilter, {
+        headers: {
+          Authorization: "Bearer " + headers,
+        },
+      })
+      .then((response) => {
+        setFilterData(response.data.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, [firstFilter]);
 
   useEffect(() => {
@@ -106,7 +105,7 @@ const DashboardOperator = () => {
         getApiPenjadwalan().then(() =>
           setIsLoading(false))
       });
-      setTimeout(() => setAction(!action), 2500)
+    setTimeout(() => setAction(!action), 2500)
   }, [action]);
 
   return (
@@ -116,7 +115,7 @@ const DashboardOperator = () => {
       ) : (
         <Flex flexDirection={'column'}>
           <Image
-            width={{base:'50%',sm:"35%",md:"30%",lg:"22%",xl:"22%"}}
+            width={{ base: '50%', sm: "35%", md: "30%", lg: "22%", xl: "22%" }}
             height={"auto"}
             src="https://res.cloudinary.com/iterahero2023/image/upload/v1699238050/iterahero2023/MITRA%20ITERAHERO2023.png"
             // src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663542541/itera%20herro%20icon/Frame_181_fmtxbh.png"
@@ -135,7 +134,7 @@ const DashboardOperator = () => {
             ))}
           </Wrap>
 
-          <Flex direction={{base:"column",sm:'column',md:'row',lg:'row',xl:'row'}} mt={5} gap={5}>
+          <Flex direction={{ base: "column", sm: 'column', md: 'row', lg: 'row', xl: 'row' }} mt={5} gap={5}>
             <Flex flex={2}>
               <Formik
                 initialValues={{
@@ -144,7 +143,7 @@ const DashboardOperator = () => {
                 }}
               >
                 {({ values, setFieldValue, resetForm }) => (
-                  <Form style={{width:'100%'}}>
+                  <Form style={{ width: '100%' }}>
                     <Flex alignItems={"space-between"}>
                       <Select
                         size={"lg"}
@@ -223,12 +222,20 @@ const DashboardOperator = () => {
                           width="100%"
                           height={"425px"}>
                           {/* initially mounted */}
-                          <TabPanel>
+                          <TabPanel alignItems={"center"} verticalAlign={"align"} justifyContent={"center"}>
                             {values.filter2 ? (
                               <CardSensorOperator
                                 data={{ alat: values.filter1, id: values.filter2 }}
                               />
-                            ) : null}
+                            ) : (
+                              <Flex justifyContent={"center"} h={"100%"}>
+                                <Text verticalAlign={"center"}>Pilih {`${(() => {
+                                  let x = values.filter1.replace(/([A-Z])/g, ' $1');
+                                  let text = x.charAt(0).toUpperCase() + x.slice(1)
+                                  return text
+                                })()}`}
+                                </Text>
+                              </Flex>)}
                           </TabPanel>
                           {/* initially not mounted */}
                           <TabPanel>
@@ -236,7 +243,15 @@ const DashboardOperator = () => {
                               <CardAktuatorOperator
                                 data={{ alat: values.filter1, id: values.filter2 }}
                               />
-                            ) : null}
+                            ) : (
+                              <Flex justifyContent={"center"} h={"100%"} >
+                                <Text verticalAlign={"center"}>Pilih {`${(() => {
+                                  let x = values.filter1.replace(/([A-Z])/g, ' $1');
+                                  let text = x.charAt(0).toUpperCase() + x.slice(1)
+                                  return text
+                                })()}`}
+                                </Text>
+                              </Flex>)}
                           </TabPanel>
                         </TabPanels>
                       </Tabs>

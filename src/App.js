@@ -57,7 +57,7 @@ function App() {
           <Route path="greenhouse/add" element={<GreenhouseAdd />} />
           <Route path="greenhouse/:slug" element={<GreenhouseEdit />} />
           <Route path="tandon/add" element={<TandonAdd />} />
-          <Route path="tandonUtama/:slug" element={<TandonEdit />} />
+          <Route path="tandon/:slug" element={<TandonEdit />} />
           <Route path="historynotifikasi" element={<Notification />} />
           <Route path="historynotifikasi/more-notification" element={<MoreNotification />} />
           <Route path="dashboard/aktuator/:id" element={<Automation />} />
@@ -81,7 +81,6 @@ function App() {
               <Route path="monitoring/edit/:id" element={<Monitoring_Edit />} />
               <Route path="monitoring/detail/:id" element={<MonitoringDetail />} />
               <Route path="monitoring/detail/:id" element={<MonitoringDetail />} />
-
               <Route path="controlling" element={<Controlling />} />
               <Route path="controlling/add/:id" element={<Controlling_Add />} />
               <Route path="controlling/detail/:id" element={<ControllingDetail />} />

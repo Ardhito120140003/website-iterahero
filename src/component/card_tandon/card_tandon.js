@@ -78,7 +78,7 @@ function CardTandon(props) {
               <Link
                 className="touch"
                 to={{
-                  pathname: `/unit/tandonUtama/${data.id}`,
+                  pathname: `/unit/tandon/${data.id}`,
                 }}
               >
                 <Icon

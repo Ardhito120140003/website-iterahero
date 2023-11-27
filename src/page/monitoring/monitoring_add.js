@@ -38,23 +38,9 @@ function Monitoring_Add() {
   const [imageSensor, onChangeImageSensor] = useState(null);
   const [imagePos, onChangeImagePos] = useState(null);
   const [isloading, checkLoading] = useState(true);
-
+  const dispatch = useDispatch();
   const [dataApi, setDataApi] = useState(null);
-  const getDataApi = async () => {
-    await axios
-      .get(base_url + getApiGreenhouse + id, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
-      .then((response) => {
-        setDataApi(response.data.data);
-        checkLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  const header = localStorage.getItem('token');
 
   const schema = yup.object({
     name: yup.string().required('Nama harus diisi'),
@@ -69,20 +55,34 @@ function Monitoring_Add() {
     id_greenhouse: yup.number().required(''),
   });
   const [iconsList, setIconsList] = useState(null);
+  const getGreenhouse = async () => {
+    axios.get(base_url + "api/v1/greenhouse", {
+      params: {
+        id
+      },
+      headers: {
+        Authorization: `Bearer ${header}`
+      }
+    })
+    .then(({ data }) => {
+      console.log(data)
+      setDataApi(data.data)
+    })
+    .catch(err => console.error(err))
+  }
+
   const getIcon = async () => {
     axios
       .get(base_url + icons)
       .then((response) => {
-        // console.log("isi response", response);
         setIconsList(response.data.data);
-        checkLoading(false);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
   const [dataCategory, setDataCategory] = useState(null);
-  const header = localStorage.getItem('token');
   const getDataCategory = async () => {
     axios
       .get(base_url + categoryApi, {
@@ -98,22 +98,18 @@ function Monitoring_Add() {
       });
   };
   const [icon_selected, setIcon_selected] = useState('');
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(routePageName('Monitoring'));
+    getGreenhouse();
     getDataCategory();
-    getDataApi();
     getIcon();
-    checkLoading(true);
+    checkLoading(false);
   }, []);
 
   return (
     <>
-      {dataApi == null
-      || dataCategory == null
-      || iconsList == null
-      || isloading ? (
+      {isloading ? (
         <Loading />
         ) : (
           <Flex w="100%" flexDir="column">
@@ -142,7 +138,6 @@ function Monitoring_Add() {
               </Flex>
               <Link>
                 <Flex>
-                  {dataApi.id == id ? (
                     <Text
                       fontWeight="semibold"
                       fontSize="var(--header-3)"
@@ -152,17 +147,6 @@ function Monitoring_Add() {
                       {dataApi.name}
                       {' '}
                     </Text>
-                  ) : (
-                    <Text
-                    fontWeight="semibold"
-                    fontSize="var(--header-3)"
-                    color="var(--color-primer)"
-                  >
-                    {' '}
-                    {dataApi.name}
-                    {' '}
-                  </Text>
-                  )}
                 </Flex>
               </Link>
             </Flex>

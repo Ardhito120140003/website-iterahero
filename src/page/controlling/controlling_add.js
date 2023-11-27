@@ -58,13 +58,16 @@ function Controlling_Add() {
   };
   const getDataApi = async () => {
     axios
-      .get(base_url + getApiGreenhouse + id, {
+      .get(base_url + getApiGreenhouse, {
+        params: {
+          id
+        },
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       })
-      .then((response) => {
-        setDataApi(response.data.data);
+      .then(({ data }) => {
+        setDataApi(data.data);
       })
       .catch((error) => {
         console.log(error);
@@ -81,7 +84,7 @@ function Controlling_Add() {
 
   return (
     <>
-      {dataApi == null || iconsList == null || isloading ? (
+      {isloading ? (
         <Loading />
       ) : (
         <Flex w="100%" flexDir="column">
