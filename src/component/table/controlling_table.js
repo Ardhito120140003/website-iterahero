@@ -33,6 +33,7 @@ import { logout, selectUrl } from '../../features/auth/authSlice';
 import Loading from '../loading/loading';
 
 function TableControlling(props) {
+  const route = props.data.route;
   const idApi = props.data.id;
   const base_url = useSelector(selectUrl);
   const deleteItem = (e, id) => {
@@ -64,7 +65,7 @@ function TableControlling(props) {
   const getApiControlling = async () => {
     const header = localStorage.getItem('token');
     await axios
-      .get(`${base_url}api/v1/greenhouse/${idApi}/actuator`, {
+      .get(`${base_url}api/v1/${route}/${idApi}/actuator`, {
         headers: {
           Authorization: `Bearer ${header}`,
         },
@@ -78,9 +79,9 @@ function TableControlling(props) {
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
-        navigate('/login');
+        // localStorage.clear();
+        // dispatch(logout());
+        // navigate('/login');
       });
   };
   const getPagination = async () => {
@@ -110,7 +111,7 @@ function TableControlling(props) {
     return () => {
       setIsLoading(false);
     };
-  }, [idApi, page]);
+  }, [idApi, page, route]);
   return (
     <>
       {isLoading ? (
@@ -148,7 +149,7 @@ function TableControlling(props) {
                 </Tr>
               </Thead>
               <Tbody>
-                {dataTable.length < 1 ? (
+                {dataTable.length < 1 || idApi === null? (
                   <Tr>
                     <Td colSpan={10} color={"var(--color-primer)"} textAlign="center">
                       Data kosong

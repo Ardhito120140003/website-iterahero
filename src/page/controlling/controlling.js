@@ -18,12 +18,21 @@ function Controlling() {
   TabTitle('Controlling - ITERA Hero');
   const navigate = useNavigate();
   const [dataApi, setDataApi] = useState(null);
-  const [data, setData] = useState('');
   const header = localStorage.getItem('token');
 
-  const getApiGreenhouse = async () => {
+  const [filterData, setFilterData] = useState([]);
+  const [firstFilter, setFirstFilter] = useState("greenhouse");
+  const [secondFilter, setSecondFilter] = useState(null);
+
+  const getDataApi = async () => {
+
+    let url = `${base_url}api/v1/${firstFilter}`;
+    console.log('url : ',url);
+    console.log('filter 1 : ',firstFilter);
+    console.log('filter 2 : ',secondFilter);
+
     await axios
-      .get(base_url + greenhouseByUserId, {
+      .get(url, {
         headers: {
           Authorization: `Bearer ${header}`,
         },
@@ -31,7 +40,6 @@ function Controlling() {
       .then((response) => {
         if (response.data.data.length > 0) {
           setDataApi(response.data.data);
-          setData(response.data.data[0].id);
         } else {
           setDataApi(response.data.data);
         }
@@ -42,11 +50,27 @@ function Controlling() {
         navigate('/login');
       });
   };
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(routePageName('Controlling'));
-    getApiGreenhouse();
-  }, []);
+    getDataApi();
+
+    axios
+    .get(base_url + "api/v1/" + firstFilter, {
+      headers: {
+        Authorization: "Bearer " + header,
+      },
+    })
+    .then((response) => {
+      setFilterData(response.data.data);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+
+  }, [firstFilter]);
+  
   return (
     <>
       {dataApi == null ? (
@@ -69,10 +93,11 @@ function Controlling() {
             alignItems="center"
             justifyContent="space-between"
           >
-            <Flex width="30%">
+            <Flex width="100%">
               <Formik
                 initialValues={{
-                  data,
+                  filter1: firstFilter,
+                  filter2: secondFilter,
                 }}
                 onSubmit={(values) => {
                   setData(values.greenhouse);
@@ -91,7 +116,7 @@ function Controlling() {
                       alignItems="center"
                       justify="space-between"
                     >
-                      <Flex width="100%">
+                      {/* <Flex width="100%">
                         <Select
                           onChange={(e) => {
                             setFieldValue('id', e.target.value);
@@ -131,18 +156,82 @@ function Controlling() {
                             </option>
                           )))}
                         </Select>
+                      </Flex> */}
+
+                      <Flex alignItems={"space-between"} width={"100%"}>
+                        <Select
+                          size={"lg"}
+                          name="filter1"
+                          as={Select}
+                          borderRadius={"10"}
+                          width={"25vw"}
+                          height={"5vh"}
+                          bg={"white"}
+                          _active={{ bg: "white" }}
+                          borderColor={"var(--color-border)"}
+                          fontSize={"var(--header-5)"}
+                          fontWeight={"normal"}
+                          color={"var(--color-primer)"}
+                          _hover={{ borderColor: "var(--color-border)" }}
+                          _focusWithin={{ borderColor: "var(--color-border)" }}
+                          mr={5}
+                          value={values.filter1}
+                          onChange={(e) => {
+                            setFieldValue("filter1", e.target.value);
+                            setFieldValue("filter2", null);
+                            setFirstFilter(e.target.value);
+                            setSecondFilter(null);
+                          }}
+                        >
+                          <option value="greenhouse">Greenhouse</option>
+                          <option value="tandonUtama">Tandon</option>
+                        </Select>
+
+                        <Select
+                          name="filter2"
+                          as={Select}
+                          borderRadius={"10"}
+                          width={"25vw"}
+                          height={"5vh"}
+                          bg={"white"}
+                          _active={{ bg: "white" }}
+                          borderColor={"var(--color-border)"}
+                          fontSize={"var(--header-5)"}
+                          fontWeight={"normal"}
+                          color={"var(--color-primer)"}
+                          _hover={{ borderColor: "var(--color-border)" }}
+                          _focusWithin={{ borderColor: "var(--color-border)" }}
+                          value={values.filter2}
+                          disabled={!values.filter1}
+                          onChange={(e) => {
+                            setFieldValue("filter2", e.target.value);
+                            setSecondFilter(e.target.value);
+                          }}
+                        >
+                          <option disabled={!values.filter1} selected={!values.filter2}>{`Pilih ${(() => {
+                            let x = values.filter1.replace(/([A-Z])/g, ' $1');
+                            let text = x.charAt(0).toUpperCase() + x.slice(1);
+                            return text;
+                          })()}`}</option>
+                          {filterData.map((item, index) => (
+                            <option key={index} value={item.id}>
+                              {item.nama || item.name}
+                            </option>
+                          ))}
+                        </Select>
                       </Flex>
+
                     </Flex>
                   </form>
                 )}
               </Formik>
             </Flex>
-            {data === '' ? (
+            {secondFilter === '' ? (
               <></>
             ) : (
-              <Link to={`/unit/controlling/add/${data}`}>
+              <Link to={`/unit/controlling/add/${secondFilter}`}>
                 <Button
-                  data={{ name: data }}
+                  data={{ name: secondFilter }}
                   type="submit"
                   bg="var(--color-primer)"
                 >
@@ -151,12 +240,13 @@ function Controlling() {
               </Link>
             )}
           </Flex>
-          {data === '' ? (
+          {secondFilter === '' ? (
             <></>
           ) : (
             <TableControlling
               data={{
-                id: data,
+                id: secondFilter,
+                route: firstFilter,
               }}
             />
           )}

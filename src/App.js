@@ -77,7 +77,7 @@ function App() {
             <>
               <Route path="monitoring" element={<Monitoring />} />
               <Route path="dashboard/sensor/:id" element={<Grafik />} />
-              <Route path="monitoring/add/:id" element={<Monitoring_Add />} />
+              <Route path="monitoring/add/:route/:id" element={<Monitoring_Add />} />
               <Route path="monitoring/edit/:id" element={<Monitoring_Edit />} />
               <Route path="monitoring/detail/:id" element={<MonitoringDetail />} />
               <Route path="monitoring/detail/:id" element={<MonitoringDetail />} />

@@ -22,30 +22,56 @@ function Monitoring() {
   const [dataApi, setDataApi] = useState(null);
   const header = localStorage.getItem('token');
   const dispatch = useDispatch();
-  const getApiGreenhouse = async () => {
+
+  const [filterData, setFilterData] = useState([]);
+  const [firstFilter, setFirstFilter] = useState("greenhouse");
+  const [secondFilter, setSecondFilter] = useState(null);
+
+  const getDataApi = async () => {
+    let url = `${base_url}api/v1/${firstFilter}`;
+    console.log('url : ',url);
+    console.log('filter 1 : ',firstFilter);
+    console.log('filter 2 : ',secondFilter);
+
     await axios
-      .get(base_url + greenhouseByUserId, {
+      .get(url, {
         headers: {
           Authorization: `Bearer ${header}`,
         },
       })
       .then((response) => {
         if (response.data.data.length > 0) {
-          setData(response.data.data[0].id);
+          setDataApi(response.data.data);
+        } else {
+          setDataApi(response.data.data);
         }
-        setDataApi(response.data.data);
       })
       .catch((error) => {
-      // localStorage.clear()
-      // dispatch(logout());
-      // navigate("/login");
-    });
-    console.log(dataApi)
+        // localStorage.clear();
+        // dispatch(logout());
+        // navigate('/login');
+      });
   };
+
   useEffect(() => {
     dispatch(routePageName('Monitoring'));
-    getApiGreenhouse();
-  }, []);
+    getDataApi();
+    
+    axios
+    .get(base_url + "api/v1/" + firstFilter, {
+      headers: {
+        Authorization: "Bearer " + header,
+      },
+    })
+    .then((response) => {
+      setFilterData(response.data.data);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+
+  }, [firstFilter]);
+
   return (
     <>
       {dataApi == null ? (
@@ -63,7 +89,8 @@ function Monitoring() {
             <Flex width="30%">
               <Formik
                 initialValues={{
-                  greenhouse: data,
+                  filter1: firstFilter,
+                  filter2: secondFilter,
                 }}
                 onSubmit={(values) => {
                   setData(values.greenhouse);
@@ -78,45 +105,66 @@ function Monitoring() {
                 }) => (
                   <form onSubmit={handleSubmit}>
                     <Flex alignContent="center" alignItems="center" justify="space-between">
-                      <Flex width="100%">
+                    <Flex alignItems={"space-between"} width={"100%"}>
                         <Select
+                          size={"lg"}
+                          name="filter1"
+                          as={Select}
+                          borderRadius={"10"}
+                          width={"25vw"}
+                          height={"5vh"}
+                          bg={"white"}
+                          _active={{ bg: "white" }}
+                          borderColor={"var(--color-border)"}
+                          fontSize={"var(--header-5)"}
+                          fontWeight={"normal"}
+                          color={"var(--color-primer)"}
+                          _hover={{ borderColor: "var(--color-border)" }}
+                          _focusWithin={{ borderColor: "var(--color-border)" }}
+                          mr={5}
+                          value={values.filter1}
                           onChange={(e) => {
-                            setFieldValue('id', e.target.value);
-                            setData(e.target.value);
+                            setFieldValue("filter1", e.target.value);
+                            setFieldValue("filter2", null);
+                            setFirstFilter(e.target.value);
+                            setSecondFilter('');
                           }}
-                          size="xs"
-                          borderRadius="10"
-                          name="greenhouse"
-                          value={values.id}
-                          placeholder="Pilih Greenhouse"
-                          width="100%"
-                          bg="white"
-                          _active={{ bg: 'white' }}
-                          borderColor="var(--color-border)"
-                          fontSize="var(--header-5)"
-                          fontWeight="normal"
-                          color="var(--color-primer)"
-                          _hover={{ borderColor: 'var(--color-border)' }}
-                          _focusWithin={{ borderColor: 'var(--color-border)' }}
                         >
-                          {dataApi.map((item, index) => (index == 0 ? (
-                            <option
-                              color="var(--color-border)"
-                              key={index}
-                              value={item.id}
-                              selected
-                            >
-                              {item.name}
+                          <option value="greenhouse">Greenhouse</option>
+                          <option value="tandonUtama">Tandon</option>
+                        </Select>
+
+                        <Select
+                          name="filter2"
+                          as={Select}
+                          borderRadius={"10"}
+                          width={"25vw"}
+                          height={"5vh"}
+                          bg={"white"}
+                          _active={{ bg: "white" }}
+                          borderColor={"var(--color-border)"}
+                          fontSize={"var(--header-5)"}
+                          fontWeight={"normal"}
+                          color={"var(--color-primer)"}
+                          _hover={{ borderColor: "var(--color-border)" }}
+                          _focusWithin={{ borderColor: "var(--color-border)" }}
+                          value={values.filter2}
+                          disabled={!values.filter1}
+                          onChange={(e) => {
+                            setFieldValue("filter2", e.target.value);
+                            setSecondFilter(e.target.value);
+                          }}
+                        >
+                          <option disabled={!values.filter1} selected={!values.filter2}>{`Pilih ${(() => {
+                            let x = values.filter1.replace(/([A-Z])/g, ' $1');
+                            let text = x.charAt(0).toUpperCase() + x.slice(1);
+                            return text;
+                          })()}`}</option>
+                          {filterData.map((item, index) => (
+                            <option key={index} value={item.id}>
+                              {item.nama || item.name}
                             </option>
-                          ) : (
-                            <option
-                              color="var(--color-border)"
-                              key={index}
-                              value={item.id}
-                            >
-                              {item.name}
-                            </option>
-                          )))}
+                          ))}
                         </Select>
                       </Flex>
                     </Flex>
@@ -124,12 +172,11 @@ function Monitoring() {
                 )}
               </Formik>
             </Flex>
-            {data === '' ? (
-              <></>
+            {!secondFilter ? (
+              null
             ) : (
-              <Link to={`/unit/monitoring/add/${data}`}>
+              <Link to={`/unit/monitoring/add/${firstFilter}/${secondFilter}`}>
                 <Button
-                  data={{ name: data }}
                   type="submit"
                   bg="var(--color-primer)"
                 >
@@ -138,12 +185,13 @@ function Monitoring() {
               </Link>
             )}
           </Flex>
-          {data === '' ? (
-            <></>
+          {!secondFilter ? (
+            null
           ) : (
             <TableMonitoring
               data={{
-                id: data,
+                id: secondFilter,
+                route: firstFilter,
               }}
             />
           )}

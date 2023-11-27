@@ -34,7 +34,8 @@ function Monitoring_Add() {
   const base_url = useSelector(selectUrl);
   const navigate = useNavigate();
   TabTitle('Tambah Sensor - ITERA Hero');
-  const { id } = useParams();
+  const { id, route } = useParams();
+  console.log(id,route);
   const [imageSensor, onChangeImageSensor] = useState(null);
   const [imagePos, onChangeImagePos] = useState(null);
   const [isloading, checkLoading] = useState(true);
@@ -56,7 +57,7 @@ function Monitoring_Add() {
   });
   const [iconsList, setIconsList] = useState(null);
   const getGreenhouse = async () => {
-    axios.get(base_url + "api/v1/greenhouse", {
+    axios.get(base_url + `api/v1/${route}`, {
       params: {
         id
       },
@@ -66,7 +67,7 @@ function Monitoring_Add() {
     })
     .then(({ data }) => {
       console.log(data)
-      setDataApi(data.data)
+      setDataApi(data.data.data)
     })
     .catch(err => console.error(err))
   }

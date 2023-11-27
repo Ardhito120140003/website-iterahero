@@ -36,7 +36,18 @@ import Loading from '../loading/loading';
 
 function TableMonitoring(props) {
   const base_url = useSelector(selectUrl);
+  const route = props.data.route;
   const idApi = props.data.id;
+  const [id, setId] = useState('');
+  const [name, setName] = useState('');
+  const [dataTable, setDataTable] = useState([]);
+  const [totalPage, setTotalPage] = useState(1);
+  const [totalData, setTotalData] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [page, setPage] = useState(1);
+  const header = localStorage.getItem('token');
+
   const deleteItem = (e, id) => {
     e.preventDefault();
     axios
@@ -47,47 +58,30 @@ function TableMonitoring(props) {
       })
       .then((response) => {
         window.location.reload();
+        console.log(response);
       })
-      .catch((error) => { });
+      .catch((error) => { 
+        console.log(error);
+      });
   };
-  const navigate = useNavigate();
-  const [id, setId] = useState('');
-  const [name, setName] = useState('');
-  const [dataTable, setDataTable] = useState([]);
-  const [totalPage, setTotalPage] = useState(1);
-  const [totalData, setTotalData] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [page, setPage] = useState(1);
-  const dispatch = useDispatch();
-  const getApiMonitoring = async () => {
-    setIsLoading(true);
 
-    const header = localStorage.getItem('token');
+  const getApiMonitoring = async () => {
     await axios
-      .get(`${base_url}api/v1/greenhouse/${idApi}/sensor`, {
+      .get(`${base_url}api/v1/${route}/${idApi}/sensor`, {
         headers: {
           Authorization: `Bearer ${header}`,
         },
       })
       .then(({ data }) => {
-        console.log(data)
         setDataTable(data.data);
+        console.log(data.data)
         setTotalPage(data.totalPage);
         setTotalData(data.totalData)
-        setIsLoading(false);
       })
-      .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
-        navigate('/login');
-      })
-      .finally(console.log(dataTable))
+      .catch((error) => console.error(error))
   };
   const getPagination = async () => {
-    setIsLoading(true);
 
-    const header = localStorage.getItem('token');
     await axios
       .get(`${base_url}${paginationMonitoring}${idApi}&&size=1000`, {
         headers: {
@@ -96,20 +90,14 @@ function TableMonitoring(props) {
       })
       .then((response) => {
         setTotalData(response.data.data);
-        setIsLoading(false);
       })
-      .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
-        navigate('/login');
-      });
+      .catch((error) => console.error(error))
   };
+
   useEffect(() => {
-    // getPagination();
+    getPagination();
     getApiMonitoring();
-    return () => {
-      setIsLoading(true);
-    };
+    setIsLoading(false)
   }, [idApi, page]);
 
   return (
@@ -154,17 +142,15 @@ function TableMonitoring(props) {
                   <Th textAlign="center">Aksi</Th>
                 </Tr>
               </Thead>
-              {dataTable.length < 1 ? (
                 <Tbody>
+                {dataTable.length < 1 ? (
                   <Tr>
                     <Td colSpan={10} color={"var(--color-primer)"} textAlign="center">
                       Data kosong
                     </Td>
                   </Tr>
-                </Tbody>
-              ) : (
-                <Tbody>
-                  {dataTable.map((item, index) => (
+                ) : (
+                  dataTable.map((item, index) => (
                     <Tr key={index}>
                       <Td textAlign="center" color="var(--color-primer)">
                         {index + 1}
@@ -254,7 +240,7 @@ function TableMonitoring(props) {
                               <ModalBody>
                                 Apakah anda yakin ingin menghapus
                                 {' '}
-                                {name}
+                                {item.name}
                                 {' '}
                                 ini?
                               </ModalBody>
@@ -282,9 +268,8 @@ function TableMonitoring(props) {
                         </Flex>
                       </Td>
                     </Tr>
-                  ))}
+                  )))}
                 </Tbody>
-              )}
             </Table>
           </TableContainer>
           {dataTable.length > 0 ? (
