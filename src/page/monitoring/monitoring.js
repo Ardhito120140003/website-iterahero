@@ -25,13 +25,11 @@ function Monitoring() {
 
   const [filterData, setFilterData] = useState([]);
   const [firstFilter, setFirstFilter] = useState("greenhouse");
-  const [secondFilter, setSecondFilter] = useState(null);
+  const [secondFilter, setSecondFilter] = useState(1);
 
   const getDataApi = async () => {
     let url = `${base_url}api/v1/${firstFilter}`;
     console.log('url : ',url);
-    console.log('filter 1 : ',firstFilter);
-    console.log('filter 2 : ',secondFilter);
 
     await axios
       .get(url, {
@@ -72,6 +70,9 @@ function Monitoring() {
 
   }, [firstFilter]);
 
+  console.log('filter 1 : ',firstFilter);
+  console.log('filter 2 : ',secondFilter);
+
   return (
     <>
       {dataApi == null ? (
@@ -98,9 +99,8 @@ function Monitoring() {
               >
                 {({
                   values,
-                  handleChange,
+                  resetForm,
                   handleSubmit,
-                  isSubmitting,
                   setFieldValue,
                 }) => (
                   <form onSubmit={handleSubmit}>
@@ -127,7 +127,8 @@ function Monitoring() {
                             setFieldValue("filter1", e.target.value);
                             setFieldValue("filter2", null);
                             setFirstFilter(e.target.value);
-                            setSecondFilter('');
+                            setSecondFilter(null);
+                            
                           }}
                         >
                           <option value="greenhouse">Greenhouse</option>
@@ -155,7 +156,7 @@ function Monitoring() {
                             setSecondFilter(e.target.value);
                           }}
                         >
-                          <option disabled={!values.filter1} selected={!values.filter2}>{`Pilih ${(() => {
+                          <option disabled={values.filter2} selected={!values.filter2}>{`Pilih ${(() => {
                             let x = values.filter1.replace(/([A-Z])/g, ' $1');
                             let text = x.charAt(0).toUpperCase() + x.slice(1);
                             return text;
@@ -185,16 +186,16 @@ function Monitoring() {
               </Link>
             )}
           </Flex>
-          {!secondFilter ? (
-            null
-          ) : (
+          {secondFilter === ''? (
+            <></>
+            ) : (
             <TableMonitoring
               data={{
                 id: secondFilter,
                 route: firstFilter,
               }}
             />
-          )}
+            )}
         </Flex>
       )}
     </>
