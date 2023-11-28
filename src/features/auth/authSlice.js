@@ -16,8 +16,8 @@ const userSlice = createSlice({
     accessToken: isExpired ? null : token,
     role,
     routeName: null,
-    // fetchUrl: "https://iterahero2023.fly.dev/"
-    fetchUrl: "http://localhost:3000/"
+    fetchUrl: "https://iterahero2023.fly.dev/"
+    // fetchUrl: "http://localhost:3000/"
   },
   reducers: {
     login: (state, action) => {
