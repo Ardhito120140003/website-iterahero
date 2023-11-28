@@ -19,30 +19,32 @@ import { logout, selectUrl } from '../../features/auth/authSlice';
 function Grafik() {
   TabTitle('Grafik - ITERA Hero');
   const base_url = useSelector(selectUrl);
-  const [data, setData] = useState('Day');
+  const [data, setData] = useState('');
   const [dataApi, setDataApi] = useState(null);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
+
   const getSensor = async () => {
-    setIsLoading(true);
     const header = localStorage.getItem('token');
     await axios
-      .get(`${base_url}${idSensor}${id}`, {
+      .get(base_url + "api/v1/sensor", {
+        params: {
+          id
+        },
         headers: {
           Authorization: `Bearer ${header}`,
         },
       })
-      .then((response) => {
-        setDataApi(response.data.data[0].name);
-        setIsLoading(false);
+      .then(({ data }) => {
+        console.log(data);
+        setDataApi(data.data);
       })
       .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
-        navigate('/login');
-      });
+        // localStorage.clear();
+        // dispatch(logout());
+        // navigate('/login');
+      })
+      .finally(() => setIsLoading(false))
   };
 
   useEffect(() => {
@@ -51,12 +53,9 @@ function Grafik() {
   }, [id, data]);
   return (
     <>
-      {dataApi == null ? (
+      {isLoading ? (
         <Loading />
       ) : (
-        // {
-        //   data.id ==
-        // }
         <>
           <Flex bg="white" borderRadius="10px" p="10px">
             <Flex>
@@ -72,14 +71,14 @@ function Grafik() {
               </Text>
             </Flex>
             <Text fontSize="20px" fontWeight="bold" mb="10px">
-              {`Summary ${dataApi}`}
+              {`Summary ${dataApi.name}`}
             </Text>
           </Flex>
           <Flex>
             <Flex width="100%">
               <Formik
                 initialValues={{
-                  value: 'Day',
+                  value: data,
                 }}
                 onSubmit={(values) => {
                   setData(values.value);
@@ -87,9 +86,7 @@ function Grafik() {
               >
                 {({
                   values,
-                  handleChange,
                   handleSubmit,
-                  isSubmitting,
                   setFieldValue,
                 }) => (
                   <form onSubmit={handleSubmit}>
@@ -104,7 +101,6 @@ function Grafik() {
                           borderRadius="10"
                           name="grafik"
                           value={values.value}
-                          placeholder="Pilih Data"
                           width="100%"
                           bg="white"
                           _active={{ bg: 'white' }}
@@ -115,11 +111,13 @@ function Grafik() {
                           _hover={{ borderColor: 'var(--color-border)' }}
                           _focusWithin={{ borderColor: 'var(--color-border)' }}
                         >
+                          <option disabled={values.value} selected={!values.value}>Pilih Data</option>
                           {infoGrafik.map((item, index) => (
                             <option
                               color="var(--color-border)"
                               key={index}
                               value={item.value}
+                              selected={values.value === item.value}
                             >
                               Data
                               {' '}
@@ -134,7 +132,7 @@ function Grafik() {
               </Formik>
             </Flex>
           </Flex>
-          {data == '' ? (
+          {!data ? (
             <></>
           ) : (
             <>

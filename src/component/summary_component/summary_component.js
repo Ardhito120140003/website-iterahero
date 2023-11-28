@@ -28,13 +28,18 @@ function SummaryComponent(props) {
   const getSummary = async () => {
     const header = localStorage.getItem('token');
     await axios
-      .get(`${base_url}${summary}/${id}?getDateQuery=${value}`, {
+      .get(`${base_url}` + "api/v1/summary", {
+        params: {
+          id,
+          timespan: value
+        },
         headers: {
           Authorization: `Bearer ${header}`,
         },
       })
-      .then((response) => {
-        setDataSensor(response.data.data);
+      .then(({ data }) => {
+        console.log(data)
+        setDataSensor(data.data);
       });
   };
 
@@ -42,20 +47,24 @@ function SummaryComponent(props) {
     setIsLoading(true);
     const header = localStorage.getItem('token');
     await axios
-      .get(`${base_url}${downloadSummary}/${id}?getDateQuery=${value}`, {
+      .get(`${base_url}` + "api/v1/download/summary", {
+        params: {
+          id,
+          timespan: value,
+        },
         headers: {
           Authorization: `Bearer ${header}`,
         },
       })
-      .then((response) => {
-        const jsonData = JSON.stringify(response.data);
-        exportData(jsonData, `datasheet ${name}.json`, 'application/json');
+      .then(({ data }) => {
+        exportData(JSON.stringify(data), `Datasheet ${name.name}.json`, 'application/json');
         setIsLoading(false);
       })
-      .catch((error) => {
-        setIsLoading(false);
-        alert('Data Gagal di Download Karena masih kosong');
-      });
+      .catch(({ response }) => {
+        console.log(response)
+        alert(response.data.message ?? 'Data Gagal di Download Karena masih kosong');
+      })
+      .finally(() => setIsLoading(false))
   };
   useEffect(() => {
     getSummary();

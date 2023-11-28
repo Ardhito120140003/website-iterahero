@@ -1,7 +1,7 @@
 const infoGrafik = [
   {
     id: 1,
-    name: 'Jam',
+    name: 'Hari',
     value: 'Day',
   },
   {

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Text, Image, Flex, Wrap, WrapItem, Center, Box
+  Text, Image, Flex, Wrap, WrapItem, Center, Box, Link as ChakraLink, LinkProps
 } from '@chakra-ui/react';
 import axios from 'axios';
-// import { paginationMonitoring } from '../../Utility/api_link';
+import { Link as ReactRouterLink } from 'react-router-dom';
 import Loading from '../loading/loading';
 
 import './card_sensor.css';
@@ -68,11 +68,11 @@ function CardSensorOperator(props) {
         Authorization: `Bearer ${header}`
       }
     })
-    .then((response) => {
-      setSensorRealtime(response.data.data)
-    })
-    .catch(err => console.error(err))
-    .finally(() => setTimeout(() => setTrigger(!trigger), 2000))
+      .then((response) => {
+        setSensorRealtime(response.data.data)
+      })
+      .catch(err => console.error(err))
+      .finally(() => setTimeout(() => setTrigger(!trigger), 2000))
   }, [trigger])
 
   return (
@@ -91,51 +91,45 @@ function CardSensorOperator(props) {
             const sensorValue = matchedData ? matchedData.nilai : null
             const updatedAt = matchedData ? matchedData.updatedAt : null
             return (
-            // <Link to={`/unit/dashboard/sensor/${item.id}`}>
-            <WrapItem
-              key={index}
-              // className="card-sensor"
-              bg="#ffff"
-              borderRadius="10px"
-              border="1px solid #E2E8F0"
-              paddingTop="20px"
-              paddingBottom="20px"
-              px={'15px'}
-              // w={'48.5%'}
-              w={{ base:'100%', sm: '100%', md: "100%", lg: "48%", xl: '48.5%', "2xl": "48.5%" }}
+              <ChakraLink as={ReactRouterLink} to={`/unit/dashboard/sensor/${item.id}`}
+                bg="#ffff"
+                borderRadius="10px"
+                border="1px solid #E2E8F0"
+                paddingTop="20px"
+                paddingBottom="20px"
+                px={'15px'}
+                // w={'48.5%'}
+                w={{ base: '100%', sm: '100%', md: "100%", lg: "48%", xl: '48.5%', "2xl": "48.5%" }}>
+                <Center
+                  justifyContent="center"
+                  flexDir="column"
+                  data={{ data: idApi }}
+                >
+                  <Flex flexDir="row" justify="space-between">
+                    <Image
+                      w={'20px'}
+                      src={`${item.icon.logo}`}
+                      color={item.color}
+                    />
+                    <Text color={`${item.color}`}>{item.name}</Text>
+                  </Flex>
 
-            >
-              <Center
-                justifyContent="center"
-                flexDir="column"
-                data={{ data: idApi }}
-              >
-                <Flex flexDir="row" justify="space-between">
-                  <Image
-                    w={'20px'}
-                    src={`${item.icon.logo}`}
-                    color={item.color}
-                  />
-                  <Text color={`${item.color}`}>{item.name}</Text>
-                </Flex>
-
-                <Flex my={"20px"} alignItems={"center"}>
-                  <Text fontSize={'3xl'} color={sensorValue ? 'black' : 'red'} >
-                    {sensorValue ?? '?'}
-                  </Text>
-                  <Text fontSize={'3xl'}>
-                    {item.unit_measurement}
-                  </Text>
-                </Flex>
-                <Flex flexDir="column" justifyContent="flex-start" mx={'40px'}>
-                  <Text fontSize="var(--caption)">Diperbarui : </Text>
-                  <Text fontSize="var(--caption)">
-                    {moment(updatedAt).format('D MMMM YYYY, h:mm a')}
-                  </Text>
-                </Flex>
-              </Center>
-            </WrapItem>
-            // </Link>
+                  <Flex my={"20px"} alignItems={"center"}>
+                    <Text fontSize={'3xl'} color={sensorValue ? 'black' : 'red'} >
+                      {sensorValue ?? '?'}
+                    </Text>
+                    <Text fontSize={'3xl'}>
+                      {item.unit_measurement}
+                    </Text>
+                  </Flex>
+                  <Flex flexDir="column" justifyContent="flex-start" mx={'40px'}>
+                    <Text fontSize="var(--caption)">Diperbarui : </Text>
+                    <Text fontSize="var(--caption)">
+                      {moment(updatedAt).format('D MMMM YYYY, h:mm a')}
+                    </Text>
+                  </Flex>
+                </Center>
+              </ChakraLink>
             )
           })}
         </Wrap>

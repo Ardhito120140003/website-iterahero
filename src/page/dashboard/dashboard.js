@@ -222,20 +222,18 @@ const DashboardOperator = () => {
                           width="100%"
                           height={"425px"}>
                           {/* initially mounted */}
-                          <TabPanel alignItems={"center"} verticalAlign={"align"} justifyContent={"center"}>
+                          <TabPanel>
                             {values.filter2 ? (
                               <CardSensorOperator
                                 data={{ alat: values.filter1, id: values.filter2 }}
                               />
                             ) : (
-                              <Flex justifyContent={"center"} h={"100%"}>
-                                <Text verticalAlign={"center"}>Pilih {`${(() => {
+                                <Text textAlign={"center"}>Pilih {`${(() => {
                                   let x = values.filter1.replace(/([A-Z])/g, ' $1');
                                   let text = x.charAt(0).toUpperCase() + x.slice(1)
                                   return text
                                 })()}`}
-                                </Text>
-                              </Flex>)}
+                                </Text>)}
                           </TabPanel>
                           {/* initially not mounted */}
                           <TabPanel>
@@ -244,14 +242,12 @@ const DashboardOperator = () => {
                                 data={{ alat: values.filter1, id: values.filter2 }}
                               />
                             ) : (
-                              <Flex justifyContent={"center"} h={"100%"} >
-                                <Text verticalAlign={"center"}>Pilih {`${(() => {
+                                <Text textAlign={"center"}>Pilih {`${(() => {
                                   let x = values.filter1.replace(/([A-Z])/g, ' $1');
                                   let text = x.charAt(0).toUpperCase() + x.slice(1)
                                   return text
                                 })()}`}
-                                </Text>
-                              </Flex>)}
+                                </Text>)}
                           </TabPanel>
                         </TabPanels>
                       </Tabs>

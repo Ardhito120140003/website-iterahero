@@ -16,6 +16,7 @@ import {
   Legend,
 } from 'chart.js';
 import { selectUrl } from '../../features/auth/authSlice';
+import Loading from '../loading/loading';
 
 ChartJS.register(
   CategoryScale,
@@ -30,39 +31,44 @@ ChartJS.register(
 
 function GrafikComponent(props) {
   const base_url = useSelector(selectUrl);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { id } = props.data;
   const { value } = props.data;
   const [dataSensor, setDataSensor] = useState([]);
+
   const getGrafik = async () => {
     const header = localStorage.getItem('token');
     await axios
-      .get(`${base_url}${getGrafikSensor}${id}?getDateQuery=${value}`, {
+      .get(`${base_url}` + "api/v1/grafik", {
+        params: {
+          id,
+          timespan: value
+        },
         headers: {
           Authorization: `Bearer ${header}`,
         },
       })
-      .then((response) => {
-        if (value === 'Day') {
-          response.data.data.map(
-            (data, index) => (response.data.data[index].label = parseInt(response.data.data[index].label) + 7),
-          );
-        }
-        setDataSensor(response.data.data);
-      });
+      .then(({ data }) => {
+        console.log(data)
+        setDataSensor(data.data);
+      })
+      .finally(() => setIsLoading(false))
   };
+
   useEffect(() => {
     getGrafik();
   }, [id, value]);
+
   return (
-    <GrafikValue
-      className="grafik"
-      data={{
-        value,
-        label: dataSensor.map((item) => item.label),
-        data: dataSensor.map((item) => item.data),
-      }}
-    />
+    isLoading ? <Loading /> :
+      <GrafikValue
+        className="grafik"
+        data={{
+          value,
+          label: dataSensor.map((item) => item.label),
+          data: dataSensor.map((item) => item.data),
+        }}
+      />
   );
 }
 export default GrafikComponent;
