@@ -139,7 +139,7 @@ const DashboardOperator = () => {
               <Formik
                 initialValues={{
                   filter1: firstFilter,
-                  filter2: null,
+                  filter2: 1,
                 }}
               >
                 {({ values, setFieldValue, resetForm }) => (
@@ -228,8 +228,8 @@ const DashboardOperator = () => {
                                 data={{ alat: values.filter1, id: values.filter2 }}
                               />
                             ) : (
-                              <Flex justifyContent={"center"} h={"100%"}>
-                                <Text verticalAlign={"center"}>Pilih {`${(() => {
+                              <Flex justifyContent={"center"} h={"100%"} mt={"150px"}>
+                                <Text color={'gray'} verticalAlign={"center"}>Pilih {`${(() => {
                                   let x = values.filter1.replace(/([A-Z])/g, ' $1');
                                   let text = x.charAt(0).toUpperCase() + x.slice(1)
                                   return text
@@ -244,8 +244,8 @@ const DashboardOperator = () => {
                                 data={{ alat: values.filter1, id: values.filter2 }}
                               />
                             ) : (
-                              <Flex justifyContent={"center"} h={"100%"} >
-                                <Text verticalAlign={"center"}>Pilih {`${(() => {
+                              <Flex justifyContent={"center"} h={"100%"} mt={"150px"}>
+                                <Text color={'gray'} verticalAlign={"center"}>Pilih {`${(() => {
                                   let x = values.filter1.replace(/([A-Z])/g, ' $1');
                                   let text = x.charAt(0).toUpperCase() + x.slice(1)
                                   return text
@@ -287,7 +287,7 @@ const DashboardOperator = () => {
                   {dataApiPenjadwalan.length < 1 && isLoading ? (
                     <Loading />
                   ) : dataApiPenjadwalan.length < 1 ? (
-                    <Text color={'gray'} mt={'100px'}>Tidak Ada data Penjadwalan</Text>
+                    <Text color={'gray'} mt={'190px'}>Tidak Ada data Penjadwalan</Text>
                   ) : (
                     dataApiPenjadwalan.map((item, index) => (
                       // <Box color={'black'} key={index}>{JSON.stringify(item)}</Box>

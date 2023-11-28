@@ -119,7 +119,7 @@ function CardSensorOperator(props) {
                   <Text color={`${item.color}`}>{item.name}</Text>
                 </Flex>
 
-                <Flex my={"20px"} alignItems={"center"}>
+                <Flex my={"50px"} alignItems={"center"}>
                   <Text fontSize={'3xl'} color={sensorValue ? 'black' : 'red'} >
                     {sensorValue ?? '?'}
                   </Text>
@@ -127,6 +127,7 @@ function CardSensorOperator(props) {
                     {item.unit_measurement}
                   </Text>
                 </Flex>
+
                 <Flex flexDir="column" justifyContent="flex-start" mx={'40px'}>
                   <Text fontSize="var(--caption)">Diperbarui : </Text>
                   <Text fontSize="var(--caption)">

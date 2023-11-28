@@ -49,14 +49,11 @@ function CardFormPeracikan({ id_tandon }) {
     axios.get(`${base_url}api/v1/resep`, {
       headers: {
         Authorization: `Bearer ${header}`,
-      },
-      params: {
-        tipe: 'besaran'
       }
     })
       .then((response) => {
         setDataApi(response.data.data);
-        console.log('data api :',dataApi)
+        console.log('data resep :',dataApi)
       })
       .catch((error) => {
         console.error('Error fetching formula data:', error);
