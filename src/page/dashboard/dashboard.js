@@ -139,7 +139,7 @@ const DashboardOperator = () => {
               <Formik
                 initialValues={{
                   filter1: firstFilter,
-                  filter2: null,
+                  filter2: 1,
                 }}
               >
                 {({ values, setFieldValue, resetForm }) => (
@@ -283,7 +283,7 @@ const DashboardOperator = () => {
                   {dataApiPenjadwalan.length < 1 && isLoading ? (
                     <Loading />
                   ) : dataApiPenjadwalan.length < 1 ? (
-                    <Text color={'gray'} mt={'100px'}>Tidak Ada data Penjadwalan</Text>
+                    <Text color={'gray'} mt={'190px'}>Tidak Ada data Penjadwalan</Text>
                   ) : (
                     dataApiPenjadwalan.map((item, index) => (
                       // <Box color={'black'} key={index}>{JSON.stringify(item)}</Box>

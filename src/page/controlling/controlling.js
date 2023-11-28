@@ -22,7 +22,7 @@ function Controlling() {
 
   const [filterData, setFilterData] = useState([]);
   const [firstFilter, setFirstFilter] = useState("greenhouse");
-  const [secondFilter, setSecondFilter] = useState(null);
+  const [secondFilter, setSecondFilter] = useState(1);
 
   const getDataApi = async () => {
 
@@ -208,7 +208,7 @@ function Controlling() {
                             setSecondFilter(e.target.value);
                           }}
                         >
-                          <option disabled={!values.filter1} selected={!values.filter2}>{`Pilih ${(() => {
+                          <option disabled={values.filter2} selected={!values.filter2}>{`Pilih ${(() => {
                             let x = values.filter1.replace(/([A-Z])/g, ' $1');
                             let text = x.charAt(0).toUpperCase() + x.slice(1);
                             return text;

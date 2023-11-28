@@ -180,9 +180,9 @@ function TableControlling(props) {
                       alignItems="center"
                     >
                       <Box
-                        width="20px"
+                        width="30px"
                         borderRadius="100px"
-                        height="20px"
+                        height="30px"
                         background={item.icon.color}
                       />
                     </Td>
@@ -233,8 +233,8 @@ function TableControlling(props) {
                             <ModalCloseButton />
                             <ModalBody>
                               Apakah anda yakin ingin menghapus
-                                {' '}
-                              {name}
+                              {' '}
+                              {item.name}
                               {' '}
                               ini?
                               </ModalBody>

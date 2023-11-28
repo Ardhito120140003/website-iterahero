@@ -91,7 +91,7 @@ function CardSensorOperator(props) {
             const sensorValue = matchedData ? matchedData.nilai : null
             const updatedAt = matchedData ? matchedData.updatedAt : null
             return (
-              <ChakraLink as={ReactRouterLink} to={`/unit/dashboard/sensor/${item.id}`}
+              <ChakraLink to={`/unit/dashboard/sensor/${item.id}`}
                 bg="#ffff"
                 borderRadius="10px"
                 border="1px solid #E2E8F0"

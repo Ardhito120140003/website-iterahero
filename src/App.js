@@ -36,6 +36,8 @@ import Register from './page/register/Register';
 import MonitoringDetail from "./page/monitoring/monitoring_detail";
 import ControllingDetail from "./page/controlling/Controlling_detail";
 
+import DetailGreenHouse from './page/greenhouse/greenhouse_detail';
+import DetailTandon from './page/tandon/tandon_detail';
 
 function App() {
   // const navigate = useNavigate();
@@ -56,8 +58,10 @@ function App() {
           <Route path="penjadwalan" element={<Penjadwalan />} />
           <Route path="greenhouse/add" element={<GreenhouseAdd />} />
           <Route path="greenhouse/:slug" element={<GreenhouseEdit />} />
+          <Route path="greenhouse/detail/:id" element={<DetailGreenHouse/>} />
           <Route path="tandon/add" element={<TandonAdd />} />
           <Route path="tandon/:slug" element={<TandonEdit />} />
+          <Route path="tandon/detail/:id" element={<DetailTandon/>} />
           <Route path="historynotifikasi" element={<Notification />} />
           <Route path="historynotifikasi/more-notification" element={<MoreNotification />} />
           <Route path="dashboard/aktuator/:id" element={<Automation />} />

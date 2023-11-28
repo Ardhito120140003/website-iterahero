@@ -69,6 +69,7 @@ function TandonEdit() {
   };
 
   const updateTandon = async (valueName, valueImage, valueLocation) => {
+    console.log(valueName,valueImage,valueLocation,slug)
     await axios
       .patch(
         base_url + "api/v1/tandonUtama",
@@ -79,7 +80,7 @@ function TandonEdit() {
         },
         {
           params: {
-            id: slug
+            id_tandon: parseInt(slug),
           },
           headers: {
             "content-type": "multipart/form-data",
@@ -89,7 +90,7 @@ function TandonEdit() {
       )
       .then((response) => {
         console.log(response)
-        navigate("/unit/tandon");
+        navigate(`/unit/tandon`);
       })
       .catch((error) => {
         console.log(error);

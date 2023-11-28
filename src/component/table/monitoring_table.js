@@ -60,7 +60,7 @@ function TableMonitoring(props) {
         window.location.reload();
         console.log(response);
       })
-      .catch((error) => { 
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -74,31 +74,34 @@ function TableMonitoring(props) {
       })
       .then(({ data }) => {
         setDataTable(data.data);
-        console.log(data.data)
+        console.log('dataTable :', dataTable);
         setTotalPage(data.totalPage);
-        setTotalData(data.totalData)
+        setTotalData(data.totalData);
       })
       .catch((error) => console.error(error))
   };
-  const getPagination = async () => {
 
-    await axios
-      .get(`${base_url}${paginationMonitoring}${idApi}&&size=1000`, {
-        headers: {
-          Authorization: `Bearer ${header}`,
-        },
-      })
-      .then((response) => {
-        setTotalData(response.data.data);
-      })
-      .catch((error) => console.error(error))
-  };
+  // const getPagination = async () => {
+
+  //   await axios
+  //     .get(`${base_url}${paginationMonitoring}${idApi}&&size=1000`, {
+  //       headers: {
+  //         Authorization: `Bearer ${header}`,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       setTotalData(response.data.data);
+  //     })
+  //     .catch((error) => console.error(error))
+  // };
 
   useEffect(() => {
-    getPagination();
+    // getPagination().then(() => console.log(dataTable));
     getApiMonitoring();
-    setIsLoading(false)
-  }, [idApi, page]);
+    return () => {
+      setIsLoading(false);
+    };
+  }, [idApi,route]);
 
   return (
     <>
@@ -112,15 +115,14 @@ function TableMonitoring(props) {
           bg="var(--color-on-primary)"
           justify="flex-start"
           mt={30}
+        > <TableContainer
+          borderRadius="md"
+          boxShadow="md"
+          bg="var(--color-on-primary)"
+          justify="flex-start"
+          mt={30}
+          width="100%"
         >
-          <TableContainer
-            borderRadius="md"
-            boxShadow="md"
-            bg="var(--color-on-primary)"
-            justify="flex-start"
-            mt={30}
-            width="100%"
-          >
             <Table variant="simple" overflowX="scroll" width="100%">
               <Thead>
                 <Tr
@@ -142,8 +144,8 @@ function TableMonitoring(props) {
                   <Th textAlign="center">Aksi</Th>
                 </Tr>
               </Thead>
-                <Tbody>
-                {dataTable.length < 1 ? (
+              <Tbody>
+                {(dataTable && dataTable.length < 1) || idApi === '' || idApi === null? (
                   <Tr>
                     <Td colSpan={10} color={"var(--color-primer)"} textAlign="center">
                       Data kosong
@@ -269,10 +271,11 @@ function TableMonitoring(props) {
                       </Td>
                     </Tr>
                   )))}
-                </Tbody>
+              </Tbody>
             </Table>
           </TableContainer>
-          {dataTable.length > 0 ? (
+
+          {dataTable.length > 0 && !idApi === null || !idApi === ''? (
             <Flex justify="space-between">
               <Flex>
                 <p>
