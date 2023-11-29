@@ -35,10 +35,9 @@ function Monitoring_Add() {
   const navigate = useNavigate();
   TabTitle('Tambah Sensor - ITERA Hero');
   const { id, route } = useParams();
-  console.log(id,route);
   const [imageSensor, onChangeImageSensor] = useState(null);
   const [imagePos, onChangeImagePos] = useState(null);
-  const [isloading, checkLoading] = useState(true);
+  const [isloading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const [dataApi, setDataApi] = useState(null);
   const header = localStorage.getItem('token');
@@ -55,7 +54,8 @@ function Monitoring_Add() {
     id_category_sensor: yup.number().required('Kategori harus diisi'),
     id_greenhouse: yup.number().required(''),
   });
-  const [iconsList, setIconsList] = useState(null);
+  const [iconsList, setIconsList] = useState([]);
+
   const getGreenhouse = async () => {
     axios.get(base_url + `api/v1/${route}`, {
       params: {
@@ -67,45 +67,34 @@ function Monitoring_Add() {
     })
     .then(({ data }) => {
       console.log(data)
-      setDataApi(data.data.data)
+      setDataApi( data.data)
     })
     .catch(err => console.error(err))
   }
 
   const getIcon = async () => {
     axios
-      .get(base_url + icons)
-      .then((response) => {
-        setIconsList(response.data.data);
+      .get(base_url + icons , {
+        headers: {
+          Authorization: `Bearer ${header}`
+        }
+      })
+      .then(({ data }) => {
+        console.log(data)
+        setIconsList(data.data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  const [dataCategory, setDataCategory] = useState(null);
-  const getDataCategory = async () => {
-    axios
-      .get(base_url + categoryApi, {
-        headers: {
-          Authorization: `Bearer ${header}`,
-        },
-      })
-      .then((response) => {
-        setDataCategory(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
   const [icon_selected, setIcon_selected] = useState('');
 
   useEffect(() => {
     dispatch(routePageName('Monitoring'));
     getGreenhouse();
-    getDataCategory();
     getIcon();
-    checkLoading(false);
+    setIsLoading(false);
   }, []);
 
   return (
@@ -262,48 +251,16 @@ function Monitoring_Add() {
                     <option defaultValue="" selected>
                       Pilih Icon
                     </option>
-                    {iconsList.map((item, index) => (item.type == 'sensor' ? (
-                      <option value={item.icon} key={index} color="var(--color-primer)">
+                    {iconsList.filter(item => item.name.toLowerCase().includes("sensor")).map((item, index) => (
+                      <option value={item.name} key={index} color="var(--color-primer)">
                         {item.name}
                       </option>
-                    ) : null))}
+                    ))}
                   </Select>
                     <Flex m="15px">
                     <Image src={icon_selected} />
                   </Flex>
                     <FormErrorMessage>{errors.icon}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={errors.color && touched.color}
-                  >
-                    <FormLabel color="var(--color-primer)">Warna</FormLabel>
-                    <Select
-                    color="var(--color-primer)"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="hidden"
-                    name="color"
-                    value={values.color}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                  >
-                    <option defaultValue="">Pilih Warna</option>
-                    {iconsList.map((item) => (item.type == 'sensor' && item.icon == icon_selected ? (
-                      <option
-                        value={item.color}
-                        color="var(--color-primer)"
-                        selected
-                      >
-                        {item.name}
-                      </option>
-                    ) : null))}
-                  </Select>
-                    <Flex m="15px">
-                    <Circle bg={values.color} size="30px" />
-                  </Flex>
-                    <FormErrorMessage>{errors.color}</FormErrorMessage>
                   </FormControl>
                   <FormControl
                     marginTop="20px"
@@ -406,31 +363,7 @@ function Monitoring_Add() {
                   />
                     <FormErrorMessage>{errors.range_max}</FormErrorMessage>
                   </FormControl>
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={
-                    errors.id_category_sensor && touched.id_category_sensor
-                  }
-                  >
-                    <FormLabel color="var(--color-primer)">Kategori</FormLabel>
-                    <Select
-                    defaultValue={values.id_category_sensor}
-                    color="var(--color-primer)"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    name="id_category_sensor"
-                  >
-                    <option value="">Pilih Kategori</option>
-                    {dataCategory.map((item, index) => (
-                      <option value={item.id} key={index} color="var(--color-primer)">
-                        {item.name}
-                      </option>
-                    ))}
-                  </Select>
-                    <FormErrorMessage>
-                    {errors.id_category_sensor}
-                  </FormErrorMessage>
-                  </FormControl>
+                  
                   <FormControl
                     marginTop="20px"
                     isInvalid={errors.detail && touched.detail}

@@ -77,7 +77,7 @@ function SideNav() {
             navSize={navSize}
             icon={GiGreenhouse}
             title="Greenhouse"
-            active={routeName === 'Greenhouse'}
+            active={['Greenhouse', 'Sensor dan Aktuator Greenhouse'].includes(routeName)}
           />
         </Link>
         <Link
@@ -90,7 +90,7 @@ function SideNav() {
             navSize={navSize}
             icon={GiWaterTower}
             title="Tandon"
-            active={routeName === 'Tandon'}
+            active={['Tandon', 'Sensor dan Aktuator Tandon'].includes(routeName)}
           />
         </Link>
         {user === 'admin' ? (

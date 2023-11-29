@@ -7,7 +7,7 @@ import axios from 'axios';
 import Loading from '../loading/loading';
 
 import './card_aktuator.css';
-import { selectUrl } from '../../features/auth/authSlice';
+import { selectUrl, selectUser } from '../../features/auth/authSlice';
 import { useSelector } from 'react-redux';
 
 import ValueAktuatorOperator from '../value_aktuator/value_aktuator_operator';
@@ -24,13 +24,9 @@ function CardAktuatorOperator(props) {
   const [page, setPage] = useState(1)
   const [kontrol, setKontrol] = useState(false)
   const [trigger, setTrigger] = useState(false)
-
+  
   const getPagination = async () => {
-    // let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
-    // if (route) {
     let url = `${base_url}api/v1/${route}/${idApi}/actuator`;
-    console.log(url)
-    // }
     await axios.get(url, {
       params: {
         cursor: page === 1 ? null : cursor,
@@ -72,15 +68,18 @@ function CardAktuatorOperator(props) {
       })
   }
 
-  return (    <>
-      {dataTable.length < 1 && isLoading ? (
-        <Loading />
-      ) : (
-        <Wrap
-          justify={'start'}
-          mt="20px"
-        >
-          {dataTable.map((item, index) => (
+  return (<>
+    {dataTable.length < 1 && isLoading ? (
+      <Loading />
+    ) : (
+      <Wrap
+        justify={'start'}
+        mt="20px"
+      >
+        {dataTable.length < 1 ? (
+          <Text>Tidak ada aktuator</Text>
+        ) : (
+          dataTable.map((item, index) => (
             // <Link to={`/unit/dashboard/sensor/${item.id}`}>
             <WrapItem
               key={index}
@@ -91,7 +90,7 @@ function CardAktuatorOperator(props) {
               paddingTop="20px"
               paddingBottom="20px"
               px={'20px'}
-              w={{ base:'100%', sm:'100%', md:"100%", lg:"48%", xl:'48.5%', "2xl":"48.5%" }}
+              w={{ base: '100%', sm: '100%', md: "100%", lg: "48%", xl: '48.5%', "2xl": "48.5%" }}
             >
               <Center
                 justifyContent="center"
@@ -125,15 +124,16 @@ function CardAktuatorOperator(props) {
                 <Switch mt={'20px'} onChange={async () => {
                   await handleswitch(item.id)
                   setKontrol(!kontrol)
-                  }} isChecked={item.status} />
+                }} isChecked={item.status} />
 
               </Center>
             </WrapItem>
             // </Link>
-          ))}
-        </Wrap>
-      )}
-    </>
+          ))
+        )}
+      </Wrap>
+    )}
+  </>
   );
 }
 export default CardAktuatorOperator;

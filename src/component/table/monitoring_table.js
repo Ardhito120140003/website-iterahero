@@ -199,9 +199,6 @@ function TableMonitoring(props) {
                           to={{
                             pathname: `/unit/monitoring/detail/${item.id}`,
                           }}
-                          state={{
-                            data: item,
-                          }}
                         >
                           <Button>Detail</Button>
                         </Link>
