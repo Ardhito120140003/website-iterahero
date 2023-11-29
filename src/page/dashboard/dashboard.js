@@ -221,7 +221,7 @@ const DashboardOperator = () => {
                         }}
                           width="100%"
                           height={"425px"}
-                          alignItems={"center"}
+                          alignItems={values.filter2 ? null : 'center'}
                           justifyContent={"center"}
                           display={"flex"}
                         >

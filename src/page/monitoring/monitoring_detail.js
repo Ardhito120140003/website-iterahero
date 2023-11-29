@@ -1,48 +1,51 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './monitoring.css';
 import {
   Text, Flex, Image, Wrap,
 } from '@chakra-ui/react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation, useParams } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { routePageName, selectUrl } from '../../features/auth/authSlice';
 import { TabTitle } from '../../Utility/utility';
 import Loading from '../../component/loading/loading';
+import axios from 'axios';
 
 function MonitoringDetail() {
   const base_url = useSelector(selectUrl);
   TabTitle('Monitoring - ITERA Hero');
   const navigate = useNavigate();
-  const location = useLocation();
-  const data = location.state?.data;
-  console.log(data);
   const header = localStorage.getItem('token');
+  const { id } = useParams();
   const dispatch = useDispatch();
+  const [sensor, setSensor] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
 
-  // const getSensorDetail = async () => {
-  //   await axios
-  //     .get(base_url + greenhouseByUserId, {
-  //       headers: {
-  //         Authorization: "Bearer " + header,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       setDataApi(response.data.data);
-  //       setData(response.data.data[0].id);
-  //     });
-  //   console.log(dataApi).catch((error) => {
-  //     localStorage.clear()
-  //     dispatch(logout());
-  //     navigate("/login");
-  //   });
-  // };
+  const getSensorDetail = async () => {
+    axios.get(base_url + "api/v1/sensor", {
+      params: {
+        id
+      },
+      headers: {
+        Authorization: `Bearer ${header}`
+      }
+    })
+    .then(({ data }) => {
+      console.log(data)
+      setSensor(data.data)
+    })
+    .catch(({ response }) => console.error(response))
+    .finally(() => setIsLoading(false))
+  };
+
   useEffect(() => {
     dispatch(routePageName('Monitoring Detail'));
+    getSensorDetail()
   }, []);
+
   return (
     <>
-      {data == null ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <Flex gap="30px" width="100%" flexDir="column">
@@ -74,7 +77,7 @@ function MonitoringDetail() {
               </Text>
             </Flex>
             <Text fontSize={{ base: '15px', md: '20px' }} fontWeight="bold">
-              {`Detail Sensor ${data.name}`}
+              {`Detail Sensor ${sensor.name}`}
             </Text>
           </Flex>
           <Flex
@@ -107,7 +110,7 @@ function MonitoringDetail() {
                     width="100%"
                     maxWidth="600px"
                     marginLeft="10px"
-                    src={data.sensor_image}
+                    src={sensor.sensor_image}
                   />
                 </Flex>
                 <Flex
@@ -120,7 +123,7 @@ function MonitoringDetail() {
                   <Image
                     maxWidth="600px"
                     width="100%"
-                    src={data.posisition}
+                    src={sensor.posisition}
                     marginLeft="10px"
                   />
                 </Flex>
@@ -133,28 +136,22 @@ function MonitoringDetail() {
                 alignItems="start"
               >
                 <Text>
-                  Nama :
-                  {data.name}
+                  Nama : {sensor.name}
                 </Text>
                 <Text>
-                  Brand :
-                  {data.brand}
+                  Brand : {sensor.brand}
                 </Text>
                 <Text>
-                  Range Max :
-                  {data.range_max}
+                  Range Max : {sensor.range_max}
                 </Text>
                 <Text>
-                  Range Max :
-                  {data.range_min}
+                  Range Max : {sensor.range_min}
                 </Text>
                 <Text>
-                  Unit Measurement :
-                  {data.unit_measurement}
+                  Unit Measurement : {sensor.unit_measurement}
                 </Text>
                 <Text>
-                  Deskripsi :
-                  {data.detail}
+                  Deskripsi : {sensor.detail}
                 </Text>
               </Flex>
             </Flex>

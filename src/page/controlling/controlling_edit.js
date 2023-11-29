@@ -13,7 +13,7 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import * as yup from 'yup';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
@@ -21,111 +21,56 @@ import { routePageName, logout, selectUrl } from '../../features/auth/authSlice'
 import { TabTitle } from '../../Utility/utility';
 import { updateActuatorDetail, icons } from '../../Utility/api_link';
 import Loading from '../../component/loading/loading';
+import { MdArrowDropDown } from 'react-icons/md';
 
 function Controlling_Edit() {
   const base_url = useSelector(selectUrl);
   TabTitle('Edit Aktuator - ITERA Hero');
-  const location = useLocation();
   const navigate = useNavigate();
-  const data = location.state?.data;
-  const [imageActuator, onChangeImageActuator] = useState(null);
-  const [imagePos, onChangeImagePos] = useState(null);
-  console.log(data);
-  const header = localStorage.getItem('token');
-  const [iconSelected, setIconSelected] = useState('');
   const dispatch = useDispatch();
-  const [isloading, checkLoading] = useState(true);
+  const { id } = useParams()
+  const header = localStorage.getItem('token');
+  const [isloading, setIsLoading] = useState(true);
+  const [aktuator, setAktuator] = useState({})
+  const [iconsList, setIconsList] = useState([])
 
   const schema = yup.object({
-    name: yup.string().required('Nama harus diisi'),
-    icon: yup.string().required('Ikon harus diisi'),
-    color: yup.string().required('Warna harus diisi'),
+    Name: yup.string().required('Nama harus diisi'),
+    Type: yup.string().required('Tipe harus diisi'),
+    Merek: yup.string().required('Merek harus diisi'),
   });
 
-  const putActuator = async (
-    valueName,
-    valueIcon,
-    valueColor,
-    detail,
-    actuator_image,
-    posisitionact,
-  ) => {
-    await axios
-      .put(
-        updateActuatorDetail + data.id,
-        {
-          name: valueName,
-          icon: valueIcon,
-          color: valueColor,
-          detailact: detail,
-          actuator_image,
-          posisitionact,
-        },
-        {
-          headers: {
-            'content-type': 'multipart/form-data',
-            Authorization: `Bearer ${header}`,
-          },
-        },
-      )
-      .then((response) => {
-        console.log(response);
-        checkLoading(false);
-        alert('Data Aktuator Berhasil Diperbaharui');
-        navigate('/unit/controlling');
+  const getData = async () => {
+    axios.get(base_url + "api/v1/aktuator", {
+      params: {
+        id
+      },
+      headers: {
+        Authorization: `Bearer ${header}`
+      }
+    })
+    .then(({ data }) => {
+      console.log(data)
+      setAktuator(data.data)
+      axios.get(base_url + "api/v1/icon", {
+        headers: {
+          Authorization: `Bearer ${header}`
+        }
       })
-      .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
-        navigate('/login');
-      });
+      .then(({ data }) => setIconsList(data.data))
+    })
+    .catch(({ response }) => console.error(response))
+    .finally(() => setIsLoading(false))
   };
-
-  const [iconsList, setIconsList] = useState(null);
-  const getIcon = async () => {
-    axios
-      .get(base_url + icons)
-      .then((response) => {
-        // console.log("isi response", response);
-        setIconsList(response.data.data);
-        checkLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const dataSend = {
-    name: '',
-    icon: '',
-    color: '',
-    detailact: '',
-  };
-
-  const submit = async (name, color, icon, detailact) => {
-    dataSend.name = name;
-    dataSend.color = color;
-    dataSend.icon = icon;
-    dataSend.detailact = detailact;
-
-    if (dataSend.name == '' || dataSend.icon == '' || dataSend.color == '') {
-      return alert('Masih ada yang belum di isi');
-    }
-    checkLoading(true);
-    putActuator(name, icon, color, detailact, imageActuator, imagePos);
-  };
-
-  console.log('hallo', iconsList);
 
   useEffect(() => {
     dispatch(routePageName('Controlling'));
-    getIcon();
-    checkLoading(true);
+    getData();
   }, []);
 
   return (
     <>
-      {iconsList == null || isloading ? (
+      {isloading ? (
         <Loading />
       ) : (
         <Flex w="100%" flexDir="column">
@@ -163,223 +108,78 @@ function Controlling_Edit() {
                 {' '}
                 Edit
                 {' '}
-                {data.name}
+                {aktuator.name}
                 {' '}
               </Text>
             </Flex>
           </Flex>
           <Formik
             initialValues={{
-              name: data.name,
-              icon: data.icon,
-              color: data.color,
-              detailact: data.detailact,
+              Name: aktuator.name,
+              Type: aktuator.icon.name,
+              Merek: aktuator.merek
+            }}
+            onSubmit={async (values, action) => {
+              setTimeout(() => {
+                axios.patch(base_url + "api/v1/aktuator", {
+                  name: values.Name,
+                  merek: values.Merek,
+                  type: values.Type,
+                }, {
+                  params: {
+                    id
+                  },
+                  headers: {
+                    Authorization: `Bearer ${header}`
+                  }
+                })
+                .then(({ data }) => {
+                  console.log(data)
+                })
+                .catch(({ response }) => console.error(response))
+                
+                alert(JSON.stringify(values, null, 2))
+                action.setSubmitting(false)
+              }, 1000)
             }}
             validationSchema={schema}
           >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              setFieldValue,
-              handleBlur,
-            }) => (
-              <Form>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.name && touched.name}
-                >
-                  <FormLabel color="var(--color-primer)">Nama</FormLabel>
-                  <Input
-                    color="var(--color-primer)"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="text"
-                    name="name"
-                    value={values.name}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    placeholder="Nama..."
-                  />
-                  <FormErrorMessage>{errors.name}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.icon && touched.icon}
-                >
-                  <FormLabel color="var(--color-primer)">Ikon</FormLabel>
-                  <Select
-                    color="var(--color-primer)"
-                    onChange={(e) => {
-                      setFieldValue('icon', e.target.value);
-                      setIconSelected(e.target.value);
-                    }}
-                    onBlur={handleBlur}
-                    value={values.icon}
-                    name="icon"
-                    id="icon"
-                  >
-                    <option value="">Pilih Ikon</option>
-                    {iconsList.map((item, index) => (item.type == 'actuator' ? (
-                      <option value={item.icon} key={index} color="var(--color-primer)">
-                        {item.name}
-                      </option>
-                    ) : null))}
-                  </Select>
-                  <Flex m="15px">
-                    {iconSelected == '' ? (
-                      <Image src={data.icon} />
+            {({ handleSubmit, handleChange, handleBlur, isValid, values, errors, touched }) => (
+              <Form
+                onSubmit={handleSubmit}
+                style={{
+                  marginTop: 20,
+                  color: "black",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start"
+                }}
+              >
+                {Object.keys(values).map((item, index) => (
+                  <FormControl isInvalid={errors[item]} key={index} pb={2}>
+                    <FormLabel>{item}</FormLabel>
+                    {item === 'Type' ? (
+                      <Flex flexDir={"row"} alignItems={"center"}>
+                        <Select name={item} icon={<MdArrowDropDown />} onChange={handleChange} value={values[item]} flex={3}>
+                          {iconsList.filter((icon) => !icon.name.toLowerCase().includes('sensor')).map((actuator, index) => (
+                            <option value={actuator.name} key={index}>{actuator.name}</option>
+                          ))}
+                        </Select>
+                        <Image src={iconsList.find((actuator) => actuator.name === values[item])?.logo} alt="Actuator Logo" boxSize="50px" ml={2} flex={1} objectFit={"contain"}/>
+                      </Flex>
                     ) : (
-                      <Image src={iconSelected} />
+                      <Input
+                        type={['Range Min', 'Range Max'].includes(item) ? 'number' : 'text'}
+                        name={item}
+                        value={values[item]}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
                     )}
-                  </Flex>
-                  <FormErrorMessage>{errors.icon}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.color && touched.color}
-                >
-                  <FormLabel color="var(--color-primer)">Warna</FormLabel>
-                  <Select
-                    color="var(--color-primer)"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="text"
-                    name="color"
-                    value={values.color}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                  >
-                    <option value="">Pilih Warna</option>
-                    {iconsList.map((item, index) => (item.type == 'actuator' && item.icon == iconSelected ? (
-                      <option
-                        value={item.color}
-                        color="var(--color-primer)"
-                        selected
-                        key={index}
-                      >
-                        {item.name}
-                      </option>
-                    ) : null))}
-                  </Select>
-                  <Flex m="15px">
-                    <Circle bg={values.color} size="30px" />
-                  </Flex>
-                  <FormErrorMessage>{errors.color}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.detailact && touched.detailact}
-                >
-                  <FormLabel color="var(--color-primer)">
-                    Detail dari actuator
-                  </FormLabel>
-                  <Textarea
-                    color="var(--color-primer)"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="text"
-                    name="detailact"
-                    defaultValue={values.detailact}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    placeholder="detail actuator..."
-                  />
-                  <FormErrorMessage>{errors.range_min}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.actuator_image && touched.actuator_image}
-                >
-                  <FormLabel htmlFor="actuator_image" color="black">
-                    Gambar actuator
-                  </FormLabel>
-                  <Flex
-                    width="100%"
-                    h="100px"
-                    borderRadius="5px"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    variant="outline"
-                    placeholder="Masukkan Gambar"
-                    color="black"
-                    alignItems="center"
-                    borderWidth="1px"
-                    borderColor="#D9D9D9"
-                    padding="20px"
-                  >
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        onChangeImageActuator(e.target.files[0]);
-                      }}
-                    />
-                  </Flex>
-                  <FormErrorMessage>{errors.actuator_image}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.posisition && touched.posisition}
-                >
-                  <FormLabel htmlFor="posisition" color="black">
-                    Denah Posisi actuator
-                  </FormLabel>
-                  <Flex
-                    width="100%"
-                    h="100px"
-                    borderRadius="5px"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    variant="outline"
-                    placeholder="Masukkan Posisi actuator"
-                    color="black"
-                    alignItems="center"
-                    borderWidth="1px"
-                    borderColor="#D9D9D9"
-                    padding="20px"
-                  >
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        onChangeImagePos(e.target.files[0]);
-                      }}
-                    />
-                  </Flex>
-                  <FormErrorMessage>{errors.posisition}</FormErrorMessage>
-                </FormControl>
-                <Link to="/unit/controlling">
-                  <Button
-                    marginTop="44px"
-                    width="100%"
-                    height="50px"
-                    borderRadius="10px"
-                    backgroundColor="var(--color-primer)"
-                    type="submit"
-                    className="btn-login"
-                    // disabled={isSubmitting}
-                    onClick={() => submit(
-                      values.name,
-                      values.color,
-                      values.icon,
-                      values.detailact,
-                    )}
-                  >
-                    <Text
-                      fontWeight="bold"
-                      fontFamily="var(--font-family-secondary)"
-                      fontSize="var(--header-3)"
-                      color="var(--color-on-primary)"
-                    >
-                      Simpan
-                    </Text>
-                  </Button>
-                </Link>
+                    { errors[item] && touched[item] && <FormErrorMessage>{errors[item]}</FormErrorMessage> }
+                  </FormControl>
+                ))}
+                <Button type='submit' disabled={!isValid}>Submit</Button>
               </Form>
             )}
           </Formik>

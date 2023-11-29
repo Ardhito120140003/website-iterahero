@@ -14,30 +14,30 @@ function ControllingDetail() {
   TabTitle('controlling - ITERA Hero');
   const navigate = useNavigate();
   const location = useLocation();
-  const data = location.state?.data;
-  console.log(data);
-  const header = localStorage.getItem('token');
-
-  // const getactuatorDetail = async () => {
-  //   await axios
-  //     .get(base_url + greenhouseByUserId, {
-  //       headers: {
-  //         Authorization: "Bearer " + header,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       setDataApi(response.data.data);
-  //       setData(response.data.data[0].id);
-  //     });
-  //   console.log(dataApi).catch((error) => {
-  //     localStorage.clear()
-  //     dispatch(logout());
-  //     navigate("/login");
-  //   });
-  // };
   const dispatch = useDispatch();
+  const header = localStorage.getItem('token');
+  const [aktuator, setAktuator] = useState({})
+
+  const getAktuatorDetail = async () => {
+    axios.get(base_url + "api/v1/sensor", {
+      params: {
+        id
+      },
+      headers: {
+        Authorization: `Bearer ${header}`
+      }
+    })
+    .then(({ data }) => {
+      console.log(data)
+      setSensor(data.data)
+    })
+    .catch(({ response }) => console.error(response))
+    .finally(() => setIsLoading(false))
+  };
+
   useEffect(() => {
     dispatch(routePageName('controlling Detail'));
+    getAktuatorDetail()
   }, []);
   return (
     <>

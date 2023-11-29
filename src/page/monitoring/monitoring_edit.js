@@ -136,7 +136,15 @@ function Monitoring_Edit() {
             }}
             onSubmit={async (values, action) => {
               setTimeout(() => {
-                axios.put(base_url + "api/v1/sensor", {}, {
+                axios.patch(base_url + "api/v1/sensor", {
+                  name: values.Nama,
+                  brand: values.Brand,
+                  calibration: values.Calibration,
+                  unit_measurement: values.Satuan,
+                  type: values.Type,
+                  range_min: values["Range Min"],
+                  range_max: values["Range Max"],
+                }, {
                   params: {
                     id
                   },
@@ -148,7 +156,7 @@ function Monitoring_Edit() {
                   console.log(data)
                 })
                 .catch(({ response }) => console.error(response))
-                .finally(() => setIsLoading(false))
+                
                 alert(JSON.stringify(values, null, 2))
                 action.setSubmitting(false)
               }, 1000)
@@ -184,7 +192,7 @@ function Monitoring_Edit() {
                         onBlur={handleBlur}
                       />
                     )}
-                    { errors[item] && <FormErrorMessage>{errors[item]}</FormErrorMessage> }
+                    { errors[item] && touched[item] && <FormErrorMessage>{errors[item]}</FormErrorMessage> }
                   </FormControl>
                 ))}
                 <Button type='submit' disabled={!isValid}>Submit</Button>

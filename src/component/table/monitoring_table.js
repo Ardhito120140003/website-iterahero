@@ -51,14 +51,17 @@ function TableMonitoring(props) {
   const deleteItem = (e, id) => {
     e.preventDefault();
     axios
-      .delete(`${deleteSensorApi}${id}`, {
+      .delete(`${base_url}api/v1/sensor`, {
+        params: {
+          id
+        },
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${header}`,
         },
       })
-      .then((response) => {
+      .then(({ data }) => {
         window.location.reload();
-        console.log(response);
+        console.log(data);
       })
       .catch((error) => {
         console.log(error);

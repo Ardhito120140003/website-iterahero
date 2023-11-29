@@ -84,18 +84,10 @@ function App() {
               <Route path="monitoring/add/:route/:id" element={<Monitoring_Add />} />
               <Route path="monitoring/edit/:id" element={<Monitoring_Edit />} />
               <Route path="monitoring/detail/:id" element={<MonitoringDetail />} />
-              <Route path="monitoring/detail/:id" element={<MonitoringDetail />} />
               <Route path="controlling" element={<Controlling />} />
-              <Route path="controlling/add/:id" element={<Controlling_Add />} />
+              <Route path="controlling/add/:route/:id" element={<Controlling_Add />} />
               <Route path="controlling/detail/:id" element={<ControllingDetail />} />
-              <Route
-                path="controlling/edit/:id"
-                element={<Controlling_Edit />}
-              />
-              <Route
-                path="controlling/edit/:id"
-                element={<Controlling_Edit />}
-              />
+              <Route path="controlling/edit/:id" element={<Controlling_Edit />} />
             </>
           ) : (
             <Route path="*" element={<Dashboard />} />

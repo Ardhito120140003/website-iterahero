@@ -29,58 +29,37 @@ import {
   addSensorApi,
 } from '../../Utility/api_link';
 import Loading from '../../component/loading/loading';
+import { MdArrowDropDown } from 'react-icons/md';
 
 function Monitoring_Add() {
   const base_url = useSelector(selectUrl);
-  const navigate = useNavigate();
   TabTitle('Tambah Sensor - ITERA Hero');
   const { id, route } = useParams();
-  const [imageSensor, onChangeImageSensor] = useState(null);
-  const [imagePos, onChangeImagePos] = useState(null);
   const [isloading, setIsLoading] = useState(true);
-  const dispatch = useDispatch();
-  const [dataApi, setDataApi] = useState(null);
   const header = localStorage.getItem('token');
+  const [iconsList, setIconsList] = useState([]);
+  const [ghTarget, setGhTarget] = useState({})
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const schema = yup.object({
-    name: yup.string().required('Nama harus diisi'),
-    icon: yup.string().required('icon harus diisi'),
-    color: yup.string().required('Warna harus diisi'),
-    brand: yup.string().required('Satuan Ukur harus diisi'),
-    calibration: yup.string().required('Persamaan Kalibrasi harus diisi'),
-    unit_measurement: yup.string().required('Merek harus diisi'),
-    range_max: yup.number().required('Range Max harus diisi'),
-    range_min: yup.number().required('Range Min harus diisi'),
-    id_category_sensor: yup.number().required('Kategori harus diisi'),
-    id_greenhouse: yup.number().required(''),
+    Name: yup.string().required('Nama harus diisi'),
+    Type: yup.string().required('icon harus diisi'),
+    Brand: yup.string().required('Satuan Ukur harus diisi'),
+    Calibration: yup.string().required('Persamaan Kalibrasi harus diisi'),
+    Satuan: yup.string().required('Merek harus diisi'),
+    "Range Max": yup.number().required('Range Max harus diisi'),
+    "Range Min": yup.number().required('Range Min harus diisi')
   });
-  const [iconsList, setIconsList] = useState([]);
-
-  const getGreenhouse = async () => {
-    axios.get(base_url + `api/v1/${route}`, {
-      params: {
-        id
-      },
-      headers: {
-        Authorization: `Bearer ${header}`
-      }
-    })
-    .then(({ data }) => {
-      console.log(data)
-      setDataApi( data.data)
-    })
-    .catch(err => console.error(err))
-  }
 
   const getIcon = async () => {
     axios
-      .get(base_url + icons , {
+      .get(base_url + icons, {
         headers: {
           Authorization: `Bearer ${header}`
         }
       })
       .then(({ data }) => {
-        console.log(data)
         setIconsList(data.data);
       })
       .catch((error) => {
@@ -88,7 +67,21 @@ function Monitoring_Add() {
       });
   };
 
-  const [icon_selected, setIcon_selected] = useState('');
+  const getGreenhouse = async () => {
+    axios.get(base_url + "api/v1/" + route, {
+      params: {
+        id
+      },
+      headers: {
+        Authorization: `Bearer ${header}`
+      }
+    })
+      .then(({ data }) => {
+        console.log(data)
+        setGhTarget(data.data)
+      })
+      .catch(({ response }) => console.error(response))
+  }
 
   useEffect(() => {
     dispatch(routePageName('Monitoring'));
@@ -101,400 +94,126 @@ function Monitoring_Add() {
     <>
       {isloading ? (
         <Loading />
-        ) : (
-          <Flex w="100%" flexDir="column">
-            <Flex width="100%">
-              <Link to="/unit/monitoring">
-                <Flex marginRight="2">
-                  <Text
-                    fontWeight="semibold"
-                    fontSize="var(--header-3)"
-                    color="var(--color-primer)"
-                  >
-                    List Sensor pada Greenhouse
-                  </Text>
-                </Flex>
-              </Link>
+      ) : (
+        <Flex w="100%" flexDir="column">
+          <Flex width="100%">
+            <Link to="/unit/monitoring">
               <Flex marginRight="2">
                 <Text
                   fontWeight="semibold"
                   fontSize="var(--header-3)"
                   color="var(--color-primer)"
                 >
-                  {' '}
-                  {'>'}
+                  List Sensor pada Greenhouse
+                </Text>
+              </Flex>
+            </Link>
+            <Flex marginRight="2">
+              <Text
+                fontWeight="semibold"
+                fontSize="var(--header-3)"
+                color="var(--color-primer)"
+              >
+                {' '}
+                {'>'}
+                {' '}
+              </Text>
+            </Flex>
+            <Link>
+              <Flex>
+                <Text
+                  fontWeight="semibold"
+                  fontSize="var(--header-3)"
+                  color="var(--color-primer)"
+                >
+                  {' Menambah sensor '}
+                  {ghTarget.name}
                   {' '}
                 </Text>
               </Flex>
-              <Link>
-                <Flex>
-                    <Text
-                      fontWeight="semibold"
-                      fontSize="var(--header-3)"
-                      color="var(--color-primer)"
-                    >
-                      {' '}
-                      {dataApi.name}
-                      {' '}
-                    </Text>
-                </Flex>
-              </Link>
-            </Flex>
-            <Formik
-              validationSchema={schema}
-              validateOnChange={false}
-              validateOnBlur={false}
-              initialValues={{
-                name: '',
-                icon: '',
-                color: '',
-                brand: '',
-                calibration: '',
-                unit_measurement: '',
-                range_max: '',
-                range_min: '',
-                id_category_sensor: '',
-                id_greenhouse: id,
-                detail: '',
-                sensor_image: {},
-                posisition: {},
-              }}
-              onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                  const submitedData = new FormData();
-                  submitedData.append('name', values.name);
-                  submitedData.append('icon', values.icon);
-                  submitedData.append('color', values.color);
-                  submitedData.append('calibration', values.calibration);
-                  submitedData.append('brand', values.brand);
-                  submitedData.append(
-                    'unit_measurement',
-                    values.unit_measurement,
-                  );
-                  submitedData.append('range_max', values.range_max);
-                  submitedData.append('range_min', values.range_min);
-                  submitedData.append(
-                    'id_category_sensor',
-                    values.id_category_sensor,
-                  );
-                  submitedData.append('detail', values.detail);
-                  submitedData.append('sensor_image', imageSensor);
-                  submitedData.append('posisition', imagePos);
-                  submitedData.append('id_greenhouse', values.id_greenhouse);
-                  axios
-                    .post(addSensorApi, submitedData, {
-                      headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`,
-                        'content-type': 'multipart/form-data',
-                      },
-                    })
-                    .then((response) => {
-                      if (response.status === 201) {
-                        alert('Data berhasil ditambahkan');
-                        navigate(-1);
-                      } else {
-                        alert('Data gagal ditambahkan');
-                      }
-                    })
-                    .catch((error) => {});
-                  setSubmitting(false);
-                }, 400);
-              }}
-            >
-              {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                setFieldValue,
-                handleBlur,
-                handleSubmit,
-                isSubmitting,
-              }) => (
-                <Form method="POST" onSubmit={handleSubmit}>
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={errors.name && touched.name}
-                  >
-                    <FormLabel color="var(--color-primer)">Nama</FormLabel>
-                    <Input
-                    color="var(--color-primer)"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="text"
-                    name="name"
-                    defaultValue={values.name}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    placeholder="Nama..."
-                  />
-                    <FormErrorMessage>{errors.name}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={errors.icon && touched.icon}
-                  >
-                    <FormLabel color="var(--color-primer)">Icon</FormLabel>
-                    <Select
-                    color="var(--color-primer)"
-                    onChange={(e) => {
-                      setFieldValue('icon', e.target.value);
-                      setIcon_selected(e.target.value);
-                    }}
-                    onBlur={handleBlur}
-                    // defaultValue={values.icon}
-                    value={values.icon}
-                    name="icon"
-                    id="icon"
-                  >
-                    <option defaultValue="" selected>
-                      Pilih Icon
-                    </option>
-                    {iconsList.filter(item => item.name.toLowerCase().includes("sensor")).map((item, index) => (
-                      <option value={item.name} key={index} color="var(--color-primer)">
-                        {item.name}
-                      </option>
-                    ))}
-                  </Select>
-                    <Flex m="15px">
-                    <Image src={icon_selected} />
-                  </Flex>
-                    <FormErrorMessage>{errors.icon}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={errors.calibration && touched.calibration}
-                  >
-                    <FormLabel color="var(--color-primer)">
-                    Persamaan Kalibrasi
-                  </FormLabel>
-                    <Input
-                    color="var(--color-primer)"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="text"
-                    name="calibration"
-                    defaultValue={values.calibration}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    placeholder="Persamaan Kalibrasi..."
-                  />
-                    <FormErrorMessage>{errors.calibration}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={errors.brand && touched.brand}
-                  >
-                    <FormLabel color="var(--color-primer)">Merek</FormLabel>
-                    <Input
-                    color="var(--color-primer)"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="text"
-                    name="brand"
-                    defaultValue={values.brand}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    placeholder="Merek..."
-                  />
-                    <FormErrorMessage>{errors.brand}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={
-                    errors.unit_measurement && touched.unit_measurement
-                  }
-                  >
-                    <FormLabel color="var(--color-primer)">
-                    Satuan Ukur
-                  </FormLabel>
-                    <Input
-                    color="var(--color-primer)"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="text"
-                    name="unit_measurement"
-                    defaultValue={values.unit_measurement}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    placeholder="Satuan Ukur..."
-                  />
-                    <FormErrorMessage>{errors.unit_measurement}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={errors.range_min && touched.range_min}
-                  >
-                    <FormLabel color="var(--color-primer)">Range Min</FormLabel>
-                    <Input
-                    color="var(--color-primer)"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="number"
-                    name="range_min"
-                    defaultValue={values.range_min}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    placeholder="min_range..."
-                  />
-                    <FormErrorMessage>{errors.range_min}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={errors.range_max && touched.range_max}
-                  >
-                    <FormLabel color="var(--color-primer)">Range Max</FormLabel>
-                    <Input
-                    color="var(--color-primer)"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="number"
-                    name="range_max"
-                    defaultValue={values.range_max}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    placeholder="max_range..."
-                  />
-                    <FormErrorMessage>{errors.range_max}</FormErrorMessage>
-                  </FormControl>
-                  
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={errors.detail && touched.detail}
-                  >
-                    <FormLabel color="var(--color-primer)">
-                    Detail dari Sensor
-                  </FormLabel>
-                    <Textarea
-                    color="var(--color-primer)"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="text"
-                    name="detail"
-                    defaultValue={values.detail}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    placeholder="detail sensor..."
-                  />
-                    <FormErrorMessage>{errors.range_min}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={errors.sensor_image && touched.sensor_image}
-                  >
-                    <FormLabel htmlFor="sensor_image" color="black">
-                    Gambar Sensor
-                  </FormLabel>
-                    <Flex
-                    width="100%"
-                    h="100px"
-                    borderRadius="5px"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    variant="outline"
-                    placeholder="Masukkan Gambar"
-                    color="black"
-                    alignItems="center"
-                    borderWidth="1px"
-                    borderColor="#D9D9D9"
-                    padding="20px"
-                  >
-                    {/* <FilePicker
-                                            onFileChange={(fileList) => onChangeImage(fileList)}
-                                            placeholder="Pilih Gambar"
-                                            clearButtonLabel="Hapus"
-                                            multipleFiles={true}
-                                            accept="image/*"
-                                            hideClearButton={false}
-                                        /> */}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        onChangeImageSensor(e.target.files[0]);
-                      }}
-                    />
-                  </Flex>
-                    <FormErrorMessage>{errors.sensor_image}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={errors.posisition && touched.posisition}
-                  >
-                    <FormLabel htmlFor="posisition" color="black">
-                    Denah Posisi Sensor
-                  </FormLabel>
-                    <Flex
-                    width="100%"
-                    h="100px"
-                    borderRadius="5px"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    variant="outline"
-                    placeholder="Masukkan Posisi Sensor"
-                    color="black"
-                    alignItems="center"
-                    borderWidth="1px"
-                    borderColor="#D9D9D9"
-                    padding="20px"
-                  >
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        onChangeImagePos(e.target.files[0]);
-                      }}
-                    />
-                  </Flex>
-                    <FormErrorMessage>{errors.posisition}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl>
-                    <Input
-                    type="hidden"
-                    defaultValue={id}
-                    name="id_greenhouse"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    placeholder="id..."
-                  />
-                  </FormControl>
-                  <Link to="/unit/monitoring">
-                    <Button
-                    marginTop="44px"
-                    width="100%"
-                    height="10%"
-                    borderRadius="10px"
-                    backgroundColor="var(--color-primer)"
-                    type="submit"
-                    className="btn-login"
-                    isLoading={isSubmitting}
-                    disabled={isSubmitting}
-                    onClick={handleSubmit}
-                    loadingText="Tunggu Sebentar..."
-                  >
-                    <Text
-                      fontWeight="bold"
-                      fontFamily="var(--font-family-secondary)"
-                      fontSize="var(--header-3)"
-                      color="var(--color-on-primary)"
-                    >
-                      Tambah
-                    </Text>
-                  </Button>
-                  </Link>
-                </Form>
-              )}
-            </Formik>
+            </Link>
           </Flex>
-        )}
+          <Formik
+            initialValues={{
+              Name: undefined,
+              Type: undefined,
+              Brand: undefined,
+              Calibration: undefined,
+              Satuan: undefined,
+              "Range Min": undefined,
+              "Range Max": undefined
+            }}
+            onSubmit={async (values, action) => {
+              setTimeout(() => {
+                const where = route === 'greenhouse' ? 'greenhouse' : 'tandon';
+                axios.post(base_url + "api/v1/sensor", {
+                  name: values.Name,
+                  [`id_${where}`]: parseInt(id),
+                  brand: values.Brand,
+                  calibration: values.Calibration,
+                  unit_measurement: values.Satuan,
+                  type: values.Type,
+                  range_min: values["Range Min"],
+                  range_max: values["Range Max"],
+                }, {
+                  params: {
+                    id
+                  },
+                  headers: {
+                    Authorization: `Bearer ${header}`
+                  }
+                })
+                  .then(({ data }) => {
+                    console.log(data)
+                    navigate('/unit/monitoring')
+                  })
+                  .catch(({ response }) => console.error(response))
+
+                alert(JSON.stringify(values, null, 2))
+                action.setSubmitting(false)
+                navigate
+              }, 1000)
+            }}
+            validationSchema={schema}
+          >
+            {({ handleSubmit, handleChange, handleBlur, isValid, values, errors }) => (
+              <Form
+                onSubmit={handleSubmit}
+                style={{
+                  marginTop: 20,
+                  color: "black",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start"
+                }}
+              >
+                {Object.keys(values).map((item, index) => (
+                  <FormControl isInvalid={errors[item]} key={index} pb={2}>
+                    <FormLabel>{item}</FormLabel>
+                    {item === 'Type' ? (
+                      <Select name={item} icon={<MdArrowDropDown />} onChange={handleChange} value={values[item]}>
+                        {iconsList.filter((icon) => icon.name.toLowerCase().includes('sensor')).map((sensor, index) => (
+                          <option value={sensor.name} key={index}>{sensor.name}</option>
+                        ))}
+                      </Select>
+                    ) : (
+                      <Input
+                        type={['Range Min', 'Range Max'].includes(item) ? 'number' : 'text'}
+                        name={item}
+                        value={values[item]}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
+                    )}
+                    {errors[item] && touched[item] && <FormErrorMessage>{errors[item]}</FormErrorMessage>}
+                  </FormControl>
+                ))}
+                <Button type='submit' disabled={!isValid}>Submit</Button>
+              </Form>
+            )}
+          </Formik>
+        </Flex>
+      )}
     </>
   );
 }
