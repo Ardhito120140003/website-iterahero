@@ -112,10 +112,10 @@ function Monitoring() {
                           as={Select}
                           borderRadius={"10"}
                           width={"25vw"}
-                          height={"5vh"}
+                          height={"30px"}
                           bg={"white"}
                           _active={{ bg: "white" }}
-                          borderColor={"var(--color-border)"}
+                          borderColor={"grey"}
                           fontSize={"var(--header-5)"}
                           fontWeight={"normal"}
                           color={"var(--color-primer)"}
@@ -140,10 +140,10 @@ function Monitoring() {
                           as={Select}
                           borderRadius={"10"}
                           width={"25vw"}
-                          height={"5vh"}
+                          height={"30px"}
                           bg={"white"}
                           _active={{ bg: "white" }}
-                          borderColor={"var(--color-border)"}
+                          borderColor={"grey"}
                           fontSize={"var(--header-5)"}
                           fontWeight={"normal"}
                           color={"var(--color-primer)"}

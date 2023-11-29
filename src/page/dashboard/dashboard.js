@@ -154,7 +154,7 @@ const DashboardOperator = () => {
                         height={"5vh"}
                         bg={"white"}
                         _active={{ bg: "white" }}
-                        borderColor={"var(--color-border)"}
+                        borderColor={"grey"}
                         fontSize={"var(--header-5)"}
                         fontWeight={"normal"}
                         color={"var(--color-primer)"}
@@ -179,7 +179,7 @@ const DashboardOperator = () => {
                         height={"5vh"}
                         bg={"white"}
                         _active={{ bg: "white" }}
-                        borderColor={"var(--color-border)"}
+                        borderColor={"grey"}
                         fontSize={"var(--header-5)"}
                         fontWeight={"normal"}
                         color={"var(--color-primer)"}
