@@ -21,65 +21,57 @@ import axios from 'axios';
 import { routePageName, selectUrl } from '../../features/auth/authSlice';
 import { TabTitle } from '../../Utility/utility';
 import {
-  getApiGreenhouse,
-  addActuatorApi,
   icons,
 } from '../../Utility/api_link';
 import Loading from '../../component/loading/loading';
+import { MdArrowDropDown } from 'react-icons/md';
 
 function Controlling_Add() {
   const base_url = useSelector(selectUrl);
   TabTitle('Tambah Aktuator - ITERA Hero');
-  const { id } = useParams();
   const navigate = useNavigate();
-  const [dataApi, setDataApi] = useState(null);
-  const [icon_selected, setIcon_selected] = useState('');
-  const [iconsList, setIconsList] = useState('');
-  const [isloading, checkLoading] = useState(true);
-  const [imageActuator, onChangeImageActuator] = useState(null);
-  const [imagePos, onChangeImagePos] = useState(null);
+  const dispatch = useDispatch();
+  const { id, route } = useParams()
+  const [iconsList, setIconsList] = useState([]);
+  const [target, setTarget] = useState({})
+  const [isloading, setIsLoading] = useState(true);
+  const header = localStorage.getItem('token')
 
   const schema = yup.object({
-    name: yup.string().required('Nama harus diisi'),
-    icon: yup.string().required('Ikon harus diisi'),
-    color: yup.string().required('Warna harus diisi'),
+    Name: yup.string().required('Nama harus diisi'),
+    Type: yup.string().required('Ikon harus diisi'),
+    Merek: yup.string().required('Warna harus diisi'),
   });
 
-  const getIcon = async () => {
-    axios
-      .get(base_url + icons)
-      .then((response) => {
-        setIconsList(response.data.data);
-        checkLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  const getDataApi = async () => {
-    axios
-      .get(base_url + getApiGreenhouse, {
-        params: {
-          id
-        },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
+  const getGreenhouse = async () => {
+    axios.get(base_url + "api/v1/" + route, {
+      params: {
+        id
+      },
+      headers: {
+        Authorization: `Bearer ${header}`
+      }
+    })
       .then(({ data }) => {
-        setDataApi(data.data);
+        console.log(data)
+        setTarget(data.data)
+        axios
+          .get(base_url + icons, {
+            headers: {
+              Authorization: `Bearer ${header}`
+            }
+          })
+          .then(({ data }) => {
+            setIconsList(data.data);
+          })
       })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  const dispatch = useDispatch();
+      .catch(({ response }) => console.error(response))
+      .finally(() => setIsLoading(false))
+  }
 
   useEffect(() => {
     dispatch(routePageName('Controlling'));
-    getDataApi();
-    getIcon();
-    checkLoading(true);
+    getGreenhouse();
   }, []);
 
   return (
@@ -96,7 +88,11 @@ function Controlling_Add() {
                   fontSize="var(--header-3)"
                   color="var(--color-primer)"
                 >
-                  List Controlling pada Greenhouse
+                  List Controlling pada {`${(() => {
+                    let x = route.replace(/([A-Z])/g, ' $1');
+                    let text = x.charAt(0).toUpperCase() + x.slice(1)
+                    return text
+                  })()}`}
                 </Text>
               </Flex>
             </Link>
@@ -113,282 +109,87 @@ function Controlling_Add() {
             </Flex>
             <Link>
               <Flex>
-                {dataApi.id == id ? (
-                  <Text
-                    fontWeight="semibold"
-                    fontSize="var(--header-3)"
-                    color="var(--color-primer)"
-                  >
-                    {' '}
-                    {dataApi.name}
-                    {' '}
-                  </Text>
-                ) : (
-                  <Text
-                    fontWeight="semibold"
-                    fontSize="var(--header-3)"
-                    color="var(--color-primer)"
-                  >
-                    {' '}
-                    {dataApi.name}
-                    {' '}
-                  </Text>
-                )}
+                <Text
+                  fontWeight="semibold"
+                  fontSize="var(--header-3)"
+                  color="var(--color-primer)"
+                >
+                  {' '}
+                  {target.nama ?? target.name}
+                  {' '}
+                </Text>
               </Flex>
             </Link>
           </Flex>
           <Formik
-            validationSchema={schema}
-            validateOnChange={false}
-            validateOnBlur={false}
             initialValues={{
-              name: '',
-              icon: '',
-              color: '',
-              id_greenhouse: id,
-              detailact: '',
+              Name: undefined,
+              Type: '',
+              Merek: undefined,
             }}
-            onSubmit={(values, { setSubmitting }) => {
-              setTimeout(async () => {
-                const submitedData = new FormData();
-                submitedData.append('name', values.name);
-                submitedData.append('icon', values.icon);
-                submitedData.append('color', values.color);
-                submitedData.append('id_greenhouse', values.id_greenhouse);
-                submitedData.append('detailact', values.detailact);
-                submitedData.append('actuator_image', imageActuator);
-                submitedData.append('posisitionact', imagePos);
-                await axios
-                  .post(addActuatorApi, submitedData, {
-                    headers: {
-                      Authorization: `Bearer ${localStorage.getItem('token')}`,
-                      'content-type': 'multipart/form-data',
-                    },
+            onSubmit={async (values, action) => {
+              setTimeout(() => {
+                const where = route === 'greenhouse' ? 'greenhouse' : 'tandon';
+                axios.post(base_url + "api/v1/aktuator", {
+                  name: values.Name,
+                  [`id_${where}`]: parseInt(id),
+                  merek: values.Merek,
+                  type: values.Type,
+                }, {
+                  params: {
+                    id
+                  },
+                  headers: {
+                    Authorization: `Bearer ${header}`
+                  }
+                })
+                  .then(({ data }) => {
+                    console.log(data)
+                    navigate('/unit/controlling')
                   })
-                  .then((response) => {
-                    if (response.status === 201) {
-                      alert('Data berhasil ditambahkan');
-                      navigate(-1);
-                    } else {
-                      alert('Data gagal ditambahkan');
-                    }
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                  });
-                setSubmitting(false);
-              }, 400);
+                  .catch(({ response }) => console.error(response))
+
+                alert(JSON.stringify(values, null, 2))
+                action.setSubmitting(false)
+                navigate
+              }, 1000)
             }}
+            validationSchema={schema}
           >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              setFieldValue,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-            }) => (
-              <Form onSubmit={handleSubmit}>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.name && touched.name}
-                >
-                  <FormLabel color="var(--color-primer)">Name</FormLabel>
-                  <Input
-                    color="var(--color-primer)"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="text"
-                    name="name"
-                    value={values.name}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    placeholder="Name..."
-                  />
-                  <FormErrorMessage>{errors.name}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.icon && touched.icon}
-                >
-                  <FormLabel color="var(--color-primer)">Icon</FormLabel>
-                  <Select
-                    color="var(--color-primer)"
-                    onChange={(e) => {
-                      setFieldValue('icon', e.target.value);
-                      setIcon_selected(e.target.value);
-                    }}
-                    onBlur={handleBlur}
-                    value={values.icon}
-                    name="icon"
-                    id="icon"
-                  >
-                    <option value="" selected>
-                      Pilih Icon
-                    </option>
-                    {iconsList.map((item, index) => (item.type == 'actuator' ? (
-                      <option value={item.icon} key={index} color="var(--color-primer)">
-                        {item.name}
-                      </option>
-                    ) : null))}
-                  </Select>
-                  <Flex m="15px">
-                    <Image src={icon_selected} />
-                  </Flex>
-                  <FormErrorMessage>{errors.icon}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.color && touched.color}
-                >
-                  <FormLabel color="var(--color-primer)">Warna</FormLabel>
-                  <Select
-                    color="var(--color-primer)"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="hidden"
-                    name="color"
-                    value={values.color}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                  >
-                    <option value="">Pilih Warna</option>
-                    {iconsList.map((item, index) => (item.type == 'actuator' && item.icon == icon_selected ? (
-                      <option
-                        value={item.color}
-                        color="var(--color-primer)"
-                        selected
-                        key={index}
-                      >
-                        {item.name}
-                      </option>
-                    ) : null))}
-                  </Select>
-                  <Flex m="15px">
-                    <Circle bg={values.color} size="30px" />
-                  </Flex>
-                  <FormErrorMessage>{errors.color}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.detailact && touched.detailact}
-                >
-                  <FormLabel color="var(--color-primer)">
-                    Detail dari actuator
-                  </FormLabel>
-                  <Textarea
-                    color="var(--color-primer)"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="text"
-                    name="detailact"
-                    defaultValue={values.detailact}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    placeholder="detail actuator..."
-                  />
-                  <FormErrorMessage>{errors.detailact}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.actuator_image && touched.actuator_image}
-                >
-                  <FormLabel htmlFor="actuator_image" color="black">
-                    Gambar actuator
-                  </FormLabel>
-                  <Flex
-                    width="100%"
-                    h="100px"
-                    borderRadius="5px"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    variant="outline"
-                    placeholder="Masukkan Gambar"
-                    color="black"
-                    alignItems="center"
-                    borderWidth="1px"
-                    borderColor="#D9D9D9"
-                    padding="20px"
-                  >
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        onChangeImageActuator(e.target.files[0]);
-                      }}
-                    />
-                  </Flex>
-                  <FormErrorMessage>{errors.actuator_image}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.posisitionact && touched.posisitionact}
-                >
-                  <FormLabel htmlFor="posisitionact" color="black">
-                    Denah Posisi actuator
-                  </FormLabel>
-                  <Flex
-                    width="100%"
-                    h="100px"
-                    borderRadius="5px"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    variant="outline"
-                    placeholder="Masukkan Posisi actuator"
-                    color="black"
-                    alignItems="center"
-                    borderWidth="1px"
-                    borderColor="#D9D9D9"
-                    padding="20px"
-                  >
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        onChangeImagePos(e.target.files[0]);
-                      }}
-                    />
-                  </Flex>
-                  <FormErrorMessage>{errors.posisitionact}</FormErrorMessage>
-                </FormControl>
-                <FormControl>
-                  <Input
-                    type="hidden"
-                    value={id}
-                    name="id_greenhouse"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    placeholder="id..."
-                  />
-                </FormControl>
-                <Link to="/unit/controlling">
-                  <Button
-                    marginTop="44px"
-                    width="100%"
-                    height="50px"
-                    borderRadius="10px"
-                    backgroundColor="var(--color-primer)"
-                    type="submit"
-                    className="btn-login"
-                    disabled={isSubmitting}
-                    onClick={handleSubmit}
-                  >
-                    <Text
-                      fontWeight="bold"
-                      fontFamily="var(--font-family-secondary)"
-                      fontSize="var(--header-3)"
-                      color="var(--color-on-primary)"
-                    >
-                      Tambah
-                    </Text>
-                  </Button>
-                </Link>
+            {({ handleSubmit, handleChange, handleBlur, isValid, values, errors, touched }) => (
+              <Form
+                onSubmit={handleSubmit}
+                style={{
+                  marginTop: 20,
+                  color: "black",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start"
+                }}
+              >
+                {Object.keys(values).map((item, index) => (
+                  <FormControl isInvalid={errors[item]} key={index} pb={2}>
+                    <FormLabel>{item}</FormLabel>
+                    {item === 'Type' ? (
+                      <Select name={item} icon={<MdArrowDropDown />} onChange={handleChange} value={values[item]}>
+                        <option disabled={values.Type} selected>-- Pilih Icon --</option>
+                        {iconsList.filter((icon) => !icon.name.toLowerCase().includes('sensor')).map((sensor, index) => (
+                          <option value={sensor.name} key={index}>{sensor.name}</option>
+                        ))}
+                      </Select>
+                    ) : (
+                      <Input
+                        type={['Range Min', 'Range Max'].includes(item) ? 'number' : 'text'}
+                        name={item}
+                        value={values[item]}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      />
+                    )}
+                    {errors[item] && touched[item] && <FormErrorMessage>{errors[item]}</FormErrorMessage>}
+                  </FormControl>
+                ))}
+                <Button type='submit' disabled={!isValid}>Submit</Button>
               </Form>
             )}
           </Formik>

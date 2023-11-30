@@ -1,22 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text, Flex, Image, Wrap,
 } from '@chakra-ui/react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { routePageName, selectUrl } from '../../features/auth/authSlice';
 import { TabTitle } from '../../Utility/utility';
 import Loading from '../../component/loading/loading';
+import axios from 'axios';
 
 function ControllingDetail() {
   const base_url = useSelector(selectUrl);
   TabTitle('controlling - ITERA Hero');
-  const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
+  const { id } = useParams();
   const header = localStorage.getItem('token');
   const [aktuator, setAktuator] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
 
   const getAktuatorDetail = async () => {
     axios.get(base_url + "api/v1/sensor", {
@@ -29,19 +30,19 @@ function ControllingDetail() {
     })
     .then(({ data }) => {
       console.log(data)
-      setSensor(data.data)
+      setAktuator(data.data)
     })
     .catch(({ response }) => console.error(response))
     .finally(() => setIsLoading(false))
   };
 
   useEffect(() => {
-    dispatch(routePageName('controlling Detail'));
+    dispatch(routePageName('Controlling Detail'));
     getAktuatorDetail()
   }, []);
   return (
     <>
-      {data == null ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <Flex gap="30px" width="100%" flexDir="column">
@@ -59,7 +60,7 @@ function ControllingDetail() {
                   fontWeight="bold"
                   mr="10px"
                 >
-                  controlling
+                  Controlling
                 </Text>
               </Link>
             </Flex>
@@ -73,7 +74,7 @@ function ControllingDetail() {
               </Text>
             </Flex>
             <Text fontSize={{ base: '15px', md: '20px' }} fontWeight="bold">
-              {`Detail actuator ${data.name}`}
+              {`Detail actuator ${aktuator.name}`}
             </Text>
           </Flex>
           <Flex
@@ -106,7 +107,7 @@ function ControllingDetail() {
                     width="100%"
                     maxWidth="600px"
                     marginLeft="10px"
-                    src={data.actuator_image}
+                    src={aktuator.actuator_image}
                   />
                 </Flex>
                 <Flex
@@ -119,7 +120,7 @@ function ControllingDetail() {
                   <Image
                     maxWidth="600px"
                     width="100%"
-                    src={data.posisitionact}
+                    src={aktuator.posisitionact}
                     marginLeft="10px"
                   />
                 </Flex>
@@ -133,11 +134,11 @@ function ControllingDetail() {
               >
                 <Text>
                   Nama :
-                  {data.name}
+                  {aktuator.name}
                 </Text>
                 <Text>
                   Deskripsi :
-                  {data.detailact}
+                  {aktuator.detailact}
                 </Text>
               </Flex>
             </Flex>

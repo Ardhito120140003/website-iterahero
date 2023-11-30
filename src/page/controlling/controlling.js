@@ -27,9 +27,9 @@ function Controlling() {
   const getDataApi = async () => {
 
     let url = `${base_url}api/v1/${firstFilter}`;
-    console.log('url : ',url);
-    console.log('filter 1 : ',firstFilter);
-    console.log('filter 2 : ',secondFilter);
+    console.log('url : ', url);
+    console.log('filter 1 : ', firstFilter);
+    console.log('filter 2 : ', secondFilter);
 
     await axios
       .get(url, {
@@ -57,20 +57,20 @@ function Controlling() {
     getDataApi();
 
     axios
-    .get(base_url + "api/v1/" + firstFilter, {
-      headers: {
-        Authorization: "Bearer " + header,
-      },
-    })
-    .then((response) => {
-      setFilterData(response.data.data);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+      .get(base_url + "api/v1/" + firstFilter, {
+        headers: {
+          Authorization: "Bearer " + header,
+        },
+      })
+      .then((response) => {
+        setFilterData(response.data.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
 
   }, [firstFilter]);
-  
+
   return (
     <>
       {dataApi == null ? (
@@ -226,21 +226,17 @@ function Controlling() {
                 )}
               </Formik>
             </Flex>
-            {secondFilter === '' ? (
-              <></>
-            ) : (
-              <Link to={`/unit/controlling/add/${secondFilter}`}>
-                <Button
-                  data={{ name: secondFilter }}
-                  type="submit"
-                  bg="var(--color-primer)"
-                >
-                  Tambah
-                </Button>
-              </Link>
-            )}
+            <Button
+              data={{ name: secondFilter }}
+              type="submit"
+              bg="var(--color-primer)"
+              disabled={!secondFilter}
+              onClick={() => navigate(`/unit/controlling/add/${firstFilter}/${secondFilter}`)}
+            >
+              Tambah
+            </Button>
           </Flex>
-          {secondFilter === '' ? (
+          {!secondFilter ? (
             <></>
           ) : (
             <TableControlling

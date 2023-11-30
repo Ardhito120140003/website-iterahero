@@ -38,7 +38,7 @@ function Monitoring_Add() {
   const [isloading, setIsLoading] = useState(true);
   const header = localStorage.getItem('token');
   const [iconsList, setIconsList] = useState([]);
-  const [ghTarget, setGhTarget] = useState({})
+  const [target, setTarget] = useState({})
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
@@ -78,7 +78,7 @@ function Monitoring_Add() {
     })
       .then(({ data }) => {
         console.log(data)
-        setGhTarget(data.data)
+        setTarget(data.data)
       })
       .catch(({ response }) => console.error(response))
   }
@@ -127,7 +127,7 @@ function Monitoring_Add() {
                   color="var(--color-primer)"
                 >
                   {' Menambah sensor '}
-                  {ghTarget.name}
+                  {target.name}
                   {' '}
                 </Text>
               </Flex>

@@ -39,12 +39,16 @@ function TableControlling(props) {
   const deleteItem = (e, id) => {
     e.preventDefault();
     axios
-      .delete(`${deleteAktuatorApi}${id}`, {
+      .delete(`${base_url}` + "api/v1/aktuator", {
+        params: {
+          id
+        },
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       })
-      .then((response) => {
+      .then(({ data }) => {
+        console.log(data)
         window.location.reload();
       })
       .catch((error) => {

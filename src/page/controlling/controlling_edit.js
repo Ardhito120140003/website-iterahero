@@ -137,7 +137,7 @@ function Controlling_Edit() {
                   console.log(data)
                 })
                 .catch(({ response }) => console.error(response))
-                
+                navigate("/unit/controlling")
                 alert(JSON.stringify(values, null, 2))
                 action.setSubmitting(false)
               }, 1000)

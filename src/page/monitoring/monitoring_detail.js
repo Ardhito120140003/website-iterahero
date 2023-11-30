@@ -14,7 +14,6 @@ import axios from 'axios';
 function MonitoringDetail() {
   const base_url = useSelector(selectUrl);
   TabTitle('Monitoring - ITERA Hero');
-  const navigate = useNavigate();
   const header = localStorage.getItem('token');
   const { id } = useParams();
   const dispatch = useDispatch();
