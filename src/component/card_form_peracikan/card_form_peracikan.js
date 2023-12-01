@@ -195,7 +195,7 @@ function CardFormPeracikan({ id_tandon }) {
         actions.setSubmitting(false);
      }}
     >
-      {({ values, errors, touched, isValid, setFieldValue }) => (
+      {({ values, errors, touched, isValid, setFieldValue, setTouched }) => (
         <Form>
           <Flex flexDirection="column" width="100%" height="100%" gap={"10px"}>
             <Box color="black"
@@ -223,6 +223,7 @@ function CardFormPeracikan({ id_tandon }) {
                           setFieldValue('ph', dataApi[idx].ph);
                           setFieldValue('ppm', dataApi[idx].ppm);
                           setFieldValue('volume', dataApi[idx].volume);
+                          setTouched({}, false)
                         }
                         setFieldValue('formula', e.target.value);
                       }}
@@ -248,7 +249,7 @@ function CardFormPeracikan({ id_tandon }) {
               <Box>
                 <Field name="newFormulaName">
                   {({ field }) => (
-                    <FormControl isRequired isInvalid={errors.newFormulaName && touched.newFormulaName}>
+                    <FormControl isInvalid={errors.newFormulaName && touched.newFormulaName}>
                       <FormLabel color={'black'}>Nama Formula</FormLabel>
                       <Input
                         {...field}
@@ -268,7 +269,7 @@ function CardFormPeracikan({ id_tandon }) {
             <Box>
               <Field name="ph">
                 {({ field }) => (
-                  <FormControl isRequired isInvalid={errors.ph && touched.ph}>
+                  <FormControl isInvalid={errors.ph && touched.ph}>
                     <FormLabel color={'black'}>PH Value</FormLabel>
                     <Input
                       {...field}
@@ -287,7 +288,7 @@ function CardFormPeracikan({ id_tandon }) {
             <Box>
               <Field name="ppm">
                 {({ field }) => (
-                  <FormControl isRequired isInvalid={errors.ppm && touched.ppm}>
+                  <FormControl isInvalid={errors.ppm && touched.ppm}>
                     <FormLabel color={'black'}>PPM Value</FormLabel>
                     <Input
                       {...field}
@@ -306,7 +307,7 @@ function CardFormPeracikan({ id_tandon }) {
             <Box>
               <Field name="volume">
                 {({ field }) => (
-                  <FormControl isRequired isInvalid={errors.volume && touched.volume}>
+                  <FormControl isInvalid={errors.volume && touched.volume}>
                     <FormLabel color={'black'}>Volume</FormLabel>
                     <Input
                       {...field}
@@ -352,7 +353,6 @@ function CardFormPeracikan({ id_tandon }) {
                   type="Submit"
                   backgroundColor="#09322D"
                   w={'100%'}
-                  isDisabled={!isValid}
                 >
                   Simpan Formula
                 </Button>
@@ -363,7 +363,7 @@ function CardFormPeracikan({ id_tandon }) {
                   type="button"
                   backgroundColor="#09322D"
                   w={'100%'}
-                  isDisabled={!isValid}
+                  
                   onClick={onOpenUpdateModal}
                 >
                   Simpan Perubahan
@@ -376,7 +376,6 @@ function CardFormPeracikan({ id_tandon }) {
                   type="Submit"
                   backgroundColor="#09322D"
                   w={'100%'}
-                  isDisabled={!isValid}
                 >
                   Racik
                 </Button>

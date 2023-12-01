@@ -70,6 +70,7 @@ function CardNotification(props) {
           borderRadius="10px"
           justify="center"
           align="center"
+          textAlign={"center"}
         >
           <Image src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663905296/itera%20herro%20icon/icon-notif_owss6p.png" />
         </Flex>
@@ -82,7 +83,7 @@ function CardNotification(props) {
             fontSize="var(--header-3)"
             color="var(--color-primer)"
           >
-            {data.detail}
+            {data.message}
           </Text>
           <Flex flexDir="row" paddingLeft="2%" gap={2} alignItems="center">
             <Icon as={RiMapPinFill} w={25} h={25} color="black" />

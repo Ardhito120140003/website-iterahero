@@ -63,18 +63,24 @@ function CardSensorOperator(props) {
     const params = {
       [`id_${route === 'tandonUtama' ? 'tandon' : 'greenhouse'}`]: idApi
     }
-    axios.get(`${base_url}api/v1/logging`, {
-      params,
-      headers: {
-        Authorization: `Bearer ${header}`
-      }
-    })
-      .then((response) => {
-        setSensorRealtime(response.data.data)
+    const fetchData = () => {
+      axios.get(`${base_url}api/v1/logging`, {
+        params,
+        headers: {
+          Authorization: `Bearer ${header}`
+        }
       })
-      .catch(err => console.error(err))
-      .finally(() => setTimeout(() => setTrigger(!trigger), 2000))
-  }, [trigger])
+        .then((response) => {
+          setSensorRealtime(response.data.data)
+        })
+        .catch(err => console.error(err))
+    }
+    const interval = setInterval(() => {
+      fetchData()
+    }, 1500)
+
+    return (() => clearInterval(interval))
+  }, [])
 
   return (
     <>

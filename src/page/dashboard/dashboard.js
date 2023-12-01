@@ -33,10 +33,7 @@ const DashboardOperator = () => {
   const [filterData, setFilterData] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch();
-
-  const [action, setAction] = useState(false);
   const headers = localStorage.getItem("token");
-
 
   const getApiPenjadwalan = async () => {
     axios
@@ -65,19 +62,19 @@ const DashboardOperator = () => {
           Authorization: `Bearer ${headers}`,
         },
       })
-      .then((response) => {
-        const data = [];
-        for (const item in response.data.data) {
+      .then(({ data }) => {
+        const dashboard = [];
+        for (const item in data.data) {
           if (item === 'name') {
             continue
           }
           const obj = {};
           let key = item.replace(/([A-Z])/g, ' $1');
           key = key.charAt(0).toUpperCase() + key.slice(1);
-          obj[key] = response.data.data[item];
-          data.push(obj);
+          obj[key] = data.data[item];
+          dashboard.push(obj);
         }
-        setDataApiDashboard(data);
+        setDataApiDashboard(dashboard);
       })
       .catch((error) => {
         console.log("error", error);
@@ -101,12 +98,17 @@ const DashboardOperator = () => {
 
   useEffect(() => {
     getApiDashboard()
+
+    const interval = setInterval(() => {
+      getApiDashboard()
       .then(() => {
         getApiPenjadwalan().then(() =>
           setIsLoading(false))
       });
-    setTimeout(() => setAction(!action), 2500)
-  }, [action]);
+    }, 2000)
+
+    return (() => clearInterval(interval))
+  }, []);
 
   return (
     <>
@@ -142,7 +144,7 @@ const DashboardOperator = () => {
                   filter2: null,
                 }}
               >
-                {({ values, setFieldValue, resetForm }) => (
+                {({ values, setFieldValue }) => (
                   <Form style={{ width: '100%' }}>
                     <Flex alignItems={"space-between"}>
                       <Select

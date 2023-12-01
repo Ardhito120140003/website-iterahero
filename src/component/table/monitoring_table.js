@@ -82,29 +82,21 @@ function TableMonitoring(props) {
         setTotalData(data.totalData);
       })
       .catch((error) => console.error(error))
+      .finally(() => setIsLoading(false))
   };
-
-  // const getPagination = async () => {
-
-  //   await axios
-  //     .get(`${base_url}${paginationMonitoring}${idApi}&&size=1000`, {
-  //       headers: {
-  //         Authorization: `Bearer ${header}`,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       setTotalData(response.data.data);
-  //     })
-  //     .catch((error) => console.error(error))
   // };
 
   useEffect(() => {
     // getPagination().then(() => console.log(dataTable));
+    setDataTable([])
     getApiMonitoring();
-    return () => {
-      setIsLoading(false);
-    };
-  }, [idApi,route]);
+    
+    const interval = setInterval(() => {
+      getApiMonitoring();
+    }, 2000)
+
+    return (() => clearInterval(interval))
+  }, [idApi, route]);
 
   return (
     <>
@@ -148,13 +140,23 @@ function TableMonitoring(props) {
                 </Tr>
               </Thead>
               <Tbody>
-                {(dataTable && dataTable.length < 1) || idApi === '' || idApi === null? (
+                { !idApi ? (
+                  <Tr>
+                    <Td colSpan={10} color={"var(--color-primer)"} textAlign="center">
+                      {`Pilih ${(() => {
+                        let x = route.replace(/([A-Z])/g, ' $1');
+                        let text = x.charAt(0).toUpperCase() + x.slice(1)
+                        return text
+                      })()}`}
+                    </Td>
+                  </Tr>
+                ) : dataTable.length < 1 ? (
                   <Tr>
                     <Td colSpan={10} color={"var(--color-primer)"} textAlign="center">
                       Data kosong
                     </Td>
                   </Tr>
-                ) : (
+                ) :(
                   dataTable.map((item, index) => (
                     <Tr key={index}>
                       <Td textAlign="center" color="var(--color-primer)">
@@ -275,7 +277,7 @@ function TableMonitoring(props) {
             </Table>
           </TableContainer>
 
-          {dataTable.length > 0 && !idApi === null || !idApi === ''? (
+          {dataTable.length > 0 && !idApi === null || !idApi === '' ? (
             <Flex justify="space-between">
               <Flex>
                 <p>

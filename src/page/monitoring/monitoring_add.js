@@ -171,8 +171,8 @@ function Monitoring_Add() {
 
                 alert(JSON.stringify(values, null, 2))
                 action.setSubmitting(false)
-                navigate
-              }, 1000)
+                navigate("/unit/monitoring")
+              }, 200)
             }}
             validationSchema={schema}
           >

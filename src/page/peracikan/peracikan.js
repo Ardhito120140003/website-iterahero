@@ -65,6 +65,12 @@ function Peracikan() {
   useEffect(() => {
     getTandon()
     dispatch(routePageName("Peracikan"));
+
+    const interval = setInterval(() => {
+      getTandon()
+    }, 1500)
+
+    return (() => clearInterval(interval))
   }, []);
 
   console.log(dataTandon);

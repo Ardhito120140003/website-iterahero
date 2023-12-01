@@ -171,7 +171,7 @@ function Controlling_Add() {
                   <FormControl isInvalid={errors[item]} key={index} pb={2}>
                     <FormLabel>{item}</FormLabel>
                     {item === 'Type' ? (
-                      <Select name={item} icon={<MdArrowDropDown />} onChange={handleChange} value={values[item]}>
+                      <Select name={item} icon={<MdArrowDropDown />} onChange={handleChange} value={values[item]} onBlur={handleBlur}>
                         <option disabled={values.Type} selected>-- Pilih Icon --</option>
                         {iconsList.filter((icon) => !icon.name.toLowerCase().includes('sensor')).map((sensor, index) => (
                           <option value={sensor.name} key={index}>{sensor.name}</option>

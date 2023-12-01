@@ -23,7 +23,6 @@ function CardAktuatorOperator(props) {
   const [totalPage, setTotalPage] = useState(0)
   const [page, setPage] = useState(1)
   const [kontrol, setKontrol] = useState(false)
-  const [trigger, setTrigger] = useState(false)
   
   const getPagination = async () => {
     let url = `${base_url}api/v1/${route}/${idApi}/actuator`;
@@ -46,10 +45,16 @@ function CardAktuatorOperator(props) {
       })
       .finally(() => setIsLoading(false));
   };
+
   useEffect(() => {
     getPagination();
-    setTimeout(() => setTrigger(!trigger), 3000)
-  }, [trigger, kontrol, idApi, route]);
+
+    const interval = setInterval(() => {
+      getPagination()
+    }, 1000)
+
+    return(() => clearInterval(interval))
+  }, [kontrol, idApi, route]);
 
   const handleswitch = async (id) => {
     axios.post(base_url + "api/v1/kontrol", {}, {
@@ -97,10 +102,12 @@ function CardAktuatorOperator(props) {
                 flexDir="column"
                 data={{ data: idApi }}
               >
-                <Flex flexDir="row" justify="space-between">
+                <Flex flexDir="row" justifyContent={"space-around"} alignItems={"center"}>
                   <Image
                     src={`${item.icon.logo}`}
-                    color={item.color}
+                    color={item.icon.color}
+                    w={"30px"}
+                    objectFit={"contain"}
                   />
                   {/* <Text color={`${item.color}`}>{item.name}</Text> */}
                   <Text color={'black'}>{item.name}</Text>

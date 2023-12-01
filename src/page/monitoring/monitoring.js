@@ -186,16 +186,12 @@ function Monitoring() {
               </Link>
             )}
           </Flex>
-          {secondFilter === ''? (
-            <></>
-            ) : (
             <TableMonitoring
               data={{
                 id: secondFilter,
                 route: firstFilter,
               }}
             />
-            )}
         </Flex>
       )}
     </>
