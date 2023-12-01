@@ -71,7 +71,7 @@ function Tandon() {
           </Flex>
           <Wrap>
             {dataApi.map((placement) => (
-              <Link to={`/unit/tandon/detail/${placement.id}`} key={placement.id}>
+              //<Link to={`/unit/tandon/detail/${placement.id}`} key={placement.id}>
                 <CardTandon
                 key={placement.id}
                 data={{
@@ -83,7 +83,7 @@ function Tandon() {
                   updated_at: placement.updated_at,
                 }}
               />
-              </Link>
+              //</Link>
             ))}
           </Wrap>
         </Flex>

@@ -51,8 +51,13 @@ function CardTandon(props) {
     <>
       <WrapItem className="dont-touch">
         <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
+        <Link 
+         className="touch"
+         to={{pathname: `/unit/tandonUtama/detail/${data.id}`}} 
+         key={data.id}
+         >
           <Image src={data.image} h="250px" w="350px" />
-
+         </Link> 
           <Flex
             p="2"
             justifyContent="space-between"

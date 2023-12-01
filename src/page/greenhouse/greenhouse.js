@@ -72,7 +72,7 @@ function GreenHouse() {
           </Flex>
           <Wrap>
             {dataApi.map((placement) => (
-               <Link to={`/unit/greenhouse/detail/${placement.id}`} key={placement.id}>
+              //  <Link to={`/unit/greenhouse/detail/${placement.id}`} key={placement.id}>
                 <CardGreenhouse
                 key={placement.id}
                 data={{
@@ -85,7 +85,7 @@ function GreenHouse() {
                   user_name: placement.user_name,
                 }}
               />
-               </Link>
+              //  </Link>
             ))}
           </Wrap>
         </Flex>
