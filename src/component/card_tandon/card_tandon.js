@@ -53,60 +53,61 @@ function CardTandon(props) {
         <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
         <Link 
          className="touch"
-         to={{pathname: `/unit/tandonUtama/detail/${data.id}`}} 
+         to={{pathname: `/unit/tandon/edit/${data.id}`}} 
          key={data.id}
          >
           <Image src={data.image} h="250px" w="350px" />
          </Link> 
-          <Flex
-            p="2"
-            justifyContent="space-between"
-            flexDirection="row"
-            w="100%"
-          >
-            <Text
-              fontWeight="semibold"
-              fontSize="var(--header-3)"
-              color="black"
+         <Flex flexDir={"column"} justifyContent={"space-around"} p={2} gap={1}>
+            <Flex
+              justifyContent="space-between"
+              alignItems={"center"}
             >
-              {data.title}
-            </Text>
-            <Flex>
-              <div
-                className="touch"
-                onClick={() => {
-                  onOpen();
-                }}
-              >
-                <Icon as={RiDeleteBinFill} size="24px" color="#B00020" />
-              </div>
-              <Link
-                className="touch"
-                to={{
-                  pathname: `/unit/tandon/${data.id}`,
-                }}
-              >
-                <Icon
-                  as={RiPencilFill}
-                  size="24px"
-                  color="#007BFF"
-                  marginStart="10px"
-                />
-              </Link>
-            </Flex>
-          </Flex>
-          <Flex p="2" justify="flex-start">
-            <Flex>
-              <Icon as={RiMapPinFill} size="30px" color="black" />
-            </Flex>
-            <Flex textAlign="center" alignContent="center">
               <Text
+                fontWeight="semibold"
+                fontSize="var(--header-3)"
                 color="black"
-                flexDirection="row"
-                fontSize="var(--header-5)"
+                p={0}
               >
-                {data.location}
+                {data.title}
               </Text>
+              <Flex>
+                <div
+                  className="touch"
+                  onClick={() => {
+                    onOpen();
+                  }}
+                >
+                  <Icon as={RiDeleteBinFill} size="24px" color="#B00020" />
+                </div>
+                <Link
+                  className="touch"
+                  to={{
+                    pathname: `/unit/tandon/${data.id}`,
+                  }}
+                >
+                  <Icon
+                    as={RiPencilFill}
+                    size="24px"
+                    color="#007BFF"
+                    marginStart="10px"
+                  />
+                </Link>
+              </Flex>
+            </Flex>
+            <Flex alignItems={"center"}>
+              <Flex>
+                <Icon as={RiMapPinFill} size="30px" color="black" />
+              </Flex>
+              <Flex textAlign="center" alignContent="center">
+                <Text
+                  color="black"
+                  flexDirection="row"
+                  fontSize="var(--header-5)"
+                >
+                  {data.location}
+                </Text>
+              </Flex>
             </Flex>
           </Flex>
         </Box>
@@ -117,8 +118,9 @@ function CardTandon(props) {
         <ModalContent>
           <ModalHeader>{`Hapus ${data.title}`}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <Text>{`Apakah kamu yakin menghapus ${data.title}`}</Text>
+          <ModalBody textAlign={"center"} flexDirection={"column"} display={"flex"}>
+            <Text>{`Apakah  yakin menghapus`}</Text>
+            <Text>{`${data.title}`}</Text>
           </ModalBody>
 
           <ModalFooter>

@@ -225,7 +225,6 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
                 )}
               </Grid>
             </Flex>
-            <Flex>
               <Button
                 onClick={onOpen}
                 bgColor={"#09322D"}
@@ -238,7 +237,6 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
                   {dataApi.rasioA} : {dataApi.rasioB} : {dataApi.rasioAir} = {dataApi.ppm}
                 </Text>
               </Button>
-            </Flex>
           </>
         )}
 
