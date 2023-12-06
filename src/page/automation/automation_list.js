@@ -21,120 +21,44 @@ import {
 } from '../../Utility/api_link';
 import CardAutomation from '../../component/card Automation/card_automation';
 import CardScheduling from '../../component/card Automation/card_scheduling';
+import { selectToken } from '../../features/auth/authSlice';
 import { logout, selectUrl } from '../../features/auth/authSlice';
 
 function AutomationList(props) {
   const base_url = useSelector(selectUrl);
   const idApi = props.data.id;
-  const header = localStorage.getItem('token');
-  const navigate = useNavigate();
+  const header = useSelector(selectToken)
   const [dataApi, setDataApi] = useState([]);
   const [dataSchedule, setDataSchedule] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [status, setStatus] = useState(0);
-  const dispatch = useDispatch();
+
   const getAutomation = async () => {
     await axios
-      .get(`${base_url}${getAutomationByActuator}${idApi}`, {
+      .get(`${base_url}api/v1/automation`, {
+        params: {
+          id: idApi
+        },
         headers: {
           Authorization: `Bearer ${header}`,
         },
       })
-      .then((response) => {
-        setDataApi(response.data.data);
+      .then(({ data }) => {
+        console.log(data)
+        // setDataApi(response.data.data);
       })
       .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
-        navigate('/login');
+        console.error(error)
       });
-  };
-  const getActuatorAutomation = async () => {
-    await axios
-      .get(`${base_url}${getActuatorDetail}${idApi}`, {
-        headers: {
-          Authorization: `Bearer ${header}`,
-        },
-      })
-      .then((response) => {
-        setStatus(response.data.data.automation);
-      })
-      .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
-        navigate('/login');
-      });
-  };
-  const getSchedule = async () => {
-    await axios
-      .get(`${base_url}${scheduling}?actuatorid=${idApi}`, {
-        headers: {
-          Authorization: `Bearer ${header}`,
-        },
-      })
-      .then((response) => {
-        setDataSchedule(response.data.data);
-      })
-      .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
-        navigate('/login');
-      });
-  };
-
-  const toogleSwitch = () => {
-    if (status == 1) {
-      setTimeout(() => {
-        axios
-          .put(
-            `${updateActuatorDetail}${parseInt(idApi)}`,
-            {
-              automation: 0,
-            },
-            {
-              headers: {
-                'content-type': 'multipart/form-data',
-                Authorization: `Bearer ${header}`,
-              },
-            },
-          )
-          .then((response) => {
-            setIsLoading(false);
-            setStatus((replace) => !replace);
-          });
-      }, 200);
-    } else {
-      setTimeout(() => {
-        axios
-          .put(
-            `${updateActuatorDetail}${parseInt(idApi)}`,
-            {
-              automation: 1,
-            },
-            {
-              headers: {
-                'content-type': 'multipart/form-data',
-                Authorization: `Bearer ${header}`,
-              },
-            },
-          )
-          .then((response) => {
-            setIsLoading(false);
-            setStatus((replace) => !replace);
-          });
-      }, 200);
-    }
   };
 
   useEffect(() => {
-    getAutomation();
-    getActuatorAutomation();
-    getSchedule();
+    getAutomation()
   }, [idApi, status]);
 
   return (
     <>
-      {dataApi == null || isLoading ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <Flex flexDir="column" w="100%">
@@ -195,7 +119,7 @@ function AutomationList(props) {
           </Wrap>
           <Wrap>
             {dataSchedule.map((data, index) => (
-              <CardScheduling
+              {/* <CardScheduling
                 data={{
                   actuator: data.actuator,
                   interval: data.interval,
@@ -205,7 +129,7 @@ function AutomationList(props) {
                   id_schedule: data.id_schedule,
                 }}
                 key={index}
-              />
+              /> */}
             ))}
             ;
           </Wrap>

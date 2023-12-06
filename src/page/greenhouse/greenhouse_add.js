@@ -15,6 +15,7 @@ import axios from 'axios';
 import { routePageName, selectUrl } from '../../features/auth/authSlice';
 import { TabTitle } from '../../Utility/utility';
 
+import { selectToken } from '../../features/auth/authSlice';
 import Loading from '../../component/loading/loading';
 
 function GreenhouseAdd() {
@@ -54,7 +55,7 @@ function GreenhouseAdd() {
   };
 
   const dispatch = useDispatch();
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
 
   const postGreenhouse = (valueName, valueImage, valueLocation) => {
     axios

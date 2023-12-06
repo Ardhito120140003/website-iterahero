@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/form-control';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import { selectToken } from '../../features/auth/authSlice';
 import axios from 'axios';
 import { routePageName, selectUrl } from '../../features/auth/authSlice';
 import { TabTitle } from '../../Utility/utility';
@@ -54,7 +55,7 @@ function TandonAdd() {
   };
 
   const dispatch = useDispatch();
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
 
   const postGreenhouse = (valueName, valueImage, valueLocation) => {
     axios

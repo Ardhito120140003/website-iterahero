@@ -14,36 +14,9 @@ import { actuatorLogToday } from '../../Utility/api_link';
 import { logout, selectUrl } from '../../features/auth/authSlice';
 
 function CardLogActuatorToday(props) {
-  const idApi = props.data.id;
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [dataTable, setDataTable] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
+  const logs = props.data.log;
   const base_url = useSelector(selectUrl);
-  const getPagination = async () => {
-    setIsLoading(true);
 
-    const header = localStorage.getItem('token');
-    await axios.get(`${base_url}${actuatorLogToday}${idApi}`, {
-      headers: {
-        Authorization: `Bearer ${header}`,
-      },
-    })
-      .then((response) => {
-        setDataTable(response.data.data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
-        navigate('/login');
-      });
-  };
-
-  useEffect(() => {
-    getPagination();
-  }, [idApi]);
   return (
     <Wrap className="center-ul" align="center" spacing="10px" mt="30px" width={['100%']}>
       <Flex direction={{ base: 'column', md: 'row' }} mt="30px" justifyContent="space-between" w={['100%']}>
@@ -63,7 +36,7 @@ function CardLogActuatorToday(props) {
               <Text>Jumlah Actuator Nyala Hari ini</Text>
             </Flex>
             <Wrap>
-              <Text width="100%" fontWeight="bold" color="var(--color-secondary-variant)">{dataTable.count_on}</Text>
+              <Text width="100%" fontWeight="bold" color="var(--color-secondary-variant)">{logs.on ?? 0}</Text>
             </Wrap>
           </Flex>
         </Box>
@@ -83,7 +56,7 @@ function CardLogActuatorToday(props) {
               <Text>Jumlah Actuator Mati Hari ini</Text>
             </Flex>
             <Wrap>
-              <Text width="100%" fontWeight="bold" color="var(--color-error)">{dataTable.count_off}</Text>
+              <Text width="100%" fontWeight="bold" color="var(--color-error)">{logs.off ?? 0}</Text>
             </Wrap>
           </Flex>
         </Box>

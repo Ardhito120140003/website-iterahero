@@ -7,6 +7,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { routePageName, selectUrl } from '../../features/auth/authSlice';
 import { TabTitle } from '../../Utility/utility';
+import { selectToken } from '../../features/auth/authSlice';
 import Loading from '../../component/loading/loading';
 import axios from 'axios';
 
@@ -15,7 +16,7 @@ function ControllingDetail() {
   TabTitle('controlling - ITERA Hero');
   const dispatch = useDispatch();
   const { id } = useParams();
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
   const [aktuator, setAktuator] = useState({})
   const [isLoading, setIsLoading] = useState(true)
 

@@ -26,6 +26,7 @@ import { useSelector } from 'react-redux';
 import { selectUrl } from '../../features/auth/authSlice';
 import CustomCheckbox from './checkbox';
 import { BiTrash } from 'react-icons/bi';
+import { selectToken } from '../../features/auth/authSlice';
 import { MdOutlineLibraryAdd } from 'react-icons/md';
 import * as Yup from 'yup';
 
@@ -51,7 +52,7 @@ const validatePenjadwalanSchema = Yup.object().shape({
 function CardFormPenjadwalan({ updateAction }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const base_url = useSelector(selectUrl);
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
   const [dataApi, setDataApi] = useState([]);
   const [dataApiGreenhouse, setDataApiGreenhouse] = useState([]);
   const [buttonLoading, setButtonLoading] = useState(false)

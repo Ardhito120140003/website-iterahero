@@ -173,7 +173,7 @@ function Controlling_Add() {
                     {item === 'Type' ? (
                       <Select name={item} icon={<MdArrowDropDown />} onChange={handleChange} value={values[item]} onBlur={handleBlur}>
                         <option disabled={values.Type} selected>-- Pilih Icon --</option>
-                        {iconsList.filter((icon) => !icon.name.toLowerCase().includes('sensor')).map((sensor, index) => (
+                        {iconsList.filter((icon) => !category.name.toLowerCase().includes('sensor')).map((sensor, index) => (
                           <option value={sensor.name} key={index}>{sensor.name}</option>
                         ))}
                       </Select>

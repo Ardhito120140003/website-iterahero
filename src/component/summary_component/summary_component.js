@@ -3,6 +3,7 @@ import { Text, Flex, Button } from '@chakra-ui/react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import Loading from '../loading/loading';
+import { selectToken } from '../../features/auth/authSlice';
 import { downloadSummary, summary } from '../../Utility/api_link';
 import { selectUrl } from '../../features/auth/authSlice';
 
@@ -12,7 +13,8 @@ function SummaryComponent(props) {
   const { value } = props.data;
   const { name } = props.data;
   const [isLoading, setIsLoading] = useState(false);
-  const [dataSensor, setDataSensor] = useState([]);
+    const header = useSelector(selectToken)
+    const [dataSensor, setDataSensor] = useState([]);
 
   const exportData = (data, fileName, type) => {
     // Create a link and download the file
@@ -26,7 +28,6 @@ function SummaryComponent(props) {
   };
 
   const getSummary = async () => {
-    const header = localStorage.getItem('token');
     await axios
       .get(`${base_url}` + "api/v1/summary", {
         params: {
@@ -45,7 +46,6 @@ function SummaryComponent(props) {
 
   const DownloadSummary = async () => {
     setIsLoading(true);
-    const header = localStorage.getItem('token');
     await axios
       .get(`${base_url}` + "api/v1/download/summary", {
         params: {

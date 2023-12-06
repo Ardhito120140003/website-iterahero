@@ -3,6 +3,10 @@ import {
   Text,
   Image,
   Flex,
+  FormControl,
+  Stack,
+  Link as ChakraLink,
+  Icon
 } from '@chakra-ui/react';
 import axios from 'axios';
 import useSound from 'use-sound';
@@ -12,78 +16,26 @@ import { postLogAktuator, Status } from '../../Utility/api_link';
 import Loading from '../loading/loading';
 import './value_aktuator.css';
 import { selectUrl } from '../../features/auth/authSlice';
+import { RiArrowRightSLine } from 'react-icons/ri';
+import { Link as ReactRouterLink } from 'react-router-dom';
 
 function ValueAktuatorOperator(props) {
   const base_url = useSelector(selectUrl);
   const idApi = props.data.id;
   const { life_cycle , automation, isAvailable } = props.data;
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [playbackRate, setPlaybackRate] = useState(0.75);
   const [play] = useSound(clickSound, {
     playbackRate,
     interrupt: true,
   });
-  const [isOn, setIsOn] = useState('');
-  const convertValue = () => {
-    if (life_cycle == 1) {
-      return true;
-    }
-    return false;
-  };
-  const onlineStatus = () => {
-    axios
-      .get(`${base_url}${Status}${idApi}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      })
-      .then((response) => {
-        if (response.data.data.length > 0) {
-          setIsOn(response.data.data[0].status);
-        }
-        if (response.data.data.length == 0) {
-          setIsOn('offline');
-        }
-      })
-      .catch(err => console.error(err));
-  };
-
-  const [status, setStatus] = useState(convertValue);
-  const toogleSwitch = () => {
-    if (status == true) {
-      setTimeout(() => {
-        axios
-          .post(`${postLogAktuator}`, {
-            id_actuator: idApi,
-            on_off_status: 0,
-          })
-          .then((response) => {
-            setIsLoading(false);
-            setStatus((replace) => !replace);
-          });
-      }, 200);
-    } else {
-      setTimeout(() => {
-        axios
-          .post(`${postLogAktuator}`, {
-            id_actuator: idApi,
-            on_off_status: 1,
-          })
-          .then((response) => {
-            setIsLoading(false);
-            setStatus((replace) => !replace);
-          });
-      }, 200);
-    }
-  };
 
   useEffect(() => {
-    setIsLoading(true);
-    // onlineStatus();
-  }, [idApi, status]);
+    setIsLoading(false);
+  }, [idApi]);
   return (
     <>
-      {status == null && isLoading ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <>
@@ -126,7 +78,7 @@ function ValueAktuatorOperator(props) {
             </Flex>
           </Flex>
           
-          {/* <FormControl
+          <FormControl
             mt="10px"
             alignContent="center"
             justify="center"
@@ -155,7 +107,7 @@ function ValueAktuatorOperator(props) {
             </Stack>
           </FormControl>
           <br />
-          <Link to={`/unit/dashboard/aktuator/${idApi}`} className="touchable">
+          <ChakraLink as={ReactRouterLink} to={`/unit/dashboard/aktuator/${idApi}`} className="touchable">
             <Flex
               w="100%"
               h="40px"
@@ -175,7 +127,7 @@ function ValueAktuatorOperator(props) {
                 marginLeft="-10px"
               />
             </Flex>
-          </Link> */}
+          </ChakraLink>
         </>
       )}
     </>

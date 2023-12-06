@@ -12,46 +12,47 @@ import { getActuatorDetail } from '../../Utility/api_link';
 import dashboardControlMenu from '../../Utility/dashboard_control_menu';
 import CardLogActuator from '../../component/card_log_actuator/card_log_act';
 import AutomationList from './automation_list';
+import { selectToken } from '../../features/auth/authSlice';
 import { routePageName, logout, selectUrl } from '../../features/auth/authSlice';
 
 function Automation() {
   const base_url = useSelector(selectUrl);
   TabTitle('Detail Actuator - ITERA Hero');
   const [data, setData] = useState('');
-  const [dataApi, setDataApi] = useState(null);
   const [selected, setSelected] = useState(1);
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
   const dispatch = useDispatch();
+  const header = useSelector(selectToken)
+
   const getActuator = async () => {
-    setIsLoading(true);
-    const header = localStorage.getItem('token');
     await axios
-      .get(`${base_url}${getActuatorDetail}${id}`, {
+      .get(`${base_url}api/v1/aktuator`, {
+        params: {
+          id
+        },
         headers: {
           Authorization: `Bearer ${header}`,
         },
       })
-      .then((response) => {
-        setDataApi(response.data.data.name);
-        setIsLoading(false);
+      .then(({ data }) => {
+        setData(data.data)
+        console.log(data);
       })
-      .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
-        navigate('/login');
-      });
+      .catch(({ response }) => {
+        console.error(response)
+      })
+      .finally(() => setIsLoading(false))
   };
 
   useEffect(() => {
     getActuator();
     dispatch(routePageName('Automation'));
-  }, [id, data]);
+  }, [id]);
 
   return (
     <>
-      {dataApi == null ? (
+      {isLoading ? (
         <Loading />
       ) : (
         <>
@@ -83,7 +84,7 @@ function Automation() {
               </Text>
             </Flex>
             <Text fontSize={{ base: '15px', md: '20px' }} fontWeight="bold">
-              {`Aktuator ${dataApi}`}
+              {`Aktuator ${data.name}`}
             </Text>
           </Flex>
           <Flex>

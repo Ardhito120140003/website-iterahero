@@ -48,7 +48,7 @@ function Login() {
     if (token) {
       navigate('/unit/dashboard/1');
     } else {
-      dispatch(logout());
+      
     }
   };
 

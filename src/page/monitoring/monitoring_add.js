@@ -29,6 +29,7 @@ import {
   addSensorApi,
 } from '../../Utility/api_link';
 import Loading from '../../component/loading/loading';
+import { selectToken } from '../../features/auth/authSlice';
 import { MdArrowDropDown } from 'react-icons/md';
 
 function Monitoring_Add() {
@@ -36,7 +37,7 @@ function Monitoring_Add() {
   TabTitle('Tambah Sensor - ITERA Hero');
   const { id, route } = useParams();
   const [isloading, setIsLoading] = useState(true);
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
   const [iconsList, setIconsList] = useState([]);
   const [target, setTarget] = useState({})
   const dispatch = useDispatch();
@@ -192,7 +193,7 @@ function Monitoring_Add() {
                     <FormLabel>{item}</FormLabel>
                     {item === 'Type' ? (
                       <Select name={item} icon={<MdArrowDropDown />} onChange={handleChange} value={values[item]}>
-                        {iconsList.filter((icon) => icon.name.toLowerCase().includes('sensor')).map((sensor, index) => (
+                        {iconsList.filter((icon) => category.name.toLowerCase().includes('sensor')).map((sensor, index) => (
                           <option value={sensor.name} key={index}>{sensor.name}</option>
                         ))}
                       </Select>

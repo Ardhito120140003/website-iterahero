@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import { selectToken } from '../../features/auth/authSlice';
 import { RiDeleteBinFill, RiPencilFill } from 'react-icons/ri';
 import { deleteAutomation } from '../../Utility/api_link';
 
@@ -26,7 +26,7 @@ function CardAutomation(props) {
   const item = props.data;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
   const deleteItem = async () => {
     axios
       .delete(`${deleteAutomation}${item.id_automation}`, {

@@ -19,6 +19,7 @@ import {
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import Loading from '../loading/loading';
+import { selectToken } from '../../features/auth/authSlice';
 import { selectUrl } from '../../features/auth/authSlice';
 
 function CardFormPeracikanRasio() {
@@ -31,7 +32,7 @@ function CardFormPeracikanRasio() {
   const [dataApi, setDataApi] = useState([]);
   const [newFormulaName, setNewFormulaName] = useState('');
   const base_url = useSelector(selectUrl);
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
 
   useEffect(() => {
     axios.get(`${base_url}api/v1/resep`, {

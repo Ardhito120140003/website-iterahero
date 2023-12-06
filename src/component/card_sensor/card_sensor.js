@@ -33,8 +33,8 @@ function CardSensor(props) {
         setIsLoading(false);
       })
       .catch((error) => {
-        // localStorage.clear();
-        // dispatch(logout());
+        // 
+        // 
         // navigate("/login");
       });
   };

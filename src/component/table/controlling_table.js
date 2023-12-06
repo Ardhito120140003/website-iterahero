@@ -65,9 +65,9 @@ function TableControlling(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
+  const header = useSelector(selectToken)
 
   const getApiControlling = async () => {
-    const header = localStorage.getItem('token');
     await axios
       .get(`${base_url}api/v1/${route}/${idApi}/actuator`, {
         headers: {
@@ -83,15 +83,12 @@ function TableControlling(props) {
         setIsLoading(false);
       })
       .catch((error) => {
-        // localStorage.clear();
-        // dispatch(logout());
+        // 
+        // 
         // navigate('/login');
       });
   };
   const getPagination = async () => {
-    setIsLoading(true);
-
-    const header = localStorage.getItem('token');
     await axios
       .get(`${base_url}${controllingApi}${idApi}&&size=100`, {
         headers: {
@@ -103,8 +100,8 @@ function TableControlling(props) {
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
+        
+        
         navigate('/login');
       });
   };
@@ -173,7 +170,7 @@ function TableControlling(props) {
                       justifyContent="center"
                       alignItems="center"
                     >
-                      <Image height="30px" src={item.icon.logo} alt="icon" />
+                      <Image height="30px" src={item.category.logo} alt="icon" />
                     </Td>
                     <Td textAlign="center" color="var(--color-primer)">
                       {item.status_lifecycle}
@@ -187,7 +184,7 @@ function TableControlling(props) {
                         width="30px"
                         borderRadius="100px"
                         height="30px"
-                        background={item.icon.color}
+                        background={item.category.color}
                       />
                     </Td>
                     <Td textAlign="center" color="var(--color-primer)">

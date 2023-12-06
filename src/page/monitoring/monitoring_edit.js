@@ -23,13 +23,14 @@ import { routePageName, selectUrl } from '../../features/auth/authSlice';
 import { TabTitle } from '../../Utility/utility';
 import { updateSensorDetail, icons, categoryApi } from '../../Utility/api_link';
 import Loading from '../../component/loading/loading';
+import { selectToken } from '../../features/auth/authSlice';
 import './monitoring.css';
 import { MdArrowDropDown } from "react-icons/md";
 
 function Monitoring_Edit() {
   const base_url = useSelector(selectUrl);
   TabTitle('Edit Sensor - ITERA Hero');
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
   const { id } = useParams()
   const [sensor, setSensor] = useState({})
   const [iconsList, setIconsList] = useState([]);
@@ -127,7 +128,7 @@ function Monitoring_Edit() {
           <Formik
             initialValues={{
               Name: sensor.name,
-              Type: sensor.icon.name,
+              Type: sensor.category.name,
               Brand: sensor.brand,
               Calibration: sensor.calibration,
               Satuan: sensor.unit_measurement,
@@ -179,7 +180,7 @@ function Monitoring_Edit() {
                     <FormLabel>{item}</FormLabel>
                     {item === 'Type' ? (
                       <Select name={item} icon={<MdArrowDropDown />} onChange={handleChange} value={values[item]}>
-                        {iconsList.filter((icon) => icon.name.toLowerCase().includes('sensor')).map((sensor, index) => (
+                        {iconsList.filter((icon) => category.name.toLowerCase().includes('sensor')).map((sensor, index) => (
                           <option value={sensor.name} key={index}>{sensor.name}</option>
                         ))}
                       </Select>

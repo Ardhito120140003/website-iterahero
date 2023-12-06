@@ -28,6 +28,7 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { selectToken } from '../../features/auth/authSlice';
 import { selectUrl } from '../../features/auth/authSlice';
 import { BiTrash } from "react-icons/bi";
 //import { RiPencilFill } from 'react-icons/ri';
@@ -40,7 +41,7 @@ function CardFormPeracikan({ id_tandon }) {
 
   const [dataApi, setDataApi] = useState([]);
   const base_url = useSelector(selectUrl);
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
   const cancelRef = useRef();
   const [selectedFormulaId, setSelectedFormulaId] = useState(null);
   const [action, setAction] = useState(false);

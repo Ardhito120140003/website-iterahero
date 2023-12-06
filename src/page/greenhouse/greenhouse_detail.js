@@ -22,6 +22,7 @@ import Loading from '../../component/loading/loading';
 import { useParams } from "react-router";
 import CardAktuatorOperator from '../../component/card_aktuator/card_aktuator_operator';
 import CardSensorOperator from '../../component/card_sensor/card_sensor_operator';
+import { selectToken } from '../../features/auth/authSlice';
 
 
 function DetailGreenHouse() {
@@ -29,7 +30,7 @@ function DetailGreenHouse() {
   const { id } = useParams();
 
   const base_url = useSelector(selectUrl);
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

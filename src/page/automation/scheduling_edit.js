@@ -12,6 +12,7 @@ import {
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { selectToken } from '../../features/auth/authSlice';
 import { useParams } from 'react-router';
 import { routePageName, logout, selectUrl } from '../../features/auth/authSlice';
 import { scheduling } from '../../Utility/api_link';
@@ -62,7 +63,7 @@ function ScheduleEdit() {
     setIsLoading(true);
     updateAutomation(id_actuator, start, duration, repeat, interval);
   };
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
 
   const updateAutomation = (
     valueActuator,
@@ -115,8 +116,8 @@ function ScheduleEdit() {
         setDataSchedule(response.data.data);
       })
       .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
+        
+        
       });
   };
 

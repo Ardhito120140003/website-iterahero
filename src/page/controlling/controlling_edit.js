@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { routePageName, logout, selectUrl } from '../../features/auth/authSlice';
 import { TabTitle } from '../../Utility/utility';
+import { selectToken } from '../../features/auth/authSlice';
 import { updateActuatorDetail, icons } from '../../Utility/api_link';
 import Loading from '../../component/loading/loading';
 import { MdArrowDropDown } from 'react-icons/md';
@@ -29,7 +30,7 @@ function Controlling_Edit() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams()
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
   const [isloading, setIsLoading] = useState(true);
   const [aktuator, setAktuator] = useState({})
   const [iconsList, setIconsList] = useState([])
@@ -52,7 +53,7 @@ function Controlling_Edit() {
     .then(({ data }) => {
       console.log(data)
       setAktuator(data.data)
-      axios.get(base_url + "api/v1/icon", {
+      axios.get(base_url + "api/v1/category", {
         headers: {
           Authorization: `Bearer ${header}`
         }
@@ -116,7 +117,7 @@ function Controlling_Edit() {
           <Formik
             initialValues={{
               Name: aktuator.name,
-              Type: aktuator.icon.name,
+              Type: aktuator.category.name,
               Merek: aktuator.merek
             }}
             onSubmit={async (values, action) => {
@@ -161,7 +162,7 @@ function Controlling_Edit() {
                     {item === 'Type' ? (
                       <Flex flexDir={"row"} alignItems={"center"}>
                         <Select name={item} icon={<MdArrowDropDown />} onChange={handleChange} value={values[item]} flex={3}>
-                          {iconsList.filter((icon) => !icon.name.toLowerCase().includes('sensor')).map((actuator, index) => (
+                          {iconsList.filter((icon) => !category.name.toLowerCase().includes('sensor')).map((actuator, index) => (
                             <option value={actuator.name} key={index}>{actuator.name}</option>
                           ))}
                         </Select>

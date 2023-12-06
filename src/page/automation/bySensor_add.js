@@ -18,6 +18,7 @@ import {
   addAutomation,
   monitoringApi,
 } from '../../Utility/api_link';
+import { selectToken } from '../../features/auth/authSlice';
 
 import Loading from '../../component/loading/loading';
 import kondisiAutomatis from '../../Utility/dropdown_kondisi';
@@ -82,7 +83,7 @@ function AutomationAddBySensor(props) {
       constanta,
     );
   };
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
 
   const updateAutomation = (
     valueActuator,
@@ -136,9 +137,7 @@ function AutomationAddBySensor(props) {
         await getSensor(response.data.data.id_greenhouse);
       })
       .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
-        navigate('/login');
+        console.error(error)
       });
   };
 
@@ -155,9 +154,7 @@ function AutomationAddBySensor(props) {
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
-        navigate('/login');
+        console.error(error)
       });
   };
 

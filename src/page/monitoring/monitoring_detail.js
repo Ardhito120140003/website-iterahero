@@ -9,12 +9,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { routePageName, selectUrl } from '../../features/auth/authSlice';
 import { TabTitle } from '../../Utility/utility';
 import Loading from '../../component/loading/loading';
+import { selectToken } from '../../features/auth/authSlice';
 import axios from 'axios';
 
 function MonitoringDetail() {
   const base_url = useSelector(selectUrl);
   TabTitle('Monitoring - ITERA Hero');
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
   const { id } = useParams();
   const dispatch = useDispatch();
   const [sensor, setSensor] = useState({})

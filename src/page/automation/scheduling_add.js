@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/form-control';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
+import { selectToken } from '../../features/auth/authSlice';
 import axios from 'axios';
 import { routePageName } from '../../features/auth/authSlice';
 import {
@@ -62,7 +63,7 @@ function SchedulingAdd(props) {
     setIsLoading(true);
     updateAutomation(id_actuator, start, duration, repeat, interval);
   };
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
 
   const updateAutomation = (
     valueActuator,

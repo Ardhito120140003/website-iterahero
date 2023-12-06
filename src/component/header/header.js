@@ -88,8 +88,8 @@ function Header() {
             bgColor={"white"}
             // to="/login"
             onClick={() => {
-              localStorage.clear();
-              dispatch(logout());
+              localStorage.clear()
+              dispatch(logout())
             }}
           >
             <Icon

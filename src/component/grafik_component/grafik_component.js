@@ -15,6 +15,7 @@ import {
   Filler,
   Legend,
 } from 'chart.js';
+import { selectToken } from '../../features/auth/authSlice';
 import { selectUrl } from '../../features/auth/authSlice';
 import Loading from '../loading/loading';
 
@@ -37,7 +38,7 @@ function GrafikComponent(props) {
   const [dataSensor, setDataSensor] = useState([]);
 
   const getGrafik = async () => {
-    const header = localStorage.getItem('token');
+    const header = useSelector(selectToken)
     await axios
       .get(`${base_url}` + "api/v1/grafik", {
         params: {

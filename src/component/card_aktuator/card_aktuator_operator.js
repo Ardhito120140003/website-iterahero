@@ -9,7 +9,7 @@ import Loading from '../loading/loading';
 import './card_aktuator.css';
 import { selectUrl, selectUser } from '../../features/auth/authSlice';
 import { useSelector } from 'react-redux';
-
+import { selectToken } from '../../features/auth/authSlice';
 import ValueAktuatorOperator from '../value_aktuator/value_aktuator_operator';
 
 function CardAktuatorOperator(props) {
@@ -18,7 +18,7 @@ function CardAktuatorOperator(props) {
   const base_url = useSelector(selectUrl);
   const [dataTable, setDataTable] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
   const [cursor, setCursor] = useState(null)
   const [totalPage, setTotalPage] = useState(0)
   const [page, setPage] = useState(1)
@@ -85,10 +85,8 @@ function CardAktuatorOperator(props) {
           <Text>Tidak ada aktuator</Text>
         ) : (
           dataTable.map((item, index) => (
-            // <Link to={`/unit/dashboard/sensor/${item.id}`}>
             <WrapItem
               key={index}
-              // className="card-sensor"
               bg="#ffff"
               borderRadius="10px"
               border="1px solid #E2E8F0"
@@ -104,12 +102,11 @@ function CardAktuatorOperator(props) {
               >
                 <Flex flexDir="row" justifyContent={"space-around"} alignItems={"center"}>
                   <Image
-                    src={`${item.icon.logo}`}
-                    color={item.icon.color}
+                    src={`${item.category.logo}`}
+                    color={item.category.color}
                     w={"30px"}
                     objectFit={"contain"}
                   />
-                  {/* <Text color={`${item.color}`}>{item.name}</Text> */}
                   <Text color={'black'}>{item.name}</Text>
                 </Flex>
                 {item.id === '' ? (
@@ -135,7 +132,6 @@ function CardAktuatorOperator(props) {
 
               </Center>
             </WrapItem>
-            // </Link>
           ))
         )}
       </Wrap>

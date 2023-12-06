@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { routePageName, selectUrl } from '../../features/auth/authSlice';
 import { TabTitle } from '../../Utility/utility';
+import { selectToken } from '../../features/auth/authSlice';
 import TableMonitoring from '../../component/table/monitoring_table';
 import { greenhouseByUserId } from '../../Utility/api_link';
 import Loading from '../../component/loading/loading';
@@ -20,7 +21,7 @@ function Monitoring() {
   const navigate = useNavigate();
   const [data, setData] = useState('');
   const [dataApi, setDataApi] = useState(null);
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
   const dispatch = useDispatch();
 
   const [filterData, setFilterData] = useState([]);
@@ -45,8 +46,8 @@ function Monitoring() {
         }
       })
       .catch((error) => {
-        // localStorage.clear();
-        // dispatch(logout());
+        // 
+        // 
         // navigate('/login');
       });
   };

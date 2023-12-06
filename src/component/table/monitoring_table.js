@@ -30,6 +30,7 @@ import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 import './monitoring_table.css';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { selectToken } from '../../features/auth/authSlice';
 
 import { logout, selectUrl } from '../../features/auth/authSlice';
 import Loading from '../loading/loading';
@@ -46,7 +47,7 @@ function TableMonitoring(props) {
   const [isLoading, setIsLoading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = useState(1);
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
 
   const deleteItem = (e, id) => {
     e.preventDefault();
@@ -170,7 +171,7 @@ function TableMonitoring(props) {
                         justifyContent="center"
                         alignItems="center"
                       >
-                        <Image height="30px" src={item.icon.logo} alt="icon" />
+                        <Image height="30px" src={item.category.logo} alt="icon" />
                       </Td>
                       <Td textAlign="center" color="var(--color-primer)">
                         {item.unit_measurement}
@@ -187,7 +188,7 @@ function TableMonitoring(props) {
                           width="30px"
                           borderRadius="100px"
                           height="30px"
-                          background={item.icon.color}
+                          background={item.category.color}
                         />
                       </Td>
                       <Td textAlign="center" color="var(--color-primer)">

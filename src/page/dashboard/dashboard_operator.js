@@ -57,7 +57,7 @@ const DashboardOperator = () => {
       })
       .catch((err) => {
         if (err.response.data.message === "Token maximum age exceeded") {
-          dispatch(logout());
+          
           console.log("Token abis waktunya")
         }
         console.error(err.response.data.message);

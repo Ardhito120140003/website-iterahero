@@ -6,6 +6,7 @@ import { TabTitle } from '../../Utility/utility';
 import CardFormPenjadwalan from '../../component/card_form_penjadwalan/card_form_penjadwalan';
 import CardJadwal from '../../component/card_jadwal/card_jadwal';
 import { routePageName, selectUrl } from '../../features/auth/authSlice';
+import { selectToken } from '../../features/auth/authSlice';
 import Loading from '../../component/loading/loading';
 import './penjadwalan.css';
 
@@ -15,7 +16,7 @@ function Penjadwalan() {
   const base_url = useSelector(selectUrl);
   const [data, setData] = useState(null);
   const [action, setAction] = useState(false);
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
 
   useEffect(() => {
     axios.get(`${base_url}api/v1/penjadwalan`, {

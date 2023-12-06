@@ -30,6 +30,7 @@ import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 import './monitoring_table.css';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
+import { selectToken } from '../../features/auth/authSlice';
 
 import { logout, selectUrl } from '../../features/auth/authSlice';
 import Loading from '../loading/loading';
@@ -66,12 +67,12 @@ function TableNotification() {
   const [totalData, setTotalData] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [page, setPage] = useState(1);
+    const header = useSelector(selectToken)
+    const [page, setPage] = useState(1);
 
   const getNotification = async () => {
     setIsLoading(true);
 
-    const header = localStorage.getItem('token');
     await axios
       .get(`${base_url}${getNotificationByUserId}&&page=${page}`, {
         headers: {
@@ -84,15 +85,14 @@ function TableNotification() {
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
+        
+        
         navigate('/login');
       });
   };
   const getPagination = async () => {
     setIsLoading(true);
 
-    const header = localStorage.getItem('token');
     await axios
       .get(`${base_url}${getNotificationByUserId}&&size=1000`, {
         headers: {
@@ -104,8 +104,8 @@ function TableNotification() {
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
+        
+        
         navigate('/login');
       });
   };
@@ -158,7 +158,8 @@ function TableNotification() {
                   justifyContent="center"
                 >
                   <Th textAlign="center">No</Th>
-                  <Th textAlign="center">Detail Notifikasi</Th>
+                  <Th textAlign="center">Detail 
+                  ikasi</Th>
                   <Th textAlign="center">Tipe</Th>
                   <Th textAlign="center">Waktu</Th>
                   <Th textAlign="center">Lokasi</Th>

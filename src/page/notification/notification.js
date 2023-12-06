@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { routePageName, logout, selectUrl } from '../../features/auth/authSlice';
+import { selectToken } from '../../features/auth/authSlice';
 import CardNotification from '../../component/card_notification/card_notification';
 import { TabTitle } from '../../Utility/utility';
 import { getNotificationByUserId } from '../../Utility/api_link';
@@ -14,7 +15,7 @@ function Notification() {
   TabTitle('Notifikasi - ITERA Hero');
   const navigate = useNavigate();
   const [dataNotification, setDataNotification] = useState(null);
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
   const dispatch = useDispatch();
 
   const getNotificationData = async () => {
@@ -28,8 +29,8 @@ function Notification() {
         setDataNotification(response.data.data);
       })
       .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
+        
+        
         navigate('/login');
       });
   };

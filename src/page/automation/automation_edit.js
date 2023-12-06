@@ -24,6 +24,8 @@ import Loading from '../../component/loading/loading';
 import kondisiAutomatis from '../../Utility/dropdown_kondisi';
 import dropLifeCycle from '../../Utility/lifeCycleDropDown';
 import { TabTitle } from '../../Utility/utility';
+import { selectToken } from '../../features/auth/authSlice';
+
 
 function AutomationEdit() {
   const base_url = useSelector(selectUrl);
@@ -83,7 +85,7 @@ function AutomationEdit() {
       constanta,
     );
   };
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
 
   const updateAutomation = (
     valueActuator,
@@ -129,8 +131,8 @@ function AutomationEdit() {
         getActuator(response.data.data.actuator.id);
       })
       .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
+        
+        
       });
   };
 
@@ -147,8 +149,8 @@ function AutomationEdit() {
         getSensor(response.data.data.id_greenhouse);
       })
       .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
+        
+        
         navigate('/login');
       });
   };
@@ -166,8 +168,8 @@ function AutomationEdit() {
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
+        
+        
         navigate('/login');
       });
   };

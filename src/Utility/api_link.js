@@ -76,7 +76,7 @@ export const updateSensorDetail = 'api/v1/sensor/';
 export const getLogAktuator = 'api/v1/actuator-log?by_actuator_id=';
 export const getActuatorDetail = 'api/v1/actuator/';
 export const postLogAktuator = 'api/v1/actuator-log';
-export const icons = 'api/v1/icon';
+export const icons = 'api/v1/category';
 export const Status = 'api/v1/actuator-broker?id_actuator=';
 export const actuatorLogToday = 'api/v1/actuator-log-today/';
 export const getAutomationByActuator = 'api/v1/automation?id_actuator=';

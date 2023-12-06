@@ -26,6 +26,7 @@ import axios from 'axios';
 import { selectUrl } from '../../features/auth/authSlice';
 import { useSelector } from 'react-redux';
 import * as yup from 'yup';
+import { selectToken } from '../../features/auth/authSlice';
 import { Formik, Form } from 'formik';
 import Loading from "../../component/loading/loading";
 
@@ -34,7 +35,7 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [dataApi, setDataApi] = useState(tandon);
   const base_url = useSelector(selectUrl);
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
   const [sensorRealtime, setSensorRealtime] = useState([])
 
   const data = {
@@ -119,7 +120,7 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      axios.get(`${base_url}api/v1/logging`, {
+      axios.get(`${base_url}api/v1/logging/sensor`, {
         headers: {
           Authorization: `Bearer ${header}`
         }

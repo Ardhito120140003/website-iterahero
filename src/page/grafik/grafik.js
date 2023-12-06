@@ -14,6 +14,7 @@ import { idSensor } from '../../Utility/api_link';
 import infoGrafik from '../../Utility/grafikDropDown';
 import GrafikComponent from '../../component/grafik_component/grafik_component';
 import SummaryComponent from '../../component/summary_component/summary_component';
+import { selectToken } from '../../features/auth/authSlice';
 import { logout, selectUrl } from '../../features/auth/authSlice';
 
 function Grafik() {
@@ -25,7 +26,7 @@ function Grafik() {
   const { id } = useParams();
 
   const getSensor = async () => {
-    const header = localStorage.getItem('token');
+    const header = useSelector(selectToken)
     await axios
       .get(base_url + "api/v1/sensor", {
         params: {
@@ -40,8 +41,8 @@ function Grafik() {
         setDataApi(data.data);
       })
       .catch((error) => {
-        // localStorage.clear();
-        // dispatch(logout());
+        // 
+        // 
         // navigate('/login');
       })
       .finally(() => setIsLoading(false))

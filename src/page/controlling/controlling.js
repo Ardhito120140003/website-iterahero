@@ -9,6 +9,7 @@ import axios from 'axios';
 import { Formik } from 'formik';
 import { TabTitle } from '../../Utility/utility';
 import { logout, routePageName, selectUrl } from '../../features/auth/authSlice';
+import { selectToken } from '../../features/auth/authSlice';
 import { greenhouseByUserId } from '../../Utility/api_link';
 import Loading from '../../component/loading/loading';
 import TableControlling from '../../component/table/controlling_table';
@@ -18,7 +19,7 @@ function Controlling() {
   TabTitle('Controlling - ITERA Hero');
   const navigate = useNavigate();
   const [dataApi, setDataApi] = useState(null);
-  const header = localStorage.getItem('token');
+  const header = useSelector(selectToken)
 
   const [filterData, setFilterData] = useState([]);
   const [firstFilter, setFirstFilter] = useState("greenhouse");
@@ -45,8 +46,8 @@ function Controlling() {
         }
       })
       .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
+        
+        
         navigate('/login');
       });
   };

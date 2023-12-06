@@ -14,6 +14,7 @@ import {
   selectUser,
 } from "../../features/auth/authSlice";
 import CardDashboard from "../../component/card_dashboard/card_dashboard";
+import { selectToken } from '../../features/auth/authSlice';
 
 function DashboardOperator() {
   const id = parseInt(useParams().id);

@@ -10,6 +10,7 @@ import './card_aktuator.css';
 import ValueAktuator from '../value_aktuator/value_aktuator';
 import { logout, selectUrl } from '../../features/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { selectToken } from '../../features/auth/authSlice';
 
 function CardAktuator(props) {
   const base_url = useSelector(selectUrl);
@@ -22,7 +23,7 @@ function CardAktuator(props) {
   const getPagination = async () => {
     setIsLoading(true);
 
-    const header = localStorage.getItem('token');
+    const header = useSelector(selectToken)
     await axios
       .get(`${base_url}${paginationAktuator}${idApi}&&size=100`, {
         headers: {
@@ -34,8 +35,8 @@ function CardAktuator(props) {
         setIsLoading(false);
       })
       .catch((error) => {
-        localStorage.clear();
-        dispatch(logout());
+        
+        
         navigate('/login');
       });
   };
