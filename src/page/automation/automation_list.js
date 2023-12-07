@@ -45,7 +45,7 @@ function AutomationList(props) {
       })
       .then(({ data }) => {
         console.log(data)
-        // setDataApi(response.data.data);
+        setDataApi(data.data);
       })
       .catch((error) => {
         console.error(error)
@@ -102,34 +102,20 @@ function AutomationList(props) {
             </Flex>
           </Flex>
           <Wrap>
-            {dataApi.map((data, index) => (
+            {dataApi.filter(item => item.sensorId !== null).map((data, index) => (
               <CardAutomation
-                data={{
-                  actuator: data.actuator,
-                  sensor: data.sensor,
-                  condition: data.condition,
-                  status_lifecycle: data.status_lifecycle,
-                  constanta: data.constanta,
-                  id_automation: data.id_automation,
-                }}
+                data={data}
                 key={index}
               />
             ))}
             ;
           </Wrap>
           <Wrap>
-            {dataSchedule.map((data, index) => (
-              {/* <CardScheduling
-                data={{
-                  actuator: data.actuator,
-                  interval: data.interval,
-                  repeat: data.repeat,
-                  duration: data.duration,
-                  start: data.start,
-                  id_schedule: data.id_schedule,
-                }}
+            {dataApi.filter(item => item.sensorId === null).map((data, index) => (
+              <CardScheduling
+                data={data}
                 key={index}
-              /> */}
+              />
             ))}
             ;
           </Wrap>

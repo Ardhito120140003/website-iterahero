@@ -12,154 +12,57 @@ import {
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { routePageName, logout, selectUrl } from '../../features/auth/authSlice';
-import {
-  getActuatorDetail,
-  addAutomation,
-  monitoringApi,
-} from '../../Utility/api_link';
+import { routePageName, selectUrl } from '../../features/auth/authSlice'
 import { selectToken } from '../../features/auth/authSlice';
 
 import Loading from '../../component/loading/loading';
 import kondisiAutomatis from '../../Utility/dropdown_kondisi';
 import { TabTitle } from '../../Utility/utility';
+import { MdArrowDropDown } from 'react-icons/md';
 
 function AutomationAddBySensor(props) {
   const base_url = useSelector(selectUrl);
   const { id } = props.data;
   TabTitle('Edit Automation - ITERA Hero');
   const [isLoading, setIsLoading] = useState(true);
-  const [dataActuator, setDataActuator] = useState('');
-  const [dataSensor, setDataSensor] = useState(null);
-  const [dataKondisi, setDataKondisi] = useState(kondisiAutomatis);
-  const [selected, setSelected] = useState(1);
+  const [actuator, setActuator] = useState({});
+  const [dataSensor, setDataSensor] = useState([]);
   const dispatch = useDispatch();
-  const data = {
-    id_actuator: '',
-    id_sensor: '',
-    condition: '',
-    status_lifecycle: '',
-    constanta: '',
-  };
-
   const navigate = useNavigate();
 
   const schema = yup.object({
-    id_actuator: yup.number().required('data harus diisi'),
-    id_sensor: yup.number().required('data harus diisi'),
-    condition: yup.string().required('data harus diisi'),
-    status_lifecycle: yup.number().required('data harus diisi'),
-    constanta: yup.number().required('data harus diisi'),
+    Nama: yup.string().required('data harus diisi'),
+    "Sensor Rujukan": yup.number().required('data harus diisi'),
+    Kondisi: yup.string().required('data harus diisi'),
+    Aksi: yup.number().required('data harus diisi'),
+    "Nilai Batas": yup.number().min(0, 'Nilai harus lebih dari 0').required('data harus diisi'),
   });
 
-  const submit = (
-    id_actuator,
-    id_sensor,
-    condition,
-    status_lifecycle,
-    constanta,
-  ) => {
-    data.id_actuator = id_actuator;
-    data.id_sensor = id_sensor;
-    data.condition = condition;
-    data.status_lifecycle = status_lifecycle;
-    data.constanta = constanta;
-
-    if (
-      data.id_actuator == ''
-      || data.id_sensor == ''
-      || data.condition == ''
-      || data.status_lifecycle == ''
-      || data.constanta == ''
-    ) {
-      return alert('Masih ada yang belum di isi');
-    }
-    setIsLoading(true);
-    updateAutomation(
-      id_actuator,
-      id_sensor,
-      condition,
-      status_lifecycle,
-      constanta,
-    );
-  };
   const header = useSelector(selectToken)
 
-  const updateAutomation = (
-    valueActuator,
-    valueSensor,
-    valueCondition,
-    valueStatus_lifecycle,
-    valueConstanta,
-  ) => {
-    axios
-      .post(
-        addAutomation,
-        {
-          id_actuator: parseInt(valueActuator),
-          id_sensor: parseInt(valueSensor),
-          condition: valueCondition,
-          status_lifecycle: parseInt(valueStatus_lifecycle),
-          constanta: parseInt(valueConstanta),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${header}`,
-          },
-        },
-      )
-      .then((response) => {
-        setIsLoading(false);
-        navigate(`/unit/dashboard/aktuator/${id}`);
+  const getData = async () => {
+    axios.get(base_url + "api/v1/aktuator", {
+      params: {
+        id: parseInt(id)
+      },
+      headers: {
+        Authorization: `Bearer ${header}`
+      }
+    })
+      .then(({ data }) => {
+        console.log(data)
+        setActuator(data.data)
+        axios.get(base_url + "api/v1/greenhouse/" + data.data.greenhouseId + "/sensor", {
+          headers: { Authorization: `Bearer ${header}` }
+        })
+          .then(({ data }) => setDataSensor(data.data));
       })
-      .catch((error) => {
-        console.log(
-          valueActuator,
-          parseInt(valueSensor),
-          valueCondition,
-          valueStatus_lifecycle,
-          valueConstanta,
-        );
-        console.log(error);
-      });
-  };
-
-  const getActuator = async () => {
-    setIsLoading(true);
-    await axios
-      .get(`${base_url}${getActuatorDetail}${id}`, {
-        headers: {
-          Authorization: `Bearer ${header}`,
-        },
-      })
-      .then(async (response) => {
-        setDataActuator(response.data.data);
-        await getSensor(response.data.data.id_greenhouse);
-      })
-      .catch((error) => {
-        console.error(error)
-      });
-  };
-
-  const getSensor = async (id_greenhouse) => {
-    setIsLoading(true);
-    await axios
-      .get(`${base_url}${monitoringApi}${id_greenhouse}&&size=100`, {
-        headers: {
-          Authorization: `Bearer ${header}`,
-        },
-      })
-      .then((response) => {
-        setDataSensor(response.data.data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error(error)
-      });
-  };
+      .catch(({ response }) => console.error(response))
+      .finally(() => setIsLoading(false))
+  }
 
   useEffect(() => {
-    getActuator();
+    getData();
     dispatch(routePageName('add automation'));
   }, []);
 
@@ -168,16 +71,38 @@ function AutomationAddBySensor(props) {
       {isLoading ? (
         <Loading />
       ) : (
-        <Flex w="100%" h={['100%']} flexDir="column">
+        <Flex w="100%" h={['100%']} flexDir="column" overflow={"auto"}>
           <Formik
             initialValues={{
-              id_actuator: dataActuator.id,
-              id_sensor: '',
-              condition: '',
-              status_lifecycle: '',
-              constanta: '',
+              Nama: actuator.name,
+              "Sensor Rujukan": undefined,
+              Aksi: undefined,
+              Kondisi: undefined,
+              "Nilai Batas": 0,
             }}
             validationSchema={schema}
+            onSubmit={async (values, actions) => {
+              setIsLoading(true)
+              axios.post(base_url + "api/v1/automation", {
+                id_aktuator: actuator.id,
+                id_sensor: parseInt(values["Sensor Rujukan"]),
+                action: Boolean(values.Aksi),
+                condition: values.Kondisi,
+                constant: values["Nilai Batas"]
+              }, {
+                headers: {
+                  Authorization: `Bearer ${header}`
+                }
+              })
+                .then(({ data }) => {
+                  console.log(data)
+                  navigate("/unit/dashboard/aktuator/" + id)
+                }
+                )
+                .catch(({ response }) => console.error(response))
+                .finally(() => setIsLoading(false))
+              actions.setSubmitting(false)
+            }}
           >
             {({
               values,
@@ -187,131 +112,55 @@ function AutomationAddBySensor(props) {
               handleBlur,
               handleSubmit,
             }) => (
-              <Form>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.id_actuator && touched.id_actuator}
-                >
-                  <FormLabel color="var(--color-primer)">Actuator</FormLabel>
-                  <Select
-                    color="var(--color-primer)"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.id_actuator}
-                    name="id_actuator"
-                    id="id_actuator"
-                  >
-                    <option
-                      value={dataActuator.id}
-                      color="var(--color-primer)"
-                    >
-                      {dataActuator.name}
-                    </option>
-                  </Select>
-                  <FormErrorMessage>{errors.id_actuator}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.id_sensor && touched.id_sensor}
-                >
-                  <FormLabel color="var(--color-primer)">Sensor</FormLabel>
-                  <Select
-                    color="var(--color-primer)"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.id_sensor}
-                    name="id_sensor"
-                    id="id_sensor"
-                  >
-                    <option defaultValue="" selected>
-                      Pilih Sensor
-                    </option>
-                    {dataSensor.map((item, index) => (
-                      <option value={item.id} key={index}>{item.name}</option>
-                    ))}
-                  </Select>
-                  <FormErrorMessage>{errors.id_sensor}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.condition && touched.condition}
-                >
-                  <FormLabel color="var(--color-primer)">
-                    Kondisi Automatis
-                  </FormLabel>
-                  <Select
-                    color="var(--color-primer)"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.condition}
-                    name="condition"
-                    id="condition"
-                  >
-                    <option defaultValue="" selected>
-                      Pilih Kondisi
-                    </option>
-                    {dataKondisi.map((data, index) => (
-                      <option value={data.value} key={index}>{data.name}</option>
-                    ))}
-                  </Select>
-                  <FormErrorMessage>{errors.condition}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.lifecycle && touched.lifecycle}
-                >
-                  <FormLabel color="var(--color-primer)">
-                    Status Lifecycle
-                  </FormLabel>
-                  <Select
-                    color="var(--color-primer)"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.lifecycle}
-                    name="lifecycle"
-                    id="lifecycle"
-                  >
-                    <option defaultValue="" selected>
-                      Pilih Status Lifecycle
-                    </option>
-                    <option value={0}>Off</option>
-                    <option value={1}>On</option>
-                  </Select>
-                  <FormErrorMessage>{errors.lifecycle}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.constanta && touched.constanta}
-                >
-                  <FormLabel color="var(--color-primer)">Konstanta</FormLabel>
-                  <Input
-                    color="var(--color-primer)"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="number"
-                    name="constanta"
-                    defaultValue={values.constanta}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    placeholder="Constanta..."
-                  />
-                  <FormErrorMessage>{errors.constanta}</FormErrorMessage>
-                </FormControl>
+              <Form style={{
+                marginTop: 20,
+                color: "black",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start"
+              }}
+              onSubmit={handleSubmit}>
+                {Object.keys(values).map((item, index) => (
+                  <FormControl isInvalid={errors[item] && touched[item]} key={index} pb={2}>
+                    <FormLabel>{item}</FormLabel>
+                    {item !== 'Nama' && item !== "Nilai Batas" ? (
+                      <Select name={item} icon={<MdArrowDropDown />} placeholder={"Pilih " + item} onChange={handleChange} onBlur={handleBlur} value={values[item]}>
+                        {item === "Sensor Rujukan" ? (
+                          dataSensor.map((sensor, index) => (
+                            <option value={sensor.id} key={index}>{sensor.name}</option>
+                          ))) : item === "Aksi" ? (
+                            <>
+                              <option value={0}>On</option>
+                              <option value={1}>Off</option>
+                            </>
+                          ) : item === "Kondisi" ? (
+                            <>
+                              <option value={">"}>Lebih besar dari (&gt;)</option>
+                              <option value={"<"}>Lebih kecil dari (&lt;)</option>
+                            </>
+                          ) : null}
+                      </Select>
+                    ) : (
+                      <Input
+                        type={item === 'Nama' ? 'text' : 'number'}
+                        name={item}
+                        value={values[item]}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isReadOnly={item === 'Nama'}
+                      />
+                    )}
+                    {errors[item] && touched[item] && <FormErrorMessage>{errors[item]}</FormErrorMessage>}
+                  </FormControl>
+                ))}
                 <Button
-                  marginTop="44px"
-                  width="100%"
+                  marginTop={2}
+                  width="25%"
                   height="50px"
+                  alignSelf={"flex-end"}
                   borderRadius="10px"
                   backgroundColor="var(--color-primer)"
                   type="submit"
-                  onClick={() => submit(
-                    values.id_actuator,
-                    values.id_sensor,
-                    values.condition,
-                    values.lifecycle,
-                    values.constanta,
-                  )}
                 >
                   <Text
                     fontWeight="bold"

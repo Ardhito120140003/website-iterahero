@@ -28,8 +28,7 @@ import axios from 'axios';
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 import './monitoring_table.css';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { logout, selectUrl } from '../../features/auth/authSlice';
+import { logout, selectToken, selectUrl } from '../../features/auth/authSlice';
 import Loading from '../loading/loading';
 
 function TableControlling(props) {
@@ -64,7 +63,6 @@ function TableControlling(props) {
   const [isLoading, setIsLoading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [page, setPage] = useState(1);
-  const dispatch = useDispatch();
   const header = useSelector(selectToken)
 
   const getApiControlling = async () => {
@@ -83,9 +81,7 @@ function TableControlling(props) {
         setIsLoading(false);
       })
       .catch((error) => {
-        // 
-        // 
-        // navigate('/login');
+        console.error(error)
       });
   };
   const getPagination = async () => {

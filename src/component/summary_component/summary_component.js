@@ -12,7 +12,7 @@ function SummaryComponent(props) {
   const { id } = props.data;
   const { value } = props.data;
   const { name } = props.data;
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
     const header = useSelector(selectToken)
     const [dataSensor, setDataSensor] = useState([]);
 
@@ -41,7 +41,8 @@ function SummaryComponent(props) {
       .then(({ data }) => {
         console.log(data)
         setDataSensor(data.data);
-      });
+      })
+      .finally(() => setIsLoading(false))
   };
 
   const DownloadSummary = async () => {
@@ -58,7 +59,6 @@ function SummaryComponent(props) {
       })
       .then(({ data }) => {
         exportData(JSON.stringify(data), `Datasheet ${name.name}.json`, 'application/json');
-        setIsLoading(false);
       })
       .catch(({ response }) => {
         console.log(response)

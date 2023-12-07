@@ -44,25 +44,6 @@ function SchedulingAdd(props) {
     interval: yup.number().required('data harus diisi'),
   });
 
-  const submit = (id_actuator, start, duration, repeat, interval) => {
-    data.id_actuator = id_actuator;
-    data.start = start;
-    data.duration = duration;
-    data.repeat = repeat;
-    data.interval = interval;
-
-    if (
-      data.id_actuator == ''
-      || data.start == ''
-      || data.duration == ''
-      || data.repeat == ''
-      || data.interval == ''
-    ) {
-      return alert('Masih ada yang belum di isi');
-    }
-    setIsLoading(true);
-    updateAutomation(id_actuator, start, duration, repeat, interval);
-  };
   const header = useSelector(selectToken)
 
   const updateAutomation = (

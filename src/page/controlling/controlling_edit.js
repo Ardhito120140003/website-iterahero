@@ -157,7 +157,7 @@ function Controlling_Edit() {
                 }}
               >
                 {Object.keys(values).map((item, index) => (
-                  <FormControl isInvalid={errors[item]} key={index} pb={2}>
+                  <FormControl isInvalid={errors[item] && touched[item]} key={index} pb={2}>
                     <FormLabel>{item}</FormLabel>
                     {item === 'Type' ? (
                       <Flex flexDir={"row"} alignItems={"center"}>

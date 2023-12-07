@@ -77,6 +77,7 @@ function CardSensorOperator(props) {
         .catch(err => console.error(err))
     }
     const interval = setInterval(() => {
+      getPagination()
       fetchData()
     }, 1500)
 

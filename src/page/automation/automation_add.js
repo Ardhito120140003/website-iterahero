@@ -21,12 +21,12 @@ function AutomationAdd() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(routePageName('add Automation'));
+    dispatch(routePageName('Add Automation'));
   }, []);
 
   return (
-    <Wrap w={['100%']}>
-      <Flex bg="white" borderRadius="10px" w={['100%']}>
+    <Flex flexDir='column' w={['100%']}>
+      <Flex bg="white" borderRadius="10px" w={['100%']} mb={2}>
         <Link to="/unit/dashboard/2">
           <Text fontSize={{ base: '15px', md: '20px' }} fontWeight="bold">
             Dashboard
@@ -102,7 +102,7 @@ function AutomationAdd() {
           <SchedulingAdd data={{ id }} />
         )}
       </Wrap>
-    </Wrap>
+    </Flex>
   );
 }
 

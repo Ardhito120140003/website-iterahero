@@ -24,9 +24,9 @@ function Grafik() {
   const [dataApi, setDataApi] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
+  const header = useSelector(selectToken)
 
   const getSensor = async () => {
-    const header = useSelector(selectToken)
     await axios
       .get(base_url + "api/v1/sensor", {
         params: {
@@ -41,17 +41,15 @@ function Grafik() {
         setDataApi(data.data);
       })
       .catch((error) => {
-        // 
-        // 
-        // navigate('/login');
+        console.error(error)
       })
       .finally(() => setIsLoading(false))
   };
 
   useEffect(() => {
     getSensor();
-    // getSensorData()
   }, [id, data]);
+
   return (
     <>
       {isLoading ? (

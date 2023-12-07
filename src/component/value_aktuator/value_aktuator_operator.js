@@ -22,6 +22,7 @@ import { Link as ReactRouterLink } from 'react-router-dom';
 function ValueAktuatorOperator(props) {
   const base_url = useSelector(selectUrl);
   const idApi = props.data.id;
+  const route = props.data.route;
   const { life_cycle , automation, isAvailable } = props.data;
   const [isLoading, setIsLoading] = useState(true);
   const [playbackRate, setPlaybackRate] = useState(0.75);
@@ -107,7 +108,7 @@ function ValueAktuatorOperator(props) {
             </Stack>
           </FormControl>
           <br />
-          <ChakraLink as={ReactRouterLink} to={`/unit/dashboard/aktuator/${idApi}`} className="touchable">
+          { route === 'greenhouse' && <ChakraLink as={ReactRouterLink} to={`/unit/dashboard/aktuator/${idApi}`} className="touchable">
             <Flex
               w="100%"
               h="40px"
@@ -128,6 +129,7 @@ function ValueAktuatorOperator(props) {
               />
             </Flex>
           </ChakraLink>
+          }
         </>
       )}
     </>

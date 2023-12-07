@@ -168,7 +168,7 @@ function Controlling_Add() {
                 }}
               >
                 {Object.keys(values).map((item, index) => (
-                  <FormControl isInvalid={errors[item]} key={index} pb={2}>
+                  <FormControl isInvalid={errors[item] && touched[item]} key={index} pb={2}>
                     <FormLabel>{item}</FormLabel>
                     {item === 'Type' ? (
                       <Select name={item} icon={<MdArrowDropDown />} onChange={handleChange} value={values[item]} onBlur={handleBlur}>

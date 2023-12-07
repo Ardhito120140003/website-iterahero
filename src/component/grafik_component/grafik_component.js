@@ -35,15 +35,15 @@ function GrafikComponent(props) {
   const [isLoading, setIsLoading] = useState(true);
   const { id } = props.data;
   const { value } = props.data;
+  const header = useSelector(selectToken)
   const [dataSensor, setDataSensor] = useState([]);
 
   const getGrafik = async () => {
-    const header = useSelector(selectToken)
     await axios
       .get(`${base_url}` + "api/v1/grafik", {
         params: {
           id,
-          timespan: value
+          timespan:   value
         },
         headers: {
           Authorization: `Bearer ${header}`,

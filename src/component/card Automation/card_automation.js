@@ -21,24 +21,24 @@ import axios from 'axios';
 import { selectToken } from '../../features/auth/authSlice';
 import { RiDeleteBinFill, RiPencilFill } from 'react-icons/ri';
 import { deleteAutomation } from '../../Utility/api_link';
+import { useSelector } from 'react-redux';
 
-function CardAutomation(props) {
-  const item = props.data;
+function CardAutomation({ data }) {
+  const item = data;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const navigate = useNavigate();
   const header = useSelector(selectToken)
   const deleteItem = async () => {
     axios
-      .delete(`${deleteAutomation}${item.id_automation}`, {
+      .delete(`${base_url}api/v1/automation`, {
+        params: {
+          type: item.sensorId ? 'bySensor' : 'bySchedule'
+        },
         headers: {
           Authorization: `Bearer ${header}`,
         },
       })
       .then(() => window.location.reload());
   };
-
-  useEffect(() => {}, [item]);
-  console.log([item]);
 
   return (
     <>
@@ -78,7 +78,7 @@ function CardAutomation(props) {
             >
               <Flex direction="row">
                 <Text>Acutator :</Text>
-                <Text>{item.actuator.name}</Text>
+                <Text>{item.aktuator.name}</Text>
               </Flex>
               <Flex
                 direction="row"
@@ -102,7 +102,7 @@ function CardAutomation(props) {
                 justifyContent="start"
               >
                 <Text>Status Lifecycle :</Text>
-                {item.status_lifecycle == '1' ? (
+                {item.action ? (
                   <Text color="var(--color-secondary-variant)">on</Text>
                 ) : (
                   <Text color="var(--color-error)">off</Text>
@@ -114,7 +114,7 @@ function CardAutomation(props) {
                 justifyContent="start"
               >
                 <Text>constanta :</Text>
-                <Text>{item.constanta}</Text>
+                <Text>{item.constant}</Text>
               </Flex>
             </Flex>
           </Flex>
