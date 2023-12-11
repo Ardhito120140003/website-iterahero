@@ -12,7 +12,7 @@ import {
   Tabs, TabList, TabPanels, Tab, TabPanel, Icon, Image
 } from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
-import { selectUrl } from "../../features/auth/authSlice";
+import { routePageName, selectUrl } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Loading from "../../component/loading/loading";
@@ -22,8 +22,6 @@ import { Form, Formik } from "formik";
 import CardSensorOperator from "../../component/card_sensor/card_sensor_operator";
 import { MdOutlineAccessTime } from "react-icons/md";
 import CardAktuatorOperator from "../../component/card_aktuator/card_aktuator_operator";
-import { logout } from "../../features/auth/authSlice";
-
 const DashboardOperator = () => {
   TabTitle("Dashboard - ITERA Hero");
   const base_url = useSelector(selectUrl);
@@ -33,6 +31,7 @@ const DashboardOperator = () => {
   const [filterData, setFilterData] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch();
+  dispatch(routePageName("Dashboard"))
   const headers = localStorage.getItem("token");
 
   const getApiPenjadwalan = async () => {

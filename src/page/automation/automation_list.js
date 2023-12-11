@@ -29,12 +29,11 @@ function AutomationList(props) {
   const idApi = props.data.id;
   const header = useSelector(selectToken)
   const [dataApi, setDataApi] = useState([]);
-  const [dataSchedule, setDataSchedule] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [status, setStatus] = useState(0);
 
   const getAutomation = async () => {
-    await axios
+    axios
       .get(`${base_url}api/v1/automation`, {
         params: {
           id: idApi
@@ -44,17 +43,48 @@ function AutomationList(props) {
         },
       })
       .then(({ data }) => {
-        console.log(data)
         setDataApi(data.data);
+        axios.get(base_url + "api/v1/aktuator", {
+          params: {
+            id: idApi
+          },
+          headers: {
+            Authorization: `Bearer ${header}`
+          }
+        })
+        .then(({ data }) => {
+          setStatus(data.data.automation)
+        })
       })
       .catch((error) => {
         console.error(error)
-      });
+      })
+      .finally(() => setIsLoading(false))
   };
+
+  const handleSwitch = async () => {
+    axios.patch(base_url + "api/v1/automation", {}, {
+      params: {
+        id: parseInt(idApi)
+      },
+      headers: {
+        Authorization: `Bearer ${header}`
+      }
+    })
+    .then(({ data }) => console.log(data))
+    .catch(({ response }) => console.error(response))
+    .finally(() => setIsLoading(false))
+  }
 
   useEffect(() => {
     getAutomation()
-  }, [idApi, status]);
+
+    const interval = setInterval(() => {
+      getAutomation()
+    }, 3000)
+
+    return (() => clearInterval(interval))
+  }, [idApi]);
 
   return (
     <>
@@ -79,11 +109,10 @@ function AutomationList(props) {
             <Switch
               id="email-alerts"
               onChange={() => {
-                setIsLoading(true);
-                toogleSwitch();
+                handleSwitch();
               }}
               value={status}
-              isChecked={status == 1}
+              isChecked={status}
             />
           </FormControl>
           <Flex w="100%" flexDir="column">
@@ -102,7 +131,7 @@ function AutomationList(props) {
             </Flex>
           </Flex>
           <Wrap>
-            {dataApi.filter(item => item.sensorId !== null).map((data, index) => (
+            {dataApi.filter(item => item.sensorId).map((data, index) => (
               <CardAutomation
                 data={data}
                 key={index}
@@ -111,7 +140,7 @@ function AutomationList(props) {
             ;
           </Wrap>
           <Wrap>
-            {dataApi.filter(item => item.sensorId === null).map((data, index) => (
+            {dataApi.filter(item => !item.sensorId).map((data, index) => (
               <CardScheduling
                 data={data}
                 key={index}

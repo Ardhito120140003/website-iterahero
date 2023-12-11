@@ -82,7 +82,6 @@ function AutomationAddBySensor(props) {
             }}
             validationSchema={schema}
             onSubmit={async (values, actions) => {
-              setIsLoading(true)
               axios.post(base_url + "api/v1/automation", {
                 id_aktuator: actuator.id,
                 id_sensor: parseInt(values["Sensor Rujukan"]),

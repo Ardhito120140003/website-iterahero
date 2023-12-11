@@ -18,18 +18,24 @@ import {
 } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { selectToken } from '../../features/auth/authSlice';
+import { selectToken, selectUrl } from '../../features/auth/authSlice';
 import { RiDeleteBinFill, RiPencilFill } from 'react-icons/ri';
 import { scheduling } from '../../Utility/api_link';
+import { useSelector } from 'react-redux';
 
 function CardScheduling(props) {
   const item = props.data;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+  const base_url = useSelector(selectUrl)
   const header = useSelector(selectToken)
   const deleteItem = async () => {
     axios
-      .delete(`${scheduling}/${item.id_schedule}`, {
+      .delete(base_url + "api/v1/automation", {
+        params: {
+          id: item.id,
+          type: "bySchedule",
+        },
         headers: {
           Authorization: `Bearer ${header}`,
         },
@@ -37,13 +43,11 @@ function CardScheduling(props) {
       .then(() => window.location.reload());
   };
 
-  useEffect(() => {}, [item]);
-
   return (
     <>
       <Box
         w={['100%']}
-        classNameName="card-Automation"
+        className="card-Automation"
         bg="#ffff"
         borderRadius="10px"
         border="1px solid #E2E8F0"
@@ -63,7 +67,7 @@ function CardScheduling(props) {
           >
             <Wrap p="10px">
               <Image
-                classNameName="Image"
+                className="Image"
                 w={['100%']}
                 h={['100%']}
                 src="/schedule.png"
@@ -76,8 +80,8 @@ function CardScheduling(props) {
               justifyContent="start"
             >
               <Flex direction="row">
-                <Text>Acutator :</Text>
-                <Text>{item.actuator.name}</Text>
+                <Text>Actuator :</Text>
+                <Text>{item.aktuator.name}</Text>
               </Flex>
               <Flex
                 direction="row"
@@ -85,7 +89,7 @@ function CardScheduling(props) {
                 justifyContent="start"
               >
                 <Text>Waktu Mulai :</Text>
-                <Text>{item.start}</Text>
+                <Text>{item.startTime}</Text>
               </Flex>
               <Flex
                 direction="row"
@@ -101,7 +105,7 @@ function CardScheduling(props) {
                 justifyContent="start"
               >
                 <Text>perulangan :</Text>
-                <Text>{item.repeat}</Text>
+                <Text>{item.iterasi}</Text>
               </Flex>
               <Flex
                 direction="row"
@@ -127,7 +131,7 @@ function CardScheduling(props) {
                 <Link
                   className="touch"
                   to={{
-                    pathname: `/unit/dashboard/aktuator/schedule/edit/${item.id_schedule}`,
+                    pathname: `/unit/dashboard/aktuator/schedule/edit/${item.id}`,
                   }}
                 >
                   <Icon
@@ -146,11 +150,11 @@ function CardScheduling(props) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{`Hapus Automation ${item.id_schedule}`}</ModalHeader>
+          <ModalHeader>{`Hapus Automation`}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text>
-              {`Apakah kamu yakin menghapus Automation${item.id_schedule}`}
+              {`Apakah kamu yakin menghapus Automation ini?`}
             </Text>
           </ModalBody>
 

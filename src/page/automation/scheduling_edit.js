@@ -24,106 +24,39 @@ function ScheduleEdit() {
   const base_url = useSelector(selectUrl);
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  const [dataSchedule, setDataSchedule] = useState('');
+  const [dataSchedule, setDataSchedule] = useState({});
   const dispatch = useDispatch();
-  const data = {
-    id_actuator: '',
-    start: '',
-    duration: '',
-    repeat: '',
-    interval: '',
-  };
-
   const navigate = useNavigate();
-
-  const schema = yup.object({
-    id_actuator: yup.number().required('data harus diisi'),
-    start: yup.string().required('data harus diisi'),
-    duration: yup.number().required('data harus diisi'),
-    repeat: yup.number().required('data harus diisi'),
-    interval: yup.number().required('data harus diisi'),
-  });
-
-  const submit = (id_actuator, start, duration, repeat, interval) => {
-    data.id_actuator = id_actuator;
-    data.start = start;
-    data.duration = duration;
-    data.repeat = repeat;
-    data.interval = interval;
-
-    if (
-      data.id_actuator == ''
-      || data.start == ''
-      || data.duration == ''
-      || data.repeat == ''
-      || data.interval == ''
-    ) {
-      return alert('Masih ada yang belum di isi');
-    }
-    setIsLoading(true);
-    updateAutomation(id_actuator, start, duration, repeat, interval);
-  };
   const header = useSelector(selectToken)
 
-  const updateAutomation = (
-    valueActuator,
-    valueStart,
-    valueDuration,
-    valueRepeat,
-    valuInterval,
-  ) => {
-    console.log(
-      valueActuator,
-      valueStart,
-      valueDuration,
-      valueRepeat,
-      valuInterval,
-    );
-    axios
-      .put(
-        `${scheduling}/${id}`,
-        {
-          id_actuator: valueActuator,
-          start: valueStart,
-          duration: valueDuration,
-          repeat: valueRepeat,
-          interval: valuInterval,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${header}`,
-          },
-        },
-      )
-      .then((response) => {
-        setIsLoading(false);
-        navigate(`/unit/dashboard/aktuator/${valueActuator}`);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  const schema = yup.object({
+    "Jam Mulai": yup.string().required('data harus diisi'),
+    "Durasi Menyala": yup.number().required('data harus diisi'),
+    Perulangan: yup.number().min(1, 'Harus lebih dari nol').required('data harus diisi'),
+    "Interval waktu menyala (jam)": yup.number().required('data harus diisi'),
+  });
+
   const getSchedule = async () => {
-    setIsLoading(true);
-    await axios
-      .get(`${base_url}${scheduling}/${id}`, {
-        headers: {
-          Authorization: `Bearer ${header}`,
-        },
-      })
-      .then((response) => {
-        setIsLoading(false);
-        setDataSchedule(response.data.data);
-      })
-      .catch((error) => {
-        
-        
-      });
-  };
+    axios.get(base_url + "api/v1/automation", {
+      params: {
+        id_automation: id,
+        type: "bySchedule"
+      },
+      headers: {
+        Authorization: `Bearer ${header}`
+      }
+    })
+    .then(({ data }) => {
+      console.log(data)
+      setDataSchedule(data.data)
+    })
+    .catch(({ response }) => console.error(response))
+    .finally(() => setIsLoading(false))
+  }
 
   useEffect(() => {
     getSchedule();
-    dispatch(routePageName(`Edit Automation ${id}`));
+    dispatch(routePageName(`Edit Automation`));
   }, []);
 
   TabTitle('Tambah Automation - ITERA Hero');
@@ -147,7 +80,7 @@ function ScheduleEdit() {
               </Text>
             </Flex>
             <Flex>
-              <Link to={`/unit/dashboard/aktuator/${dataSchedule.id_actuator}`}>
+              <Link to={`/unit/dashboard/aktuator/${dataSchedule.aktuator.id}`}>
                 <Text fontSize="20px" fontWeight="bold" mr="10px">
                   Automation
                 </Text>
@@ -159,18 +92,38 @@ function ScheduleEdit() {
               </Text>
             </Flex>
             <Text fontSize="20px" fontWeight="bold" mb="10px">
-              {`Edit Automation ${id}`}
+              {`Edit Automation ${dataSchedule.aktuator.name}`}
             </Text>
           </Flex>
           <Formik
             initialValues={{
-              id_actuator: dataSchedule.id_actuator,
-              start: dataSchedule.start,
-              duration: dataSchedule.duration,
-              repeat: dataSchedule.repeat,
-              interval: dataSchedule.interval,
+              "Nama": dataSchedule.aktuator.name,
+              "Jam Mulai": dataSchedule.startTime,
+              "Durasi Menyala": dataSchedule.duration,
+              Perulangan: dataSchedule.iterasi,
+              "Interval waktu menyala (jam)": dataSchedule.interval,
             }}
             validationSchema={schema}
+            onSubmit={async (values, actions) => {
+              console.log(values)
+              axios.post(base_url + "api/v1/automation", {
+                id_aktuator: parseInt(id),
+                interval: values["Interval waktu menyala (jam)"],
+                duration: values["Durasi Menyala"],
+                iterasi: values.Perulangan,
+                startTime: values["Jam Mulai"]
+              }, {
+                headers: {
+                  Authorization: `Bearer ${header}`
+                }
+              })
+              .then(({ data }) => {
+                console.log(data)
+                navigate("/unit/dashboard/aktuator/" + id)
+              })
+              .catch(({ response }) => console.error(response))
+              actions.setSubmitting(false)
+            }}
           >
             {({
               values,
@@ -180,129 +133,36 @@ function ScheduleEdit() {
               handleBlur,
               handleSubmit,
             }) => (
-              <Form>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.id_actuator && touched.id_actuator}
-                  visibility="hidden"
-                  position="absolute"
-                >
-                  <FormLabel color="var(--color-primer)">Actuator</FormLabel>
-                  <Select
-                    color="var(--color-primer)"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values.id_actuator}
-                    name="id_actuator"
-                    id="id_actuator"
-                  >
-                    <option
-                      value={dataSchedule.id_actuator}
-                      color="var(--color-primer)"
-                    >
-                      {dataSchedule.id_actuator}
-                    </option>
-                  </Select>
-                  <FormErrorMessage>{errors.id_actuator}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.start && touched.start}
-                >
-                  <FormLabel color="var(--color-primer)">Jam Mulai</FormLabel>
-                  <Input
-                    width="100%"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="time"
-                    name="start"
-                    value={values.start}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    color="black"
-                  />
-                  <FormErrorMessage>{errors.start}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.duration && touched.duration}
-                >
-                  <FormLabel color="var(--color-primer)">
-                    Durasi Menyala (menit)
-                  </FormLabel>
-                  <Input
-                    width="100%"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="number"
-                    name="duration"
-                    value={values.duration}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    color="black"
-                    placeholder="Masukkan durasi"
-                  />
-                  <FormErrorMessage>{errors.duration}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.repeat && touched.repeat}
-                >
-                  <FormLabel color="var(--color-primer)">
-                    Perulangan (loop)
-                  </FormLabel>
-                  <Input
-                    width="100%"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="number"
-                    name="repeat"
-                    value={values.repeat}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    color="black"
-                    placeholder="Masukkan perulangan .."
-                  />
-                  <FormErrorMessage>{errors.repeat}</FormErrorMessage>
-                </FormControl>
-                <FormControl
-                  marginTop="20px"
-                  isInvalid={errors.interval && touched.interval}
-                >
-                  <FormLabel color="var(--color-primer)">
-                    Lama waktu antar alat menyala
-                  </FormLabel>
-                  <Input
-                    color="var(--color-primer)"
-                    maxWidth="100%"
-                    marginTop="0 auto"
-                    type="number"
-                    name="interval"
-                    defaultValue={values.interval}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    variant="outline"
-                    placeholder="Masukkan Interval"
-                  />
-                  <FormErrorMessage>{errors.interval}</FormErrorMessage>
-                </FormControl>
+              <Form style={{
+                marginTop: 20,
+                color: "black",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start"
+              }}
+              onSubmit={handleSubmit}>
+                {Object.keys(values).map((item, index) => (
+                  <FormControl isInvalid={errors[item] && touched[item]} key={index} pb={2}>
+                    <FormLabel>{item}</FormLabel>
+                      <Input
+                        type={item === 'Jam Mulai' ? 'time' : item === 'Nama' ? 'text' : 'number'}
+                        name={item}
+                        value={values[item]}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isReadOnly={item === 'Nama'}
+                      />
+                    {errors[item] && touched[item] && <FormErrorMessage>{errors[item]}</FormErrorMessage>}
+                  </FormControl>
+                ))}
                 <Button
-                  marginTop="44px"
-                  width="100%"
+                  marginTop={2}
+                  width="25%"
                   height="50px"
+                  alignSelf={"flex-end"}
                   borderRadius="10px"
                   backgroundColor="var(--color-primer)"
                   type="submit"
-                  onClick={() => submit(
-                    values.id_actuator,
-                    values.start,
-                    values.duration,
-                    values.repeat,
-                    values.interval,
-                  )}
                 >
                   <Text
                     fontWeight="bold"

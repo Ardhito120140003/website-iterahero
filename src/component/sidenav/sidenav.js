@@ -63,7 +63,7 @@ function SideNav() {
             icon={FiHome}
             title="Dashboard"
             active={
-              routeName === 'Dashboard'
+              ['Dashboard', 'Automation', 'Tambah Automation', 'Edit Automation'].includes(routeName)
             }
           />
         </Link>

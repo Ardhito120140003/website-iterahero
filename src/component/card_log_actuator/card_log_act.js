@@ -100,9 +100,11 @@ function CardLogActuator(props) {
                             alignItems="start"
                             justifyContent="center"
                           >
-                            <Text>
-                              Status
-                              {item.on_off_status == 1 ? (
+                            <Flex alignItems={"center"} justifyContent={"center"}>
+                              <Text>
+                                Status
+                              </Text>
+                              {item.status ? (
                                 <Text
                                   width="100%"
                                   fontWeight="bold"
@@ -119,18 +121,14 @@ function CardLogActuator(props) {
                                   Mati
                                 </Text>
                               )}
-                            </Text>
+                            </Flex>
                             <Text>
-                              {moment(eleminateZ(item.created_at))
-                                .startOf("seconds")
-                                .fromNow()}
+                              {moment(item.createdAt).startOf("seconds").fromNow()}
                             </Text>
                           </Flex>
                         </Flex>
                         <Text>
-                          {moment(eleminateZ(item.created_at)).format(
-                            "MMMM Do YYYY, h:mm:ss a"
-                          )}
+                          {moment(item.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
                         </Text>
                       </Flex>
                     </Box>

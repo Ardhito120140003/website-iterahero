@@ -14,169 +14,71 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { routePageName, logout, selectUrl } from '../../features/auth/authSlice';
-import {
-  getActuatorDetail,
-  monitoringApi,
-  apiGetAutomation,
-} from '../../Utility/api_link';
 
 import Loading from '../../component/loading/loading';
 import kondisiAutomatis from '../../Utility/dropdown_kondisi';
 import dropLifeCycle from '../../Utility/lifeCycleDropDown';
 import { TabTitle } from '../../Utility/utility';
 import { selectToken } from '../../features/auth/authSlice';
+import { MdArrowDropDown } from 'react-icons/md';
 
 
 function AutomationEdit() {
   const base_url = useSelector(selectUrl);
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  const [dataActuator, setDataActuator] = useState('');
-  const [dataAutomation, setDataAutomation] = useState('');
-  const [dataSensor, setDataSensor] = useState(null);
-  const [dataKondisi, setDataKondisi] = useState(kondisiAutomatis);
+  const [dataAutomation, setDataAutomation] = useState({});
+  const [dataSensor, setDataSensor] = useState([]);
   const dispatch = useDispatch();
-  const data = {
-    id_actuator: '',
-    id_sensor: '',
-    condition: '',
-    status_lifecycle: '',
-    constanta: '',
-  };
-
   const navigate = useNavigate();
 
   const schema = yup.object({
-    id_actuator: yup.number().required('data harus diisi'),
-    id_sensor: yup.number().required('data harus diisi'),
-    condition: yup.string().required('data harus diisi'),
-    status_lifecycle: yup.number().required('data harus diisi'),
-    constanta: yup.number().required('data harus diisi'),
+    Nama: yup.string().required('data harus diisi'),
+    "Sensor Rujukan": yup.number().required('data harus diisi'),
+    Kondisi: yup.string().required('data harus diisi'),
+    Aksi: yup.bool().required('data harus diisi'),
+    "Nilai Batas": yup.number().min(0, 'Nilai harus lebih dari 0').required('data harus diisi'),
   });
 
-  const submit = (
-    id_actuator,
-    id_sensor,
-    condition,
-    status_lifecycle,
-    constanta,
-  ) => {
-    data.id_actuator = id_actuator;
-    data.id_sensor = id_sensor;
-    data.condition = condition;
-    data.status_lifecycle = status_lifecycle;
-    data.constanta = constanta;
-
-    if (
-      data.id_actuator == ''
-      || data.id_sensor == ''
-      || data.condition == ''
-      || data.status_lifecycle == ''
-      || data.constanta == ''
-    ) {
-      return alert('Masih ada yang belum di isi');
-    }
-    setIsLoading(false);
-    updateAutomation(
-      id_actuator,
-      id_sensor,
-      condition,
-      status_lifecycle,
-      constanta,
-    );
-  };
   const header = useSelector(selectToken)
 
-  const updateAutomation = (
-    valueActuator,
-    valueSensor,
-    valueCondition,
-    valueStatus_lifecycle,
-    valueConstanta,
-  ) => {
-    axios
-      .put(
-        `${apiGetAutomation}${id}`,
-        {
-          id_actuator: valueActuator,
-          id_sensor: valueSensor,
-          condition: valueCondition,
-          status_lifecycle: valueStatus_lifecycle,
-          constanta: valueConstanta,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${header}`,
-          },
-        },
-      )
-      .then((response) => {
-        setIsLoading(false);
-        navigate(`/unit/dashboard/aktuator/${valueActuator}`);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+
   const getAutomation = async () => {
-    setIsLoading(true);
     await axios
-      .get(`${base_url}${apiGetAutomation}${id}`, {
+      .get(base_url + "api/v1/automation", {
+        params: {
+          id_automation: id,
+          type: "bySensor"
+        },
         headers: {
           Authorization: `Bearer ${header}`,
         },
       })
-      .then((response) => {
-        setDataAutomation(response.data.data);
-        getActuator(response.data.data.actuator.id);
+      .then(({ data }) => {
+        console.log(data)
+        setDataAutomation(data.data);
+        axios.get(base_url + "api/v1/greenhouse/" + data.data.aktuator.greenhouseId + "/sensor", {
+          headers: {
+            Authorization: `Bearer ${header}`
+          }
+        })
+          .then(({ data }) => {
+            console.log(data)
+            setDataSensor(data.data)
+          })
       })
       .catch((error) => {
-        
-        
-      });
+        console.error(error)
+      })
+      .finally(() => {
+        setIsLoading(false)
+        dispatch(routePageName(`Edit Automation`))
+      })
   };
 
-  const getActuator = async (data) => {
-    setIsLoading(true);
-    await axios
-      .get(`${base_url}${getActuatorDetail}${data}`, {
-        headers: {
-          Authorization: `Bearer ${header}`,
-        },
-      })
-      .then((response) => {
-        setDataActuator(response.data.data);
-        getSensor(response.data.data.id_greenhouse);
-      })
-      .catch((error) => {
-        
-        
-        navigate('/login');
-      });
-  };
-
-  const getSensor = async (id_greenhouse) => {
-    setIsLoading(true);
-    await axios
-      .get(`${base_url}${monitoringApi}${id_greenhouse}`, {
-        headers: {
-          Authorization: `Bearer ${header}`,
-        },
-      })
-      .then((response) => {
-        setDataSensor(response.data.data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        
-        
-        navigate('/login');
-      });
-  };
 
   useEffect(() => {
     getAutomation();
-    dispatch(routePageName(`Edit Automation ${id}`));
   }, []);
 
   TabTitle('Tambah Automation - ITERA Hero');
@@ -201,7 +103,7 @@ function AutomationEdit() {
             </Flex>
             <Flex>
               <Link
-                to={`/unit/dashboard/aktuator/${dataAutomation.actuator.id}`}
+                to={`/unit/dashboard/aktuator/${dataAutomation.aktuator.id}`}
               >
                 <Text fontSize="20px" fontWeight="bold" mr="10px">
                   Automation
@@ -214,19 +116,43 @@ function AutomationEdit() {
               </Text>
             </Flex>
             <Text fontSize="20px" fontWeight="bold" mb="10px">
-              {`Edit Automation ${id}`}
+              {`Edit Automation ${dataAutomation.aktuator.name}`}
             </Text>
           </Flex>
           <Flex w="100%" flexDir="column">
             <Formik
               initialValues={{
-                actuator: dataAutomation.actuator.id,
-                sensor: dataAutomation.sensor.id,
-                condition: dataAutomation.condition,
-                lifecycle: dataAutomation.status_lifecycle,
-                constanta: dataAutomation.constanta,
+                Nama: dataAutomation.aktuator.name,
+                "Sensor Rujukan": dataAutomation.sensor.id,
+                Aksi: dataAutomation.action,
+                Kondisi: dataAutomation.condition,
+                "Nilai Batas": dataAutomation.constant,
               }}
               validationSchema={schema}
+              onSubmit={async (values, actions) => {
+                console.log({ values })
+                axios.put(base_url + "api/v1/automation", {
+                  id_sensor: parseInt(values["Sensor Rujukan"]),
+                  action: Boolean(values.Aksi),
+                  condition: values.Kondisi,
+                  constant: values["Nilai Batas"]
+                }, {
+                  params: {
+                    id,
+                    type: 'bySensor'
+                  },
+                  headers: {
+                    Authorization: `Bearer ${header}`
+                  }
+                })
+                  .then(({ data }) => {
+                    console.log(data)
+                    navigate("/unit/dashboard/aktuator/" + dataAutomation.aktuator.id)
+                  })
+                  .catch(({ response }) => console.error(response))
+                  .finally(() => setIsLoading(false))
+                actions.setSubmitting(false)
+              }}
             >
               {({
                 values,
@@ -236,142 +162,55 @@ function AutomationEdit() {
                 handleBlur,
                 handleSubmit,
               }) => (
-                <Form>
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={errors.actuator && touched.actuator}
-                  >
-                    <FormLabel color="var(--color-primer)">
-                      Actuator
-                    </FormLabel>
-                    <Select
-                      color="var(--color-primer)"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.actuator}
-                      name="actuator"
-                      id="actuator"
-                    >
-                      <option
-                        value={dataAutomation.actuator.id}
-                        color="var(--color-primer)"
-                      >
-                        {dataAutomation.actuator.name}
-                      </option>
-                    </Select>
-                    <FormErrorMessage>{errors.actuator}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={errors.sensor && touched.sensor}
-                  >
-                    <FormLabel color="var(--color-primer)">Sensor</FormLabel>
-                    <Select
-                      color="var(--color-primer)"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.sensor}
-                      name="sensor"
-                      id="sensor"
-                    >
-                      <option value="">Pilih Sensor</option>
-                      {dataSensor.map((item, index) => (item.id === dataAutomation.sensor.id ? (
-                        <option value={item.id} key={index} selected>
-                          {item.name}
-                        </option>
+                <Form style={{
+                  marginTop: 20,
+                  color: "black",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start"
+                }}
+                  onSubmit={handleSubmit}>
+                  {Object.keys(values).map((item, index) => (
+                    <FormControl isInvalid={errors[item] && touched[item]} key={index} pb={2}>
+                      <FormLabel>{item}</FormLabel>
+                      {item !== 'Nama' && item !== "Nilai Batas" ? (
+                        <Select name={item} icon={<MdArrowDropDown />} placeholder={"Pilih " + item} onChange={handleChange} onBlur={handleBlur} value={values[item]}>
+                          {item === "Sensor Rujukan" ? (
+                            dataSensor.map((sensor, index) => (
+                              <option value={sensor.id} key={index}>{sensor.name}</option>
+                            ))) : item === "Aksi" ? (
+                              <>
+                                <option value={true}>On</option>
+                                <option value={false}>Off</option>
+                              </>
+                            ) : item === "Kondisi" ? (
+                              <>
+                                <option value={">"}>Lebih besar dari (&gt;)</option>
+                                <option value={"<"}>Lebih kecil dari (&lt;)</option>
+                              </>
+                            ) : null}
+                        </Select>
                       ) : (
-                        <option value={item.id} key={index}>{item.name}</option>
-                      )))}
-                    </Select>
-                    <FormErrorMessage>{errors.sensor}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={errors.condition && touched.condition}
-                  >
-                    <FormLabel color="var(--color-primer)">
-                      Kondisi Automatis
-                    </FormLabel>
-                    <Select
-                      color="var(--color-primer)"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.condition}
-                      name="condition"
-                      id="condition"
-                    >
-                      <option value="">Pilih Kondisi</option>
-                      {dataKondisi.map((data, index) => (data.value === dataAutomation.condition ? (
-                        <option value={data.value} key={index} selected>
-                          {data.name}
-                        </option>
-                      ) : (
-                        <option value={data.value} key={index}>{data.name}</option>
-                      )))}
-                    </Select>
-                    <FormErrorMessage>{errors.condition}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={errors.lifecycle && touched.lifecycle}
-                  >
-                    <FormLabel color="var(--color-primer)">
-                      Status Lifecycle
-                    </FormLabel>
-                    <Select
-                      color="var(--color-primer)"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.lifecycle}
-                      name="lifecycle"
-                      id="lifecycle"
-                    >
-                      <option value="">Pilih Status Lifecycle</option>
-                      {dropLifeCycle.map((data, index) => (data.value === dataAutomation.status_lifecycle ? (
-                        <option value={data.value} key={index} selected>
-                          {data.name}
-                        </option>
-                      ) : (
-                        <option value={data.value} key={index}>{data.name}</option>
-                      )))}
-                    </Select>
-                    <FormErrorMessage>{errors.lifecycle}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl
-                    marginTop="20px"
-                    isInvalid={errors.constanta && touched.constanta}
-                  >
-                    <FormLabel color="var(--color-primer)">
-                      Konstanta
-                    </FormLabel>
-                    <Input
-                      color="var(--color-primer)"
-                      maxWidth="100%"
-                      marginTop="0 auto"
-                      type="number"
-                      name="constanta"
-                      defaultValue={values.constanta}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      variant="outline"
-                      placeholder={dataAutomation.constanta}
-                    />
-                    <FormErrorMessage>{errors.constanta}</FormErrorMessage>
-                  </FormControl>
+                        <Input
+                          type={item === 'Nama' ? 'text' : 'number'}
+                          name={item}
+                          value={values[item]}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          isReadOnly={item === 'Nama'}
+                        />
+                      )}
+                      {errors[item] && touched[item] && <FormErrorMessage>{errors[item]}</FormErrorMessage>}
+                    </FormControl>
+                  ))}
                   <Button
-                    marginTop="44px"
-                    width="100%"
+                    marginTop={2}
+                    width="25%"
                     height="50px"
+                    alignSelf={"flex-end"}
                     borderRadius="10px"
                     backgroundColor="var(--color-primer)"
                     type="submit"
-                    onClick={() => submit(
-                      values.actuator,
-                      values.sensor,
-                      values.condition,
-                      values.lifecycle,
-                      values.constanta,
-                    )}
                   >
                     <Text
                       fontWeight="bold"
@@ -380,7 +219,7 @@ function AutomationEdit() {
                       color="var(--color-on-primary)"
                       colorScheme="var(--color-on-primary)"
                     >
-                      Update
+                      Perbarui
                     </Text>
                   </Button>
                 </Form>

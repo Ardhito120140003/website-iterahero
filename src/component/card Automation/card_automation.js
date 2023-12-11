@@ -18,20 +18,24 @@ import {
 } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { selectToken } from '../../features/auth/authSlice';
+import { selectToken, selectUrl } from '../../features/auth/authSlice';
 import { RiDeleteBinFill, RiPencilFill } from 'react-icons/ri';
 import { deleteAutomation } from '../../Utility/api_link';
 import { useSelector } from 'react-redux';
+
 
 function CardAutomation({ data }) {
   const item = data;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const header = useSelector(selectToken)
+  const base_url = useSelector(selectUrl)
   const deleteItem = async () => {
     axios
       .delete(`${base_url}api/v1/automation`, {
         params: {
-          type: item.sensorId ? 'bySensor' : 'bySchedule'
+          type: 'bySensor',
+          id: item.id,
+          id_sensor: item.sensorId
         },
         headers: {
           Authorization: `Bearer ${header}`,
@@ -44,7 +48,7 @@ function CardAutomation({ data }) {
     <>
       <Box
         w={['100%']}
-        classNameName="card-Automation"
+        className="card-Automation"
         bg="#ffff"
         borderRadius="10px"
         border="1px solid #E2E8F0"
@@ -64,7 +68,7 @@ function CardAutomation({ data }) {
           >
             <Wrap p="10px">
               <Image
-                classNameName="Image"
+                className="Image"
                 w={['100%']}
                 h={['100%']}
                 src="/automation.png"
@@ -77,7 +81,7 @@ function CardAutomation({ data }) {
               justifyContent="start"
             >
               <Flex direction="row">
-                <Text>Acutator :</Text>
+                <Text>Actuator :</Text>
                 <Text>{item.aktuator.name}</Text>
               </Flex>
               <Flex
@@ -132,7 +136,7 @@ function CardAutomation({ data }) {
                 <Link
                   className="touch"
                   to={{
-                    pathname: `/unit/dashboard/aktuator/automation/edit/${item.id_automation}`,
+                    pathname: `/unit/dashboard/aktuator/automation/edit/${item.id}`,
                   }}
                 >
                   <Icon
@@ -151,11 +155,11 @@ function CardAutomation({ data }) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{`Hapus Automation ${item.id_automation}`}</ModalHeader>
+          <ModalHeader>{`Hapus Automation`}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text>
-              {`Apakah kamu yakin menghapus Automation${item.id_automation}`}
+              {`Apakah anda yakin menghapus automation berdasarkan ${item.sensor.name} ini?`}
             </Text>
           </ModalBody>
 
