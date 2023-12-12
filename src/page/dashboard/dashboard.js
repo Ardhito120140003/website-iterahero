@@ -237,7 +237,7 @@ const DashboardOperator = () => {
                           justifyContent={"center"}
                           display={"flex"}
                         >
-                          <TabPanel>
+                          <TabPanel w={"100%"} alignItems={"center"}>
                             {values.filter2 ? (
                               <CardSensorOperator
                                 data={{ alat: values.filter1, id: values.filter2 }}
@@ -253,7 +253,7 @@ const DashboardOperator = () => {
                               </Flex>)}
                           </TabPanel>
                           {/* initially not mounted */}
-                          <TabPanel>
+                          <TabPanel w={"100%"} alignItems={"center"}>
                             {values.filter2 ? (
                               <CardAktuatorOperator
                                 data={{ alat: values.filter1, id: values.filter2 }}

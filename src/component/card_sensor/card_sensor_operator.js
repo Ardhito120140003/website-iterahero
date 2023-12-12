@@ -87,29 +87,33 @@ function CardSensorOperator(props) {
   return (
     <>
       {isLoading ? (
-        <Flex alignItems={"center"}>
           <Loading />
-        </Flex>
       ) : (
         <Wrap
-          justify={'start'}
-          mt="20px"
+          justify={dataTable.length % 2 === 0 && dataTable.length !== 0 ? 'center' : 'left'}
+          my="15px"
+          h={"100%"}
+          display={"flex"}
+          justifyContent={"center"}
         >
           {dataTable.length < 1 ? (
-            <Text>Tidak ada sensor</Text>
+            <Flex alignItems={"Center"} justifyContent={"center"} w={"100%"}>
+              <Text align={"center"}>Tidak ada sensor</Text>
+            </Flex>
           ) : (
             dataTable.map((item, index) => {
               const matchedData = sensorRealtime.find(obj => obj.channel === item.channel || obj.gpio === item.GPIO);
               const sensorValue = matchedData ? matchedData.nilai : null
               const updatedAt = matchedData ? matchedData.updatedAt : null
               return (
-                <ChakraLink as={ReactRouterLink} to={ role === 'admin' ? `/unit/dashboard/sensor/${item.id}` : ''}
+                <ChakraLink as={ReactRouterLink} to={role === 'admin' ? `/unit/dashboard/sensor/${item.id}` : ''}
                   bg="#ffff"
                   borderRadius="10px"
                   border="1px solid #E2E8F0"
                   paddingTop="20px"
                   paddingBottom="20px"
                   px={'15px'}
+                  cursor={role === 'admin' ? 'pointer' : 'default'}
                   key={index}
                   // w={'48.5%'}
                   w={{ base: '100%', sm: '100%', md: "100%", lg: "48%", xl: '48.5%', "2xl": "48.5%" }}>
@@ -135,7 +139,7 @@ function CardSensorOperator(props) {
                         {item.unit_measurement}
                       </Text>
                     </Flex>
-                    <Flex><Text fontSize={12} color={item.status ? 'var(--color-secondary-variant)' : 'var(--color-error)' }>Status: {item.status ? 'Online' : 'Offline'}</Text></Flex>
+                    <Flex><Text fontSize={12} color={item.status ? 'var(--color-secondary-variant)' : 'var(--color-error)'}>Status: {item.status ? 'Online' : 'Offline'}</Text></Flex>
                     <Flex flexDir="column" justifyContent="flex-start" mx={'40px'}>
                       <Text fontSize="var(--caption)">Diperbarui : </Text>
                       <Text fontSize="var(--caption)">
