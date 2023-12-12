@@ -30,7 +30,7 @@ function Monitoring() {
 
   const getDataApi = async () => {
     let url = `${base_url}api/v1/${firstFilter}`;
-    console.log('url : ',url);
+    // console.log('url : ',url);
 
     await axios
       .get(url, {
@@ -71,8 +71,8 @@ function Monitoring() {
 
   }, [firstFilter]);
 
-  console.log('filter 1 : ',firstFilter);
-  console.log('filter 2 : ',secondFilter);
+  // console.log('filter 1 : ',firstFilter);
+  // console.log('filter 2 : ',secondFilter);
 
   return (
     <>

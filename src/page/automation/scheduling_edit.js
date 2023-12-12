@@ -47,7 +47,7 @@ function ScheduleEdit() {
       }
     })
     .then(({ data }) => {
-      console.log(data)
+      // console.log(data)
       setDataSchedule(data.data)
     })
     .catch(({ response }) => console.error(response))
@@ -105,7 +105,7 @@ function ScheduleEdit() {
             }}
             validationSchema={schema}
             onSubmit={async (values, actions) => {
-              console.log(values)
+              // console.log(values)
               axios.post(base_url + "api/v1/automation", {
                 id_aktuator: parseInt(id),
                 interval: values["Interval waktu menyala (jam)"],
@@ -118,7 +118,7 @@ function ScheduleEdit() {
                 }
               })
               .then(({ data }) => {
-                console.log(data)
+                // console.log(data)
                 navigate("/unit/dashboard/aktuator/" + id)
               })
               .catch(({ response }) => console.error(response))

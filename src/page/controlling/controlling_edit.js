@@ -51,7 +51,7 @@ function Controlling_Edit() {
       }
     })
     .then(({ data }) => {
-      console.log(data)
+      // console.log(data)
       setAktuator(data.data)
       axios.get(base_url + "api/v1/category", {
         headers: {
@@ -135,7 +135,7 @@ function Controlling_Edit() {
                   }
                 })
                 .then(({ data }) => {
-                  console.log(data)
+                  // console.log(data)
                 })
                 .catch(({ response }) => console.error(response))
                 navigate("/unit/controlling")

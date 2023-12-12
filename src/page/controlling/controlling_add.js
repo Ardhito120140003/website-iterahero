@@ -53,7 +53,7 @@ function Controlling_Add() {
       }
     })
       .then(({ data }) => {
-        console.log(data)
+        // console.log(data)
         setTarget(data.data)
         axios
           .get(base_url + icons, {
@@ -144,7 +144,7 @@ function Controlling_Add() {
                   }
                 })
                   .then(({ data }) => {
-                    console.log(data)
+                    // console.log(data)
                     navigate('/unit/controlling')
                   })
                   .catch(({ response }) => console.error(response))

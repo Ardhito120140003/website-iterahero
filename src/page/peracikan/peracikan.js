@@ -73,7 +73,7 @@ function Peracikan() {
     return (() => clearInterval(interval))
   }, []);
 
-  console.log(dataTandon);
+  // console.log(data);
 
   return (
     <>

@@ -47,11 +47,11 @@ function TableControlling(props) {
         },
       })
       .then(({ data }) => {
-        console.log(data)
+        // console.log(data)
         window.location.reload();
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   };
   const navigate = useNavigate();
@@ -73,8 +73,8 @@ function TableControlling(props) {
         },
       })
       .then(({ data }) => {
-        console.log(data)
-        console.log(data)
+        // console.log(data)
+        // console.log(data)
         setDataTable(data.data);
         setTotalPage(data.totalPage);
         setTotalData(data.totalData)

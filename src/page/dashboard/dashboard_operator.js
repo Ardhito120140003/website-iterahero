@@ -52,15 +52,11 @@ const DashboardOperator = () => {
       })
       .then((response) => {
         const hari = new Date().getDay()
-        console.log("data penjadwalan :", response.data.data);
+        // console.log("data penjadwalan :", response.data.data);
         setDataApiPenjadwalan(response.data.data.filter((item, index) => item.hari.includes(hari)));
       })
-      .catch((err) => {
-        if (err.response.data.message === "Token maximum age exceeded") {
-          
-          console.log("Token abis waktunya")
-        }
-        console.error(err.response.data.message);
+      .catch(({ response }) => {
+        // console.log(response.message);
       });
   };
 
@@ -82,8 +78,8 @@ const DashboardOperator = () => {
         }
         setDataApiDashboard(data);
       })
-      .catch((error) => {
-        console.log("error", error);
+      .catch(({ response }) => {
+        // console.log("error", response.message);
       });
   };
 
@@ -97,7 +93,7 @@ const DashboardOperator = () => {
           },
         })
         .then((response) => {
-          console.log(response.data.data);
+          // console.log(response.data.data);
           setFilterData(response.data.data);
         })
         .catch((err) => {
@@ -218,7 +214,7 @@ const DashboardOperator = () => {
                           //     }
                           //   )
                           //   .then((response) => {
-                          //     console.log(response.data);
+                          //     // console.log(response.data);
                           //     setData(response.data.data);
                           //   })
                           //   .catch((err) => console.error(err));

@@ -37,7 +37,7 @@ function Login() {
       })
       .then((response) => {
         dispatch(login(response.data));
-        console.log(response.data);
+        // console.log(response.data);
         localStorage.setItem('token', response.data.accessToken);
         navigate('/unit/dashboard/1');
       })

@@ -12,7 +12,7 @@ import {
   Tabs, TabList, TabPanels, Tab, TabPanel, Icon, Image
 } from "@chakra-ui/react";
 import { TabTitle } from "../../Utility/utility";
-import { routePageName, selectUrl } from "../../features/auth/authSlice";
+import { logout, routePageName, selectUrl } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Loading from "../../component/loading/loading";
@@ -22,6 +22,8 @@ import { Form, Formik } from "formik";
 import CardSensorOperator from "../../component/card_sensor/card_sensor_operator";
 import { MdOutlineAccessTime } from "react-icons/md";
 import CardAktuatorOperator from "../../component/card_aktuator/card_aktuator_operator";
+import { useNavigate } from "react-router-dom";
+
 const DashboardOperator = () => {
   TabTitle("Dashboard - ITERA Hero");
   const base_url = useSelector(selectUrl);
@@ -31,6 +33,7 @@ const DashboardOperator = () => {
   const [filterData, setFilterData] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   dispatch(routePageName("Dashboard"))
   const headers = localStorage.getItem("token");
 
@@ -45,12 +48,12 @@ const DashboardOperator = () => {
         const hari = new Date().getDay()
         setDataApiPenjadwalan(response.data.data.filter((item, index) => item.hari.includes(hari)));
       })
-      .catch((err) => {
-        if (err.response.data.message === "Token maximum age exceeded") {
-          
-          console.log("Token abis waktunya")
+      .catch(({ response }) => {
+        if ( response.status === 401) {
+          dispatch(logout())
+          navigate("/login")
         }
-        console.error(err.response.data.message);
+        console.error(response);
       });
   };
 
@@ -75,8 +78,12 @@ const DashboardOperator = () => {
         }
         setDataApiDashboard(dashboard);
       })
-      .catch((error) => {
-        console.log("error", error);
+      .catch(({ response }) => {
+        // console.log("error", response);
+        if ( response.status === 401) {
+          dispatch(logout())
+          navigate("/login")
+        }
       });
   };
 
@@ -90,8 +97,12 @@ const DashboardOperator = () => {
       .then((response) => {
         setFilterData(response.data.data);
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(({ response }) => {
+        console.error(response)
+        if ( response.status === 401) {
+          dispatch(logout())
+          navigate("/login")
+        }
       });
   }, [firstFilter]);
 

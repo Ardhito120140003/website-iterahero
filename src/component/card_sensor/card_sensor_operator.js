@@ -46,10 +46,10 @@ function CardSensorOperator(props) {
         setCursor(data.cursor);
         setDataTable(data.data);
         setTotalPage(data.totalPage);
-        console.log(data)
+        // console.log(data)
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       })
       .finally(() => setIsLoading(false))
   };

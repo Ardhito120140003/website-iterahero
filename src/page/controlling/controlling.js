@@ -28,9 +28,9 @@ function Controlling() {
   const getDataApi = async () => {
 
     let url = `${base_url}api/v1/${firstFilter}`;
-    console.log('url : ', url);
-    console.log('filter 1 : ', firstFilter);
-    console.log('filter 2 : ', secondFilter);
+    // console.log('url : ', url);
+    // console.log('filter 1 : ', firstFilter);
+    // console.log('filter 2 : ', secondFilter);
 
     await axios
       .get(url, {

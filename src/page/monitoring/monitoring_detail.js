@@ -31,7 +31,7 @@ function MonitoringDetail() {
       }
     })
     .then(({ data }) => {
-      console.log(data)
+      // console.log(data)
       setSensor(data.data)
     })
     .catch(({ response }) => console.error(response))

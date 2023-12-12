@@ -86,7 +86,7 @@ function GreenhouseAdd() {
       .catch((error) => {
         checkLoading(false);
         alert(error.message)
-        console.log(error);
+        // console.log(error);
       });
   };
 

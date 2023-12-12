@@ -27,7 +27,7 @@ function CardTandon(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const base_url = useSelector(selectUrl);
   const { data } = props;
-  console.log(props)
+  // console.log(props)
 
   const header = localStorage.getItem("token");
 

@@ -62,10 +62,10 @@ function TableMonitoring(props) {
       })
       .then(({ data }) => {
         window.location.reload();
-        console.log(data);
+        // console.log(data);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   };
 
@@ -78,7 +78,7 @@ function TableMonitoring(props) {
       })
       .then(({ data }) => {
         setDataTable(data.data);
-        console.log('dataTable :', dataTable);
+        // console.log('dataTable :', dataTable);
         setTotalPage(data.totalPage);
         setTotalData(data.totalData);
       })
@@ -88,7 +88,7 @@ function TableMonitoring(props) {
   // };
 
   useEffect(() => {
-    // getPagination().then(() => console.log(dataTable));
+    // getPagination().then(() => // console.log(dataTable));
     setDataTable([])
     getApiMonitoring();
     

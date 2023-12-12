@@ -64,7 +64,7 @@ function Monitoring_Add() {
         setIconsList(data.data);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   };
 
@@ -78,7 +78,7 @@ function Monitoring_Add() {
       }
     })
       .then(({ data }) => {
-        console.log(data)
+        // console.log(data)
         setTarget(data.data)
       })
       .catch(({ response }) => console.error(response))
@@ -165,7 +165,7 @@ function Monitoring_Add() {
                   }
                 })
                   .then(({ data }) => {
-                    console.log(data)
+                    // console.log(data)
                     navigate('/unit/monitoring')
                   })
                   .catch(({ response }) => console.error(response))

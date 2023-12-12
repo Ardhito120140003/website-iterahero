@@ -25,7 +25,7 @@ function Penjadwalan() {
       },
     })
       .then((response) => {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setData(response.data.data);
       })
       .catch((err) => {
@@ -44,7 +44,7 @@ function Penjadwalan() {
       }
     })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
       })
       .catch((err) => {
         console.error(err);
@@ -61,7 +61,7 @@ function Penjadwalan() {
       }
     })
       .then(response => {
-        console.log(response);
+        // console.log(response);
       })
       .catch(err => {
         console.error(err)

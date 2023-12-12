@@ -55,7 +55,7 @@ function AutomationEdit() {
         },
       })
       .then(({ data }) => {
-        console.log(data)
+        // console.log(data)
         setDataAutomation(data.data);
         axios.get(base_url + "api/v1/greenhouse/" + data.data.aktuator.greenhouseId + "/sensor", {
           headers: {
@@ -63,7 +63,7 @@ function AutomationEdit() {
           }
         })
           .then(({ data }) => {
-            console.log(data)
+            // console.log(data)
             setDataSensor(data.data)
           })
       })
@@ -130,7 +130,7 @@ function AutomationEdit() {
               }}
               validationSchema={schema}
               onSubmit={async (values, actions) => {
-                console.log({ values })
+                // console.log({ values })
                 axios.put(base_url + "api/v1/automation", {
                   id_sensor: parseInt(values["Sensor Rujukan"]),
                   action: Boolean(values.Aksi),
@@ -146,7 +146,7 @@ function AutomationEdit() {
                   }
                 })
                   .then(({ data }) => {
-                    console.log(data)
+                    // console.log(data)
                     navigate("/unit/dashboard/aktuator/" + dataAutomation.aktuator.id)
                   })
                   .catch(({ response }) => console.error(response))

@@ -67,7 +67,7 @@ function SchedulingAdd(props) {
             }}
             validationSchema={schema}
             onSubmit={async (values, actions) => {
-              console.log(values)
+              // console.log(values)
               axios.post(base_url + "api/v1/automation", {
                 id_aktuator: parseInt(id),
                 interval: values["Interval waktu menyala (jam)"],
@@ -80,7 +80,7 @@ function SchedulingAdd(props) {
                 }
               })
               .then(({ data }) => {
-                console.log(data)
+                // console.log(data)
                 navigate("/unit/dashboard/aktuator/" + id)
               })
               .catch(({ response }) => console.error(response))

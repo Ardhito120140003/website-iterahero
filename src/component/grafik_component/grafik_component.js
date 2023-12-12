@@ -50,7 +50,7 @@ function GrafikComponent(props) {
         },
       })
       .then(({ data }) => {
-        console.log(data)
+        // console.log(data)
         setDataSensor(data.data);
       })
       .finally(() => setIsLoading(false))

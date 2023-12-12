@@ -57,7 +57,7 @@ function Monitoring_Edit() {
       }
     })
       .then(({ data }) => {
-        console.log(data)
+        // console.log(data)
         setSensor(data.data)
         axios
           .get(base_url + icons, {
@@ -70,7 +70,7 @@ function Monitoring_Edit() {
           })
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       })
       .finally(() => setIsLoading(false))
   };
@@ -154,7 +154,7 @@ function Monitoring_Edit() {
                   }
                 })
                 .then(({ data }) => {
-                  console.log(data)
+                  // console.log(data)
                 })
                 .catch(({ response }) => console.error(response))
                 

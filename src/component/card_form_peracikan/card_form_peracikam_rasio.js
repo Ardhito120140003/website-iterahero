@@ -54,14 +54,14 @@ function CardFormPeracikanRasio() {
   };
 
   const handleRacikSubmit = async () => {
-    console.log('pH Value:', phValue);
-    console.log('ppm Value:', ppmValue);
+    // console.log('pH Value:', phValue);
+    // console.log('ppm Value:', ppmValue);
   };
 
   const handleSaveSubmit = async () => {
-    console.log('Nama Formula:', newFormulaName);
-    console.log('pH Value:', phValue);
-    console.log('ppm Value:', ppmValue);
+    // console.log('Nama Formula:', newFormulaName);
+    // console.log('pH Value:', phValue);
+    // console.log('ppm Value:', ppmValue);
 
     const newformula = {
       nama: newFormulaName,
@@ -76,7 +76,7 @@ function CardFormPeracikanRasio() {
       },
     })
       .then((response) => {
-        console.log('Formula berhasil disimpan :', response.data);
+        // console.log('Formula berhasil disimpan :', response.data);
         setNewFormulaName('');
         setPpmValue('');
         setPhValue('');

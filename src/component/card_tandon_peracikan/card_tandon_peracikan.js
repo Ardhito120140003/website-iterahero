@@ -93,7 +93,7 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
     ppm,
     id,
   ) => {
-    console.log('data update : ', rasioA, rasioB, rasioAir, ppm, id)
+    // console.log('data update : ', rasioA, rasioB, rasioAir, ppm, id)
     axios.patch(base_url + "api/v1/tandonUtama", {
       rasioA: parseFloat(rasioA),
       rasioB: parseFloat(rasioB),
@@ -110,7 +110,7 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
       },
     })
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         window.location.reload()
       })
       .catch(err => {

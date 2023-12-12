@@ -54,7 +54,7 @@ function CardFormPeracikan({ id_tandon }) {
     })
       .then((response) => {
         setDataApi(response.data.data);
-        console.log('data resep :',dataApi)
+        // console.log('data resep :',dataApi)
       })
       .catch((error) => {
         console.error('Error fetching formula data:', error);
@@ -62,7 +62,7 @@ function CardFormPeracikan({ id_tandon }) {
   }, [onOpenSaveModal,action]);
 
   const handleRacikSubmit = async (id) => {
-    console.log('ID Form Values:', id);
+    // console.log('ID Form Values:', id);
 
     axios.post(base_url + 'api/v1/peracikan', {
       resep: id,
@@ -73,7 +73,7 @@ function CardFormPeracikan({ id_tandon }) {
       }
     })
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch(err => {
         console.error(err);
@@ -88,7 +88,7 @@ function CardFormPeracikan({ id_tandon }) {
     volume,
     id,
   ) => {
-    console.log(id)
+    // console.log(id)
     axios.patch(`${base_url}api/v1/resep`, {
       nama: nama,
       ppm: parseFloat(ppm),
@@ -103,7 +103,7 @@ function CardFormPeracikan({ id_tandon }) {
       }
     })
       .then(response => {
-        console.log(response);
+        // console.log(response);
       })
       .catch(err => {
         console.error(err)
@@ -128,17 +128,17 @@ function CardFormPeracikan({ id_tandon }) {
       },
     })
       .then((response) => {
-        console.log('Formula berhasil disimpan :', response.data);
+        // console.log('Formula berhasil disimpan :', response.data);
       })
       .catch((error) => {
         console.error('Error menyimpan formula :', error);
       });
 
-      console.log('simpan',nama,ph,ppm,volume);
+      // console.log('simpan',nama,ph,ppm,volume);
   };
 
   const handleDelete = async (id) => {
-    console.log('Formula id:', id);
+    // console.log('Formula id:', id);
     axios.delete(`${base_url}api/v1/resep`, {
       headers: {
         Authorization: `Bearer ${header}`,
@@ -148,7 +148,7 @@ function CardFormPeracikan({ id_tandon }) {
       }
     })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
       })
       .catch((err) => {
         console.error(err);
@@ -185,7 +185,7 @@ function CardFormPeracikan({ id_tandon }) {
       }}
 
       onSubmit={(values, actions) => {
-        console.log('values yang disubmit :',values);
+        // console.log('values yang disubmit :',values);
        
            if (values.formula === 'Tambah Formula') {
               onOpenSaveModal();
@@ -334,7 +334,7 @@ function CardFormPeracikan({ id_tandon }) {
                     h="20px"
                     alignSelf="center"
                     onClick={() => {
-                      console.log(values.id);
+                      // console.log(values.id);
                       setSelectedFormulaId(values.id);
                       onOpenDeleteModal();
                     }}

@@ -49,12 +49,7 @@ function ValueAktuatorOperator(props) {
               // className="Image"
               w="70px"
               // h="auto"
-              src={
-                automation == 0
-                  ? status == 0
-                    ? '/Off.png'
-                    : '/On.png'
-                  : '/automation.png'
+              src={ automation ? '/On.png' : '/automation.png'
               }
               alt="image"
               // boxSize="100px"

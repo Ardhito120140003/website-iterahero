@@ -29,7 +29,7 @@ function CardSensor(props) {
       })
       .then((response) => {
         setDataTable(response.data.data);
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setIsLoading(false);
       })
       .catch((error) => {

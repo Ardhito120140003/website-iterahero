@@ -34,7 +34,7 @@ function Notification() {
         navigate('/login');
       });
   };
-  console.log(dataNotification);
+  // console.log(dataNotification);
 
   useEffect(() => {
     dispatch(routePageName('History Notification'));

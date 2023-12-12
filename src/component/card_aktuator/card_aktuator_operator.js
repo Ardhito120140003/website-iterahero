@@ -41,7 +41,7 @@ function CardAktuatorOperator(props) {
         setDataTable(response.data.data);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       })
       .finally(() => setIsLoading(false));
   };
@@ -66,7 +66,7 @@ function CardAktuatorOperator(props) {
       }
     })
       .then(response => {
-        console.log(response.data.message)
+        // console.log(response.data.message)
       })
       .catch(err => {
         console.error(err);
@@ -121,6 +121,7 @@ function CardAktuatorOperator(props) {
                       max: item.range_max,
                       min: item.range_min,
                       isAvailable: item.status,
+                      automation: item.automation,
                       route
                     }}
                   />

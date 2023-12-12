@@ -37,7 +37,7 @@ function Grafik() {
         },
       })
       .then(({ data }) => {
-        console.log(data);
+        // console.log(data);
         setDataApi(data.data);
       })
       .catch((error) => {

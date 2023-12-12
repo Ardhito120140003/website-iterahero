@@ -37,7 +37,7 @@ function Automation() {
       })
       .then(({ data }) => {
         setData(data.data)
-        console.log(data);
+        // console.log(data);
       })
       .catch(({ response }) => {
         console.error(response)

@@ -66,7 +66,7 @@ function CardFormPenjadwalan({ updateAction }) {
       })
     .then((response) => {
       setDataApiGreenhouse(response.data.data);
-      console.log('data api greenhouse : ', dataApiGreenhouse);
+      // console.log('data api greenhouse : ', dataApiGreenhouse);
     })
     .catch((error) => {
       console.error('Error fetching greenhouse data:', error);
@@ -85,7 +85,7 @@ function CardFormPenjadwalan({ updateAction }) {
       })
       .then((response) => {
         setDataApi(response.data.data);
-        console.log('datApi : ', dataApi);
+        // console.log('datApi : ', dataApi);
       })
       .catch((error) => {
         console.error('Error fetching resep data:', error);
@@ -120,7 +120,7 @@ function CardFormPenjadwalan({ updateAction }) {
       onSubmit={(values, actions) => {
         setButtonLoading(true)
         const payload = values;
-        console.log(payload);
+        // console.log(payload);
         axios.post(base_url + "api/v1/penjadwalan", {
           resep: parseInt(payload.resep),
           id_tandon: 1,
@@ -134,7 +134,7 @@ function CardFormPenjadwalan({ updateAction }) {
             Authorization: `Bearer ${header}`,
           },
         }).then((response) => {
-          console.log(response.data)
+          // console.log(response.data)
         })
           .catch((err) => console.error(err))
           .finally(() => {

@@ -50,7 +50,7 @@ function AutomationAddBySensor(props) {
       }
     })
       .then(({ data }) => {
-        console.log(data)
+        // console.log(data)
         setActuator(data.data)
         axios.get(base_url + "api/v1/greenhouse/" + data.data.greenhouseId + "/sensor", {
           headers: { Authorization: `Bearer ${header}` }
@@ -94,7 +94,7 @@ function AutomationAddBySensor(props) {
                 }
               })
                 .then(({ data }) => {
-                  console.log(data)
+                  // console.log(data)
                   navigate("/unit/dashboard/aktuator/" + id)
                 }
                 )

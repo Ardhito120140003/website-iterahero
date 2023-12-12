@@ -43,10 +43,10 @@ function TandonEdit() {
         })
       .then((response) => {
         setDataApi(response.data.data);
-        console.log(response.data.data);
+        // console.log(response.data.data);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       })
       .finally(() => setLoading(false))
   };
@@ -69,7 +69,7 @@ function TandonEdit() {
   };
 
   const updateTandon = async (valueName, valueImage, valueLocation) => {
-    console.log(valueName,valueImage,valueLocation,slug)
+    // console.log(valueName,valueImage,valueLocation,slug)
     await axios
       .patch(
         base_url + "api/v1/tandonUtama",
@@ -89,11 +89,11 @@ function TandonEdit() {
         }
       )
       .then((response) => {
-        console.log(response)
+        // console.log(response)
         navigate(`/unit/tandon`);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       })
       .finally(() => setLoading(false))
   };

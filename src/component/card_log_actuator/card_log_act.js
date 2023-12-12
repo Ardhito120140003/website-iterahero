@@ -39,12 +39,12 @@ function CardLogActuator(props) {
         },
       })
       .then(({ data }) => {
-        console.log(data)
+        // console.log(data)
         setDataTable(data.data)
         setLog(data.log)
       })
       .catch((error) => {
-        console.log(error)
+        // console.log(error)
       })
       .finally(() => setIsLoading(false))
   };

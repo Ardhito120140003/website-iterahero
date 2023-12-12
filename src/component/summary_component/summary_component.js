@@ -39,7 +39,7 @@ function SummaryComponent(props) {
         },
       })
       .then(({ data }) => {
-        console.log(data)
+        // console.log(data)
         setDataSensor(data.data);
       })
       .finally(() => setIsLoading(false))
@@ -61,7 +61,7 @@ function SummaryComponent(props) {
         exportData(JSON.stringify(data), `Datasheet ${name.name}.json`, 'application/json');
       })
       .catch(({ response }) => {
-        console.log(response)
+        // console.log(response)
         alert(response.data.message ?? 'Data Gagal di Download Karena masih kosong');
       })
       .finally(() => setIsLoading(false))

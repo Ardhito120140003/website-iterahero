@@ -30,7 +30,7 @@ function ControllingDetail() {
       }
     })
     .then(({ data }) => {
-      console.log(data)
+      // console.log(data)
       setAktuator(data.data)
     })
     .catch(({ response }) => console.error(response))
