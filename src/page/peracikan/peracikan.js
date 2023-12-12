@@ -5,16 +5,20 @@ import {
   // GridItem,
   Select,
   Text,
+  Button,
+  Center,
+  FormControl,
 } from "@chakra-ui/react";
+import { Formik, Field, Form } from 'formik';
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { TabTitle } from "../../Utility/utility";
 import CardFormPeracikan from "../../component/card_form_peracikan/card_form_peracikan";
 import CardStatusPeracikan from "../../component/card_tandon_peracikan/card_tandon_peracikan";
-import { Formik, Form } from "formik";
 import { selectUrl, routePageName } from "../../features/auth/authSlice";
 import "./peracikan.css";
 import Loading from "../../component/loading/loading";
+import CardAktuatorOperator from "../../component/card_aktuator/card_aktuator_peracikan";
 
 function Peracikan() {
   TabTitle("Peracikan - ITERA Hero");
@@ -35,10 +39,8 @@ function Peracikan() {
       });
       if (response.data.data.length > 0) {
         setDataTandon(response.data.data);
-        if (!selected) {
-          getInfo(response.data.data[0].id)
-          setSelected(response.data.data[0].id)
-        }
+        getInfo(response.data.data[0].id)
+        setSelected(response.data.data[0].id)
       }
     } catch (err) {
       console.error(err);
@@ -58,7 +60,7 @@ function Peracikan() {
         }
       );
       setData(response.data.data);
-      setSelected(target)
+      //setSelected(target)
     } catch (err) {
       console.error(err);
     }
@@ -70,7 +72,6 @@ function Peracikan() {
 
     const interval = setInterval(() => {
       getTandon()
-      console.log(selected)
     }, 1500)
 
     return (() => clearInterval(interval))
@@ -123,39 +124,67 @@ function Peracikan() {
           </Formik>
 
           <Flex gap={5} mt={"20px"} w={'100%'}
-          direction={{ base:'column-reverse', sm: 'column-reverse', md: 'row', lg: 'row', xl: 'row', "2xl": 'row' }}
+            direction={{ base: 'column-reverse', sm: 'column-reverse', md: 'row', lg: 'row', xl: 'row', "2xl": 'row' }}
           >
-     
-              {/* <ValueTandon tandonBahan={data.tandonBahan} /> */}
-              <Flex
-                flexDirection="column"
-                border="1px solid #E2E8F0"
-                borderRadius={"10px"}
-                p={"30px"}
-                h={"100%"}
-                // w={'50%'}
-                w={{ base:'100%', sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%" }}
 
-              >
-                <Text mb={"20px"}>Form Peracikan</Text>
-                <CardFormPeracikan id_tandon={selected} />
-              </Flex>
+            {/* <ValueTandon tandonBahan={data.tandonBahan} /> */}
+            <Flex
+              flexDirection="column"
+              border="1px solid #E2E8F0"
+              borderRadius={"10px"}
+              p={"30px"}
+              h={"100%"}
+              // w={'50%'}
+              w={{ base: '100%', sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%" }}
+
+            >
+              <Text mb={"20px"}>Form Peracikan</Text>
+              <CardFormPeracikan id_tandon={selected} />
+            </Flex>
 
 
-              <Flex
+            <Flex
               //  w={'50%'}
-              w={{ base:'100%', sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%" }}
-               >
+              w={{ base: '100%', sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%" }}
+              direction={'column'}
+              gap={'20px'}
+            >
+
+              <Flex
+                h={'100%'}
+                w={'100%'}
+              >
                 {data && (
                   <CardStatusPeracikan
                     id={selected}
-                    tandon={dataTandon.find((tandon) => tandon.id === selected )}
+                    tandon={dataTandon.find((tandon) => tandon.id === selected)}
                     sensor={data}
                   />
                 )}
               </Flex>
-        
+
+              <Flex
+                h={'100%'}
+                direction={'column'}
+                border="1px solid #E2E8F0"
+                borderRadius={"10px"}
+                px={"30px"}
+              >
+                <Text mt={"20px"}>
+                  Distribusi Manual
+                </Text>
+                <Flex
+                  h={'180px'}
+                  mb={'20px'}
+                >
+                  <CardAktuatorOperator data={{ alat: 'greenhouse', id: '1' }} />
+                </Flex>
+
+              </Flex>
+
             </Flex>
+
+          </Flex>
         </Flex>
 
 
@@ -163,4 +192,5 @@ function Peracikan() {
     </>
   );
 }
+
 export default Peracikan;

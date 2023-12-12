@@ -137,109 +137,146 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
     }, 1500)
 
     return (() => clearInterval(interval))
-  }, [id])
+  }, [])
 
   return (
     <>
       <Flex
+        p={"30px"}
+        border="1px solid #E2E8F0"
         borderRadius="10px"
         width="100%"
-        border="1px solid #E2E8F0"
         height="100%"
         flexDirection="column"
-        alignItems="center"
-        position="sticky"
-        p={"30px"}
-        justifyContent={"space-evenly"}
+        // alignItems="center"
+        // position="sticky"
+        // justifyContent={"space-evenly"}
+        // pt={"60px"}
+        //bgColor={'red'}
       >
-        <Flex justifyContent="center">
+        <Flex justifyContent="center" 
+        //mt={"30px"}
+        >
           <Text>Tandon Peracikan</Text>
         </Flex>
 
-        <Flex direction={"column"}>
-          <Flex justifyContent="center" marginY="30px">
-            {dataApi.status === "Kosong" || dataApi.status === "Ada Isinya" ? (
-              <Icon as={GiWaterTower} w="230px" h="130px" color="#14453E" />
-            ) : (
-              <CircularProgress
-                value={30}
-                size="100px"
-                isIndeterminate
-                color="green.300"
-              />
-            )}
+        <Flex gap={'10px'} w={'100%'}>
+
+          <Flex
+            direction={"column"}
+            border="1px solid #E2E8F0"
+            borderRadius={"10px"}
+            py={"15px"}
+            mt={"20px"}
+            w={'35%'}
+          >
+            <Flex justifyContent="center" mt="5px">
+              {dataApi.status === "Kosong" || dataApi.status === "Ada Isinya" ? (
+                //<Icon as={GiWaterTower} w="130px" h="80px" color="#14453E" />
+                <CircularProgress
+                   value={30}
+                  size="80px"
+                  isIndeterminate
+                  color="green.300"
+                />
+              ) : (
+                <CircularProgress
+                  // value={30}
+                  size="80px"
+                  isIndeterminate
+                  color="green.300"
+                />
+              )}
+            </Flex>
+            <Flex justifyContent="center" mt={"10px"}>
+              <Text>{dataApi.status}</Text>
+            </Flex>
           </Flex>
-          <Flex justifyContent="center" marginY="10px">
-            {/* {dataApi.status === "Kosong" ? (
-            <Text color="grey" fontSize="12px">
-              Tandon Kosong
-            </Text>
-          ) : (
-            <Text color="grey" fontSize="12px">
-              Sedang Melakukan Peracikan...
-            </Text>
-          )} */}
-            <Text>{dataApi.status}</Text>
+
+          <Flex w={'65%'}>
+            {isLoading ? (
+              <Flex
+                flexDirection="column"
+                border="1px solid #E2E8F0"
+                borderRadius={"10px"}
+                p={"10px"}
+                mt={"20px"}
+                w={"100%"}
+              >
+                <Loading />
+              </Flex>
+            ) : (
+              <>
+                <Flex
+                  flexDirection="column"
+                  border="1px solid #E2E8F0"
+                  borderRadius={"10px"}
+                  py={"15px"}
+                  px={"10px"}
+                  mt={"20px"}
+                  w={"100%"}
+                >
+                  <Grid templateColumns="repeat(2, 1fr)">
+                    <Text color="black" textAlign="left">
+                      Status Tandon
+                    </Text>
+                    {dataApi.isOnline ? (
+                      <Text color="green" textAlign="left">
+                        : Online
+                      </Text>
+                    ) : (
+                      <Text color="red" textAlign="left">
+                        : Offline
+                      </Text>
+                    )}
+                  </Grid>
+
+                  {sensor.map((item, index) => {
+                    const matchedData = sensorRealtime.find(obj => obj.channel === item.channel || obj.gpio === item.GPIO);
+                    const sensorValue = matchedData ? matchedData.nilai : null
+                    return (
+                      <Grid key={index} templateColumns="repeat(2, 1fr)" justifyContent={'center'}>
+                        <Text color="black" textAlign="left">
+                          {item.name}
+                        </Text>
+                        <Text color="black" textAlign="left">
+                          : {sensorValue} {item.unit_measurement}
+                        </Text>
+                      </Grid>
+                    )
+                  })}
+
+                  <Grid templateColumns="repeat(2, 1fr)">
+                    <Text color="black" textAlign="left">
+                      Volume
+                    </Text>
+
+                    <Text color="black" textAlign="left">
+                      : 2000 L
+                    </Text>
+
+                  </Grid>
+                </Flex>
+              </>
+            )}
           </Flex>
         </Flex>
 
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <>
-            <Flex
-              flexDirection="column"
-              border="1px solid #E2E8F0"
-              borderRadius={"10px"}
-              w={"100%"}
-              p={"15px"}
-              my={"20px"}
-              paddingLeft={{ base: "7%", sm: "15%", md: "15%", lg: "13%", xl: "15%" }}
-              justifyContent={"space-between"}
-            >
-              {sensor.map((item, index) => {
-                const matchedData = sensorRealtime.find(obj => obj.channel === item.channel || obj.gpio === item.GPIO);
-                const sensorValue = matchedData ? matchedData.nilai : null
-                return (
-                  <Grid key={index} templateColumns="repeat(2, 1fr)">
-                    <Text color="black" textAlign="left">
-                      {item.name}
-                    </Text>
-                    <Text color="black" textAlign="left">
-                      : {sensorValue} {item.unit_measurement}
-                    </Text>
-                  </Grid>
-                )
-              })}
-              <Grid templateColumns="repeat(2, 1fr)">
-                <Text color="black" textAlign="left">
-                  Status Tandon
-                </Text>
-                {dataApi.isOnline ? (
-                  <Text color="green" textAlign="left">
-                    : Online
-                  </Text>
-                ) : (
-                  <Text color="red" textAlign="left">
-                    : Offline
-                  </Text>
-                )}
-              </Grid>
-            </Flex>
-              <Button
-                onClick={onOpen}
-                bgColor={"#09322D"}
-                p={"5px"}
-                w={"100%"}
-                justifyContent={"center"}
-                alignContent={"center"}
-              >
-                <Text color={"white"} fontSize={"20px"}>
-                  {dataApi.rasioA} : {dataApi.rasioB} : {dataApi.rasioAir} = {dataApi.ppm}
-                </Text>
-              </Button>
-          </>
-        )}
+        <Button
+          onClick={onOpen}
+          bgColor={"white"}
+          p={"5px"}
+          w={"100%"}
+          justifyContent={"center"}
+          alignContent={"center"}
+          border="1px solid #E2E8F0"
+          borderRadius={"10px"}
+          mt={"10px"}
+        >
+          <Text fontSize={"20px"}>
+            {dataApi.rasioA} : {dataApi.rasioB} : {dataApi.rasioAir} = {dataApi.ppm}
+          </Text>
+        </Button>
 
       </Flex>
 
