@@ -78,8 +78,11 @@ function CardAktuatorOperator(props) {
       <Loading />
     ) : (
       <Wrap
-        justify={dataTable.length % 2 === 1 ? 'left' : 'center'}
-        mt="20px"
+        justify={dataTable.length % 2 === 0 && dataTable.length !== 0 ? 'center' : 'left'}
+        my="15px"
+        h={"100%"}
+        display={"flex"}
+        justifyContent={"center"}
       >
         {dataTable.length < 1 ? (
           <Flex alignItems={"center"} justifyContent={"center"}>

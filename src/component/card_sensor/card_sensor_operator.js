@@ -72,6 +72,7 @@ function CardSensorOperator(props) {
         }
       })
         .then((response) => {
+          console.log(response)
           setSensorRealtime(response.data.data)
         })
         .catch(err => console.error(err))
@@ -87,7 +88,7 @@ function CardSensorOperator(props) {
   return (
     <>
       {isLoading ? (
-          <Loading />
+        <Loading />
       ) : (
         <Wrap
           justify={dataTable.length % 2 === 0 && dataTable.length !== 0 ? 'center' : 'left'}
@@ -107,12 +108,13 @@ function CardSensorOperator(props) {
               const updatedAt = matchedData ? matchedData.updatedAt : null
               return (
                 <ChakraLink as={ReactRouterLink} to={role === 'admin' ? `/unit/dashboard/sensor/${item.id}` : ''}
+
                   bg="#ffff"
                   borderRadius="10px"
                   border="1px solid #E2E8F0"
                   paddingTop="20px"
                   paddingBottom="20px"
-                  px={'15px'}
+                  px={'20px'}
                   cursor={role === 'admin' ? 'pointer' : 'default'}
                   key={index}
                   // w={'48.5%'}

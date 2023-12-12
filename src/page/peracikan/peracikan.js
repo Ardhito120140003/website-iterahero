@@ -35,8 +35,10 @@ function Peracikan() {
       });
       if (response.data.data.length > 0) {
         setDataTandon(response.data.data);
-        getInfo(response.data.data[0].id)
-        setSelected(response.data.data[0].id)
+        if (!selected) {
+          getInfo(response.data.data[0].id)
+          setSelected(response.data.data[0].id)
+        }
       }
     } catch (err) {
       console.error(err);
@@ -68,6 +70,7 @@ function Peracikan() {
 
     const interval = setInterval(() => {
       getTandon()
+      console.log(selected)
     }, 1500)
 
     return (() => clearInterval(interval))

@@ -73,7 +73,7 @@ function CardFormPeracikan({ id_tandon }) {
       }
     })
       .then(response => {
-        // console.log(response.data);
+        console.log(response.data);
       })
       .catch(err => {
         console.error(err);

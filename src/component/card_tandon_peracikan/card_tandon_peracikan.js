@@ -137,7 +137,7 @@ function CardStatusPeracikan({ id, tandon, sensor }) {
     }, 1500)
 
     return (() => clearInterval(interval))
-  }, [])
+  }, [id])
 
   return (
     <>
