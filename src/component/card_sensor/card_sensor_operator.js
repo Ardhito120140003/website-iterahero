@@ -91,10 +91,8 @@ function CardSensorOperator(props) {
         <Loading />
       ) : (
         <Wrap
-          justify={dataTable.length % 2 === 0 && dataTable.length !== 0 ? 'center' : 'left'}
           my="15px"
-          h={"100%"}
-          display={"flex"}
+          w={"100%"}
           justifyContent={"center"}
         >
           {dataTable.length < 1 ? (
