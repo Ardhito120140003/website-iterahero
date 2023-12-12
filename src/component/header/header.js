@@ -25,27 +25,6 @@ function Header() {
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const routeName = useSelector(selectRoute);
-  const token = useSelector(selectToken)
-  const base_url = useSelector(selectUrl)
-  const [refresh, setRefresh] = useState(false);
-  const [notification, setNotification] = useState([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    setLoading(true)
-    axios.get(base_url + "api/v1/notification", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then((response) => {
-        if (response.data.data) {
-          setNotification(response.data.data)
-        }
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setLoading(false))
-  }, [refresh])
 
   return (
     <Flex

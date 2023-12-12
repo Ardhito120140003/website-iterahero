@@ -16,8 +16,8 @@ import {
     Text
 } from '@chakra-ui/react'
 import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { selectToken, selectUrl } from '../../features/auth/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout, selectToken, selectUrl } from '../../features/auth/authSlice';
 import Loading from '../loading/loading';
 import { IoNotificationsOutline, IoRefreshOutline } from 'react-icons/io5';
 import moment from "moment";
@@ -32,16 +32,31 @@ const Notification = () => {
     const [refresh, setRefresh] = useState(false);
     const [notification, setNotification] = useState([])
     const [loading, setLoading] = useState(true)
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        axios.get(base_url + "api/v1/notification", {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-            .then((response) => setNotification(response.data.data))
-            .catch((err) => console.log(err))
-            .finally(() => setLoading(false))
+        const fetchNotification = async () => {
+            axios.get(base_url + "api/v1/notification", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then(({ data }) => setNotification(data.data))
+                .catch(({ response }) => {
+                    if (response.status === 401) {
+                        dispatch(logout())
+                        navigate("/login")
+                    }
+                })
+                .finally(() => setLoading(false))
+        }
+        fetchNotification()
+
+        const interval = setInterval(() => {
+            fetchNotification()
+        }, 2500)
+
+        return (() => clearInterval(interval))
     }, [refresh])
 
     return (
