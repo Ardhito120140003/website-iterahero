@@ -23,7 +23,7 @@ function CardAktuatorOperator(props) {
   const [totalPage, setTotalPage] = useState(0)
   const [page, setPage] = useState(1)
   const [kontrol, setKontrol] = useState(false)
-  
+
   const getPagination = async () => {
     let url = `${base_url}api/v1/${route}/${idApi}/actuator`;
     await axios.get(url, {
@@ -53,7 +53,7 @@ function CardAktuatorOperator(props) {
       getPagination()
     }, 1000)
 
-    return(() => clearInterval(interval))
+    return (() => clearInterval(interval))
   }, [kontrol, idApi, route]);
 
   const handleswitch = async (id) => {
@@ -78,18 +78,16 @@ function CardAktuatorOperator(props) {
       <Loading />
     ) : (
       <Wrap
-        justify={dataTable.length % 2 === 0 && dataTable.length !== 0 ? 'center' : 'left'}
-        my="15px"
-        h={"100%"}
-        display={dataTable.length ? "block" : "flex"}
-        justifyContent={"center"}
+        justify={dataTable.length % 2 === 1 ? 'left' : 'center'}
+        mt="20px"
+        w={"100%"}
       >
         {dataTable.length < 1 ? (
           <Flex alignItems={"center"} justifyContent={"center"}>
-              <Text>Tidak ada aktuator</Text>
-            </Flex>
+            <Text>Tidak ada aktuator</Text>
+          </Flex>
         ) : (
-          dataTable.map((item, index) => (
+          dataTable.filter(item => item.name.toLowerCase().includes('distribusi')).map((item, index) => (
             <WrapItem
               key={index}
               bg="#ffff"
@@ -98,12 +96,17 @@ function CardAktuatorOperator(props) {
               paddingTop="20px"
               paddingBottom="20px"
               px={'20px'}
-              w={{ base: '100%', sm: '100%', md: "100%", lg: "48%", xl: '48.5%', "2xl": "48.5%" }}
+              w={{ base: '100%', sm: '100%', md: "100%", lg: "100%", xl: '100%', "2xl": "100%" }}
+              cursor={'default'}
+            //h={"130px"}
             >
-              <Center
-                justifyContent="center"
-                flexDir="column"
+              <Flex
+                align={"center"}
+                justifyContent={"space-between"}
+                flexDir="row"
                 data={{ data: idApi }}
+                px={"20px"}
+                w={'100%'}
               >
                 <Flex flexDir="row" justifyContent={"space-around"} alignItems={"center"}>
                   <Image
@@ -114,30 +117,28 @@ function CardAktuatorOperator(props) {
                   />
                   <Text color={'black'}>{item.name}</Text>
                 </Flex>
-                {item.id === '' ? (
-                  <></>
-                ) : (
-                  <ValueAktuatorOperator
-                    data={{
-                      id: item.id,
-                      color: item.color,
-                      category: item.name,
-                      unit: item.unit_measurement,
-                      max: item.range_max,
-                      min: item.range_min,
-                      isAvailable: item.status,
-                      automation: item.automation,
-                      route
-                    }}
-                  />
-                )}
+                {/* <ValueAktuatorOperator
+                  data={{
+                    id: item.id,
+                    color: item.color,
+                    category: item.name,
+                    unit: item.unit_measurement,
+                    max: item.range_max,
+                    min: item.range_min,
+                    isAvailable: item.status,
+                    automation: item.automation,
+                    route
+                  }}
+                /> */}
 
-                <Switch mt={'20px'} onChange={async () => {
-                  await handleswitch(item.id)
-                  setKontrol(!kontrol)
-                }} isChecked={item.status} />
+                <Switch
+                  //mt={'20px'} 
+                  onChange={async () => {
+                    await handleswitch(item.id)
+                    setKontrol(!kontrol)
+                  }} isChecked={item.status} />
 
-              </Center>
+              </Flex>
             </WrapItem>
           ))
         )}

@@ -94,11 +94,11 @@ function CardSensorOperator(props) {
           justify={dataTable.length % 2 === 0 && dataTable.length !== 0 ? 'center' : 'left'}
           my="15px"
           h={"100%"}
-          display={"flex"}
+          display={dataTable.length ? "block" : "flex"}
           justifyContent={"center"}
         >
           {dataTable.length < 1 ? (
-            <Flex alignItems={"Center"} justifyContent={"center"} w={"100%"}>
+            <Flex alignItems={"Center"} justifyContent={"center"}>
               <Text align={"center"}>Tidak ada sensor</Text>
             </Flex>
           ) : (

@@ -217,7 +217,7 @@ const DashboardOperator = () => {
                     </Flex>
 
                     <Flex border={'3px solid #d9d9d9'} borderRadius={12} px={"10px"} mt={'20px'}>
-                      <Tabs isFitted width={'100%'} h={"100%"} colorScheme='black'>
+                      <Tabs isFitted w={'100%'} h={"100%"} colorScheme='black'>
                         <TabList>
                           <Tab color={'black'}>Sensor</Tab>
                           <Tab color={'black'}>Aktuator</Tab>
@@ -237,7 +237,7 @@ const DashboardOperator = () => {
                           justifyContent={"center"}
                           display={"flex"}
                         >
-                          <TabPanel w={"100%"} alignItems={"center"}>
+                          <TabPanel w={"100%"}>
                             {values.filter2 ? (
                               <CardSensorOperator
                                 data={{ alat: values.filter1, id: values.filter2 }}
@@ -253,7 +253,7 @@ const DashboardOperator = () => {
                               </Flex>)}
                           </TabPanel>
                           {/* initially not mounted */}
-                          <TabPanel w={"100%"} alignItems={"center"}>
+                          <TabPanel w={"100%"}>
                             {values.filter2 ? (
                               <CardAktuatorOperator
                                 data={{ alat: values.filter1, id: values.filter2 }}
