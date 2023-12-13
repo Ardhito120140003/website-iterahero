@@ -37,7 +37,6 @@ function Peracikan() {
         setDataTandon(response.data.data);
         if (!selected) {
           getInfo(response.data.data[0].id)
-          setSelected(response.data.data[0].id)
         }
       }
     } catch (err) {

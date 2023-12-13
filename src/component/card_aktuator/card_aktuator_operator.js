@@ -23,7 +23,7 @@ function CardAktuatorOperator(props) {
   const [totalPage, setTotalPage] = useState(0)
   const [page, setPage] = useState(1)
   const [kontrol, setKontrol] = useState(false)
-
+  
   const getPagination = async () => {
     let url = `${base_url}api/v1/${route}/${idApi}/actuator`;
     await axios.get(url, {
@@ -53,7 +53,7 @@ function CardAktuatorOperator(props) {
       getPagination()
     }, 1000)
 
-    return (() => clearInterval(interval))
+    return(() => clearInterval(interval))
   }, [kontrol, idApi, route]);
 
   const handleswitch = async (id) => {
@@ -78,16 +78,13 @@ function CardAktuatorOperator(props) {
       <Loading />
     ) : (
       <Wrap
-        justify={dataTable.length % 2 === 0 && dataTable.length !== 0 ? 'center' : 'left'}
-        my="15px"
-        h={"100%"}
-        display={"flex"}
-        justifyContent={"center"}
+        justify={'start'}
+        mt="20px"
       >
         {dataTable.length < 1 ? (
-          <Flex alignItems={"center"} justifyContent={"center"}>
-            <Text>Tidak ada aktuator</Text>
-          </Flex>
+          <Flex alignItems={"center"}>
+              <Text>Tidak ada aktuator</Text>
+            </Flex>
         ) : (
           dataTable.map((item, index) => (
             <WrapItem
@@ -99,7 +96,6 @@ function CardAktuatorOperator(props) {
               paddingBottom="20px"
               px={'20px'}
               w={{ base: '100%', sm: '100%', md: "100%", lg: "48%", xl: '48.5%', "2xl": "48.5%" }}
-              cursor={'default'}
             >
               <Center
                 justifyContent="center"
@@ -115,19 +111,23 @@ function CardAktuatorOperator(props) {
                   />
                   <Text color={'black'}>{item.name}</Text>
                 </Flex>
-                <ValueAktuatorOperator
-                  data={{
-                    id: item.id,
-                    color: item.color,
-                    category: item.name,
-                    unit: item.unit_measurement,
-                    max: item.range_max,
-                    min: item.range_min,
-                    isAvailable: item.status,
-                    automation: item.automation,
-                    route
-                  }}
-                />
+                {item.id === '' ? (
+                  <></>
+                ) : (
+                  <ValueAktuatorOperator
+                    data={{
+                      id: item.id,
+                      color: item.color,
+                      category: item.name,
+                      unit: item.unit_measurement,
+                      max: item.range_max,
+                      min: item.range_min,
+                      isAvailable: item.status,
+                      automation: item.automation,
+                      route
+                    }}
+                  />
+                )}
 
                 <Switch mt={'20px'} onChange={async () => {
                   await handleswitch(item.id)
