@@ -33,11 +33,12 @@ function TandonAdd() {
 
   const schema = yup.object({
     name: yup.string().required('data harus diisi'),
+    capacity: yup.number().min(250, 'Minimal 250 L').required('data harus diisi'),
     location: yup.string().required('data harus diisi'),
     image: yup.object().required('data harus diisi'),
   });
 
-  const submit = (name, location) => {
+  const submit = (name, location, capacity) => {
     data.name = name;
     data.location = location;
 
@@ -51,13 +52,13 @@ function TandonAdd() {
       return alert('Masih ada yang belum di isi');
     }
     checkLoading(true);
-    postGreenhouse(name, image, location);
+    postGreenhouse(name, image, location, capacity);
   };
 
   const dispatch = useDispatch();
   const header = useSelector(selectToken)
 
-  const postGreenhouse = (valueName, valueImage, valueLocation) => {
+  const postGreenhouse = (valueName, valueImage, valueLocation, valueCapacity) => {
     axios
       .post(
         // addGreenhouse,
@@ -70,7 +71,8 @@ function TandonAdd() {
         {
           name: valueName,
           image: valueImage,
-          location: valueLocation
+          location: valueLocation,
+          capacity: parseFloat(valueCapacity)
         },
         {
           headers: {
@@ -132,6 +134,7 @@ function TandonAdd() {
             <Formik
               initialValues={{
                 name: '',
+                capacity: 0,
                 location: '',
                 image: {},
               }}
@@ -145,6 +148,7 @@ function TandonAdd() {
                 handleBlur,
                 setFieldValue,
                 handleSubmit,
+                isValid
               }) => (
                 <Form>
                   <FormControl
@@ -169,6 +173,30 @@ function TandonAdd() {
                       color="black"
                     />
                     <FormErrorMessage>{errors.name}</FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl
+                    marginTop="20px"
+                    isInvalid={errors.capacity && touched.capacity}
+                  >
+                    <FormLabel htmlFor="capacity" color="black">
+                      Kapasitas Tandon (L)
+                    </FormLabel>
+                    <Input
+                      width="100%"
+                      h="60px"
+                      maxWidth="100%"
+                      marginTop="0 auto"
+                      type="number"
+                      name="capacity"
+                      value={values.capacity}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      variant="outline"
+                      placeholder="Masukkan kapasitas"
+                      color="black"
+                    />
+                    <FormErrorMessage>{errors.capacity}</FormErrorMessage>
                   </FormControl>
 
                   <FormControl
@@ -236,8 +264,8 @@ function TandonAdd() {
                     backgroundColor="var(--color-primer)"
                     type="submit"
                     // className="btn-login"
-                    disabled={image === null || values.location === "" || values.name === "" }
-                    onClick={() => submit(values.name, values.location)}
+                    disabled={!isValid}
+                    onClick={() => submit(values.name, values.location, values.capacity)}
                   >
                     <Text
                       fontWeight="bold"

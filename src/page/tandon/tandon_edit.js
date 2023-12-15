@@ -53,11 +53,12 @@ function TandonEdit() {
 
   const schema = yup.object({
     name: yup.string().required("data harus diisi"),
+    capacity: yup.number().min(250, "Minimal 250 Liter").required("data harus diisi"),
     location: yup.string().required("data harus diisi"),
     image: yup.object().required("data harus diisi"),
   });
 
-  const submit = async (name, location) => {
+  const submit = async (name, location, capacity) => {
     data.name = name;
     data.location = location;
 
@@ -65,10 +66,10 @@ function TandonEdit() {
       return alert("Masih ada yang belum di isi");
     }
     setLoading(true);
-    await updateTandon(name, image, location);
+    await updateTandon(name, image, location, capacity);
   };
 
-  const updateTandon = async (valueName, valueImage, valueLocation) => {
+  const updateTandon = async (valueName, valueImage, valueLocation, valueCapacity) => {
     // console.log(valueName,valueImage,valueLocation,slug)
     await axios
       .patch(
@@ -77,6 +78,7 @@ function TandonEdit() {
           name: valueName,
           image: valueImage,
           location: valueLocation,
+          capacity: parseFloat(valueCapacity)
         },
         {
           params: {
@@ -89,6 +91,7 @@ function TandonEdit() {
         }
       )
       .then((response) => {
+        console.log(response)
         // console.log(response)
         navigate(`/unit/tandon`);
       })
@@ -151,6 +154,7 @@ function TandonEdit() {
             <Formik
               initialValues={{
                 name: dataApi.nama,
+                capacity: dataApi.capacity,
                 location: dataApi.location,
                 image: {},
               }}
@@ -216,6 +220,30 @@ function TandonEdit() {
 
                   <FormControl
                     marginTop="20px"
+                    isInvalid={errors.capacity && touched.capacity}
+                  >
+                    <FormLabel htmlFor="capacity" color="black">
+                      Kapasitas Tandon (L)
+                    </FormLabel>
+                    <Input
+                      width="100%"
+                      h="60px"
+                      maxWidth="100%"
+                      marginTop="0 auto"
+                      type="number"
+                      name="capacity"
+                      value={values.capacity}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      variant="outline"
+                      placeholder="Masukkan kapasitas"
+                      color="black"
+                    />
+                    <FormErrorMessage>{errors.capacity}</FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl
+                    marginTop="20px"
                     isInvalid={errors.image && touched.image}
                   >
                     <FormLabel htmlFor="image" color="black">
@@ -251,7 +279,7 @@ function TandonEdit() {
                     borderRadius="10px"
                     backgroundColor="var(--color-primer)"
                     type="submit"
-                    onClick={() => submit(values.name, values.location)}
+                    onClick={() => submit(values.name, values.location, values.capacity)}
                   >
                     <Text
                       fontWeight="bold"
@@ -260,7 +288,7 @@ function TandonEdit() {
                       color="var(--color-on-primary)"
                       colorScheme="var(--color-on-primary)"
                     >
-                      Tambah
+                      Edit
                     </Text>
                   </Button>
                 </Form>
