@@ -130,7 +130,7 @@ function Peracikan() {
 
             >
               <Text mb={"20px"}>Form Peracikan</Text>
-              <CardFormPeracikan id_tandon={selected} />
+              <CardFormPeracikan tandon={dataTandon.find((tandon) => tandon.id == selected)} />
             </Flex>
 
 

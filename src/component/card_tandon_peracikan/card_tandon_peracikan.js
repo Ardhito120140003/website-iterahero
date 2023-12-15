@@ -241,7 +241,7 @@ function CardStatusPeracikan({ tandon, sensor }) {
                         </Text>
 
                         <Text color="black" textAlign="left">
-                          : 1200 L
+                          : {tandon.capacity} L
                         </Text>
 
                       </Grid>

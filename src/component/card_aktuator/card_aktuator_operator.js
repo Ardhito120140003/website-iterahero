@@ -81,7 +81,9 @@ function CardAktuatorOperator(props) {
         justify={dataTable.length % 2 === 0 && dataTable.length !== 0 ? 'center' : 'left'}
         my="15px"
         h={"100%"}
-        display={dataTable.length ? "block" : "flex"}
+        overflowY={"scroll"}
+        className='dashboard-data'
+        display={dataTable.length ? "flex" : "block"}
         justifyContent={"center"}
       >
         {dataTable.length < 1 ? (

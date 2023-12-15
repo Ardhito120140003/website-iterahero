@@ -33,7 +33,7 @@ import { selectUrl } from '../../features/auth/authSlice';
 import { BiTrash } from "react-icons/bi";
 //import { RiPencilFill } from 'react-icons/ri';
 
-function CardFormPeracikan({ id_tandon }) {
+function CardFormPeracikan({ tandon }) {
   const { isOpen: isOpenRacikModal, onOpen: onOpenRacikModal, onClose: onCloseRacikModal } = useDisclosure();
   const { isOpen: isOpenSaveModal, onOpen: onOpenSaveModal, onClose: onCloseSaveModal } = useDisclosure();
   const { isOpen: isOpenUpdateModal, onOpen: onOpenUpdateModal, onClose: onCloseUpdateModal } = useDisclosure();
@@ -66,7 +66,7 @@ function CardFormPeracikan({ id_tandon }) {
 
     axios.post(base_url + 'api/v1/peracikan', {
       resep: id,
-      id_tandon,
+      id: tandon.id,
     }, {
       headers: {
         Authorization: `Bearer ${header}`
@@ -181,6 +181,9 @@ function CardFormPeracikan({ id_tandon }) {
         if (!values.volume) {
           errors.volume = 'Volume harus diisi';
         }
+        if (values.volume > tandon.capacity) {
+          errors.volume = 'Volume melebihi kapasitas'
+        }
         return errors;
       }}
 
@@ -204,7 +207,7 @@ function CardFormPeracikan({ id_tandon }) {
             >
               <Field name="formula">
                 {({ field }) => (
-                  <FormControl isInvalid={errors.formula && touched.formula}>
+                  <FormControl isInvalid={errors.formula && touched.formula && values.formula} isReadOnly={!Boolean(values.formula)}>
                     <FormLabel color={'black'}>Formula</FormLabel>
                     <Select
                       {...field}
@@ -250,7 +253,7 @@ function CardFormPeracikan({ id_tandon }) {
               <Box>
                 <Field name="newFormulaName">
                   {({ field }) => (
-                    <FormControl isInvalid={errors.newFormulaName && touched.newFormulaName}>
+                    <FormControl isInvalid={errors.newFormulaName && touched.newFormulaName && values.formula} isReadOnly={!Boolean(values.formula)}>
                       <FormLabel color={'black'}>Nama Formula</FormLabel>
                       <Input
                         {...field}
@@ -270,7 +273,7 @@ function CardFormPeracikan({ id_tandon }) {
             <Box>
               <Field name="ph">
                 {({ field }) => (
-                  <FormControl isInvalid={errors.ph && touched.ph}>
+                  <FormControl isInvalid={errors.ph && touched.ph && values.formula} isReadOnly={!Boolean(values.formula)}>
                     <FormLabel color={'black'}>PH Value</FormLabel>
                     <Input
                       {...field}
@@ -289,7 +292,7 @@ function CardFormPeracikan({ id_tandon }) {
             <Box>
               <Field name="ppm">
                 {({ field }) => (
-                  <FormControl isInvalid={errors.ppm && touched.ppm}>
+                  <FormControl isInvalid={errors.ppm && touched.ppm && values.formula} isReadOnly={!Boolean(values.formula)}>
                     <FormLabel color={'black'}>PPM Value</FormLabel>
                     <Input
                       {...field}
@@ -308,7 +311,7 @@ function CardFormPeracikan({ id_tandon }) {
             <Box>
               <Field name="volume">
                 {({ field }) => (
-                  <FormControl isInvalid={errors.volume && touched.volume}>
+                  <FormControl isInvalid={errors.volume && touched.volume && values.formula} isReadOnly={!Boolean(values.formula)}>
                     <FormLabel color={'black'}>Volume</FormLabel>
                     <Input
                       {...field}

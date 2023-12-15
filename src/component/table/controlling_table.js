@@ -20,6 +20,7 @@ import {
   TableContainer,
   useDisclosure,
   Flex,
+  Text
 } from '@chakra-ui/react';
 import { RiDeleteBinFill, RiPencilFill } from 'react-icons/ri';
 import { Link, useNavigate } from 'react-router-dom';
@@ -96,8 +97,8 @@ function TableControlling(props) {
         setIsLoading(false);
       })
       .catch((error) => {
-        
-        
+
+
         navigate('/login');
       });
   };
@@ -128,25 +129,27 @@ function TableControlling(props) {
             width="100%"
             overflowX="auto"
           >
-            <Table variant="simple" size={['lg', 'md', 'sm']}>
+            <Table variant="simple" colorScheme='whatsapp' size={['lg', 'md', 'sm']}>
               <Thead>
                 <Tr
                   textAlign="center"
                   alignContent="center"
                   alignItems="center"
                   justifyContent="center"
+                  h={"50px"}
                 >
                   <Th textAlign="center">No</Th>
                   <Th textAlign="center">Nama Alat</Th>
-                  <Th textAlign="center">Icon</Th>
-                  <Th textAlign="center">Life Cycle</Th>
-                  <Th textAlign="center">Warna</Th>
+                  {/* <Th textAlign="center">Icon</Th> */}
+                  <Th textAlign="center">Automasi</Th>
+                  {/* <Th textAlign="center">Life Cycle</Th> */}
+                  {/* <Th textAlign="center">Warna</Th> */}
                   <Th textAlign="center">Detail</Th>
                   <Th textAlign="center">Aksi</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {dataTable.length < 1 || idApi === null? (
+                {dataTable.length < 1 || idApi === null ? (
                   <Tr>
                     <Td colSpan={10} color={"var(--color-primer)"} textAlign="center">
                       Data kosong
@@ -154,24 +157,30 @@ function TableControlling(props) {
                   </Tr>
                 ) : (
                   dataTable.map((item, index) => (
-                  <Tr key={index}>
-                    <Td textAlign="center" color="var(--color-primer)">
-                      {index + 1}
-                    </Td>
-                    <Td textAlign="center" color="var(--color-primer)">
-                      {item.name}
-                    </Td>
-                    <Td
+                    <Tr key={index}>
+                      <Td textAlign="center" color="var(--color-primer)">
+                        {index + 1}
+                      </Td>
+                      <Td textAlign="center" color="var(--color-primer)">
+                        <Flex alignItems={"center"} justifyContent={"center"}>
+                          <Image height="30px" src={item.category.logo} alt="icon" />
+                          <Text>{item.name}</Text>
+                        </Flex>
+                      </Td>
+                      {/* <Td
                       display="flex"
                       justifyContent="center"
                       alignItems="center"
                     >
                       <Image height="30px" src={item.category.logo} alt="icon" />
-                    </Td>
-                    <Td textAlign="center" color="var(--color-primer)">
+                    </Td> */}
+                      <Td textAlign="center" color="var(--color-primer)">
+                        {item.automation ? "Ada" : "Tidak ada"}
+                      </Td>
+                      {/* <Td textAlign="center" color="var(--color-primer)">
                       {item.status_lifecycle}
-                    </Td>
-                    <Td
+                    </Td> */}
+                      {/* <Td
                       display="flex"
                       justifyContent="center"
                       alignItems="center"
@@ -182,61 +191,61 @@ function TableControlling(props) {
                         height="30px"
                         background={item.category.color}
                       />
-                    </Td>
-                    <Td textAlign="center" color="var(--color-primer)">
-                      <Link
-                        to={{
-                          pathname: `/unit/controlling/detail/${item.id}`,
-                        }}
-                        state={{
-                          data: item,
-                        }}
-                      >
-                        <Button>Detail</Button>
-                      </Link>
-                    </Td>
-                    <Td textAlign="center">
-                      <Flex justifyContent="space-evenly">
+                    </Td> */}
+                      <Td textAlign="center" color="var(--color-primer)">
                         <Link
                           to={{
-                            pathname: `/unit/controlling/edit/${item.id}`,
+                            pathname: `/unit/controlling/detail/${item.id}`,
                           }}
                           state={{
                             data: item,
                           }}
                         >
-                          <Button
-                            bg="var(--color-on-primary)"
-                            color="var(--color-info)"
-                          >
-                            <RiPencilFill />
-                          </Button>
+                          <Button>Detail</Button>
                         </Link>
-                        <Button
-                          onClick={() => {
-                            setId(item.id);
-                            setName(item.name);
-                            onOpen();
-                          }}
-                          bg="var(--color-on-primary)"
-                          color="var(--color-error)"
-                        >
-                          <RiDeleteBinFill />
-                        </Button>
-                        <Modal isOpen={isOpen} onClose={onClose}>
-                          <ModalOverlay />
-                          <ModalContent>
-                            <ModalHeader>Peringatan !</ModalHeader>
-                            <ModalCloseButton />
-                            <ModalBody>
-                              Apakah anda yakin ingin menghapus
-                              {' '}
-                              {item.name}
-                              {' '}
-                              ini?
+                      </Td>
+                      <Td textAlign="center">
+                        <Flex justifyContent="space-evenly">
+                          <Link
+                            to={{
+                              pathname: `/unit/controlling/edit/${item.id}`,
+                            }}
+                            state={{
+                              data: item,
+                            }}
+                          >
+                            <Button
+                              bg="var(--color-on-primary)"
+                              color="var(--color-info)"
+                            >
+                              <RiPencilFill />
+                            </Button>
+                          </Link>
+                          <Button
+                            onClick={() => {
+                              setId(item.id);
+                              setName(item.name);
+                              onOpen();
+                            }}
+                            bg="var(--color-on-primary)"
+                            color="var(--color-error)"
+                          >
+                            <RiDeleteBinFill />
+                          </Button>
+                          <Modal isOpen={isOpen} onClose={onClose}>
+                            <ModalOverlay />
+                            <ModalContent>
+                              <ModalHeader>Peringatan !</ModalHeader>
+                              <ModalCloseButton />
+                              <ModalBody>
+                                Apakah anda yakin ingin menghapus
+                                {' '}
+                                {item.name}
+                                {' '}
+                                ini?
                               </ModalBody>
-                            <ModalFooter>
-                              <Button
+                              <ModalFooter>
+                                <Button
                                   colorScheme="blue"
                                   onClick={(e) => {
                                     deleteItem(e, id);
@@ -246,7 +255,7 @@ function TableControlling(props) {
                                 >
                                   Hapus
                                 </Button>
-                              <Button
+                                <Button
                                   onClick={() => {
                                     onClose();
                                   }}
@@ -254,18 +263,18 @@ function TableControlling(props) {
                                 >
                                   Batal
                                 </Button>
-                            </ModalFooter>
-                          </ModalContent>
-                        </Modal>
-                      </Flex>
-                    </Td>
-                  </Tr>
-                )))}
+                              </ModalFooter>
+                            </ModalContent>
+                          </Modal>
+                        </Flex>
+                      </Td>
+                    </Tr>
+                  )))}
               </Tbody>
             </Table>
           </TableContainer>
           {dataTable.length > 0 ? (
-            <Flex justify="space-between">
+            <Flex justify="space-between" mt={"20px"}>
               <p>
                 Showing
                 {' '}

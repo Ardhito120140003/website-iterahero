@@ -12,6 +12,10 @@
 	background-color: #F5F5F5;
 }
 
+.dashboard-data::-webkit-scrollbar {
+	display: none
+}
+
 ::-webkit-scrollbar-thumb
 {
 	border-radius: 10px;

@@ -91,7 +91,7 @@ function TableMonitoring(props) {
     // getPagination().then(() => // console.log(dataTable));
     setDataTable([])
     getApiMonitoring();
-    
+
     const interval = setInterval(() => {
       getApiMonitoring();
     }, 2000)
@@ -119,7 +119,7 @@ function TableMonitoring(props) {
           mt={30}
           width="100%"
         >
-            <Table variant="simple" overflowX="scroll" width="100%">
+            <Table variant="simple" colorScheme='whatsapp' overflowX="scroll" width="100%">
               <Thead>
                 <Tr
                   textAlign="center"
@@ -129,10 +129,10 @@ function TableMonitoring(props) {
                 >
                   <Th textAlign="center">No</Th>
                   <Th textAlign="center">Nama Alat</Th>
-                  <Th textAlign="center">Icon</Th>
+                  {/* <Th textAlign="center">Icon</Th> */}
                   <Th textAlign="center">Satuan Ukur</Th>
                   <Th textAlign="center">Merek</Th>
-                  <Th textAlign="center">Warna</Th>
+                  {/* <Th textAlign="center">Warna</Th> */}
                   <Th textAlign="center">Persamaan Kalibrasi</Th>
                   <Th textAlign="center">Range Min</Th>
                   <Th textAlign="center">Range Max</Th>
@@ -141,7 +141,7 @@ function TableMonitoring(props) {
                 </Tr>
               </Thead>
               <Tbody>
-                { !idApi ? (
+                {!idApi ? (
                   <Tr>
                     <Td colSpan={10} color={"var(--color-primer)"} textAlign="center">
                       {`Pilih ${(() => {
@@ -157,29 +157,34 @@ function TableMonitoring(props) {
                       Data kosong
                     </Td>
                   </Tr>
-                ) :(
+                ) : (
                   dataTable.map((item, index) => (
                     <Tr key={index}>
                       <Td textAlign="center" color="var(--color-primer)">
                         {index + 1}
                       </Td>
                       <Td textAlign="center" color="var(--color-primer)">
-                        {item.name}
+                        <Flex alignItems={"center"} justifyContent={"center"}>
+                          <Image height="30px" src={item.category.logo} alt="icon" />
+                          <Text>
+                            {item.name}
+                          </Text>
+                        </Flex>
                       </Td>
-                      <Td
+                      {/* <Td
                         display="flex"
                         justifyContent="center"
                         alignItems="center"
                       >
                         <Image height="30px" src={item.category.logo} alt="icon" />
-                      </Td>
+                      </Td> */}
                       <Td textAlign="center" color="var(--color-primer)">
                         {item.unit_measurement}
                       </Td>
                       <Td textAlign="center" color="var(--color-primer)">
                         {item.brand}
                       </Td>
-                      <Td
+                      {/* <Td
                         display="flex"
                         justifyContent="center"
                         alignItems="center"
@@ -190,7 +195,7 @@ function TableMonitoring(props) {
                           height="30px"
                           background={item.category.color}
                         />
-                      </Td>
+                      </Td> */}
                       <Td textAlign="center" color="var(--color-primer)">
                         {item.calibration}
                       </Td>
@@ -210,7 +215,7 @@ function TableMonitoring(props) {
                         </Link>
                       </Td>
                       <Td textAlign="center">
-                        <Flex justifyContent="space-evenly">
+                        <Flex justifyContent="space-around">
                           <Link
                             to={{
                               pathname: `/unit/monitoring/edit/${item.id}`,

@@ -11,6 +11,7 @@ import { selectUrl, selectUser } from '../../features/auth/authSlice';
 import { useSelector } from 'react-redux';
 import { selectToken } from '../../features/auth/authSlice';
 import ValueAktuatorOperator from '../value_aktuator/value_aktuator_operator';
+import Timer from '../timer/Timer';
 
 function CardAktuatorOperator(props) {
   const idApi = props.data.id;
@@ -84,7 +85,7 @@ function CardAktuatorOperator(props) {
       >
         {dataTable.length < 1 ? (
           <Flex alignItems={"center"} justifyContent={"center"}>
-            <Text>Tidak ada aktuator</Text>
+            <Text>Tidak ada aktuator pendistribusian</Text>
           </Flex>
         ) : (
           dataTable.filter(item => item.name.toLowerCase().includes('distribusi')).map((item, index) => (
@@ -98,7 +99,7 @@ function CardAktuatorOperator(props) {
               px={'20px'}
               w={{ base: '100%', sm: '100%', md: "100%", lg: "100%", xl: '100%', "2xl": "100%" }}
               cursor={'default'}
-            //h={"130px"}
+              flexDirection={"column"}
             >
               <Flex
                 align={"center"}
@@ -117,27 +118,18 @@ function CardAktuatorOperator(props) {
                   />
                   <Text color={'black'}>{item.name}</Text>
                 </Flex>
-                {/* <ValueAktuatorOperator
-                  data={{
-                    id: item.id,
-                    color: item.color,
-                    category: item.name,
-                    unit: item.unit_measurement,
-                    max: item.range_max,
-                    min: item.range_min,
-                    isAvailable: item.status,
-                    automation: item.automation,
-                    route
-                  }}
-                /> */}
-
                 <Switch
-                  //mt={'20px'} 
                   onChange={async () => {
                     await handleswitch(item.id)
                     setKontrol(!kontrol)
                   }} isChecked={item.status} />
-
+              </Flex>
+              <Flex
+                px={"20px"}
+                w={'100%'}
+                textColor={"gray"}
+              >
+                {item.status && <Timer aktuator={item} />}
               </Flex>
             </WrapItem>
           ))
