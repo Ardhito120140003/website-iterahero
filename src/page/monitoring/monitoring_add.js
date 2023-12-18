@@ -193,7 +193,7 @@ function Monitoring_Add() {
                     <FormLabel>{item}</FormLabel>
                     {item === 'Type' ? (
                       <Select name={item} icon={<MdArrowDropDown />} onChange={handleChange} value={values[item]}>
-                        {iconsList.filter((icon) => category.name.toLowerCase().includes('sensor')).map((sensor, index) => (
+                        {iconsList.filter((category) => category.name.toLowerCase().includes('sensor')).map((sensor, index) => (
                           <option value={sensor.name} key={index}>{sensor.name}</option>
                         ))}
                       </Select>

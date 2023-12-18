@@ -162,7 +162,7 @@ function Controlling_Edit() {
                     {item === 'Type' ? (
                       <Flex flexDir={"row"} alignItems={"center"}>
                         <Select name={item} icon={<MdArrowDropDown />} onChange={handleChange} value={values[item]} flex={3}>
-                          {iconsList.filter((icon) => !category.name.toLowerCase().includes('sensor')).map((actuator, index) => (
+                          {iconsList.filter((category) => !category.name.toLowerCase().includes('sensor')).map((actuator, index) => (
                             <option value={actuator.name} key={index}>{actuator.name}</option>
                           ))}
                         </Select>

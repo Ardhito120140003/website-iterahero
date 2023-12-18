@@ -164,7 +164,7 @@ function Monitoring_Edit() {
             }}
             validationSchema={schema}
           >
-            {({ handleSubmit, handleChange, handleBlur, isValid, values, errors }) => (
+            {({ handleSubmit, handleChange, handleBlur, isValid, values, errors, touched }) => (
               <Form
                 onSubmit={handleSubmit}
                 style={{
@@ -180,7 +180,7 @@ function Monitoring_Edit() {
                     <FormLabel>{item}</FormLabel>
                     {item === 'Type' ? (
                       <Select name={item} icon={<MdArrowDropDown />} onChange={handleChange} value={values[item]}>
-                        {iconsList.filter((icon) => category.name.toLowerCase().includes('sensor')).map((sensor, index) => (
+                        {iconsList.filter((category) => category.name.toLowerCase().includes('sensor')).map((sensor, index) => (
                           <option value={sensor.name} key={index}>{sensor.name}</option>
                         ))}
                       </Select>
