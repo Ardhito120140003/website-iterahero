@@ -125,7 +125,6 @@ function Peracikan() {
               borderRadius={"10px"}
               p={"30px"}
               h={"100%"}
-              // w={'50%'}
               w={{ base: '100%', sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%" }}
 
             >
@@ -135,21 +134,10 @@ function Peracikan() {
 
 
             <Flex
-              //  w={'50%'}
               w={{ base: '100%', sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%" }}
               direction={'column'}
               gap={'20px'}
             >
-
-              <Flex
-                h={'100%'}
-                w={'100%'}
-              >
-                <CardStatusPeracikan
-                  tandon={dataTandon.find((tandon) => tandon.id == selected)}
-                  sensor={data}
-                />
-              </Flex>
 
               <Flex
                 h={'100%'}
@@ -162,12 +150,22 @@ function Peracikan() {
                   Distribusi Manual
                 </Text>
                 <Flex
-                  h={'180px'}
+                  // h={'180px'}
                   mb={'20px'}
                 >
                   <CardAktuatorOperator data={{ alat: 'greenhouse', id: '1' }} />
                 </Flex>
 
+              </Flex>
+
+              <Flex
+                h={'100%'}
+                w={'100%'}
+              >
+                <CardStatusPeracikan
+                  tandon={dataTandon.find((tandon) => tandon.id == selected)}
+                  sensor={data}
+                />
               </Flex>
 
             </Flex>
