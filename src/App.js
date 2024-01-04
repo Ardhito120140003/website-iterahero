@@ -58,10 +58,10 @@ function App() {
           <Route path="penjadwalan" element={<Penjadwalan />} />
           <Route path="greenhouse/add" element={<GreenhouseAdd />} />
           <Route path="greenhouse/:slug" element={<GreenhouseEdit />} />
-          <Route path="greenhouse/detail/:id" element={<DetailGreenHouse/>} />
+          <Route path="greenhouse/detail/:id" element={<DetailGreenHouse />} />
           <Route path="tandon/add" element={<TandonAdd />} />
           <Route path="tandon/:slug" element={<TandonEdit />} />
-          <Route path="tandon/edit/:id" element={<DetailTandon/>} />
+          <Route path="tandon/edit/:id" element={<DetailTandon />} />
           <Route path="historynotifikasi" element={<Notification />} />
           <Route path="historynotifikasi/more-notification" element={<MoreNotification />} />
           <Route path="dashboard/aktuator/:id" element={<Automation />} />

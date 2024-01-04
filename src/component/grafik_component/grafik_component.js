@@ -43,14 +43,14 @@ function GrafikComponent(props) {
       .get(`${base_url}` + "api/v1/grafik", {
         params: {
           id,
-          timespan:   value
+          timespan: value
         },
         headers: {
           Authorization: `Bearer ${header}`,
         },
       })
       .then(({ data }) => {
-        // console.log(data)
+        console.log(data)
         setDataSensor(data.data);
       })
       .finally(() => setIsLoading(false))
@@ -66,8 +66,8 @@ function GrafikComponent(props) {
         className="grafik"
         data={{
           value,
-          label: dataSensor.map((item) => item.label),
-          data: dataSensor.map((item) => item.data),
+          label: dataSensor.map((item) => item.date),
+          data: dataSensor.map((item) => item.avg),
         }}
       />
   );

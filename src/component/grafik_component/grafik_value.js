@@ -19,7 +19,6 @@ function GrafikValue(props) {
         backgroundColor: 'rgb(53, 162, 235,0.1)',
         pointBorderWidth: 4,
         // tension: 0.5,
-
         fill: true,
         pointStyle: 'circle',
         pointRadius: 7,
