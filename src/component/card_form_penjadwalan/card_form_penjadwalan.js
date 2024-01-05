@@ -146,7 +146,9 @@ function CardFormPenjadwalan({ updateAction }) {
       }}
     >
       {({ values, errors, touched, isValid, setFieldValue, submitForm }) => (
-        <Form>
+        <Form style={{
+          width: "100%"
+        }}>
           <Flex
             flexDirection="column"
             width="100%"

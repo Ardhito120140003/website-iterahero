@@ -229,7 +229,7 @@ const DashboardOperator = () => {
                     </Flex>
 
                     <Flex border={'3px solid #d9d9d9'} borderRadius={15} px={"10px"} mt={'20px'} minHeight={'350px'}>
-                      <Tabs isFitted width={'100%'} colorScheme='black'>
+                      <Tabs isFitted width={'100%'} colorScheme='black' mb={8}>
                         <TabList>
                           <Tab color={'black'}>Sensor</Tab>
                           <Tab color={'black'}>Aktuator</Tab>

@@ -83,7 +83,7 @@ function CardAktuatorOperator(props) {
         h={"100%"}
         overflowY={"scroll"}
         className='dashboard-data'
-        display={dataTable.length ? "flex" : "block"}
+        display={dataTable.length > 1 ? "flex" : "block"}
         justifyContent={"center"}
       >
         {dataTable.length < 1 ? (

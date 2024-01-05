@@ -75,27 +75,19 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
     <Flex
       flexDirection="column"
       width="100%"
-      height="100%"
+      height="50%"
       borderRadius="10px"
       border="1px solid #E2E8F0"
+      overflowY={"auto"}
     >
-      <Text padding="30px">Jadwal Pendistribusian</Text>
+      <Text py="30px">Jadwal Peracikan</Text>
       <Flex
-        css={{
-          overflowY: "scroll",
-          "&::-webkit-scrollbar": {
-            width: "0.4em",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "transparent",
-          },
-        }}
         flexDirection="column"
         width="100%"
-        height="500px"
+        h={"100%"}
       >
         {jadwal.length < 1 ? (
-          <Flex h={'100%'} alignItems={'center'} justifyContent={'center'} overflow={'auto'}>
+          <Flex h={'100%'} alignItems={'center'} justifyContent={'center'} >
             <Text color={'grey'}>Tidak Ada penjadwalan</Text>
           </Flex>
         ) : (

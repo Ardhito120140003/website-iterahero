@@ -3,7 +3,7 @@ import {
   Text, Image, Flex, Wrap, WrapItem, Center, Box, Link as ChakraLink
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { Link as ReactRouterLink } from 'react-router-dom';
+import { Link as ReactRouterLink, useNavigate } from 'react-router-dom';
 import Loading from '../loading/loading';
 
 import './card_sensor.css';
@@ -29,6 +29,7 @@ function CardSensorOperator(props) {
   const [page, setPage] = useState(1)
   const [totalPage, setTotalPage] = useState(0)
   const role = useSelector(selectUser)
+  const navigate = useNavigate();
 
   const getPagination = async () => {
     // let url = `${base_url}${paginationMonitoring}${idApi}&&size=100`;
@@ -96,7 +97,7 @@ function CardSensorOperator(props) {
           h={"100%"}
           overflowY={"scroll"}
           className='dashboard-data'
-          display={dataTable.length ? "flex" : "block"}
+          display={dataTable.length ? "block" : "inherit"}
           justifyContent={"center"}
         >
           {dataTable.length < 1 ? (
@@ -109,8 +110,11 @@ function CardSensorOperator(props) {
               const sensorValue = matchedData ? matchedData.nilai : null
               const updatedAt = matchedData ? matchedData.updatedAt : null
               return (
-                <ChakraLink as={ReactRouterLink} to={role === 'admin' ? `/unit/dashboard/sensor/${item.id}` : ''}
-
+                <WrapItem onClick={(() => {
+                  if (role === 'admin') {
+                    navigate(`/unit/dashboard/sensor/${item.id}`)
+                  }
+                })}
                   bg="#ffff"
                   borderRadius="10px"
                   border="1px solid #E2E8F0"
@@ -119,8 +123,7 @@ function CardSensorOperator(props) {
                   px={'20px'}
                   cursor={role === 'admin' ? 'pointer' : 'default'}
                   key={index}
-                  // w={'48.5%'}
-                  w={{ base: '100%', sm: '100%', md: "100%", lg: "48%", xl: '48.5%', "2xl": "48.5%" }}>
+                  w={{ base: '100%', sm: '100%', md: "100%", lg: "48.5%" }}>
                   <Center
                     justifyContent="center"
                     flexDir="column"
@@ -151,7 +154,7 @@ function CardSensorOperator(props) {
                       </Text>
                     </Flex>
                   </Center>
-                </ChakraLink>
+                </WrapItem>
               )
             })
           )}

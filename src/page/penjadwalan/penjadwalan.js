@@ -9,6 +9,7 @@ import { routePageName, selectUrl } from '../../features/auth/authSlice';
 import { selectToken } from '../../features/auth/authSlice';
 import Loading from '../../component/loading/loading';
 import './penjadwalan.css';
+import CardJadwalAktuator from '../../component/card_jadwal/card_jadwal_aktuator';
 
 function Penjadwalan() {
   TabTitle('Penjadwalan - ITERA Hero');
@@ -91,8 +92,9 @@ function Penjadwalan() {
               style={cardStyle}
             />
           </Flex>
-          <Flex w={{ base:'100%', sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%"}} flex={1}>
+          <Flex w={{ base:'100%', sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%"}} flex={1} gap={4} flexDir={"column"}>
             <CardJadwal jadwal={data} deleteHandler={handleDelete} updateHandler={handleUpdate} style={cardStyle} />
+            <CardJadwalAktuator />
           </Flex>
         </Flex>
       )}

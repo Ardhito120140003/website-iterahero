@@ -37,7 +37,8 @@ function DetailTandon() {
     <>
       {id == null ? <Loading />
         : (
-          <Flex border={'3px solid #d9d9d9'} borderRadius={15} px={"10px"} mt={'10px'} height={'100%'}>
+          <Flex border={'3px solid #d9d9d9'} direction={{ base: "column", sm: 'column', md: 'row', lg: 'row', xl: 'row' }}
+            mt={5} gap={5} borderRadius={15} px={"10px"} height={'100%'} >
             <Tabs isFitted width={'100%'} colorScheme='black'>
               <TabList>
                 <Tab color={'black'}>Sensor</Tab>

@@ -11,7 +11,7 @@ import {
   AccordionIcon,
   Tabs, TabList, TabPanels, Tab, TabPanel, Icon, Image
 } from '@chakra-ui/react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import CardGreenhouse from '../../component/card_greenhouse/card_green';
@@ -28,6 +28,8 @@ import { selectToken } from '../../features/auth/authSlice';
 function DetailGreenHouse() {
   TabTitle('Detail Greenhouse - ITERA Hero');
   const { id } = useParams();
+  const location = useLocation();
+  console.log(location);
 
   const base_url = useSelector(selectUrl);
   const header = useSelector(selectToken)
@@ -42,34 +44,24 @@ function DetailGreenHouse() {
     <>
       {id == null ? <Loading />
         : (
-          <Flex border={'3px solid #d9d9d9'} borderRadius={15} px={"10px"} mt={'10px'} height={'100%'}>
-            <Tabs isFitted width={'100%'} colorScheme='black'>
+          <Flex border={'3px solid #d9d9d9'} direction={{ base: "column", sm: 'column', md: 'row', lg: 'row', xl: 'row' }}
+            mt={5} gap={5} borderRadius={15} px={"10px"} height={'100%'} >
+            <Tabs isFitted width={'100%'} colorScheme='black' defaultIndex={location.state === 'aktuator' ? 1 : 0} mb={8}>
               <TabList>
                 <Tab color={'black'}>Sensor</Tab>
                 <Tab color={'black'}>Aktuator</Tab>
               </TabList>
-              <TabPanels css={{
-                overflowY: 'scroll',
-                '&::-webkit-scrollbar': {
-                  width: '0.4em',
-                },
-                '&::-webkit-scrollbar-thumb': {
-                  backgroundColor: 'transparent',
-                },
-              }}
+              <TabPanels
                 width="100%"
-                height={"425px"}>
-       
-                <TabPanel alignItems={"center"} verticalAlign={"align"} justifyContent={"center"}>
-                    <CardSensorOperator
-                      data={{ alat: 'greenhouse', id: id }}
-                    />
+                height={"425px"}
+                justifyContent={"center"}
+                display={"flex"}
+              >
+                <TabPanel w={"100%"}>
+                  <CardSensorOperator data={{ alat: 'greenhouse', id: id }} />
                 </TabPanel>
-        
-                <TabPanel>
-                    <CardAktuatorOperator
-                      data={{ alat: 'greenhouse', id: id }}
-                    />
+                <TabPanel w={"100%"}>
+                  <CardAktuatorOperator data={{ alat: 'greenhouse', id: id }} />
                 </TabPanel>
               </TabPanels>
             </Tabs>
