@@ -77,11 +77,6 @@ const DashboardOperator = () => {
           dashboard.push(obj);
         }
         setDataApiDashboard(dashboard);
-        axios.get("http://localhost:6543/login")
-          .then(({ data }) => {
-            console.log(data)
-          })
-          .catch(({ response }) => console.log(response))
       })
       .catch(({ response }) => {
         // console.log("error", response);

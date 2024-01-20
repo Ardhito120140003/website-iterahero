@@ -18,12 +18,13 @@ import './value_aktuator.css';
 import { selectUrl } from '../../features/auth/authSlice';
 import { RiArrowRightSLine } from 'react-icons/ri';
 import { Link as ReactRouterLink } from 'react-router-dom';
+import { Switch } from '@chakra-ui/react';
 
 function ValueAktuatorOperator(props) {
   const base_url = useSelector(selectUrl);
   const idApi = props.data.id;
   const route = props.data.route;
-  const { life_cycle , automation, isAvailable } = props.data;
+  const { life_cycle , automation, isAvailable, isActive } = props.data;
   const [isLoading, setIsLoading] = useState(true);
   const [playbackRate, setPlaybackRate] = useState(0.75);
   const [play] = useSound(clickSound, {
@@ -46,13 +47,9 @@ function ValueAktuatorOperator(props) {
           m={'20px'}
           >
             <Image
-              // className="Image"
               w="70px"
-              // h="auto"
-              src={ automation ? '/On.png' : '/automation.png'
-              }
+              src={ !automation ? '/On.png' : '/automation.png'}
               alt="image"
-              // boxSize="100px"
             />
           </Flex>
           <Flex flexDir="row">
@@ -74,15 +71,15 @@ function ValueAktuatorOperator(props) {
             </Flex>
           </Flex>
           
-          <FormControl
+          {/* <FormControl
             mt="10px"
             alignContent="center"
             justify="center"
             columns={{ base: 2, lg: 4 }}
           >
             <Stack align="center" onClick={play} className="touchable">
-              {isLoading ? (
-                automation == 0 ? (
+              {!isLoading ? (
+                !automation ? (
                   <Switch
                     colorScheme="green"
                     size="lg"
@@ -90,20 +87,17 @@ function ValueAktuatorOperator(props) {
                       setIsLoading(true);
                       toogleSwitch();
                     }}
-                    value={status}
-                    isChecked={status == 1}
-                    isDisabled={
-                      !!(isOn == 'offline' || isOn == undefined || isOn == '')
-                    }
+                    isChecked={isActive}
+                    isDisabled={isAvailable}
                   />
                 ) : (
                   <Text color="var(--color-error)">Automation</Text>
                 )
               ) : null}
-            </Stack>
-          </FormControl>
-          <br />
-          { route === 'greenhouse' && <ChakraLink as={ReactRouterLink} to={`/unit/dashboard/aktuator/${idApi}`} className="touchable">
+            </Stack> */}
+          {/* </FormControl> */}
+          {/* { route === 'greenhouse' &&  */}
+          <ChakraLink as={ReactRouterLink} to={`/unit/dashboard/aktuator/${idApi}`} className="touchable">
             <Flex
               w="100%"
               h="40px"
@@ -111,20 +105,18 @@ function ValueAktuatorOperator(props) {
               justifyContent="center"
               backgroundColor="#09322D"
               borderRadius="34px"
-              paddingRight="10px"
-              paddingLeft="10px"
+              px={2}
+              my={4}
             >
               <Text color="white">Pengaturan</Text>
               <Icon
                 as={RiArrowRightSLine}
                 size="100%"
                 color="#FFFFFF"
-                marginRight="5px"
-                marginLeft="-10px"
               />
             </Flex>
           </ChakraLink>
-          }
+          {/* } */}
         </>
       )}
     </>

@@ -62,7 +62,7 @@ function Penjadwalan() {
       }
     })
       .then(response => {
-        // console.log(response);
+        console.log(response);
       })
       .catch(err => {
         console.error(err)

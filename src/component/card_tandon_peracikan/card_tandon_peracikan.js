@@ -205,7 +205,7 @@ function CardStatusPeracikan({ tandon, sensor }) {
                       mt={"20px"}
                       w={"100%"}
                     >
-                      <Grid templateColumns="repeat(2, 1fr)">
+                      <Grid templateColumns="repeat(2, 1fr)" fontSize={'sm'}>
                         <Text color="black" textAlign="left">
                           Status Tandon
                         </Text>
@@ -224,7 +224,7 @@ function CardStatusPeracikan({ tandon, sensor }) {
                         const matchedData = sensorRealtime.find(obj => obj.channel === item.channel || obj.gpio === item.GPIO);
                         const sensorValue = matchedData ? matchedData.nilai : null
                         return (
-                          <Grid key={index} templateColumns="repeat(2, 1fr)" justifyContent={'center'}>
+                          <Grid key={index} templateColumns="repeat(2, 1fr)" justifyContent={'center'} fontSize={'sm'}> 
                             <Text color="black" textAlign="left">
                               {item.name}
                             </Text>
@@ -235,7 +235,7 @@ function CardStatusPeracikan({ tandon, sensor }) {
                         )
                       })}
 
-                      <Grid templateColumns="repeat(2, 1fr)">
+                      <Grid templateColumns="repeat(2, 1fr)" fontSize={'sm'}>
                         <Text color="black" textAlign="left">
                           Volume
                         </Text>

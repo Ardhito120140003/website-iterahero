@@ -34,6 +34,7 @@ import { BiTrash } from "react-icons/bi";
 import { motion, AnimatePresence } from "framer-motion";
 //import { RiPencilFill } from 'react-icons/ri';
 import CustomCheckbox from "../card_form_penjadwalan/checkbox";
+import { Spinner } from "@chakra-ui/react";
 
 const weekdays = [
   { label: 'Senin', value: 1 },
@@ -57,6 +58,8 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
   const [target, setTarget] = useState(null);
   const [hari, setHari] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
+  const [switchClicked, setSwitchClicked] = useState(0)
+  const [deleteClick, setDeleteClick] = useState(0)
 
   const handleEditClick = (index) => {
     setEditingIndex(index);
@@ -184,27 +187,54 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                   <Flex mr={"10px"} gap={"10px"}>
 
                     <Flex alignSelf="center">
-                      <Switch isChecked={item.isActive} size={"sm"} onChange={() => {
-                        updateHandler(item.id)
-                      }}
-                      />
+                      {switchClicked === item.id ? (
+                        <Spinner
+                          thickness='4px'
+                          speed='0.65s'
+                          emptyColor='gray.200'
+                          color='blue.500'
+                          size='md'
+                        />
+                      ) : (
+                        <Switch isChecked={item.isActive} size={"sm"} onChange={() => {
+                          console.log(item.id)
+                          setSwitchClicked(item.id)
+                          updateHandler(item.id)
+                          setTimeout(() => {
+                            setSwitchClicked(0)
+                          }, 100)
+                        }}
+                        />
+                      )}
+
                     </Flex>
 
                     <Flex alignSelf="center">
-                      <Icon
-                        as={BiTrash}
-                        color="#14453E"
-                        w="20px"
-                        h="20px"
-                        alignSelf="center"
-                        onClick={() => {
-                          onDeleteModalOpen();
-                          setTarget(item.id);
-                        }}
-                      />
+                      {deleteClick === item.id ? (
+                        <Spinner
+                          thickness='4px'
+                          speed='0.65s'
+                          emptyColor='gray.200'
+                          color='blue.500'
+                          size='md'
+                        />
+                      ) : (
+                        <Icon
+                          as={BiTrash}
+                          color="#14453E"
+                          w="20px"
+                          h="20px"
+                          alignSelf="center"
+                          onClick={() => {
+                            onDeleteModalOpen();
+                            setTarget(item.id);
+                          }}
+                        />
+                      )}
+
                     </Flex>
 
-{/* 
+                    {/* 
                     <Flex alignSelf="center">
                       <Icon
                         as={RiPencilFill}
@@ -217,54 +247,54 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
 
                   </Flex>
 
-                  <Modal 
-                  isOpen={isEditModalOpen} 
-                  onClose={() => { onEditModalClose(); setEditingIndex(null); }}
-                  size={{base:'sm',md:'xl'}}>
+                  <Modal
+                    isOpen={isEditModalOpen}
+                    onClose={() => { onEditModalClose(); setEditingIndex(null); }}
+                    size={{ base: 'sm', md: 'xl' }}>
                     {/* ... (existing code) */}
                     <ModalOverlay />
                     <ModalContent p={"10px"}>
                       <ModalHeader alignSelf="center">Ubah Jadwal</ModalHeader>
                       <ModalCloseButton />
-                
-                    <ModalBody pb={6}>
-                      <FormControl my="10px" color="black">
-                        <Text>Waktu Penyiraman</Text>
-                        <Input
-                          type="time"
-                          mt={'10px'}
-                          defaultValue={editingIndex !== null ? jadwal[editingIndex].waktu : ''}
-                        />
-                      </FormControl>
 
-                      <FormControl my="10px" color="black">
-                        <Text>Durasi per penyiraman (menit)</Text>
-                        <Input
-                          type="number"
-                          mt={'10px'}
-                          defaultValue={editingIndex !== null ? jadwal[editingIndex].resep.interval : ''}
-                        />
-                      </FormControl>
+                      <ModalBody pb={6}>
+                        <FormControl my="10px" color="black">
+                          <Text>Waktu Penyiraman</Text>
+                          <Input
+                            type="time"
+                            mt={'10px'}
+                            defaultValue={editingIndex !== null ? jadwal[editingIndex].waktu : ''}
+                          />
+                        </FormControl>
 
-                      <FormControl color="black">
-                        <Text>Ulangi</Text>
-                        <Wrap
-                          marginTop="10px"
-                          gap={2}
-                        >
-                          {weekdays.map((weekday) => (
-                            <CustomCheckbox
-                              label={weekday.label}
-                              value={weekday.value}
-                              onSelect={handleDay}
-                              key={weekday.value}
-                              isChecked={editingIndex !== null && jadwal[editingIndex].hari.includes(weekday.value)}
-                            />
-                          ))}
-                        </Wrap>
-                      </FormControl>
-                    </ModalBody>
-                    <ModalFooter>
+                        <FormControl my="10px" color="black">
+                          <Text>Durasi per penyiraman (menit)</Text>
+                          <Input
+                            type="number"
+                            mt={'10px'}
+                            defaultValue={editingIndex !== null ? jadwal[editingIndex].resep.interval : ''}
+                          />
+                        </FormControl>
+
+                        <FormControl color="black">
+                          <Text>Ulangi</Text>
+                          <Wrap
+                            marginTop="10px"
+                            gap={2}
+                          >
+                            {weekdays.map((weekday) => (
+                              <CustomCheckbox
+                                label={weekday.label}
+                                value={weekday.value}
+                                onSelect={handleDay}
+                                key={weekday.value}
+                                isChecked={editingIndex !== null && jadwal[editingIndex].hari.includes(weekday.value)}
+                              />
+                            ))}
+                          </Wrap>
+                        </FormControl>
+                      </ModalBody>
+                      <ModalFooter>
                         <Button
                           onClick={() => { onEditModalClose(); }}
                           backgroundColor="#09322D"
@@ -285,7 +315,7 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                     isOpen={isDeleteModalOpen}
                     leastDestructiveRef={cancelRef}
                     onClose={onDeleteModalCLose}
-                    size={{base:'sm',md:'xl'}}
+                    size={{ base: 'sm', md: 'xl' }}
                   >
                     <AlertDialogOverlay>
                       <AlertDialogContent>
@@ -307,7 +337,9 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                             ml={3}
                             onClick={() => {
                               onDeleteModalCLose();
+                              setDeleteClick(item.id)
                               deleteHandler(target);
+                              setDeleteClick(0)
                             }}
                           >
                             Delete

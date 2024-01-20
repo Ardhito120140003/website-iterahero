@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef }  from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Formik, Field, Form } from 'formik';
 import {
   Flex,
@@ -59,14 +59,14 @@ function CardFormPeracikan({ tandon }) {
       .catch((error) => {
         console.error('Error fetching formula data:', error);
       });
-  }, [onOpenSaveModal,action]);
+  }, [onOpenSaveModal, action]);
 
   const handleRacikSubmit = async (id) => {
     // console.log('ID Form Values:', id);
 
     axios.post(base_url + 'api/v1/peracikan', {
       resep: id,
-      id: tandon.id,
+      id_tandon: tandon.id,
     }, {
       headers: {
         Authorization: `Bearer ${header}`
@@ -80,20 +80,24 @@ function CardFormPeracikan({ tandon }) {
       });
   };
 
-  
+
   const handleUpdate = async (
     nama,
-    ph,
-    ppm,
+    ph_min,
+    ph_max,
+    ppm_min,
+    ppm_max,
     volume,
     id,
   ) => {
     // console.log(id)
     axios.patch(`${base_url}api/v1/resep`, {
       nama: nama,
-      ppm: parseFloat(ppm),
-      ph: parseFloat(ph),
-      volume: parseFloat(volume),
+      ph_min: parseFloat(ph_min),
+      ph_max: parseFloat(ph_max),
+      ppm_min: parseFloat(ppm_min),
+      ppm_max: parseFloat(ppm_max),
+      volume: parseFloat(volume)
     }, {
       params: {
         id,
@@ -113,14 +117,18 @@ function CardFormPeracikan({ tandon }) {
 
   const handleSaveSubmit = async (
     nama,
-    ph,
-    ppm,
+    ph_min,
+    ph_max,
+    ppm_min,
+    ppm_max,
     volume,
-    ) => {
+  ) => {
     axios.post(`${base_url}api/v1/resep`, {
       nama: nama,
-      ph: parseFloat(ph),
-      ppm: parseFloat(ppm),
+      ph_min: parseFloat(ph_min),
+      ph_max: parseFloat(ph_max),
+      ppm_min: parseFloat(ppm_min),
+      ppm_max: parseFloat(ppm_max),
       volume: parseFloat(volume)
     }, {
       headers: {
@@ -134,7 +142,7 @@ function CardFormPeracikan({ tandon }) {
         console.error('Error menyimpan formula :', error);
       });
 
-      // console.log('simpan',nama,ph,ppm,volume);
+    // console.log('simpan',nama,ph,ppm,volume);
   };
 
   const handleDelete = async (id) => {
@@ -144,7 +152,7 @@ function CardFormPeracikan({ tandon }) {
         Authorization: `Bearer ${header}`,
       },
       params: {
-        id : id
+        id: id
       }
     })
       .then((response) => {
@@ -162,8 +170,10 @@ function CardFormPeracikan({ tandon }) {
         id: '',
         formula: '',
         newFormulaName: '',
-        ph: '',
-        ppm: '',
+        ph_min: '',
+        ph_max: '',
+        ppm_min: '',
+        ppm_max: '',
         volume: '',
       }}
 
@@ -172,11 +182,17 @@ function CardFormPeracikan({ tandon }) {
         if (!values.newFormulaName) {
           errors.newFormulaName = 'Nama formula harus diisi';
         }
-        if (!values.ph) {
-          errors.ph = 'PH harus diisi';
+        if (!values.ph_min) {
+          errors.ph_min = 'PH Min harus diisi';
         }
-        if (!values.ppm) {
-          errors.ppm = 'PPM harus diisi';
+        if (!values.ph_max) {
+          errors.ph_max = 'PH Max harus diisi';
+        }
+        if (!values.ppm_min) {
+          errors.ppm_min = 'PPM Min harus diisi';
+        }
+        if (!values.ppm_max) {
+          errors.ppm_max = 'PPM Max harus diisi';
         }
         if (!values.volume) {
           errors.volume = 'Volume harus diisi';
@@ -189,15 +205,15 @@ function CardFormPeracikan({ tandon }) {
 
       onSubmit={(values, actions) => {
         // console.log('values yang disubmit :',values);
-       
-           if (values.formula === 'Tambah Formula') {
-              onOpenSaveModal();
-           } else if (values.formula !== 'Tambah Formula' && values.formula !== '') {
-              onOpenRacikModal(values.id);
-           }
-     
+
+        if (values.formula === 'Tambah Formula') {
+          onOpenSaveModal();
+        } else if (values.formula !== 'Tambah Formula' && values.formula !== '') {
+          onOpenRacikModal(values.id);
+        }
+
         actions.setSubmitting(false);
-     }}
+      }}
     >
       {({ values, errors, touched, isValid, setFieldValue, setTouched }) => (
         <Form>
@@ -218,14 +234,18 @@ function CardFormPeracikan({ tandon }) {
                         if (isNaN(idx)) {
                           setFieldValue('id', '');
                           setFieldValue('newFormulaName', '');
-                          setFieldValue('ph', '');
-                          setFieldValue('ppm', '');
+                          setFieldValue('ph_min', '');
+                          setFieldValue('ph_max', '');
+                          setFieldValue('ppm_min', '');
+                          setFieldValue('ppm_max', '');
                           setFieldValue('volume', '');
                         } else {
                           setFieldValue('id', dataApi[idx].id);
                           setFieldValue('newFormulaName', dataApi[idx].nama);
-                          setFieldValue('ph', dataApi[idx].ph);
-                          setFieldValue('ppm', dataApi[idx].ppm);
+                          setFieldValue('ph_min', dataApi[idx].ph_min);
+                          setFieldValue('ppm_min', dataApi[idx].ppm_min);
+                          setFieldValue('ph_max', dataApi[idx].ph_max);
+                          setFieldValue('ppm_max', dataApi[idx].ppm_max);
                           setFieldValue('volume', dataApi[idx].volume);
                           setTouched({}, false)
                         }
@@ -238,9 +258,9 @@ function CardFormPeracikan({ tandon }) {
                           {data.nama}
                         </option>
                       ))}
-                      <option 
-                      //style={{ backgroundColor: '#09322D', color: 'white' }} 
-                      value="Tambah Formula">--Tambah Formula--
+                      <option
+                        //style={{ backgroundColor: '#09322D', color: 'white' }} 
+                        value="Tambah Formula">--Tambah Formula--
                       </option>
                     </Select>
                     <FormErrorMessage>{errors.formula}</FormErrorMessage>
@@ -270,43 +290,83 @@ function CardFormPeracikan({ tandon }) {
               </Box>
             )}
 
-            <Box>
-              <Field name="ph">
-                {({ field }) => (
-                  <FormControl isInvalid={errors.ph && touched.ph && values.formula} isReadOnly={!Boolean(values.formula)}>
-                    <FormLabel color={'black'}>PH Value</FormLabel>
-                    <Input
-                      {...field}
-                      type="number"
-                      value={values.ph}
-                      onChange={(e) => setFieldValue('ph', e.target.value)}
-                      style={{ color: 'black' }}
-                      placeholder="masukkan ph value"
-                    />
-                    <FormErrorMessage>{errors.ph}</FormErrorMessage>
-                  </FormControl>
-                )}
-              </Field>
-            </Box>
+            <Flex direction={'column'}>
+              <Text>PH</Text>
+              <Flex align={"center"}>
+                <Field name="ph_min">
+                  {({ field }) => (
+                    <FormControl isInvalid={errors.ph_min && touched.ph_min && values.formula} isReadOnly={!Boolean(values.formula)}>
+                      <FormLabel color={'black'} textAlign={'center'}>Min</FormLabel>
+                      <Input
+                        {...field}
+                        type="number"
+                        value={values.ph_min}
+                        onChange={(e) => setFieldValue('ph_min', e.target.value)}
+                        style={{ color: 'black' }}
+                        placeholder="nilai minimal ph"
+                      />
+                      <FormErrorMessage>{errors.ph_min}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+                <Text mt={{ base: "6%", sm: "5%"}}> - </Text>
+                <Field name="ph_max">
+                  {({ field }) => (
+                    <FormControl isInvalid={errors.ph_max && touched.ph_max && values.formula} isReadOnly={!Boolean(values.formula)}>
+                      <FormLabel color={'black'} textAlign={'center'}>Max</FormLabel>
+                      <Input
+                        {...field}
+                        type="number"
+                        value={values.ph_max}
+                        onChange={(e) => setFieldValue('ph_max', e.target.value)}
+                        style={{ color: 'black' }}
+                        placeholder="nilai maksimal ph"
+                      />
+                      <FormErrorMessage>{errors.ph_max}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+              </Flex>
+            </Flex>
 
-            <Box>
-              <Field name="ppm">
-                {({ field }) => (
-                  <FormControl isInvalid={errors.ppm && touched.ppm && values.formula} isReadOnly={!Boolean(values.formula)}>
-                    <FormLabel color={'black'}>PPM Value</FormLabel>
-                    <Input
-                      {...field}
-                      type="number"
-                      value={values.ppm}
-                      onChange={(e) => setFieldValue('ppm', e.target.value)}
-                      style={{ color: 'black' }}
-                      placeholder="masukkan ppm value"
-                    />
-                    <FormErrorMessage>{errors.ppm}</FormErrorMessage>
-                  </FormControl>
-                )}
-              </Field>
-            </Box>
+            <Flex flexDirection={"column"}>
+              <Text>PPM</Text>
+              <Flex align={"center"}>
+                <Field name="ppm_min">
+                  {({ field }) => (
+                    <FormControl isInvalid={errors.ppm_min && touched.ppm_min && values.formula} isReadOnly={!Boolean(values.formula)}>
+                      <FormLabel color={'black'} textAlign={'center'}>Min</FormLabel>
+                      <Input
+                        {...field}
+                        type="number"
+                        value={values.ppm_min}
+                        onChange={(e) => setFieldValue('ppm_min', e.target.value)}
+                        style={{ color: 'black' }}
+                        placeholder="nilai minimal ppm"
+                      />
+                      <FormErrorMessage>{errors.ppm_min}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+                <Text mt={{ base: "6%", sm: "5%"}}> - </Text>
+                <Field name="ppm_max">
+                  {({ field }) => (
+                    <FormControl isInvalid={errors.ppm_max && touched.ppm_max && values.formula} isReadOnly={!Boolean(values.formula)}>
+                      <FormLabel color={'black'} textAlign={'center'}>Max</FormLabel>
+                      <Input
+                        {...field}
+                        type="number"
+                        value={values.ppm_max}
+                        onChange={(e) => setFieldValue('ppm_max', e.target.value)}
+                        style={{ color: 'black' }}
+                        placeholder="nilai maksimal ppm"
+                      />
+                      <FormErrorMessage>{errors.ppm_max}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
+              </Flex>
+            </Flex>
 
             <Box>
               <Field name="volume">
@@ -362,12 +422,12 @@ function CardFormPeracikan({ tandon }) {
                 </Button>
               )}
 
-              {(values.formula !== 'Tambah Formula' &&  values.formula !== '')  && (
+              {(values.formula !== 'Tambah Formula' && values.formula !== '') && (
                 <Button
                   type="button"
                   backgroundColor="#09322D"
                   w={'100%'}
-                  
+
                   onClick={onOpenUpdateModal}
                 >
                   Simpan Perubahan
@@ -388,7 +448,7 @@ function CardFormPeracikan({ tandon }) {
           </Flex>
 
           {/* Modal Racik */}
-          <Modal isOpen={isOpenRacikModal} onClose={onCloseRacikModal} size={{base:'sm',md:'xl'}}>
+          <Modal isOpen={isOpenRacikModal} onClose={onCloseRacikModal} size={{ base: 'sm', md: 'xl' }}>
             <ModalOverlay />
             <ModalContent>
               <ModalHeader alignSelf="center">Proses Peracikan</ModalHeader>
@@ -412,7 +472,7 @@ function CardFormPeracikan({ tandon }) {
           </Modal>
 
           {/* Modal Update */}
-          <Modal isOpen={isOpenUpdateModal} onClose={onCloseUpdateModal} size={{base:'sm',md:'xl'}}>
+          <Modal isOpen={isOpenUpdateModal} onClose={onCloseUpdateModal} size={{ base: 'sm', md: 'xl' }}>
             <ModalOverlay />
             <ModalContent>
               <ModalHeader alignSelf="center">Update Formula</ModalHeader>
@@ -422,7 +482,7 @@ function CardFormPeracikan({ tandon }) {
               </ModalBody>
               <ModalFooter>
                 <Button
-                  onClick={() => { onCloseUpdateModal(); handleUpdate(values.newFormulaName,values.ph,values.ppm,values.volume,values.id); }}
+                  onClick={() => { onCloseUpdateModal(); handleUpdate(values.newFormulaName, values.ph_min, values.ph_max, values.ppm_min, values.ppm_max, values.volume, values.id); }}
                   backgroundColor="#09322D"
                   color="white"
                   mr="3"
@@ -431,15 +491,15 @@ function CardFormPeracikan({ tandon }) {
                 >
                   Update
                 </Button>
-                <Button 
-                onClick={onCloseUpdateModal}
+                <Button
+                  onClick={onCloseUpdateModal}
                 >Cancel</Button>
               </ModalFooter>
             </ModalContent>
           </Modal>
 
           {/* Modal Save */}
-          <Modal isOpen={isOpenSaveModal} onClose={onCloseSaveModal} size={{base:'sm',md:'xl'}}>
+          <Modal isOpen={isOpenSaveModal} onClose={onCloseSaveModal} size={{ base: 'sm', md: 'xl' }}>
             <ModalOverlay />
             <ModalContent>
               <ModalHeader alignSelf="center">Simpan Formula</ModalHeader>
@@ -449,7 +509,7 @@ function CardFormPeracikan({ tandon }) {
               </ModalBody>
               <ModalFooter>
                 <Button
-                  onClick={() => { onCloseSaveModal(); handleSaveSubmit(values.newFormulaName,values.ph,values.ppm,values.volume); }}
+                  onClick={() => { onCloseSaveModal(); handleSaveSubmit(values.newFormulaName, values.ph_min, values.ph_max, values.ppm_min, values.ppm_max, values.volume); }}
                   backgroundColor="#09322D"
                   color="white"
                   mr="3"
@@ -458,8 +518,8 @@ function CardFormPeracikan({ tandon }) {
                 >
                   Simpan Formula
                 </Button>
-                <Button 
-                onClick={onCloseSaveModal}
+                <Button
+                  onClick={onCloseSaveModal}
                 >Cancel</Button>
               </ModalFooter>
             </ModalContent>
@@ -470,7 +530,7 @@ function CardFormPeracikan({ tandon }) {
             isOpen={isOpenDeleteModal}
             leastDestructiveRef={cancelRef}
             onClose={onCLoseDeleteModal}
-            size={{base:'sm',md:'xl'}}
+            size={{ base: 'sm', md: 'xl' }}
           >
             <AlertDialogOverlay>
               <AlertDialogContent>

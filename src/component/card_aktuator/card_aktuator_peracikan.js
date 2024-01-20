@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Text, Image, Flex, Wrap, WrapItem, Center, Switch
+  Text, Image, Flex, Wrap, WrapItem, Switch
 } from '@chakra-ui/react';
 import axios from 'axios';
-// import { paginationMonitoring } from '../../Utility/api_link';
 import Loading from '../loading/loading';
 
 import './card_aktuator.css';
@@ -12,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { selectToken } from '../../features/auth/authSlice';
 import ValueAktuatorOperator from '../value_aktuator/value_aktuator_operator';
 import Timer from '../timer/Timer';
+import { Spinner } from '@chakra-ui/react';
 
 function CardAktuatorOperator(props) {
   const idApi = props.data.id;
@@ -24,6 +24,7 @@ function CardAktuatorOperator(props) {
   const [totalPage, setTotalPage] = useState(0)
   const [page, setPage] = useState(1)
   const [kontrol, setKontrol] = useState(false)
+  const [sliderClick, setSliderClick] = useState(0)
 
   const getPagination = async () => {
     let url = `${base_url}api/v1/${route}/${idApi}/actuator`;
@@ -58,6 +59,7 @@ function CardAktuatorOperator(props) {
   }, [kontrol, idApi, route]);
 
   const handleswitch = async (id) => {
+    setSliderClick(id)
     axios.post(base_url + "api/v1/kontrol", {}, {
       params: {
         id: parseInt(id)
@@ -67,10 +69,16 @@ function CardAktuatorOperator(props) {
       }
     })
       .then(response => {
+        setKontrol(!kontrol)
         // console.log(response.data.message)
       })
       .catch(err => {
         console.error(err);
+      })
+      .finally(() => {
+        // setTimeout(() => {
+          setSliderClick(0)
+        // }, 500);
       })
   }
 
@@ -118,18 +126,28 @@ function CardAktuatorOperator(props) {
                   />
                   <Text color={'black'}>{item.name}</Text>
                 </Flex>
-                <Switch
-                  onChange={async () => {
-                    await handleswitch(item.id)
-                    setKontrol(!kontrol)
-                  }} isChecked={item.status} />
+                {sliderClick === item.id ? (
+                  <Spinner
+                    thickness='4px'
+                    speed='0.65s'
+                    emptyColor='gray.200'
+                    color='blue.500'
+                    size='md'
+                  />
+                ) : (
+                  <Switch
+                    onChange={async () => {
+                      await handleswitch(item.id)
+                    }} isChecked={item.microcontroller.status} />
+                )}
+
               </Flex>
               <Flex
                 px={"20px"}
                 w={'100%'}
                 textColor={"gray"}
               >
-                {item.status && <Timer aktuator={item} />}
+                {item.microcontroller.status && <Timer aktuator={item} />}
               </Flex>
             </WrapItem>
           ))

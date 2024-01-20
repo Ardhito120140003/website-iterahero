@@ -70,6 +70,12 @@ function Peracikan() {
   useEffect(() => {
     getTandon()
     dispatch(routePageName("Peracikan"));
+
+    const interval = setInterval(() => {
+      getTandon()
+    }, 1500)
+
+    return (() => clearInterval(interval));
   }, []);
 
   return (
@@ -164,7 +170,7 @@ function Peracikan() {
               >
                 <CardStatusPeracikan
                   tandon={dataTandon.find((tandon) => tandon.id == selected)}
-                  sensor={data}
+                  sensor={data.filter((item, index) => !item.name.toLowerCase().includes("waterflow"))}
                 />
               </Flex>
 

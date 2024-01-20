@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Text, Image, Flex, Wrap, WrapItem, Center, Switch
+  Text, Image, Flex, Wrap, WrapItem, Center, Switch, Spinner
 } from '@chakra-ui/react';
 import axios from 'axios';
 // import { paginationMonitoring } from '../../Utility/api_link';
@@ -23,7 +23,8 @@ function CardAktuatorOperator(props) {
   const [totalPage, setTotalPage] = useState(0)
   const [page, setPage] = useState(1)
   const [kontrol, setKontrol] = useState(false)
-  
+  const [sliderClick, setSliderClick] = useState(0)
+
   const getPagination = async () => {
     let url = `${base_url}api/v1/${route}/${idApi}/actuator`;
     await axios.get(url, {
@@ -53,10 +54,11 @@ function CardAktuatorOperator(props) {
       getPagination()
     }, 1000)
 
-    return(() => clearInterval(interval))
+    return (() => clearInterval(interval))
   }, [kontrol, idApi, route]);
 
   const handleswitch = async (id) => {
+    setSliderClick(id)
     axios.post(base_url + "api/v1/kontrol", {}, {
       params: {
         id: parseInt(id)
@@ -70,6 +72,12 @@ function CardAktuatorOperator(props) {
       })
       .catch(err => {
         console.error(err);
+      })
+      .finally(() => {
+        setKontrol(!kontrol)
+        setTimeout(() => {
+          setSliderClick(0)
+        }, 500);
       })
   }
 
@@ -88,8 +96,8 @@ function CardAktuatorOperator(props) {
       >
         {dataTable.length < 1 ? (
           <Flex alignItems={"center"} justifyContent={"center"}>
-              <Text>Tidak ada aktuator</Text>
-            </Flex>
+            <Text>Tidak ada aktuator</Text>
+          </Flex>
         ) : (
           dataTable.map((item, index) => (
             <WrapItem
@@ -127,17 +135,31 @@ function CardAktuatorOperator(props) {
                       unit: item.unit_measurement,
                       max: item.range_max,
                       min: item.range_min,
-                      isAvailable: item.status,
-                      automation: item.automation,
+                      isAvailable: item.microcontroller.status,
+                      automation: item.AutomationSchedule || item.AutomationSensor,
+                      isActive: item.isActive,
                       route
                     }}
                   />
                 )}
-
-                <Switch mt={'20px'} onChange={async () => {
-                  await handleswitch(item.id)
-                  setKontrol(!kontrol)
-                }} isChecked={item.status} />
+                {sliderClick === item.id ? (
+                  <Spinner
+                    thickness='4px'
+                    speed='0.65s'
+                    emptyColor='gray.200'
+                    color='blue.500'
+                    size='lg'
+                  />
+                ) : (
+                  <Switch
+                    colorScheme="green"
+                    size="lg"
+                    onChange={async () => {
+                      await handleswitch(item.id)
+                    }} isChecked={item.isActive}
+                    disabled={!item.microcontroller.status}
+                  />
+                )}
 
               </Center>
             </WrapItem>

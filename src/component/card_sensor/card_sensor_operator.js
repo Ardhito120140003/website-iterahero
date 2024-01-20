@@ -44,6 +44,7 @@ function CardSensorOperator(props) {
       },
     })
       .then(({ data }) => {
+        console.log(data)
         setCursor(data.cursor);
         setDataTable(data.data);
         setTotalPage(data.totalPage);
@@ -146,7 +147,7 @@ function CardSensorOperator(props) {
                         {item.unit_measurement}
                       </Text>
                     </Flex>
-                    <Flex><Text fontSize={12} color={item.status ? 'var(--color-secondary-variant)' : 'var(--color-error)'}>Status: {item.status ? 'Online' : 'Offline'}</Text></Flex>
+                    <Flex><Text fontSize={12} color={item.microcontroller.status ? 'var(--color-secondary-variant)' : 'var(--color-error)'}>Status: {item.microcontroller.status ? 'Online' : 'Offline'}</Text></Flex>
                     <Flex flexDir="column" justifyContent="flex-start" mx={'40px'}>
                       <Text fontSize="var(--caption)">Diperbarui : </Text>
                       <Text fontSize="var(--caption)">
