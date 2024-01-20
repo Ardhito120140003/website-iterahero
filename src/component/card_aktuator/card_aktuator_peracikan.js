@@ -138,7 +138,7 @@ function CardAktuatorOperator(props) {
                   <Switch
                     onChange={async () => {
                       await handleswitch(item.id)
-                    }} isChecked={item.microcontroller.status} />
+                    }} isChecked={item.isActive} />
                 )}
 
               </Flex>
@@ -147,7 +147,7 @@ function CardAktuatorOperator(props) {
                 w={'100%'}
                 textColor={"gray"}
               >
-                {item.microcontroller.status && <Timer aktuator={item} />}
+                {item.isActive && <Timer aktuator={item} />}
               </Flex>
             </WrapItem>
           ))
