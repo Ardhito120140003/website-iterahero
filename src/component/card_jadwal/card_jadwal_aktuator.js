@@ -69,7 +69,6 @@ const CardJadwalAktuator = () => {
                 }
             })
                 .then(({ data }) => {
-                    console.log(data)
                     setData(data.data.filter((item) => item.aktuator.type === "Selenoid"))
                 })
                 .catch(({ response }) => {
@@ -124,7 +123,6 @@ const CardJadwalAktuator = () => {
                             ) : (
                                 <AnimatePresence>
                                     {data.map((item, index) => {
-                                    console.log(item)
                                     return (
                                         <motion.div
                                             key={index}
