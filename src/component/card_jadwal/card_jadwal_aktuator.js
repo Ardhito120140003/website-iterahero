@@ -123,7 +123,9 @@ const CardJadwalAktuator = () => {
                                 </Flex>
                             ) : (
                                 <AnimatePresence>
-                                    {data.map((item, index) => (
+                                    {data.map((item, index) => {
+                                    console.log(item)
+                                    return (
                                         <motion.div
                                             key={index}
                                             initial={{ opacity: 0 }}
@@ -185,7 +187,7 @@ const CardJadwalAktuator = () => {
                                                                         </Flex>
                                                                         <Flex direction={"column"} alignItems={"start"}>
                                                                             <Text color="black"> {item.aktuator.name} </Text>
-                                                                            <Text color="black"> {item.aktuator.greenhouse.name} </Text>
+                                                                            <Text color="black"> {item.aktuator.greenhouse ? item.aktuator.greenhouse.name : '-'} </Text>
                                                                             <Text color="black"> {item.duration} Menit</Text>
                                                                             <Text color="black" align={'left'}> {item.startTime} </Text>
                                                                             <Text color="black" align={'left'}> {item.interval} Jam </Text>
@@ -217,7 +219,7 @@ const CardJadwalAktuator = () => {
                                                 </Accordion>
                                             </Flex>
                                         </motion.div>
-                                    ))}
+                                    )})}
                                 </AnimatePresence>
                             ))}
                     </Flex>

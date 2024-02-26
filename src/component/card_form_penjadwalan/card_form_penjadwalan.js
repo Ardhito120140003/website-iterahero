@@ -23,7 +23,7 @@ import {
 import { Formik, Field, Form, FieldArray } from 'formik'; // Import FieldArray
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { selectUrl } from '../../features/auth/authSlice';
+import { selectUrl, selectUser } from '../../features/auth/authSlice';
 import CustomCheckbox from './checkbox';
 import { BiTrash } from 'react-icons/bi';
 import { selectToken } from '../../features/auth/authSlice';
@@ -53,6 +53,7 @@ function CardFormPenjadwalan({ updateAction }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const base_url = useSelector(selectUrl);
   const header = useSelector(selectToken)
+  const role = useSelector(selectUser);
   const [dataApi, setDataApi] = useState([]);
   const [dataApiGreenhouse, setDataApiGreenhouse] = useState([]);
   const [buttonLoading, setButtonLoading] = useState(false)
@@ -123,7 +124,7 @@ function CardFormPenjadwalan({ updateAction }) {
         // console.log(payload);
         axios.post(base_url + "api/v1/penjadwalan", {
           resep: parseInt(payload.resep),
-          id_tandon: 1,
+          id_tandon: role === 'admin' ? 1 : 2,
           waktu: payload.waktu,
           hari: payload.hari,
           durasi: payload.durasi,

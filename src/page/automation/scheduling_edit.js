@@ -47,7 +47,7 @@ function ScheduleEdit() {
       }
     })
     .then(({ data }) => {
-      // console.log(data)
+      console.log(data)
       setDataSchedule(data.data)
     })
     .catch(({ response }) => console.error(response))

@@ -110,6 +110,7 @@ function CardSensorOperator(props) {
               const matchedData = sensorRealtime.find(obj => obj.channel === item.channel || obj.gpio === item.GPIO);
               const sensorValue = matchedData ? matchedData.nilai : null
               const updatedAt = matchedData ? matchedData.updatedAt : null
+              console.log(item)
               return (
                 <WrapItem onClick={(() => {
                   if (role === 'admin') {
