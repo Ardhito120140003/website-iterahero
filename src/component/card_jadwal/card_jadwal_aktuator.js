@@ -39,7 +39,7 @@ const CardJadwalAktuator = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [isError, setIsError] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [greenhouse, setGreenhouse] = useState([]);
+    const [tandon, setTandon] = useState([]);
     const [modalLoading, setModalLoading] = useState(true)
     const navigate = useNavigate();
 
@@ -50,7 +50,7 @@ const CardJadwalAktuator = () => {
                 Authorization: "Bearer " + token
             }
         })
-            .then(({ data }) => setGreenhouse(data.data))
+            .then(({ data }) => setTandon(data.data))
             .catch(({ response }) => console.error(response))
             .finally(() => {
                 setModalLoading(false)
@@ -233,14 +233,14 @@ const CardJadwalAktuator = () => {
                             <Loading />
                         ) : (
                             <Wrap spacing={"10px"}>
-                                {greenhouse.map((item, index) => (
+                                {tandon.map((item, index) => (
                                     <WrapItem flexDirection={"column"} w={"30%"} h={"280px"} cursor={"default"} key={index} >
                                         <Card gap={4} boxShadow="0px 0.1px 2px rgba(0, 0, 0, 0.25)" borderRadius={8} alignItems={"center"}>
                                             <CardHeader textAlign={"center"}>{item.nama}</CardHeader>
                                             <CardBody justifyContent={"center"} display={"flex"} flexDir={"column"} gap={4}>
                                                 <Image src={item.image} />
                                                 <Button onClick={() => {
-                                                    navigate("/unit/greenhouse/detail/" + item.id, { state: "aktuator" })
+                                                    navigate("/unit/tandon/detail/" + item.id, { state: "aktuator" })
                                                 }}>Tambah</Button>
                                             </CardBody>
                                         </Card>

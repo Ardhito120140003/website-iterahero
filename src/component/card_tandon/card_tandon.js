@@ -53,7 +53,7 @@ function CardTandon(props) {
         <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
         <Link 
          className="touch"
-         to={{pathname: `/unit/tandon/edit/${data.id}`}} 
+         to={{pathname: `/unit/tandon/detail/${data.id}`}} 
          key={data.id}
          >
           <Image src={data.image} h="250px" w="350px" />

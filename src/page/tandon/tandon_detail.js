@@ -9,7 +9,7 @@ import {
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
-  Tabs, TabList, TabPanels, Tab, TabPanel, Icon, Image
+  Tabs, TabList, TabPanels, Tab, TabPanel, Icon, Image,
 } from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,12 +22,15 @@ import Loading from '../../component/loading/loading';
 import { useParams } from "react-router";
 import CardAktuatorOperator from '../../component/card_aktuator/card_aktuator_operator';
 import CardSensorOperator from '../../component/card_sensor/card_sensor_operator';
+import { useLocation } from 'react-router-dom';
 
 
 function DetailTandon() {
   TabTitle('Detail Tandon - ITERA Hero');
   const { id } = useParams();
   const dispatch = useDispatch();
+  const location = useLocation();
+
 
   useEffect(() => {
     dispatch(routePageName('Sensor dan Aktuator Tandon'));
@@ -39,7 +42,7 @@ function DetailTandon() {
         : (
           <Flex border={'3px solid #d9d9d9'} direction={{ base: "column", sm: 'column', md: 'row', lg: 'row', xl: 'row' }}
             mt={5} gap={5} borderRadius={15} px={"10px"} height={'100%'} >
-            <Tabs isFitted width={'100%'} colorScheme='black'>
+            <Tabs isFitted width={'100%'} colorScheme='black'  defaultIndex={location.state === 'aktuator' ? 1 : 0}>
               <TabList>
                 <Tab color={'black'}>Sensor</Tab>
                 <Tab color={'black'}>Aktuator</Tab>

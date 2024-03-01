@@ -29,7 +29,6 @@ function DetailGreenHouse() {
   TabTitle('Detail Greenhouse - ITERA Hero');
   const { id } = useParams();
   const location = useLocation();
-  console.log(location);
 
   const base_url = useSelector(selectUrl);
   const header = useSelector(selectToken)
