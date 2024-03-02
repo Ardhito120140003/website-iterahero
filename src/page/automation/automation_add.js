@@ -19,6 +19,7 @@ function AutomationAdd() {
   const [selected, setSelected] = useState(1);
   const dispatch = useDispatch();
   const location = useLocation();
+  console.log(location.state.filter);
 
   useEffect(() => {
     dispatch(routePageName('Add Automation'));
@@ -59,11 +60,10 @@ function AutomationAdd() {
       </Flex>
       <Flex w={['100%']}>
         <Flex flexDir="row" gap="10px">
-          {automationMenu.filter((item, index) => {
-            if (location.state.filter === 'tandon' & item.id == 1) {
-              return
-            }
-          }).map((item, index) => (
+          {location.state.filter !== 'greenhouse' ? (
+            null
+          ) : (
+            automationMenu.map((item, index) => (
               <Flex key={index} width="169px" height="44px">
                 <Button
                   onClick={() => setSelected(item.id)}
@@ -97,15 +97,19 @@ function AutomationAdd() {
                 </Button>
               </Flex>
             ))
-          }
+          )}
         </Flex>
       </Flex>
       <Wrap w={['100%']}>
-        {selected === 1 ? (
-          <AutomationAddBySensor data={{ id }} />
-        ) : selected === 2 ? (
+        {location.state.filter === 'greenhouse' ? (
+          selected === 1 ? (
+            <AutomationAddBySensor data={{ id }} />
+          ) : (
+            <SchedulingAdd data={{ id }} />
+          )
+        ) : (
           <SchedulingAdd data={{ id }} />
-        ) : null}
+        )}
       </Wrap>
     </Flex>
   );
