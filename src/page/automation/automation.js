@@ -37,7 +37,6 @@ function Automation() {
       })
       .then(({ data }) => {
         setData(data.data)
-        // console.log(data);
       })
       .catch(({ response }) => {
         console.error(response)
@@ -137,7 +136,7 @@ function Automation() {
               h={['fit-content']}
             >
               {selected === 1 ? (
-                <AutomationList data={{ id }} />
+                <AutomationList data={{ id, filterId: data.greenhouseId }} />
               ) : (
                 <CardLogActuator data={{ id }} />
               )}

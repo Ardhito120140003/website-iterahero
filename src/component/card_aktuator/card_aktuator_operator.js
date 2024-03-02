@@ -157,7 +157,7 @@ function CardAktuatorOperator(props) {
                     onChange={async () => {
                       await handleswitch(item.id)
                     }} isChecked={item.isActive}
-                    disabled={!item.microcontroller.status}
+                    // disabled={!item.microcontroller.status}
                   />
                 )}
 

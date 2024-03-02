@@ -11,14 +11,14 @@ import { TabTitle } from '../../Utility/utility';
 import automationMenu from '../../Utility/automation_menu';
 import AutomationAddBySensor from './bySensor_add';
 import SchedulingAdd from './scheduling_add';
+import { useLocation } from 'react-router-dom';
 
 function AutomationAdd() {
   const { id } = useParams();
   TabTitle('Edit Automation - ITERA Hero');
   const [selected, setSelected] = useState(1);
-
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     dispatch(routePageName('Add Automation'));
@@ -59,48 +59,53 @@ function AutomationAdd() {
       </Flex>
       <Flex w={['100%']}>
         <Flex flexDir="row" gap="10px">
-          {automationMenu.map((item, index) => (
-            <Flex key={index} width="169px" height="44px">
-              <Button
-                onClick={() => setSelected(item.id)}
-                w="100%"
-                height="100%"
-                borderRadius="16"
-                border={
+          {automationMenu.filter((item, index) => {
+            if (location.state.filter === 'tandon' & item.id == 1) {
+              return
+            }
+          }).map((item, index) => (
+              <Flex key={index} width="169px" height="44px">
+                <Button
+                  onClick={() => setSelected(item.id)}
+                  w="100%"
+                  height="100%"
+                  borderRadius="16"
+                  border={
                     selected == item.id ? null : '1px solid var(--color-primer)'
                   }
-                bg={
+                  bg={
                     selected == item.id
                       ? 'var(--color-primer)'
                       : 'var(--color-on-primary)'
                   }
-                flexDir="row"
-                alignContent="center"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Text
-                  fontWeight="semibold"
-                  color={
+                  flexDir="row"
+                  alignContent="center"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Text
+                    fontWeight="semibold"
+                    color={
                       selected == item.id
                         ? 'var(--color-surface)'
                         : 'var(--color-on-background'
                     }
-                  size="var(--header-3)"
-                >
-                  {item.name}
-                </Text>
-              </Button>
-            </Flex>
-          ))}
+                    size="var(--header-3)"
+                  >
+                    {item.name}
+                  </Text>
+                </Button>
+              </Flex>
+            ))
+          }
         </Flex>
       </Flex>
       <Wrap w={['100%']}>
         {selected === 1 ? (
           <AutomationAddBySensor data={{ id }} />
-        ) : (
+        ) : selected === 2 ? (
           <SchedulingAdd data={{ id }} />
-        )}
+        ) : null}
       </Wrap>
     </Flex>
   );

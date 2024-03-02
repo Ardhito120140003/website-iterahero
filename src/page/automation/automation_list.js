@@ -27,6 +27,7 @@ import { logout, selectUrl } from '../../features/auth/authSlice';
 function AutomationList(props) {
   const base_url = useSelector(selectUrl);
   const idApi = props.data.id;
+  const filter = props.data.filterId;
   const header = useSelector(selectToken)
   const [dataApi, setDataApi] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -123,7 +124,7 @@ function AutomationList(props) {
               alignItems="center"
               marginBottom="20px"
             >
-              <Link to={`/unit/dashboard/aktuator/automation/add/${idApi}`}>
+              <Link to={`/unit/dashboard/aktuator/automation/add/${idApi}`} state={{ filter: filter ? 'greenhouse' : 'tandon'}}>
                 <Button bg="#14453E" size="md" colorScheme="teal">
                   Tambah
                 </Button>

@@ -55,7 +55,7 @@ function AutomationEdit() {
         },
       })
       .then(({ data }) => {
-        // console.log(data)
+        console.log(data)
         setDataAutomation(data.data);
         axios.get(base_url + "api/v1/greenhouse/" + data.data.aktuator.greenhouseId + "/sensor", {
           headers: {
