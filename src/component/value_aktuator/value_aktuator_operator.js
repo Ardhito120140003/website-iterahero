@@ -48,7 +48,7 @@ function ValueAktuatorOperator(props) {
           >
             <Image
               w="70px"
-              src={ !automation ? '/On.png' : '/automation.png'}
+              src={ automation ? '/On.png' : '/automation.png'}
               alt="image"
             />
           </Flex>

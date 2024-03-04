@@ -136,7 +136,7 @@ function CardAktuatorOperator(props) {
                       max: item.range_max,
                       min: item.range_min,
                       isAvailable: item.microcontroller.status,
-                      automation: item.AutomationSchedule || item.AutomationSensor,
+                      automation: item.automation,
                       isActive: item.isActive,
                       route
                     }}

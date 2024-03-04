@@ -222,7 +222,7 @@ function CardFormPeracikan({ tandon }) {
           }}
         >
           {({ values, errors, touched, isValid, setFieldValue, setTouched }) => (
-            <Form>
+            <Form style={{ height: "100%" }}>
               <Flex flexDirection="column" width="100%" height="100%" gap={"10px"}>
                 <Box color="black"
                 //mt="5px"
@@ -230,243 +230,252 @@ function CardFormPeracikan({ tandon }) {
                   <Field name="formula">
                     {({ field }) => (
                       <FormControl isInvalid={errors.formula && touched.formula && values.formula} isReadOnly={!Boolean(values.formula)}>
-                        <FormLabel color={'black'}>Formula</FormLabel>
-                        <Select
-                          {...field}
-                          borderRadius="10"
-                          value={values.formula}
-                          onChange={(e) => {
-                            setSelected(e.target.value)
-                            const x = parseInt(e.target.value)
-                            if (isNaN(x)) {
-                              setFieldValue('id', '');
-                              setFieldValue('newFormulaName', '');
-                              setFieldValue('ph_min', '');
-                              setFieldValue('ph_max', '');
-                              setFieldValue('ppm_min', '');
-                              setFieldValue('ppm_max', '');
-                              setFieldValue('volume', '');
-                            } else {
-                              setFieldValue('id', dataApi[x].id);
-                              setFieldValue('newFormulaName', dataApi[x].nama);
-                              setFieldValue('ph_min', dataApi[x].ph_min);
-                              setFieldValue('ppm_min', dataApi[x].ppm_min);
-                              setFieldValue('ph_max', dataApi[x].ph_max);
-                              setFieldValue('ppm_max', dataApi[x].ppm_max);
-                              setFieldValue('volume', dataApi[x].volume);
-                              setTouched({}, false)
-                            }
-                            setFieldValue('formula', e.target.value);
-                          }}
-                        >
-                          <option value="" disabled={values.formula}>--Pilih Formula--</option>
-                          {dataApi.map((data, index) => (
-                            <option key={index} value={index} style={{ color: 'black' }}>
-                              {data.nama}
+                        <Flex alignItems={"center"}>
+                          <FormLabel color={'black'}>Formula</FormLabel>
+                          <Select
+                            {...field}
+                            borderRadius="10"
+                            value={values.formula}
+                            onChange={(e) => {
+                              setSelected(e.target.value)
+                              const x = parseInt(e.target.value)
+                              if (isNaN(x)) {
+                                setFieldValue('id', '');
+                                setFieldValue('newFormulaName', '');
+                                setFieldValue('ph_min', '');
+                                setFieldValue('ph_max', '');
+                                setFieldValue('ppm_min', '');
+                                setFieldValue('ppm_max', '');
+                                setFieldValue('volume', '');
+                              } else {
+                                setFieldValue('id', dataApi[x].id);
+                                setFieldValue('newFormulaName', dataApi[x].nama);
+                                setFieldValue('ph_min', dataApi[x].ph_min);
+                                setFieldValue('ppm_min', dataApi[x].ppm_min);
+                                setFieldValue('ph_max', dataApi[x].ph_max);
+                                setFieldValue('ppm_max', dataApi[x].ppm_max);
+                                setFieldValue('volume', dataApi[x].volume);
+                                setTouched({}, false)
+                              }
+                              setFieldValue('formula', e.target.value);
+                            }}
+                          >
+                            <option value="" disabled={values.formula}>--Pilih Formula--</option>
+                            {dataApi.map((data, index) => (
+                              <option key={index} value={index} style={{ color: 'black' }}>
+                                {data.nama}
+                              </option>
+                            ))}
+                            <option
+                              //style={{ backgroundColor: '#09322D', color: 'white' }} 
+                              value="Tambah Formula">--Tambah Formula--
                             </option>
-                          ))}
-                          <option
-                            //style={{ backgroundColor: '#09322D', color: 'white' }} 
-                            value="Tambah Formula">--Tambah Formula--
-                          </option>
-                        </Select>
+                          </Select>
+                        </Flex>
                         <FormErrorMessage>{errors.formula}</FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
                 </Box>
-
-                {values.formula === 'Tambah Formula' && (
-                  <Box>
-                    <Field name="newFormulaName">
-                      {({ field }) => (
-                        <FormControl isInvalid={errors.newFormulaName && touched.newFormulaName && values.formula} isReadOnly={!Boolean(values.formula)}>
-                          <FormLabel color={'black'}>Nama Formula</FormLabel>
-                          <Input
-                            {...field}
-                            type="text"
-                            value={values.newFormulaName}
-                            onChange={(e) => setFieldValue('newFormulaName', e.target.value)}
-                            style={{ color: 'black' }}
-                            placeholder="masukkan nama formula"
-                          />
-                          <FormErrorMessage>{errors.newFormulaName}</FormErrorMessage>
-                        </FormControl>
-                      )}
-                    </Field>
-                  </Box>
-                )}
-
-                <Flex direction={'column'}>
-                  <Text>PH</Text>
-                  <Flex align={"center"}>
-                    <Field name="ph_min">
-                      {({ field }) => (
-                        <FormControl isInvalid={errors.ph_min && touched.ph_min && values.formula} isReadOnly={!Boolean(values.formula)}>
-                          <FormLabel color={'black'} textAlign={'center'}>Min</FormLabel>
-                          <Input
-                            {...field}
-                            type="number"
-                            value={values.ph_min}
-                            onChange={(e) => setFieldValue('ph_min', e.target.value)}
-                            style={{ color: 'black' }}
-                            placeholder="nilai minimal ph"
-                          />
-                          <FormErrorMessage>{errors.ph_min}</FormErrorMessage>
-                        </FormControl>
-                      )}
-                    </Field>
-                    <Text mt={{ base: "6%", sm: "5%" }}> - </Text>
-                    <Field name="ph_max">
-                      {({ field }) => (
-                        <FormControl isInvalid={errors.ph_max && touched.ph_max && values.formula} isReadOnly={!Boolean(values.formula)}>
-                          <FormLabel color={'black'} textAlign={'center'}>Max</FormLabel>
-                          <Input
-                            {...field}
-                            type="number"
-                            value={values.ph_max}
-                            onChange={(e) => setFieldValue('ph_max', e.target.value)}
-                            style={{ color: 'black' }}
-                            placeholder="nilai maksimal ph"
-                          />
-                          <FormErrorMessage>{errors.ph_max}</FormErrorMessage>
-                        </FormControl>
-                      )}
-                    </Field>
-                  </Flex>
-                </Flex>
-
-                <Flex flexDirection={"column"}>
-                  <Text>PPM</Text>
-                  <Flex align={"center"}>
-                    <Field name="ppm_min">
-                      {({ field }) => (
-                        <FormControl isInvalid={errors.ppm_min && touched.ppm_min && values.formula} isReadOnly={!Boolean(values.formula)}>
-                          <FormLabel color={'black'} textAlign={'center'}>Min</FormLabel>
-                          <Input
-                            {...field}
-                            type="number"
-                            value={values.ppm_min}
-                            onChange={(e) => setFieldValue('ppm_min', e.target.value)}
-                            style={{ color: 'black' }}
-                            placeholder="nilai minimal ppm"
-                          />
-                          <FormErrorMessage>{errors.ppm_min}</FormErrorMessage>
-                        </FormControl>
-                      )}
-                    </Field>
-                    <Text mt={{ base: "6%", sm: "5%" }}> - </Text>
-                    <Field name="ppm_max">
-                      {({ field }) => (
-                        <FormControl isInvalid={errors.ppm_max && touched.ppm_max && values.formula} isReadOnly={!Boolean(values.formula)}>
-                          <FormLabel color={'black'} textAlign={'center'}>Max</FormLabel>
-                          <Input
-                            {...field}
-                            type="number"
-                            value={values.ppm_max}
-                            onChange={(e) => setFieldValue('ppm_max', e.target.value)}
-                            style={{ color: 'black' }}
-                            placeholder="nilai maksimal ppm"
-                          />
-                          <FormErrorMessage>{errors.ppm_max}</FormErrorMessage>
-                        </FormControl>
-                      )}
-                    </Field>
-                  </Flex>
-                </Flex>
-
-                <Box>
-                  <Field name="volume">
-                    {({ field }) => (
-                      <FormControl isInvalid={errors.volume && touched.volume && values.formula} isReadOnly={!Boolean(values.formula)}>
-                        <FormLabel color={'black'}>Volume</FormLabel>
-                        <Input
-                          {...field}
-                          type="number"
-                          value={values.volume}
-                          onChange={(e) => setFieldValue('volume', e.target.value)}
-                          style={{ color: 'black' }}
-                          placeholder="masukkan volume pupuk (liter)"
-                        />
-                        <FormErrorMessage>{errors.volume}</FormErrorMessage>
-                      </FormControl>
+                {selected === '' ? (<Flex justifyContent={"center"} alignItems={"center"} flex={1}><Text>Pilih Resep</Text></Flex>) : (
+                  <Flex direction={'column'}>
+                    {values.formula === 'Tambah Formula' && (
+                      <Box>
+                        <Field name="newFormulaName">
+                          {({ field }) => (
+                            <FormControl isInvalid={errors.newFormulaName && touched.newFormulaName && values.formula} isReadOnly={!Boolean(values.formula)}>
+                              <FormLabel color={'black'}>Nama Formula</FormLabel>
+                              <Input
+                                {...field}
+                                type="text"
+                                value={values.newFormulaName}
+                                onChange={(e) => setFieldValue('newFormulaName', e.target.value)}
+                                style={{ color: 'black' }}
+                                placeholder="masukkan nama formula"
+                              />
+                              <FormErrorMessage>{errors.newFormulaName}</FormErrorMessage>
+                            </FormControl>
+                          )}
+                        </Field>
+                      </Box>
                     )}
-                  </Field>
-                </Box>
 
-                {(values.formula !== 'Tambah Formula' && values.formula !== '') && (
-                  <Box justifyContent={'flex-start'} p={'10px'} display={'flex'}>
-                    <Flex alignSelf="center">
-                      <Icon
-                        as={BiTrash}
-                        color="#14453E"
-                        w="20px"
-                        h="20px"
-                        alignSelf="center"
-                        onClick={() => {
-                          // console.log(values.id);
-                          setSelectedFormulaId(values.id);
-                          onOpenDeleteModal();
-                        }}
-                      />
+                    <Flex direction={'column'} pb={3}>
+                      <Text>PH</Text>
+                      <Flex align={"center"}>
+                        <Field name="ph_min">
+                          {({ field }) => (
+                            <FormControl isInvalid={errors.ph_min && touched.ph_min && values.formula} isReadOnly={!Boolean(values.formula)}>
+                              <FormLabel color={'black'} textAlign={'center'}>Min</FormLabel>
+                              <Input
+                                {...field}
+                                type="number"
+                                value={values.ph_min}
+                                onChange={(e) => setFieldValue('ph_min', e.target.value)}
+                                style={{ color: 'black' }}
+                                placeholder="nilai minimal ph"
+                                textAlign={"center"}
+                              />
+                              <FormErrorMessage>{errors.ph_min}</FormErrorMessage>
+                            </FormControl>
+                          )}
+                        </Field>
+                        <Text mt={{ base: "6%", sm: "5%" }}> - </Text>
+                        <Field name="ph_max">
+                          {({ field }) => (
+                            <FormControl isInvalid={errors.ph_max && touched.ph_max && values.formula} isReadOnly={!Boolean(values.formula)}>
+                              <FormLabel color={'black'} textAlign={'center'}>Max</FormLabel>
+                              <Input
+                                {...field}
+                                type="number"
+                                value={values.ph_max}
+                                onChange={(e) => setFieldValue('ph_max', e.target.value)}
+                                style={{ color: 'black' }}
+                                placeholder="nilai maksimal ph"
+                                textAlign={"center"}
+                              />
+                              <FormErrorMessage>{errors.ph_max}</FormErrorMessage>
+                            </FormControl>
+                          )}
+                        </Field>
+                      </Flex>
                     </Flex>
-                  </Box>
+
+                    <Flex flexDirection={"column"} py={3}>
+                      <Text>PPM</Text>
+                      <Flex align={"center"}>
+                        <Field name="ppm_min">
+                          {({ field }) => (
+                            <FormControl isInvalid={errors.ppm_min && touched.ppm_min && values.formula} isReadOnly={!Boolean(values.formula)}>
+                              <FormLabel color={'black'} textAlign={'center'}>Min</FormLabel>
+                              <Input
+                                {...field}
+                                type="number"
+                                value={values.ppm_min}
+                                onChange={(e) => setFieldValue('ppm_min', e.target.value)}
+                                style={{ color: 'black' }}
+                                placeholder="nilai minimal ppm"
+                                textAlign={"center"}
+                              />
+                              <FormErrorMessage>{errors.ppm_min}</FormErrorMessage>
+                            </FormControl>
+                          )}
+                        </Field>
+                        <Text mt={{ base: "6%", sm: "5%" }}> - </Text>
+                        <Field name="ppm_max">
+                          {({ field }) => (
+                            <FormControl isInvalid={errors.ppm_max && touched.ppm_max && values.formula} isReadOnly={!Boolean(values.formula)}>
+                              <FormLabel color={'black'} textAlign={'center'}>Max</FormLabel>
+                              <Input
+                                {...field}
+                                type="number"
+                                value={values.ppm_max}
+                                onChange={(e) => setFieldValue('ppm_max', e.target.value)}
+                                style={{ color: 'black' }}
+                                placeholder="nilai maksimal ppm"
+                                textAlign={"center"}
+                              />
+                              <FormErrorMessage>{errors.ppm_max}</FormErrorMessage>
+                            </FormControl>
+                          )}
+                        </Field>
+                      </Flex>
+                    </Flex>
+
+                    <Box py={3}>
+                      <Field name="volume">
+                        {({ field }) => (
+                          <FormControl isInvalid={errors.volume && touched.volume && values.formula} isReadOnly={!Boolean(values.formula)}>
+                            <FormLabel color={'black'}>Volume (L)</FormLabel>
+                            <Input
+                              {...field}
+                              type="number"
+                              value={values.volume}
+                              onChange={(e) => setFieldValue('volume', e.target.value)}
+                              style={{ color: 'black' }}
+                              placeholder="masukkan volume pupuk (liter)"
+                            />
+                            <FormErrorMessage>{errors.volume}</FormErrorMessage>
+                          </FormControl>
+                        )}
+                      </Field>
+                    </Box>
+
+                    {(values.formula !== 'Tambah Formula' && values.formula !== '') && (
+                      <Box justifyContent={'flex-start'} p={'10px'} display={'flex'}>
+                        <Flex alignSelf="center">
+                          <Icon
+                            as={BiTrash}
+                            color="#14453E"
+                            w="20px"
+                            h="20px"
+                            alignSelf="center"
+                            onClick={() => {
+                              // console.log(values.id);
+                              setSelectedFormulaId(values.id);
+                              onOpenDeleteModal();
+                            }}
+                          />
+                        </Flex>
+                      </Box>
+                    )}
+
+
+                    <Flex
+                      flexDirection="row"
+                      gap="10px"
+                      mt={values.formula === 'Tambah Formula' ? "16px" : values.formula === '' ? "60px" : "10px"}
+                    >
+                      {values.formula === 'Tambah Formula' && (
+                        <Button
+                          type="Submit"
+                          backgroundColor="#09322D"
+                          w={'100%'}
+                        >
+                          Simpan Formula
+                        </Button>
+                      )}
+
+                      {(values.formula !== 'Tambah Formula' && values.formula !== '') && (
+                        <Button
+                          type="button"
+                          backgroundColor="#09322D"
+                          w={'100%'}
+
+                          onClick={onOpenUpdateModal}
+                        >
+                          Simpan Perubahan
+                        </Button>
+                      )}
+
+
+                      {values.formula !== 'Tambah Formula' && (
+                        <Button
+                          type="Submit"
+                          backgroundColor="#09322D"
+                          w={'100%'}
+                          isDisabled={isNaN(parseInt(selected)) ? false : (values.ph_max != dataApi[parseInt(selected)].ph_max ||
+                            values.ph_min != dataApi[parseInt(selected)].ph_min ||
+                            values.volume != dataApi[parseInt(selected)].volume ||
+                            values.ppm_max != dataApi[parseInt(selected)].ppm_max ||
+                            values.ppm_min != dataApi[parseInt(selected)].ppm_min ||
+                            values.newFormulaName != dataApi[parseInt(selected)].nama) ? true : false}
+                        >
+                          Racik
+                        </Button>
+                      )}
+                    </Flex>
+                    {!isNaN(parseInt(selected)) && (
+                      values.ph_max != dataApi[parseInt(selected)].ph_max ||
+                      values.ph_min != dataApi[parseInt(selected)].ph_min ||
+                      values.ppm_max != dataApi[parseInt(selected)].ppm_max ||
+                      values.ppm_min != dataApi[parseInt(selected)].ppm_min ||
+                      values.volume != dataApi[parseInt(selected)].volume ||
+                      values.newFormulaName != dataApi[parseInt(selected)].nama) ? (
+                      <Text fontSize={'xs'} color={'red'}> Ada pergantian nilai formula, simpan perubahan sebelum meracik </Text>
+                    ) : null}
+                  </Flex>
                 )}
-
-
-                <Flex
-                  flexDirection="row"
-                  gap="10px"
-                  mt={values.formula === 'Tambah Formula' ? "16px" : values.formula === '' ? "60px" : "10px"}
-                >
-                  {values.formula === 'Tambah Formula' && (
-                    <Button
-                      type="Submit"
-                      backgroundColor="#09322D"
-                      w={'100%'}
-                    >
-                      Simpan Formula
-                    </Button>
-                  )}
-
-                  {(values.formula !== 'Tambah Formula' && values.formula !== '') && (
-                    <Button
-                      type="button"
-                      backgroundColor="#09322D"
-                      w={'100%'}
-
-                      onClick={onOpenUpdateModal}
-                    >
-                      Simpan Perubahan
-                    </Button>
-                  )}
-
-
-                  {values.formula !== 'Tambah Formula' && (
-                    <Button
-                      type="Submit"
-                      backgroundColor="#09322D"
-                      w={'100%'}
-                      isDisabled={isNaN(parseInt(selected)) ? false : (values.ph_max != dataApi[parseInt(selected)].ph_max ||
-                        values.ph_min != dataApi[parseInt(selected)].ph_min ||
-                        values.volume != dataApi[parseInt(selected)].volume ||
-                        values.ppm_max != dataApi[parseInt(selected)].ppm_max ||
-                        values.ppm_min != dataApi[parseInt(selected)].ppm_min ||
-                        values.newFormulaName != dataApi[parseInt(selected)].nama) ? true : false}
-                    >
-                      Racik
-                    </Button>
-                  )}
-                </Flex>
-                {!isNaN(parseInt(selected)) && (
-                  values.ph_max != dataApi[parseInt(selected)].ph_max ||
-                  values.ph_min != dataApi[parseInt(selected)].ph_min ||
-                  values.ppm_max != dataApi[parseInt(selected)].ppm_max ||
-                  values.ppm_min != dataApi[parseInt(selected)].ppm_min ||
-                  values.volume != dataApi[parseInt(selected)].volume ||
-                  values.newFormulaName != dataApi[parseInt(selected)].nama) ? (
-                  <Text fontSize={'xs'} color={'red'}> Ada pergantian nilai formula, simpan perubahan sebelum meracik </Text>
-                ) : null}
               </Flex>
 
               {/* Modal Racik */}
@@ -583,7 +592,6 @@ function CardFormPeracikan({ tandon }) {
                   </AlertDialogContent>
                 </AlertDialogOverlay>
               </AlertDialog>
-
             </Form>
           )}
         </Formik>

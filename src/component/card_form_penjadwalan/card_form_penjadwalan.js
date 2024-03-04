@@ -42,10 +42,10 @@ const weekdays = [
 
 const validatePenjadwalanSchema = Yup.object().shape({
   resep: Yup.string().required('data harus diisi'),
-  durasi: Yup.string()
-    .min(2, 'Minimal 10 menit')
-    .max(2, 'Kelamaan')
-    .required('Durasi harus diisi'),
+  // durasi: Yup.string()
+  //   .min(2, 'Minimal 10 menit')
+  //   .max(2, 'Kelamaan')
+  //   .required('Durasi harus diisi'),
   id_greenhouse: Yup.string().required('data harus diisi'),
 })
 
@@ -65,13 +65,13 @@ function CardFormPenjadwalan({ updateAction }) {
           Authorization: `Bearer ${header}`,
         }
       })
-    .then((response) => {
-      setDataApiGreenhouse(response.data.data);
-      // console.log('data api greenhouse : ', dataApiGreenhouse);
-    })
-    .catch((error) => {
-      console.error('Error fetching greenhouse data:', error);
-    });
+      .then((response) => {
+        setDataApiGreenhouse(response.data.data);
+        // console.log('data api greenhouse : ', dataApiGreenhouse);
+      })
+      .catch((error) => {
+        console.error('Error fetching greenhouse data:', error);
+      });
   };
 
   useEffect(() => {
@@ -100,7 +100,7 @@ function CardFormPenjadwalan({ updateAction }) {
       initialValues={{
         resep: '',
         waktu: [''],
-        durasi: '',
+        // durasi: '',
         hari: [],
         id_greenhouse: '',
       }}
@@ -127,8 +127,8 @@ function CardFormPenjadwalan({ updateAction }) {
           id_tandon: role === 'admin' ? 1 : 2,
           waktu: payload.waktu,
           hari: payload.hari,
-          durasi: payload.durasi,
-          id_greenhouse: parseInt(payload.id_greenhouse) 
+          // durasi: payload.durasi,
+          id_greenhouse: parseInt(payload.id_greenhouse)
 
         }, {
           headers: {
@@ -178,7 +178,7 @@ function CardFormPenjadwalan({ updateAction }) {
                         <option style={{ color: 'black' }} value="" disabled={values.resep}>--Pilih Formula--</option>
                         {dataApi.map((data, index) => (
                           <option key={index} value={data.id} style={{ color: 'black' }}>
-                            {data.nama.toUpperCase()}
+                            {data.nama}
                           </option>
                         ))}
                       </Select>
@@ -186,13 +186,22 @@ function CardFormPenjadwalan({ updateAction }) {
                     </FormControl>
                   )}
                 </Field>
+
+                <Flex>
+                  {dataApi.filter((item, index) => item.id == values.resep).map((item, index) => (
+                    Object.entries(item).filter(([key, value]) => key !== 'id' && key != 'created_at' && key != 'updated_at' && key != 'nama').map(([key, value]) => (
+                      <Text p={2} fontSize={'sm'} key={key}>{`${key.replace(/_/g, ' ').charAt(0).toUpperCase() + key.replace(/_/g, ' ').slice(1)}: ${value}`}</Text>
+                    ))
+                  ))
+                  }
+                </Flex>
               </Box>
 
               <Box>
                 <FieldArray name="waktu">
                   {({ push, remove, replace }) => (
                     <FormControl isRequired isInvalid={errors.waktu && touched.waktu}>
-                      <FormLabel color="black">Waktu Penyiraman</FormLabel>
+                      <FormLabel color="black">Waktu Peracikan</FormLabel>
                       {values.waktu.map((_, index) => (
                         <Flex key={index} mb={'10px'}>
                           <Flex w={'100%'}>
@@ -243,7 +252,7 @@ function CardFormPenjadwalan({ updateAction }) {
                 </FieldArray>
               </Box>
 
-              <Box>
+              {/* <Box>
                 <Field name="durasi">
                   {({ field }) => (
                     <FormControl isRequired isInvalid={errors.durasi && touched.durasi}>
@@ -263,7 +272,7 @@ function CardFormPenjadwalan({ updateAction }) {
                     </FormControl>
                   )}
                 </Field>
-              </Box>
+              </Box> */}
 
               <Box>
                 <Field name="hari">
