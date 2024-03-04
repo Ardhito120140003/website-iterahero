@@ -138,7 +138,7 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                       </h2>
                       <AccordionPanel pb={4} fontSize={"15px"}>
                         <Flex direction={"column"}>
-                          <Flex flexDir={"row"}>
+                          {/* <Flex flexDir={"row"}>
                             <Flex flexDir="row" marginRight="5px" marginY="20px" w={'100%'} align={'left'}>
                               <Flex direction={"column"} alignItems={"start"}>
                                 <Text color="black"> Formula </Text>
@@ -159,7 +159,7 @@ function CardJadwal({ jadwal, deleteHandler, updateHandler }) {
                                 <Text color="black" align={'left'}> {item.greenhouse.name} </Text>
                               </Flex>
                             </Flex>
-                          </Flex>
+                          </Flex> */}
 
                           <Wrap flexDir="row" alignItems="start" gap={2} >
                             {item.hari.map((day) => (

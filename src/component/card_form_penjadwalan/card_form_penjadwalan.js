@@ -46,7 +46,7 @@ const validatePenjadwalanSchema = Yup.object().shape({
   //   .min(2, 'Minimal 10 menit')
   //   .max(2, 'Kelamaan')
   //   .required('Durasi harus diisi'),
-  id_greenhouse: Yup.string().required('data harus diisi'),
+  // id_greenhouse: Yup.string().required('data harus diisi'),
 })
 
 function CardFormPenjadwalan({ updateAction }) {
@@ -100,9 +100,7 @@ function CardFormPenjadwalan({ updateAction }) {
       initialValues={{
         resep: '',
         waktu: [''],
-        // durasi: '',
         hari: [],
-        id_greenhouse: '',
       }}
 
       validate={(values) => {
@@ -128,7 +126,7 @@ function CardFormPenjadwalan({ updateAction }) {
           waktu: payload.waktu,
           hari: payload.hari,
           // durasi: payload.durasi,
-          id_greenhouse: parseInt(payload.id_greenhouse)
+          // id_greenhouse: parseInt(payload.id_greenhouse)
 
         }, {
           headers: {
