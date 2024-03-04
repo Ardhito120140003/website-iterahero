@@ -290,7 +290,7 @@ function CardFormPenjadwalan({ updateAction }) {
                 </Field>
               </Box>
 
-              <Box>
+              {/* <Box>
                 <Field name="id_greenhouse">
                   {({ field }) => (
                     <FormControl isInvalid={errors.id_greenhouse && touched.id_greenhouse}>
@@ -315,7 +315,7 @@ function CardFormPenjadwalan({ updateAction }) {
                     </FormControl>
                   )}
                 </Field>
-              </Box>
+              </Box> */}
 
               <Flex marginTop="16px" flexDirection="row">
                 <Button isLoading={buttonLoading} backgroundColor="#09322D" w={'100%'} isDisabled={!isValid}

@@ -32,7 +32,7 @@ import { MdOutlineAccessTime } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 
 
-const CardJadwalAktuator = () => {
+const CardJadwalAktuator = ({ tandonId }) => {
     const base_url = useSelector(selectUrl);
     const token = useSelector(selectToken);
     const [data, setData] = useState([])
@@ -62,14 +62,16 @@ const CardJadwalAktuator = () => {
             axios.get(base_url + "api/v1/automation", {
                 params: {
                     type: "bySchedule",
-                    id_automation: 0
+                    id_automation: 0,
+                    tandonId
                 },
                 headers: {
                     Authorization: "Bearer " + token
                 }
             })
                 .then(({ data }) => {
-                    setData(data.data.filter((item) => item.aktuator.type === "Selenoid"))
+                    console.log(data)
+                    setData(data.data.filter((item) => item.aktuator.name.includes("Distribusi")))
                 })
                 .catch(({ response }) => {
                     console.error(response.status)

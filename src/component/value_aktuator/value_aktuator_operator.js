@@ -116,7 +116,6 @@ function ValueAktuatorOperator(props) {
               />
             </Flex>
           </ChakraLink>
-          {/* } */}
         </>
       )}
     </>

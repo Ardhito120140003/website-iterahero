@@ -10,6 +10,8 @@ import { selectToken } from '../../features/auth/authSlice';
 import Loading from '../../component/loading/loading';
 import './penjadwalan.css';
 import CardJadwalAktuator from '../../component/card_jadwal/card_jadwal_aktuator';
+import { Form, Formik } from 'formik';
+import { Select } from '@chakra-ui/react';
 
 function Penjadwalan() {
   TabTitle('Penjadwalan - ITERA Hero');
@@ -18,6 +20,9 @@ function Penjadwalan() {
   const [data, setData] = useState(null);
   const [action, setAction] = useState(false);
   const header = useSelector(selectToken)
+  const [dataTandon, setDataTandon] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selected, setSelected] = useState(0)
 
   useEffect(() => {
     axios.get(`${base_url}api/v1/penjadwalan`, {
@@ -26,7 +31,6 @@ function Penjadwalan() {
       },
     })
       .then((response) => {
-        // console.log(response.data.data);
         setData(response.data.data);
       })
       .catch((err) => {
@@ -70,6 +74,35 @@ function Penjadwalan() {
       .finally(() => setAction(!action))
   }
 
+  const getTandon = async () => {
+    try {
+      const response = await axios.get(`${base_url}api/v1/tandonUtama`, {
+        headers: {
+          Authorization: `Bearer ${header}`,
+        },
+      });
+      if (response.data.data.length > 0) {
+        setDataTandon(response.data.data);
+        setSelected(response.data.data[0].id)
+      }
+    } catch (err) {
+      console.error(err);
+    }
+    finally {
+      setIsLoading(false)
+    }
+  };
+
+  useEffect(() => {
+    getTandon()
+    dispatch(routePageName("Penjadwalan"));
+    const interval = setInterval(() => {
+      getTandon()
+    }, 1500)
+
+    return (() => clearInterval(interval));
+  }, []);
+
   const containerStyle = {
     flexDirection: 'row',
     gap: '20px',
@@ -85,6 +118,44 @@ function Penjadwalan() {
       {data === null ? (
         <Loading />
       ) : (
+        <Flex flexDirection={'column'} gap={4}>
+        <Formik
+            initialValues={{
+              tandon: selected,
+            }}
+          >
+            {({ setFieldValue, values }) => (
+              <Form>
+                <Select
+                  name="tandon"
+                  as={Select}
+                  borderRadius={"10"}
+                  width={"100%"}
+                  height={"5vh"}
+                  bg={"white"}
+                  _active={{ bg: "white" }}
+                  borderColor={"grey"}
+                  fontSize={"var(--header-5)"}
+                  fontWeight={"normal"}
+                  color={"var(--color-primer)"}
+                  _hover={{ borderColor: "var(--color-border)" }}
+                  _focusWithin={{ borderColor: "var(--color-border)" }}
+                  value={values.tandon}
+                  // placeholder="--Pilih Tandon Peracikan--"
+                  onChange={async (e) => {
+                    setFieldValue("tandon", e.target.value);
+                    await getInfo(e.target.value)
+                  }}
+                >
+                  {dataTandon.map((item, index) => (
+                    <option key={index} value={item.id}>
+                      {item.nama}
+                    </option>
+                  ))}
+                </Select>
+              </Form>
+            )}
+          </Formik>
         <Flex gap={'20px'} direction={{base:'column', sm: 'column', md: 'row', lg: 'row', xl: 'row', "2xl": 'row' }}>
           <Flex w={{ base:'100%', sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%"}} flex={1}>
             <CardFormPenjadwalan
@@ -94,8 +165,10 @@ function Penjadwalan() {
           </Flex>
           <Flex w={{ base:'100%', sm: '100%', md: "50%", lg: "50%", xl: '50%', "2xl": "50%"}} flex={1} gap={4} flexDir={"column"}>
             <CardJadwal jadwal={data} deleteHandler={handleDelete} updateHandler={handleUpdate} style={cardStyle} />
-            <CardJadwalAktuator />
+            <CardJadwalAktuator tandonId={selected} />
           </Flex>
+        </Flex>
+        
         </Flex>
       )}
     </>
