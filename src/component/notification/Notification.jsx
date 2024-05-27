@@ -64,7 +64,7 @@ const Notification = () => {
     }, [refresh])
 
     return (
-        <Popover placement='bottom-start' isOpen={isOpen} onClose={onClose} isLazy colorScheme='whatsapp'>
+        <Popover placement='bottom-start' isOpen={isOpen} onClose={onClose} isLazy colorScheme='whatsapp' hidden={{ base: false, sm: true }}>
             <PopoverTrigger>
                 <Button bgColor={'white'} onClick={onToggle}>
                     <Icon cursor="pointer"
@@ -85,12 +85,12 @@ const Notification = () => {
                     ) : null}
                 </Button>
             </PopoverTrigger>
-            <PopoverContent w={"30vw"}>
+            <PopoverContent w={{ md: "30vw" }}>
                 <PopoverArrow />
                 {/* <PopoverCloseButton /> */}
                 <PopoverHeader>
                     <Flex alignItems={"center"} justifyContent={"space-between"}>
-                        <Flex alignItems={"center"}>
+                        <Flex alignItems={"center"} flex={1}>
                             <Button>
                                 <Icon
                                     cursor={"pointer"}
@@ -106,11 +106,11 @@ const Notification = () => {
                             </Button>
                             <Text>Notification</Text>
                         </Flex>
-                        <Flex>
+                        <Flex width={"50%"}  flex={1}>
                             <Button onClick={async () => {
                                 const setRead = async () => {
                                     const id = notification.filter(item => !item.read).map(item => item.id)
-                                    if (id.length > 1) {
+                                    if (id.length > 0) {
                                         axios.patch(base_url + "api/v1/notification", {
                                             id
                                         }, {
@@ -128,6 +128,7 @@ const Notification = () => {
                                 await setRead();
                             }}
                             colorScheme='whatsapp'
+                            flexWrap={"break-word"}
                             size={'xs'}>
                                 Mark all as read
                             </Button>

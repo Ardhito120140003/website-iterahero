@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box, Flex, Button, Image, Text, Input,
+  Icon,
 } from '@chakra-ui/react';
 import { Formik, Form } from 'formik';
 import {
@@ -14,6 +15,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { TabTitle } from '../../Utility/utility';
 import { login, logout, selectToken, selectUrl } from '../../features/auth/authSlice';
+import { IoEye, IoEyeOff } from 'react-icons/io5';
 
 const schema = yup.object({
   email: yup.string().required('Email harus diisi'),
@@ -28,8 +30,11 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
+  const [btnPressed, setBtnPressed] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   
-  const handleSubmitComplate = (emailValue, passwordValue) => {
+  const handleSubmitComplate = (emailValue, passwordValue, setFieldError) => {
+    setBtnPressed(true)
     axios
       .post(base_url + 'api/v1/login', {
         email: emailValue,
@@ -37,18 +42,18 @@ function Login() {
       })
       .then((response) => {
         dispatch(login(response.data));
-        // console.log(response.data);
         localStorage.setItem('token', response.data.accessToken);
         navigate('/unit/dashboard/1');
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        setFieldError('password', 'Email atau password salah');
+        console.log(error)}
+      ).finally(() => setBtnPressed(false))
   };
 
   const checkToken = () => {
     if (token) {
       navigate('/unit/dashboard/1');
-    } else {
-      
     }
   };
 
@@ -153,7 +158,7 @@ function Login() {
             fontSize="var(--header-3)"
             color="var(--color-primer)"
           >
-            Masuk
+            Website ITERAHERO
           </Text>
           <Formik
             initialValues={{ email: '', password: '' }}
@@ -169,18 +174,14 @@ function Login() {
               handleChange,
               handleBlur,
               handleSubmit,
+              setFieldError
             }) => (
               <Form onSubmit={handleSubmit}>
-                <FormControl
-                  size="sm"
-                  marginTop="20px"
-                  isInvalid={errors.email && touched.email}
-                >
-                  <FormLabel htmlFor="email">Email</FormLabel>
+              <Flex flexDir={"column"} justifyContent={"center"} alignItems={"center"} w={"250px"}>
+                <FormControl isInvalid={errors.email && touched.email} pb={errors.email ? 0 : 7} minH={"100px"}>
+                  <FormLabel htmlFor="email" fontWeight={"bold"}>Email</FormLabel>
                   <Input
-                    size="sm"
-                    marginTop="0 auto"
-                    type="text"
+                    type="email"
                     name="email"
                     value={values.email}
                     onChange={handleChange}
@@ -188,31 +189,28 @@ function Login() {
                     variant="outline"
                     placeholder="Masukkan email"
                   />
-                  <FormErrorMessage>{errors.email}</FormErrorMessage>
+                  <FormErrorMessage py={1} px={1} m={0}>{errors.email}</FormErrorMessage>
                 </FormControl>
-                <FormControl
-                  size="sm"
-                  marginTop="20px"
-                  isInvalid={!!errors.password && touched.password}
-                >
-                  <FormLabel htmlFor="password">Password</FormLabel>
-                  <Input
-                    size="sm"
-                    margin="0 auto"
-                    variant="outline"
-                    type="password"
-                    name="password"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.password}
-                    placeholder="Masukkan password"
-                    required="password harus diisi"
-                  />
-                  <FormErrorMessage>{errors.password}</FormErrorMessage>
+                <FormControl isInvalid={errors.password && touched.password} pb={errors.password ? 0 : 7} minHeight={"100px"}>
+                  <FormLabel htmlFor="password" fontWeight={"bold"}>Password</FormLabel>
+                  <Flex alignItems={"center"} gap={"10px"}>
+                    <Input
+                      type={showPassword ? "text" :"password"}
+                      name="password"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.password}
+                      placeholder="Masukkan password"
+                      required="password harus diisi"
+                    />
+                    <Button onClick={() => setShowPassword(!showPassword)} >
+                      {showPassword ? <IoEye fontSize={"1.5rem"}/> : <IoEyeOff fontSize={"1.5rem"}/>}
+                    </Button>
+                  </Flex>
+                  <FormErrorMessage py={1} px={1} m={0}>{errors.password}</FormErrorMessage>
                 </FormControl>
-                {/* <Link to={"/unit/dashboard"}> */}
                 <Button
-                  marginTop="44px"
+                  mt={4}
                   width="100%"
                   height="50px"
                   borderRadius="10px"
@@ -220,9 +218,11 @@ function Login() {
                   loadingText="Tunggu Sebentar..."
                   type="submit"
                   className="btn-login"
+                  isLoading={btnPressed}
                   onClick={() => {
-                    handleSubmitComplate(values.email, values.password);
+                    handleSubmitComplate(values.email, values.password, setFieldError);
                   }}
+                  isDisabled={errors.email || errors.password}
                 >
                   <Text
                     fontWeight="bold"
@@ -234,6 +234,7 @@ function Login() {
                   </Text>
                 </Button>
                 {/* </Link> */}
+                </Flex>
               </Form>
             )}
           </Formik>
