@@ -66,8 +66,6 @@ function CardFormPeracikan({ tandon }) {
   }, [onOpenSaveModal, action]);
 
   const handleRacikSubmit = async (id) => {
-    // console.log('ID Form Values:', id);
-
     axios.post(base_url + 'api/v1/peracikan', {
       resep: id,
       id_tandon: tandon.id,
@@ -441,7 +439,6 @@ function CardFormPeracikan({ tandon }) {
                           type="button"
                           backgroundColor="#09322D"
                           w={'100%'}
-
                           onClick={onOpenUpdateModal}
                         >
                           Simpan Perubahan
@@ -459,9 +456,10 @@ function CardFormPeracikan({ tandon }) {
                             values.volume != dataApi[parseInt(selected)].volume ||
                             values.ppm_max != dataApi[parseInt(selected)].ppm_max ||
                             values.ppm_min != dataApi[parseInt(selected)].ppm_min ||
-                            values.newFormulaName != dataApi[parseInt(selected)].nama) ? true : false}
+                            values.newFormulaName != dataApi[parseInt(selected)].nama) ? true : false ||
+                            !tandon.isOnline}
                         >
-                          Racik
+                          { tandon.isOnline ? 'Racik' : 'Tandon Offline' }
                         </Button>
                       )}
                     </Flex>

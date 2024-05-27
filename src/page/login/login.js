@@ -40,14 +40,18 @@ function Login() {
         email: emailValue,
         password: passwordValue,
       })
-      .then((response) => {
-        dispatch(login(response.data));
-        localStorage.setItem('token', response.data.accessToken);
+      .then(({ data }) => {
+        dispatch(login(data));
+        localStorage.setItem('token', data.accessToken);
         navigate('/unit/dashboard/1');
       })
-      .catch((error) => {
-        setFieldError('password', 'Email atau password salah');
-        console.log(error)}
+      .catch(({ response }) => {
+        if (response.status == 401) {
+          setFieldError('password', 'Email atau password salah');
+        } else {
+          alert('Terjadi kesalahan, silahkan coba lagi');
+        }
+        console.log(response.status)}
       ).finally(() => setBtnPressed(false))
   };
 
@@ -216,6 +220,7 @@ function Login() {
                   borderRadius="10px"
                   backgroundColor="var(--color-primer)"
                   loadingText="Tunggu Sebentar..."
+                  color={"var(--color-background)"}
                   type="submit"
                   className="btn-login"
                   isLoading={btnPressed}

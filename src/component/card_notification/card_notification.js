@@ -18,27 +18,34 @@ import {
 import { RiMapPinFill } from "react-icons/ri";
 import moment from "moment";
 import axios from "axios";
-import { deleteNotification } from "../../Utility/api_link";
+import { useSelector } from "react-redux";
+import { selectUrl, selectToken } from "../../features/auth/authSlice";
 
 function CardNotification(props) {
   const { data } = props;
-
+  const base_url = useSelector(selectUrl)
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [id, setId] = useState("");
+  const token = useSelector(selectToken)
 
   const deleteItem = (e, id) => {
     e.preventDefault();
     axios
-      .delete(`${deleteNotification}${id}`, {
+      .delete(base_url + 'api/v1/notification', {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
+        params: {
+          id
+        }
       })
       .then((response) => {
         window.location.reload();
         alert("Berhasil Menghapus Data");
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error)
+      });
   };
 
   const eleminateZ = (date) => {
@@ -50,82 +57,74 @@ function CardNotification(props) {
   moment.locale("id", idLocale);
 
   return (
-    <Flex
-      w="100%"
-      h="80%"
-      bg="#ffff"
-      borderRadius="xl"
-      borderWidth="1px"
-      borderColor="#D9D9D9"
-      boxShadow="md"
-      justify="space-between"
-      flexDir="row"
-      alignItems="center"
-      padding="2%"
-    >
-      <Flex justify="start" gap={70} flexDir="row" alignItems="center">
-        <Flex
-          w="65px"
-          h="56px"
-          borderRadius="10px"
-          justify="center"
-          align="center"
-          textAlign={"center"}
-        >
+    <>
+      <Flex
+        bg="#ffff"
+        borderRadius="xl"
+        borderWidth="1px"
+        borderColor="#D9D9D9"
+        boxShadow="md"
+        justify="space-between"
+        alignItems="center"
+        padding="2%"
+        gap={4}
+      >
+        <Flex flex={1} justifyContent={"center"}>
           <Image src="https://res.cloudinary.com/diyu8lkwy/image/upload/v1663905296/itera%20herro%20icon/icon-notif_owss6p.png" />
         </Flex>
-        <Flex flexDir="column" gap={3}>
-          <Text
-            alignItems="left"
-            justifyContent="left"
-            textAlign="left"
-            fontWeight="semibold"
-            fontSize="var(--header-3)"
-            color="var(--color-primer)"
-          >
-            {data.message}
-          </Text>
-          <Flex flexDir="row" paddingLeft="2%" gap={2} alignItems="center">
-            <Icon as={RiMapPinFill} w={25} h={25} color="black" />
+        <Flex alignSelf={"flex-start"} flexDir="row" alignItems="center" flex={5}>
+          <Flex flexDir="column" gap={3}>
             <Text
+              textAlign={"left"}
+              fontWeight="semibold"
+              fontSize="var(--header-3)"
+              color="var(--color-primer)"
+            >
+              {data.message}
+            </Text>
+            <Flex flexDir="row" paddingLeft="2%" gap={2} alignItems="center">
+              <Icon as={RiMapPinFill} w={25} h={25} color="black" />
+              <Text
+                alignItems="left"
+                justifyContent="left"
+                textAlign="left"
+                color="var(--color-primer)"
+                fontSize="var(--header-5)"
+              >
+                {data.loc}
+              </Text>
+            </Flex>
+            <Text
+              fontWeight="semibold"
+              fontSize="var(--header-3)"
+              color="var(--color-grey)"
               alignItems="left"
               justifyContent="left"
               textAlign="left"
-              color="var(--color-primer)"
-              fontSize="var(--header-5)"
+              flex={1}
             >
-              {data.greenhouse_loc}
+              {moment(eleminateZ(data.created_at)).startOf("seconds").fromNow()}
             </Text>
           </Flex>
-          <Text
-            fontWeight="semibold"
-            fontSize="var(--header-3)"
-            color="var(--color-grey)"
-            alignItems="left"
-            justifyContent="left"
-            textAlign="left"
-          >
-            {moment(eleminateZ(data.created_at)).startOf("seconds").fromNow()}
-          </Text>
         </Flex>
+        <CloseButton
+          w={35}
+          h={35}
+          color="red"
+          size={20}
+          onClick={() => {
+            setId(data.id);
+            onOpen();
+          }}
+        />
       </Flex>
-      <CloseButton
-        w={35}
-        h={35}
-        color="black"
-        size={20}
-        onClick={() => {
-          setId(data.id);
-          onOpen();
-        }}
-      />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Peringatan !</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            Apakah anda yakin ingin menghapus notifikasi {id} ini?
+            Apakah anda yakin ingin menghapus notifikasi ini?
           </ModalBody>
           <ModalFooter>
             <Button
@@ -149,7 +148,7 @@ function CardNotification(props) {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </Flex>
+    </>
   );
 }
 

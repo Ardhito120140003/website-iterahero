@@ -29,12 +29,9 @@ function Notification() {
         setDataNotification(response.data.data);
       })
       .catch((error) => {
-        
-        
         navigate('/login');
       });
   };
-  // console.log(dataNotification);
 
   useEffect(() => {
     dispatch(routePageName('History Notification'));

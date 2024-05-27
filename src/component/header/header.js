@@ -16,8 +16,6 @@ import { AiOutlineMenu } from 'react-icons/ai';
 import { useSelector, useDispatch } from 'react-redux';
 import Draw from '../draw/draw';
 import { selectRoute, logout, selectUrl, selectToken } from '../../features/auth/authSlice';
-import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
 import Notification from '../notification/Notification';
 
 
@@ -65,7 +63,6 @@ function Header() {
         <Box>
           <Button
             bgColor={"white"}
-            // to="/login"
             onClick={() => {
               localStorage.clear()
               dispatch(logout())

@@ -158,12 +158,11 @@ function TableNotification() {
                   justifyContent="center"
                 >
                   <Th textAlign="center">No</Th>
-                  <Th textAlign="center">Detail 
-                  ikasi</Th>
-                  <Th textAlign="center">Tipe</Th>
+                  <Th textAlign="center">Detail Notifikasi</Th>
+                  {/* <Th textAlign="center">Tipe</Th> */}
                   <Th textAlign="center">Waktu</Th>
                   <Th textAlign="center">Lokasi</Th>
-                  <Th textAlign="center">Id Actuator</Th>
+                  {/* <Th textAlign="center">Id Actuator</Th> */}
                 </Tr>
               </Thead>
               <Tbody>
@@ -173,22 +172,28 @@ function TableNotification() {
                       {index + 1}
                     </Td>
                     <Td textAlign="center" color="var(--color-primer)">
+                      {item.message}
+                    </Td>
+                    {/* <Td textAlign="center" color="var(--color-primer)">
                       {item.detail}
-                    </Td>
-                    <Td textAlign="center" color="var(--color-primer)">
+                    </Td> */}
+                    {/* <Td textAlign="center" color="var(--color-primer)">
                       {item.type}
-                    </Td>
+                    </Td> */}
                     <Td textAlign="center" color="var(--color-primer)">
                       {moment(eleminateZ(item.created_at)).format(
                         'DD MMMM YYYY, h:mm:ss a',
                       )}
                     </Td>
                     <Td textAlign="center" color="var(--color-primer)">
+                      {item.loc}
+                    </Td>
+                    {/* <Td textAlign="center" color="var(--color-primer)">
                       {item.greenhouse_loc}
-                    </Td>
-                    <Td textAlign="center" color="var(--color-primer)">
+                    </Td> */}
+                    {/* <Td textAlign="center" color="var(--color-primer)">
                       {item.id_actuator}
-                    </Td>
+                    </Td> */}
                     <Td textAlign="center">
                       <Flex justifyContent="space-evenly">
                         <Button
