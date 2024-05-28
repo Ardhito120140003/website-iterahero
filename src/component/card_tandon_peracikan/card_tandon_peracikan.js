@@ -165,8 +165,11 @@ function CardStatusPeracikan({ tandon, sensor }) {
                 mt={"20px"}
                 w={'35%'}
               >
+                <Flex justifyContent="center" mt={"10px"}>
+                  <Text>Kapasitas: {tandon.capacity} L</Text>
+                </Flex>
                 <Flex justifyContent="center" mt="5px">
-                  {tandon.status === "Kosong" || tandon.status === "Ada Isinya" ? (
+                  {!tandon.status.toLowerCase().includes("meracik") ? (
                     <Icon as={GiWaterTower} w="130px" h="80px" color="#14453E" />
                   ) : (
                     <CircularProgress
@@ -220,11 +223,20 @@ function CardStatusPeracikan({ tandon, sensor }) {
                         )}
                       </Grid>
 
+                      <Grid templateColumns="repeat(2, 1fr)" fontSize={'sm'}>
+                        <Text color="black" textAlign="left">
+                          Isi Tandon
+                        </Text>
+                        <Text color="blue.600" textAlign="left">
+                          : {tandon.volume} L
+                        </Text>
+                      </Grid>
+
                       {sensor.map((item, index) => {
                         const matchedData = sensorRealtime.find(obj => obj.channel === item.channel || obj.gpio === item.GPIO);
                         const sensorValue = matchedData ? matchedData.nilai : null
                         return (
-                          <Grid key={index} templateColumns="repeat(2, 1fr)" justifyContent={'center'} fontSize={'sm'}> 
+                          <Grid key={index} templateColumns="repeat(2, 1fr)" justifyContent={'center'} fontSize={'sm'}>
                             <Text color="black" textAlign="left">
                               {item.name}
                             </Text>

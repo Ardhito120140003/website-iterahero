@@ -457,9 +457,12 @@ function CardFormPeracikan({ tandon }) {
                             values.ppm_max != dataApi[parseInt(selected)].ppm_max ||
                             values.ppm_min != dataApi[parseInt(selected)].ppm_min ||
                             values.newFormulaName != dataApi[parseInt(selected)].nama) ? true : false ||
-                            !tandon.isOnline}
+                            !tandon.isOnline ||
+                            tandon.status.toLowerCase().includes("meracik")}
+                          isLoading={tandon.status.toLowerCase().includes("meracik")}
+                          loadingText='Sedang meracik...'
                         >
-                          { tandon.isOnline ? 'Racik' : 'Tandon Offline' }
+                          {tandon.isOnline ? 'Racik' : 'Tandon Offline' }
                         </Button>
                       )}
                     </Flex>
