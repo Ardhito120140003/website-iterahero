@@ -80,10 +80,10 @@ function CardNotification(props) {
               fontSize="var(--header-3)"
               color="var(--color-primer)"
             >
-              {data.message}
+              {data.header}
             </Text>
-            <Flex flexDir="row" paddingLeft="2%" gap={2} alignItems="center">
-              <Icon as={RiMapPinFill} w={25} h={25} color="black" />
+            <Flex flexDir="row" paddingLeft="2%" alignItems="center">
+              <Icon as={RiMapPinFill} color="red.600" fontSize={"1.5rem"} />
               <Text
                 alignItems="left"
                 justifyContent="left"

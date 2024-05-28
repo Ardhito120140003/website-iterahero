@@ -139,8 +139,11 @@ const Notification = () => {
                         <Flex direction={"column"} overflowY={"auto"} maxH={"30vh"}>
                             {notification.filter((item, idx) => new Date(item.created_at) > new Date().getHours() - 24).map((item, index) => (
                                 <Flex flex={1} key={index} bgColor={!item.read ? 'blue.100' : null} p={3} justifyContent={"space-between"} alignItems={"center"} borderBottomWidth={index === notification.length - 1 ? 0 : 2}>
-                                    <Text flex={3} textAlign={"left"}>{item.message}</Text>
-                                    <Text flex={2} textAlign={"right"} color="gray.400" fontSize={'2xs'}>{moment(item["created_at"]).format('HH:mm YYYY-MM-DD')}</Text>
+                                    <Flex flex={5} flexDir={"column"}>
+                                        <Text textAlign={"left"} fontWeight={"bold"}>{item.header}</Text>
+                                        <Text textAlign={"left"} fontSize={"10px"} fontStyle={"italic"}>{item.loc}</Text>
+                                    </Flex>
+                                    <Text flex={1} textAlign={"right"} color="gray.400" fontSize={'2xs'}>{moment(item["created_at"]).format('HH:mm YYYY-MM-DD')}</Text>
                                 </Flex>))}
                         </Flex>
                     )}

@@ -139,30 +139,19 @@ function TableNotification() {
           justify="flex-start"
           mt={30}
         >
-          <TableContainer
-            borderRadius="md"
-            bg="white"
-            width="100%"
-            overflowX="auto"
-          >
+          {/* <TableContainer overflowX={'clip'}> */}
             <Table
               variant="simple"
               size={['lg', 'md', 'sm']}
               overflowX="hidden"
             >
               <Thead>
-                <Tr
-                  textAlign="center"
-                  alignContent="center"
-                  alignItems="center"
-                  justifyContent="center"
-                >
+                <Tr>
                   <Th textAlign="center">No</Th>
+                  <Th textAlign="center">Judul</Th>
                   <Th textAlign="center">Detail Notifikasi</Th>
-                  {/* <Th textAlign="center">Tipe</Th> */}
                   <Th textAlign="center">Waktu</Th>
                   <Th textAlign="center">Lokasi</Th>
-                  {/* <Th textAlign="center">Id Actuator</Th> */}
                 </Tr>
               </Thead>
               <Tbody>
@@ -172,14 +161,11 @@ function TableNotification() {
                       {index + 1}
                     </Td>
                     <Td textAlign="center" color="var(--color-primer)">
+                      {item.header}
+                    </Td>
+                    <Td textAlign="center" color="var(--color-primer)">
                       {item.message}
                     </Td>
-                    {/* <Td textAlign="center" color="var(--color-primer)">
-                      {item.detail}
-                    </Td> */}
-                    {/* <Td textAlign="center" color="var(--color-primer)">
-                      {item.type}
-                    </Td> */}
                     <Td textAlign="center" color="var(--color-primer)">
                       {moment(eleminateZ(item.created_at)).format(
                         'DD MMMM YYYY, h:mm:ss a',
@@ -188,12 +174,6 @@ function TableNotification() {
                     <Td textAlign="center" color="var(--color-primer)">
                       {item.loc}
                     </Td>
-                    {/* <Td textAlign="center" color="var(--color-primer)">
-                      {item.greenhouse_loc}
-                    </Td> */}
-                    {/* <Td textAlign="center" color="var(--color-primer)">
-                      {item.id_actuator}
-                    </Td> */}
                     <Td textAlign="center">
                       <Flex justifyContent="space-evenly">
                         <Button
@@ -243,7 +223,7 @@ function TableNotification() {
                 ))}
               </Tbody>
             </Table>
-          </TableContainer>
+          {/* </TableContainer> */}
           {dataTable.length > 0 ? (
             <Flex justify="space-between">
               <Flex>
