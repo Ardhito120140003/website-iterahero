@@ -159,7 +159,7 @@ function Peracikan() {
                   // h={'180px'}
                   mb={'20px'}
                 >
-                  <CardAktuatorOperator data={{ alat: 'greenhouse', id: '1' }} />
+                  <CardAktuatorOperator data={{ alat: 'tandonUtama', id: selected }} />
                 </Flex>
 
               </Flex>

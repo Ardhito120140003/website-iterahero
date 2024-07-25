@@ -263,24 +263,59 @@ function CardStatusPeracikan({ tandon, sensor }) {
               </Flex>
             </Flex>
 
-            <Button
-              onClick={onOpen}
-              bgColor={"white"}
-              p={"5px"}
-              w={"100%"}
-              justifyContent={"center"}
-              alignContent={"center"}
-              border="1px solid #E2E8F0"
-              borderRadius={"10px"}
-              mt={"10px"}
-              backgroundColor="#09322D"
-            >
-              <Text fontSize={"20px"}
-                color="white"
+            <Flex alignItems={"center"} gap={4}>
+              <Button
+                onClick={onOpen}
+                bgColor={"white"}
+                p={"5px"}
+                w={"100%"}
+                justifyContent={"center"}
+                alignContent={"center"}
+                border="1px solid #E2E8F0"
+                borderRadius={"10px"}
+                mt={"10px"}
+                backgroundColor="#09322D"
+                flex={3}
               >
-                {tandon.rasioA} : {tandon.rasioB} : {tandon.rasioAir} = {tandon.ppm}
-              </Text>
-            </Button>
+                <Text fontSize={"20px"}
+                  color="white"
+                >
+                  {tandon.rasioA} : {tandon.rasioB} : {tandon.rasioAir} = {tandon.ppm}
+                </Text>
+              </Button>
+
+              {tandon.status.toLowerCase().includes("meracik") ? (
+                <Button
+                  bgColor={'red.600'}
+                  type="button"
+                  borderRadius={"10px"}
+                  mt={"10px"}
+                  flex={1}
+                  onClick={() => {
+                    axios.post(base_url + 'api/v1/peracikan/batal', {
+                      id_tandon: tandon.id,
+                    }, {
+                      headers: {
+                        Authorization: `Bearer ${header}`
+                      }
+                    })
+                      .then(({ data })=> {
+                        console.log(data);
+                        alert("Peracikan dibatalkan")
+                        window.location.reload()
+                      })
+                      .catch(({ response }) => {
+                        console.error(response);
+                        alert("Terjadi kesalahan dalam pembatalan peracikan.\n" + response.data.message)
+                      });
+                  }}
+                >
+                  Batal
+                </Button>
+              ) : null}
+
+
+            </Flex>
 
           </Flex>
 
